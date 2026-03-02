@@ -231,3 +231,27 @@ body{
   .frame2{ inset:22px; }
   .copyrow{ flex-direction:column; align-items:stretch; }
 }
+.logoMark{
+  font-family: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  text-align:center;
+  font-size: 22px;
+  letter-spacing: .28em;
+  color: var(--muted);
+  margin: 4px 0 12px;
+}
+
+.logoName{
+  font-family: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  text-align:center;
+  font-size: clamp(40px, 6.2vw, 74px);
+  line-height: 1.02;
+  letter-spacing: .02em;
+  margin: 0 0 14px;
+  color: color-mix(in oklab, var(--green) 92%, black);
+}
+
+.logoAmp{
+  color: var(--gold);
+  font-weight: 700;
+  padding: 0 .18em;
+}
