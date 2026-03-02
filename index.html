@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>André & Nathália - Casamento</title>
+
+    <!-- WhatsApp / Open Graph -->
+    <meta property="og:title" content="André & Nathália — 03/05/2026" />
+    <meta property="og:description" content="Cerimônia às 16h • Rua das Araribás, 25 — São Bernardo do Campo/SP. Clique para ver informações e lista de presentes." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://convite.andrenathalia03052026.site/" />
+    <meta property="og:image" content="https://convite.andrenathalia03052026.site/preview.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     
     <!-- Importação de Fontes Elegantes do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -134,13 +144,13 @@
                     <path d="M105,50 Q110,45 105,40 Q100,45 105,50" fill="currentColor"/>
                     <path d="M50,15 Q45,10 40,15 Q45,20 50,15" fill="currentColor"/>
                 </svg>
-                <h1 class="font-script text-6xl text-wedding-text tracking-wider relative z-10 pt-4">AN</h1>
+                <h1 class="font-script text-6xl text-wedding-text tracking-wider relative z-10 pt-4">A&amp;N</h1>
             </div>
 
             <!-- Introdução -->
             <div class="flex items-center justify-center gap-4 mb-8">
                 <div class="h-[1px] w-12 bg-wedding-gold"></div>
-                <p class="font-serif text-lg md:text-xl text-wedding-text italic tracking-wide">Com as bênçãos de Deus,</p>
+                <p class="font-serif text-lg md:text-xl text-wedding-text italic tracking-wide">Com a bênção de Deus,</p>
                 <div class="h-[1px] w-12 bg-wedding-gold"></div>
             </div>
 
@@ -191,15 +201,15 @@
                 <div class="flex-1 flex flex-col items-center text-center px-4 w-full">
                     <i class="ph ph-map-pin text-3xl text-wedding-gold mb-3"></i>
                     <p class="font-serif text-[17px] sm:text-[19px] text-wedding-text mb-2 tracking-wide font-medium">
-                        Rua das Araribas, 25
+                        Rua das Araribás, 25
                     </p>
                     <p class="font-sans text-xs sm:text-[13px] tracking-widest text-wedding-text uppercase mb-2">
                         São Bernardo do Campo — SP
                     </p>
                     <p class="font-sans text-xs sm:text-[13px] tracking-widest text-wedding-text uppercase">
-                        CEP 09840-310
+                        CEP 09840-210
                     </p>
-                </div>
+                <div class="flex gap-3 justify-center mt-5"><a href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20SP%2009840-210" target="_blank" rel="noopener" class="text-[11px] sm:text-xs font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300">Abrir no Maps</a><button id="copyAddress" class="text-[11px] sm:text-xs font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300">Copiar Endereço</button></div></div>
             </div>
 
             <!-- Aviso Pós-Cerimónia -->
@@ -209,7 +219,7 @@
                     <path d="M15,10 Q10,5 5,10 Q10,15 15,10" fill="currentColor"/>
                 </svg>
                 <p class="font-sans text-[10px] sm:text-xs uppercase tracking-[0.15em] text-wedding-text text-center max-w-[400px]">
-                    Após a cerimónia, os convidados serão recepcionados no mesmo local
+                    Após a cerimônia, os convidados serão recepcionados no mesmo local
                 </p>
                 <svg width="40" height="20" viewBox="0 0 40 20" class="text-wedding-green opacity-60 scale-x-[-1]">
                     <path d="M0,10 Q10,0 20,10 T40,10" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -267,5 +277,28 @@
         </div>
     </div>
 
+<script>
+        document.getElementById("copyAddress").addEventListener("click", async function() {
+            const address = "Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210";
+            try {
+                await navigator.clipboard.writeText(address);
+                const btn = this;
+                const originalText = btn.innerText;
+                btn.innerText = "COPIADO ✓";
+                btn.classList.add("bg-wedding-gold", "text-white");
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove("bg-wedding-gold", "text-white");
+                }, 2000);
+            } catch (err) {
+                console.error("Falha ao copiar endereço: ", err);
+            }
+        });
+    </script>
 </body>
 </html>
+
+
+
+
