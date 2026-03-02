@@ -1,3 +1,2 @@
 User-agent: *
 Allow: /
-Sitemap: https://convite.andrenathalia03052026.site/sitemap.xml
