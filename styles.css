@@ -4,6 +4,7 @@
   --sage-text: #6f8475;
   --gold-soft: #c9b37e;
   --card-bg: #fffefb;
+  --border-soft: #e8e3d7;
 }
 
 * {
@@ -12,101 +13,140 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
-    "Helvetica Neue", Arial, sans-serif;
-  background: radial-gradient(circle at top, #ffffff 0%, var(--off-white) 55%);
+  font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(201, 179, 126, 0.08) 0%, transparent 42%),
+    radial-gradient(circle at 85% 100%, rgba(15, 79, 61, 0.06) 0%, transparent 38%),
+    var(--off-white);
   color: var(--emerald-dark);
-  line-height: 1.5;
+  line-height: 1.65;
 }
 
 .invite-wrapper {
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  padding: 1rem;
+  padding: clamp(1rem, 4vw, 2.25rem);
 }
 
 .invite-card {
-  width: min(720px, 100%);
+  width: min(760px, 100%);
   background: var(--card-bg);
-  border: 1px solid rgba(201, 179, 126, 0.38);
-  border: 1px solid color-mix(in srgb, var(--gold-soft) 38%, transparent);
-  border-radius: 22px;
-  padding: clamp(1rem, 4vw, 2rem);
-  box-shadow: 0 10px 28px rgba(15, 79, 61, 0.1);
+  border: 1px solid var(--border-soft);
+  border-radius: 26px;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  box-shadow: 0 10px 22px rgba(15, 79, 61, 0.06);
+  position: relative;
 }
 
 .hero {
   text-align: center;
-  margin-bottom: 1.2rem;
+  margin-bottom: clamp(1.4rem, 3.5vw, 2.2rem);
+}
+
+.monogram-wrap {
+  margin: 0 auto 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.ornament {
+  color: var(--gold-soft);
+  font-size: 1.05rem;
+  opacity: 0.9;
 }
 
 .monogram {
-  margin: 0 auto 0.65rem;
-  width: 84px;
-  height: 84px;
+  margin: 0;
+  width: 92px;
+  height: 92px;
   border-radius: 999px;
-  border: 2px solid var(--gold-soft);
+  border: 1px solid var(--gold-soft);
+  background: linear-gradient(145deg, #fffefb 0%, #fcfbf8 100%);
   display: grid;
   place-items: center;
-  font-weight: 700;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.55rem;
+  font-weight: 600;
   color: var(--emerald-dark);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(1.8rem, 6vw, 2.7rem);
-  line-height: 1.15;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 
 .subtitle {
-  margin: 0.4rem 0 0;
-  color: var(--sage-text);
+  margin: 0.6rem 0 0;
   font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--sage-text);
 }
 
-.details {
-  background: #f8f7f3;
-  background: color-mix(in srgb, var(--off-white) 65%, #ffffff);
-  border: 1px solid rgba(201, 179, 126, 0.32);
-  border: 1px solid color-mix(in srgb, var(--gold-soft) 32%, transparent);
-  border-radius: 14px;
-  padding: 1rem;
-  margin: 1rem 0 1.2rem;
+.info-block {
+  background: #fcfbf8;
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  padding: clamp(1rem, 2.8vw, 1.4rem);
+  margin-bottom: 0.95rem;
 }
 
-.details p {
+.section-title {
   margin: 0;
-  font-size: clamp(0.96rem, 3.4vw, 1.05rem);
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.3;
 }
 
-.details p + p {
-  margin-top: 0.7rem;
+.section-text {
+  margin: 0.55rem 0 0;
+  color: var(--emerald-dark);
+  font-size: clamp(1rem, 2vw, 1.07rem);
+}
+
+.location-actions {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
 }
 
 .actions {
   display: grid;
-  gap: 0.75rem;
-  margin-bottom: 1.3rem;
+  gap: 0.8rem;
+  margin: 1.3rem 0 1.45rem;
 }
 
 .btn {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  min-height: 52px;
   text-align: center;
   text-decoration: none;
-  padding: 1rem;
-  border-radius: 14px;
-  font-weight: 700;
-  font-size: clamp(1rem, 3.8vw, 1.15rem);
-  border: 2px solid transparent;
-  transition: transform 140ms ease, box-shadow 140ms ease;
+  padding: 0.95rem 1rem;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 1rem;
+  border: 1px solid transparent;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
 }
 
 .btn:focus-visible,
 .links-text a:focus-visible,
-.copy-btn:focus-visible {
+.copy-btn:focus-visible,
+.map-link:focus-visible {
   outline: 3px solid var(--gold-soft);
   outline-offset: 3px;
 }
@@ -122,90 +162,147 @@ h1 {
 .btn-primary {
   background: var(--emerald-dark);
   color: #ffffff;
-  box-shadow: 0 6px 14px rgba(15, 79, 61, 0.2);
+  box-shadow: 0 6px 14px rgba(15, 79, 61, 0.13);
 }
 
 .btn-secondary {
   background: #ffffff;
   color: var(--emerald-dark);
+  border-color: var(--border-soft);
+}
+
+.btn-secondary:hover {
   border-color: var(--emerald-dark);
 }
 
 .links-text {
-  border-top: 1px dashed rgba(201, 179, 126, 0.55);
-  border-top: 1px dashed color-mix(in srgb, var(--gold-soft) 55%, transparent);
-  padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 1.2rem;
 }
 
 .links-text h2 {
-  margin: 0 0 0.6rem;
-  font-size: 1rem;
+  margin: 0 0 0.75rem;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.22rem;
+  font-weight: 500;
+  line-height: 1.3;
   color: var(--sage-text);
 }
 
 .links-text p {
   margin: 0;
-  font-size: 0.93rem;
+  font-size: 1rem;
 }
 
 .links-text p + p {
-  margin-top: 0.7rem;
+  margin-top: 0.8rem;
 }
 
 .links-text a {
   color: var(--emerald-dark);
   word-break: break-word;
+  text-underline-offset: 3px;
 }
 
 .copy-btn {
-  margin: 0.4rem 0 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 0.5rem 0 0.9rem;
   border: 1px solid var(--gold-soft);
-  border-radius: 10px;
-  background: #f8f7f3;
-  background: color-mix(in srgb, var(--off-white) 65%, #ffffff);
+  border-radius: 12px;
+  background: #faf8f3;
   color: var(--emerald-dark);
-  font-size: 0.9rem;
-  font-weight: 700;
-  padding: 0.55rem 0.8rem;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.62rem 0.95rem;
   cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 
 .copy-btn:hover {
-  filter: brightness(0.98);
+  background: #f6f1e3;
 }
 
 .copy-btn:active {
-  transform: translateY(1px);
+  transform: translateY(0);
+}
+
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.62rem 0.2rem;
+  color: var(--emerald-dark);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .copy-feedback {
-  min-height: 1.1rem;
+  min-height: 1.25rem;
   color: var(--sage-text);
-  font-size: 0.88rem;
-  margin-top: 0.2rem;
+  font-size: 1rem;
+  margin-top: 0.1rem;
 }
 
 .footer {
-  margin-top: 1.2rem;
+  margin-top: 1.35rem;
   text-align: center;
   color: var(--sage-text);
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
-@media (max-width: 360px) {
+@media (max-width: 480px) {
   .invite-card {
-    border-radius: 18px;
-    padding: 0.9rem;
+    border-radius: 20px;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: clamp(1.85rem, 9vw, 2.2rem);
+  }
+
+  .location-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .copy-btn,
+  .map-link {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .copy-btn {
+    margin-bottom: 0;
+  }
+
+  .links-text .copy-btn {
+    margin: 0.55rem 0 0.95rem;
   }
 
   .btn {
-    padding: 0.95rem 0.75rem;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .invite-card {
+    padding: 2.8rem 3rem;
+  }
+
+  .actions {
+    gap: 0.9rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .btn,
-  .copy-btn {
+  .copy-btn,
+  .map-link {
     transition: none;
   }
 

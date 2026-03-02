@@ -20,7 +20,7 @@
     }, 2500);
   }
 
-  function fallbackCopy(text) {
+  function fallbackCopy(text, successMessage) {
     var input = document.createElement('textarea');
     input.value = text;
     input.setAttribute('readonly', '');
@@ -32,7 +32,7 @@
     try {
       var copied = document.execCommand('copy');
       if (copied) {
-        showFeedback('Link copiado com sucesso.');
+        showFeedback(successMessage);
       } else {
         showFeedback('Não foi possível copiar automaticamente. Copie o link em texto abaixo.');
       }
@@ -46,19 +46,20 @@
   buttons.forEach(function (button) {
     button.addEventListener('click', function () {
       var link = button.getAttribute('data-copy');
+      var successMessage = button.getAttribute('data-success') || 'Link copiado com sucesso.';
       if (!link) return;
 
       if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
         navigator.clipboard
           .writeText(link)
           .then(function () {
-            showFeedback('Link copiado com sucesso.');
+            showFeedback(successMessage);
           })
           .catch(function () {
-            fallbackCopy(link);
+            fallbackCopy(link, successMessage);
           });
       } else {
-        fallbackCopy(link);
+        fallbackCopy(link, successMessage);
       }
     });
   });
