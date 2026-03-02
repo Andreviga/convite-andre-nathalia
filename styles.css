@@ -70,10 +70,14 @@ body {
 .invite-card::after {
   inset: 0;
   background:
-    radial-gradient(200px 130px at 6% 8%, rgba(111, 132, 117, 0.16), transparent 65%),
-    radial-gradient(200px 130px at 94% 8%, rgba(111, 132, 117, 0.16), transparent 65%),
-    radial-gradient(240px 150px at 10% 94%, rgba(111, 132, 117, 0.2), transparent 64%),
-    radial-gradient(240px 150px at 90% 94%, rgba(111, 132, 117, 0.2), transparent 64%);
+    radial-gradient(220px 145px at 5% 6%, rgba(111, 132, 117, 0.18), transparent 64%),
+    radial-gradient(145px 95px at 13% 12%, rgba(111, 132, 117, 0.12), transparent 64%),
+    radial-gradient(220px 145px at 95% 6%, rgba(111, 132, 117, 0.18), transparent 64%),
+    radial-gradient(145px 95px at 87% 12%, rgba(111, 132, 117, 0.12), transparent 64%),
+    radial-gradient(260px 165px at 8% 96%, rgba(111, 132, 117, 0.21), transparent 63%),
+    radial-gradient(165px 105px at 17% 88%, rgba(111, 132, 117, 0.12), transparent 66%),
+    radial-gradient(260px 165px at 92% 96%, rgba(111, 132, 117, 0.21), transparent 63%),
+    radial-gradient(165px 105px at 83% 88%, rgba(111, 132, 117, 0.12), transparent 66%);
 }
 
 .hero,
@@ -84,6 +88,9 @@ body {
 .footer {
   position: relative;
   z-index: 1;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero {
@@ -149,6 +156,9 @@ h1 {
   line-height: 1.12;
   letter-spacing: 0.01em;
   text-wrap: balance;
+  max-width: 14ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .subtitle {
@@ -193,6 +203,7 @@ h1 {
   color: var(--sage-text);
   font-size: clamp(1rem, 2vw, 1.1rem);
   font-weight: 500;
+  max-width: 40ch;
 }
 
 .section-ornament {
@@ -332,8 +343,8 @@ h1 {
 
 @media (max-width: 480px) {
   .invite-card {
-    border-radius: 20px;
-    padding: 1rem;
+    border-radius: 18px;
+    padding: 0.9rem;
   }
 
   .invite-card::before {
@@ -343,14 +354,25 @@ h1 {
 
   .invite-card::after {
     background:
-      radial-gradient(150px 110px at 6% 7%, rgba(111, 132, 117, 0.16), transparent 66%),
-      radial-gradient(150px 110px at 94% 7%, rgba(111, 132, 117, 0.16), transparent 66%),
-      radial-gradient(170px 120px at 9% 95%, rgba(111, 132, 117, 0.18), transparent 66%),
-      radial-gradient(170px 120px at 91% 95%, rgba(111, 132, 117, 0.18), transparent 66%);
+      radial-gradient(125px 95px at 6% 7%, rgba(111, 132, 117, 0.16), transparent 65%),
+      radial-gradient(95px 70px at 17% 11%, rgba(111, 132, 117, 0.1), transparent 66%),
+      radial-gradient(125px 95px at 94% 7%, rgba(111, 132, 117, 0.16), transparent 65%),
+      radial-gradient(95px 70px at 83% 11%, rgba(111, 132, 117, 0.1), transparent 66%),
+      radial-gradient(155px 110px at 8% 96%, rgba(111, 132, 117, 0.19), transparent 65%),
+      radial-gradient(155px 110px at 92% 96%, rgba(111, 132, 117, 0.19), transparent 65%);
   }
 
   h1 {
-    font-size: clamp(2rem, 10vw, 2.5rem);
+    font-size: clamp(1.95rem, 10.2vw, 2.35rem);
+  }
+
+  .hero,
+  .info-block,
+  .closing-line,
+  .actions,
+  .links-text,
+  .footer {
+    max-width: 100%;
   }
 
   .location-actions {
