@@ -36,7 +36,9 @@ body{
   width:min(820px, 100%);
   padding: clamp(18px, 4vw, 40px);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, #fff, var(--paper));
+  background:
+    radial-gradient(900px 520px at 50% 18%, rgba(255,255,255,.85) 0%, rgba(255,255,255,0) 62%),
+    linear-gradient(180deg, #fff, var(--paper));
   border: 1px solid color-mix(in oklab, var(--border) 88%, white);
   box-shadow: var(--shadow);
   overflow:hidden;
@@ -98,7 +100,7 @@ body{
   height:auto;
   display:block;
   mix-blend-mode:multiply;
-  opacity:.58;
+  opacity:.74;
 }
 
 .bot.tl{ top:-18px; left:-18px; width:min(360px, 58vw); }
