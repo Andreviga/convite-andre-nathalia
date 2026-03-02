@@ -120,34 +120,6 @@ body {
   font-size: 1rem;
 }
 
-.blessing {
-  margin: 0.35rem 0 0;
-  color: var(--sage-text);
-  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-  font-size: clamp(1.2rem, 3vw, 1.7rem);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-.blessing-row {
-  margin: 0.15rem auto 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-
-.blessing-line {
-  width: clamp(42px, 7vw, 74px);
-  height: 1px;
-  background: rgba(201, 179, 126, 0.6);
-}
-
-.blessing-dot {
-  color: rgba(201, 179, 126, 0.85);
-  font-size: 0.72rem;
-  line-height: 1;
-}
-
 h1 {
   margin: 0.45rem 0 0;
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
