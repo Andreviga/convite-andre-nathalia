@@ -144,6 +144,27 @@
             opacity: 0.85;
             mix-blend-mode: multiply;
         }
+    
+        /* Logo / Marca Premium */
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(34px, 6vw, 64px);
+            color: #0f4f3d; /* Tailwind text-wedding-green-dark */
+            line-height: 1.1;
+            margin-bottom: 2px;
+        }
+        .brand__amp {
+            color: #C9B37E; /* Dourado Premium */
+            font-family: 'Playfair Display', serif;
+            font-style: normal;
+        }
+        .brand__date {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.25em;
+            color: #1f2a24; /* Tailwind text-wedding-text */
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body class="font-sans text-wedding-text antialiased min-h-screen flex items-center justify-center p-4 sm:p-8">
@@ -190,18 +211,10 @@
         <!-- CONTEÚDO PRINCIPAL -->
         <div class="relative z-20 w-full flex flex-col items-center text-center">
             
-            <!-- Monograma -->
-            <div class="relative mb-6">
-                <!-- Círculo Dourado com ramos -->
-                <svg width="120" height="120" viewBox="0 0 120 120" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-wedding-gold">
-                    <circle cx="60" cy="60" r="45" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M 60 15 C 80 15 95 30 105 50" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M 15 60 C 15 40 30 25 50 15" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    <!-- Folhinhas pequenas no círculo -->
-                    <path d="M105,50 Q110,45 105,40 Q100,45 105,50" fill="currentColor"/>
-                    <path d="M50,15 Q45,10 40,15 Q45,20 50,15" fill="currentColor"/>
-                </svg>
-                <h1 class="font-serif italic text-6xl text-wedding-text tracking-wider relative z-10 pt-4">A&amp;N</h1>
+            <!-- Monograma / Logo -->
+            <div class="text-center mt-2 mb-6 flex flex-col items-center justify-center relative z-10">
+                <div class="brand" aria-label="Marca do convite">André <span class="brand__amp">&amp;</span> Nathália</div>
+                <div class="brand__date">03 DE MAIO DE 2026</div>
             </div>
 
             <!-- Introdução -->
