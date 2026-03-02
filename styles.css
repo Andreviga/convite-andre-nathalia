@@ -1,7 +1,6 @@
 :root{
   --bg:#F7F6F2;
   --paper:#FBFAF7;
-  --paper2:#FFFFFF;
   --border:#E8E3D7;
 
   --green:#0F4F3D;
@@ -12,7 +11,6 @@
 
   --radius:26px;
   --shadow: 0 26px 70px rgba(17, 24, 19, .10);
-  --shadow2: 0 10px 26px rgba(17, 24, 19, .08);
 }
 
 *{ box-sizing:border-box; }
@@ -20,9 +18,7 @@ html,body{ height:100%; }
 body{
   margin:0;
   background:
-    radial-gradient(1200px 700px at 50% 0%, #ffffff 0%, var(--bg) 58%),
-    radial-gradient(900px 500px at 15% 10%, rgba(201,179,126,.12) 0%, transparent 55%),
-    radial-gradient(900px 500px at 85% 15%, rgba(15,79,61,.10) 0%, transparent 55%);
+    radial-gradient(1200px 700px at 50% 0%, #ffffff 0%, var(--bg) 60%);
   color:#1f2a24;
   font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
@@ -40,17 +36,32 @@ body{
   width:min(820px, 100%);
   padding: clamp(18px, 4vw, 40px);
   border-radius: var(--radius);
-  background:
-    linear-gradient(180deg, var(--paper2), var(--paper)) padding-box;
+  background: linear-gradient(180deg, #fff, var(--paper));
   border: 1px solid color-mix(in oklab, var(--border) 88%, white);
   box-shadow: var(--shadow);
   overflow:hidden;
 }
 
-@media (min-width: 900px){
-  .invite{ transform: translateY(-4px); }
+/* Moldura dourada fina */
+.invite::before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border-radius: calc(var(--radius) - 12px);
+  border: 1px solid color-mix(in oklab, var(--gold) 74%, white);
+  pointer-events:none;
 }
 
+/* Moldura interna (segunda linha, como impressão) */
+.invite .frame2{
+  position:absolute;
+  inset:26px;
+  border-radius: calc(var(--radius) - 22px);
+  border: 1px solid rgba(232, 227, 215, .75);
+  pointer-events:none;
+}
+
+/* Textura de papel (noise leve) */
 .invite::after{
   content:"";
   position:absolute;
@@ -70,48 +81,32 @@ body{
       rgba(0,0,0,.012) 1px,
       transparent 1px,
       transparent 7px
-    ),
-    radial-gradient(700px 380px at 50% 20%, rgba(255,255,255,.70) 0%, transparent 65%);
+    );
   mix-blend-mode: multiply;
-  opacity:.18;
+  opacity:.14;
 }
 
-.invite::before{
-  content:"";
-  position:absolute;
-  inset:14px;
-  border-radius: calc(var(--radius) - 12px);
-  border: 1px solid color-mix(in oklab, var(--gold) 74%, white);
-  pointer-events:none;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
-}
-
-.frame2{
-  position:absolute;
-  inset:26px;
-  border-radius: calc(var(--radius) - 22px);
-  border: 1px solid rgba(232, 227, 215, .75);
-  pointer-events:none;
-}
-
+/* Botânicas */
 .bot{
   position:absolute;
   pointer-events:none;
-  opacity:.90;
+  opacity:1;
   filter: saturate(.95) contrast(.98);
 }
-.bot.tl{ top:-18px; left:-18px; width:min(340px, 55vw); }
-.bot.tr{ top:-22px; right:-18px; width:min(320px, 52vw); }
-.bot.bl{ bottom:-18px; left:-22px; width:min(360px, 58vw); }
-.bot.br{ bottom:-18px; right:-22px; width:min(360px, 58vw); }
 .bot img{
   width:100%;
   height:auto;
   display:block;
   mix-blend-mode:multiply;
-  opacity:.55;
+  opacity:.58;
 }
 
+.bot.tl{ top:-18px; left:-18px; width:min(360px, 58vw); }
+.bot.tr{ top:-18px; right:-18px; width:min(340px, 55vw); }
+.bot.bl{ bottom:-18px; left:-18px; width:min(380px, 60vw); }
+.bot.br{ bottom:-18px; right:-18px; width:min(380px, 60vw); }
+
+/* Tipografia premium */
 h1,h2,h3,.serif{
   font-family:"Playfair Display", ui-serif, Georgia, "Times New Roman", Times, serif;
 }
@@ -130,9 +125,9 @@ h1,h2,h3,.serif{
   place-items:center;
   border: 1px solid rgba(232,227,215,.9);
   background: rgba(255,255,255,.75);
-  box-shadow: var(--shadow2);
   letter-spacing:.5px;
   font-weight:700;
+
   color: transparent;
   background-image:
     linear-gradient(120deg, var(--gold) 0%, var(--gold2) 35%, var(--gold) 70%);
@@ -144,20 +139,23 @@ h1,h2,h3,.serif{
   margin:0;
   color: var(--muted);
   font-size: 14px;
-  letter-spacing:.4px;
+  letter-spacing:.35px;
 }
+
 .names{
   margin: 10px 0 8px;
   font-size: clamp(30px, 5.6vw, 48px);
   line-height: 1.04;
   color: color-mix(in oklab, var(--green) 88%, black);
 }
+
 .invite-line{
   margin: 0;
   color: var(--muted);
   font-size: 15px;
   line-height: 1.45;
 }
+
 .gold-rule{
   width: 140px;
   height: 2px;
@@ -167,11 +165,13 @@ h1,h2,h3,.serif{
   opacity: .95;
 }
 
+/* Blocos de informações */
 .details{
   margin-top: 18px;
   display:grid;
   gap:12px;
 }
+
 .detail-card{
   background: rgba(255,255,255,.78);
   border: 1px solid rgba(232,227,215,.85);
@@ -179,22 +179,26 @@ h1,h2,h3,.serif{
   padding: 14px 16px;
   backdrop-filter: blur(2px);
 }
+
 .label{
   color: var(--muted);
   font-size: 12.5px;
   letter-spacing:.3px;
   margin-bottom: 4px;
 }
+
 .value{
   font-size: 16px;
   line-height: 1.5;
 }
 
+/* Botões */
 .cta{
   margin-top: 18px;
   display:grid;
   gap: 10px;
 }
+
 .btn{
   min-height: 58px;
   display:flex;
@@ -205,28 +209,28 @@ h1,h2,h3,.serif{
   font-weight: 700;
   text-decoration:none;
   letter-spacing:.2px;
-  transition: transform .06s ease, filter .12s ease, box-shadow .12s ease;
+  transition: transform .06s ease, filter .12s ease;
 }
 
 .btn--primary{
   color:#fff;
   background: linear-gradient(180deg, color-mix(in oklab, var(--green) 92%, white), var(--green));
   border: 1px solid color-mix(in oklab, var(--green) 75%, black);
-  box-shadow: 0 10px 20px rgba(15,79,61,.16);
 }
+
 .btn--secondary{
   color: var(--green);
   background: rgba(255,255,255,.88);
   border: 2px solid color-mix(in oklab, var(--green) 88%, white);
 }
 
-.btn:hover{ filter: brightness(.99); }
 .btn:active{ transform: translateY(1px); }
 .btn:focus-visible{
   outline: 3px solid color-mix(in oklab, var(--gold) 60%, white);
   outline-offset: 2px;
 }
 
+/* Ações inline (copiar/maps) */
 .actions{
   display:flex;
   gap:10px;
@@ -242,7 +246,6 @@ h1,h2,h3,.serif{
   border: 1px solid rgba(232,227,215,.95);
   background: rgba(255,255,255,.9);
   color: var(--green);
-  box-shadow: 0 6px 14px rgba(0,0,0,.05);
   text-decoration: none;
 }
 .chip:focus-visible{
@@ -259,6 +262,7 @@ h1,h2,h3,.serif{
   line-height: 1.6;
   word-break: break-word;
 }
+
 .copylinks a{ color: var(--green); }
 
 .copy-feedback{
@@ -275,5 +279,5 @@ h1,h2,h3,.serif{
 
 @media (max-width: 420px){
   .invite::before{ inset: 12px; }
-  .frame2{ inset: 22px; }
+  .invite .frame2{ inset: 22px; }
 }
