@@ -72,61 +72,67 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="invite-wrapper" aria-labelledby="titulo-convite">
-      <section class="invite-card" role="document">
-        <header class="hero">
-          <div class="monogram-wrap" aria-hidden="true">
-            <span class="ornament ornament-left">❦</span>
-            <p class="monogram">A&amp;N</p>
-            <span class="ornament ornament-right">❦</span>
-          </div>
-          <h1 id="titulo-convite">André e Nathália</h1>
-          <p class="subtitle">convidam para a celebração de seu casamento.</p>
+    <main class="page" aria-labelledby="titulo-convite">
+      <section class="invite" role="document">
+        <div class="frame2" aria-hidden="true"></div>
+
+        <div class="bot tl" aria-hidden="true"><img src="botanical-top-left.png" alt="" /></div>
+        <div class="bot tr" aria-hidden="true"><img src="botanical-top-right.png" alt="" /></div>
+        <div class="bot bl" aria-hidden="true"><img src="botanical-bottom-left.png" alt="" /></div>
+        <div class="bot br" aria-hidden="true"><img src="botanical-bottom-right.png" alt="" /></div>
+
+        <header class="head">
+          <p class="monogram">A&amp;N</p>
+          <h1 id="titulo-convite" class="names">André e Nathália</h1>
+          <p class="invite-line">convidam para a celebração de seu casamento.</p>
+          <div class="gold-rule" aria-hidden="true"></div>
         </header>
 
-        <section class="info-block" aria-label="Detalhes da cerimônia">
-          <h2 class="section-title">Cerimônia</h2>
-          <p class="section-text">03 de maio de 2026, às 16h</p>
+        <section class="details" aria-label="Detalhes da cerimônia">
+          <article class="detail-card">
+            <p class="label">Cerimônia</p>
+            <p class="value">03 de maio de 2026, às 16h</p>
+          </article>
+
+          <article class="detail-card" aria-label="Local da cerimônia">
+            <p class="label">Local</p>
+            <p class="value" id="wedding-address">
+              Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210
+            </p>
+            <div class="actions">
+              <button
+                class="chip copy-btn"
+                type="button"
+                data-copy="Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210"
+                data-success="Endereço copiado com sucesso."
+              >
+                Copiar endereço
+              </button>
+              <a
+                class="chip"
+                href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20-%20SP%20-%2009840-210"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Abrir no Maps</a
+              >
+            </div>
+          </article>
         </section>
 
-        <section class="info-block" aria-label="Local da cerimônia">
-          <h2 class="section-title">Local</h2>
-          <p class="section-text" id="wedding-address">
-            Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210
-          </p>
-          <div class="location-actions">
-            <button
-              class="copy-btn"
-              type="button"
-              data-copy="Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210"
-              data-success="Endereço copiado com sucesso."
-            >
-              Copiar endereço
-            </button>
-            <a
-              class="map-link"
-              href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20-%20SP%20-%2009840-210"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Abrir no Maps</a
-            >
-          </div>
-        </section>
+        <p class="invite-line" style="margin-top: 14px; text-align: center">
+          Após a cerimônia, os convidados serão recepcionados.
+        </p>
 
-        <p class="closing-line">Após a cerimônia, os convidados serão recepcionados.</p>
-
-        <p class="section-ornament" aria-hidden="true">❦</p>
-
-        <section class="actions" aria-label="Ações principais">
+        <section class="cta" aria-label="Ações principais">
           <a
-            class="btn btn-primary"
+            class="btn btn--primary"
             href="https://noivos.casar.com/andre-nathalia-03052026"
             target="_blank"
             rel="noopener noreferrer"
             >Acessar informações do casamento</a
           >
           <a
-            class="btn btn-secondary"
+            class="btn btn--secondary"
             href="https://andrenathalia03052026.site/"
             target="_blank"
             rel="noopener noreferrer"
@@ -134,8 +140,7 @@
           >
         </section>
 
-        <section class="links-text" aria-label="Links em texto para copiar">
-          <h2>Links para copiar</h2>
+        <section class="copylinks" aria-label="Links em texto para copiar">
           <p>
             Informações do casamento:<br />
             <a href="https://noivos.casar.com/andre-nathalia-03052026"
@@ -143,7 +148,7 @@
             >
           </p>
           <button
-            class="copy-btn"
+            class="chip copy-btn"
             type="button"
             data-copy="https://noivos.casar.com/andre-nathalia-03052026"
             data-success="Link de informações copiado com sucesso."
@@ -155,7 +160,7 @@
             <a href="https://andrenathalia03052026.site/">https://andrenathalia03052026.site/</a>
           </p>
           <button
-            class="copy-btn"
+            class="chip copy-btn"
             type="button"
             data-copy="https://andrenathalia03052026.site/"
             data-success="Link da lista copiado com sucesso."
@@ -165,7 +170,7 @@
           <p id="copy-feedback" class="copy-feedback" aria-live="polite"></p>
         </section>
 
-        <footer class="footer">Com carinho, André &amp; Nathália</footer>
+        <footer class="foot">Com carinho, André &amp; Nathália</footer>
       </section>
     </main>
 
