@@ -31,6 +31,28 @@ body {
   display: grid;
   place-items: center;
   padding: clamp(1rem, 4vw, 2.25rem);
+  position: relative;
+}
+
+.invite-wrapper::before,
+.invite-wrapper::after {
+  content: "";
+  position: absolute;
+  width: clamp(88px, 16vw, 150px);
+  height: clamp(88px, 16vw, 150px);
+  pointer-events: none;
+  opacity: 0.28;
+  background: radial-gradient(circle at 30% 35%, rgba(201, 179, 126, 0.38), transparent 58%);
+}
+
+.invite-wrapper::before {
+  top: clamp(10px, 2vw, 22px);
+  left: clamp(10px, 2vw, 22px);
+}
+
+.invite-wrapper::after {
+  right: clamp(10px, 2vw, 22px);
+  bottom: clamp(10px, 2vw, 22px);
 }
 
 .invite-card {
@@ -144,7 +166,7 @@ h1 {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 52px;
+  min-height: 56px;
   text-align: center;
   text-decoration: none;
   padding: 0.95rem 1rem;
@@ -221,7 +243,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  min-height: 56px;
   margin: 0;
   border: 1px solid var(--gold-soft);
   border-radius: 12px;
@@ -246,7 +268,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  min-height: 56px;
   padding: 0.62rem 0.95rem;
   border: 1px solid var(--border-soft);
   border-radius: 12px;
@@ -313,6 +335,11 @@ h1 {
 
   .btn {
     width: 100%;
+  }
+
+  .invite-wrapper::before,
+  .invite-wrapper::after {
+    opacity: 0.2;
   }
 }
 

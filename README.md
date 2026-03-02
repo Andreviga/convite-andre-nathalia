@@ -1,74 +1,49 @@
 # Convite digital — André & Nathália
 
-Projeto estático (HTML/CSS/JS) pronto para publicar no GitHub Pages com domínio personalizado `convite.andrenathalia03052026.site`.
+Projeto estático premium (HTML/CSS/JS) pronto para publicação no GitHub Pages com o subdomínio `convite.andrenathalia03052026.site`.
 
-## Estrutura do projeto
+## Arquivos na raiz
 
 - `index.html`
 - `styles.css`
 - `script.js`
-- `preview.jpg`
-- `robots.txt`
-- `sitemap.xml`
+- `preview.jpg` (1200x630)
+- `README.md`
 - `CNAME`
+- `robots.txt` (opcional para SEO)
 
-## Publicação no GitHub Pages (passo a passo)
+## Publicação no GitHub Pages
 
-1. **Criar repositório no GitHub**
-   - Exemplo: `convite-andre-nathalia`.
+1. Abra **Settings > Pages** no repositório.
+2. Em **Build and deployment**, escolha:
+   - **Source:** `Deploy from branch`
+   - **Branch:** `main`
+   - **Folder:** `/(root)`
+3. Em **Custom domain**, informe:
+   - `convite.andrenathalia03052026.site`
+4. Salve (o projeto já tem arquivo `CNAME`).
+5. Após propagação do DNS, habilite **Enforce HTTPS**.
 
-2. **Subir os arquivos do projeto**
-   - Faça commit de `index.html`, `styles.css`, `script.js`, `preview.jpg`, `robots.txt`, `sitemap.xml`, `CNAME` e `README.md`.
+## DNS (provedor do domínio)
 
-3. **Ativar o GitHub Pages**
-   - Acesse `Settings` > `Pages`.
-   - Em `Build and deployment`, escolha:
-     - **Source:** `Deploy from branch`
-     - **Branch:** `main`
-     - **Folder:** `/(root)`
+Criar o seguinte registro:
 
-4. **Configurar domínio customizado**
-   - No campo `Custom domain`, informe: `convite.andrenathalia03052026.site`.
-   - Salve. O repositório já contém o arquivo `CNAME`, o que ajuda a manter a configuração do domínio versionada.
+- **Tipo:** `CNAME`
+- **Host/Nome:** `convite`
+- **Destino/Valor:** `<usuario>.github.io`
 
-5. **Configurar DNS no provedor do domínio**
-   - **Subdomínio convite**
-     - Tipo: `CNAME`
-     - Host/Nome: `convite`
-     - Destino/Valor: `<usuario>.github.io`
-   - **Apex (@), se necessário**
-     - `A` → `185.199.108.153`
-     - `A` → `185.199.109.153`
-     - `A` → `185.199.110.153`
-     - `A` → `185.199.111.153`
+## Preview no WhatsApp
 
-6. **Ativar HTTPS**
-   - Após propagação do DNS, habilite `Enforce HTTPS` em `Settings` > `Pages`.
+- URL final esperada: `https://convite.andrenathalia03052026.site/`
+- OG image configurada: `https://convite.andrenathalia03052026.site/preview.jpg`
+- Se o preview não atualizar na hora, reenvie com cache-buster:
+  - `https://convite.andrenathalia03052026.site/?v=2`
 
-7. **Testar preview no WhatsApp**
-   - Envie o link `https://convite.andrenathalia03052026.site/` no WhatsApp.
-   - Verifique se aparece o card com título/descrição/imagem.
-   - Se não atualizar, reenvie com cache-buster, por exemplo:
-     - `https://convite.andrenathalia03052026.site/?v=2`
-
-## Observações
-
-- O `og:image` no HTML já aponta para:
-  - `https://convite.andrenathalia03052026.site/preview.jpg`
-- O preview só aparece corretamente após o site estar publicado nesse domínio.
-
-## Comandos Git para publicar no GitHub
-
-Após criar o repositório remoto no GitHub, execute no terminal:
+## Comandos Git (referência rápida)
 
 ```bash
-git init
 git add .
-git commit -m "Publica convite digital"
-git branch -M main
-git remote add origin https://github.com/<usuario>/<repositorio>.git
-git push -u origin main
+git commit -m "Upgrade convite premium + OG preview + GitHub Pages"
+git push origin main
 ```
-
-> Se o repositório já estiver inicializado, pule `git init` e ajuste apenas `remote`/`push`.
 
