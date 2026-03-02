@@ -9,6 +9,8 @@ Projeto estático (HTML/CSS/JS) pronto para publicar no GitHub Pages com domíni
 - `script.js`
 - `preview.jpg`
 - `robots.txt`
+- `sitemap.xml`
+- `CNAME`
 
 ## Publicação no GitHub Pages (passo a passo)
 
@@ -16,7 +18,7 @@ Projeto estático (HTML/CSS/JS) pronto para publicar no GitHub Pages com domíni
    - Exemplo: `convite-andre-nathalia`.
 
 2. **Subir os arquivos do projeto**
-   - Faça commit de `index.html`, `styles.css`, `script.js`, `preview.jpg`, `robots.txt` e `README.md`.
+   - Faça commit de `index.html`, `styles.css`, `script.js`, `preview.jpg`, `robots.txt`, `sitemap.xml`, `CNAME` e `README.md`.
 
 3. **Ativar o GitHub Pages**
    - Acesse `Settings` > `Pages`.
@@ -27,7 +29,7 @@ Projeto estático (HTML/CSS/JS) pronto para publicar no GitHub Pages com domíni
 
 4. **Configurar domínio customizado**
    - No campo `Custom domain`, informe: `convite.andrenathalia03052026.site`.
-   - Salve. O GitHub criará (ou atualizará) o arquivo `CNAME` automaticamente.
+   - Salve. O repositório já contém o arquivo `CNAME`, o que ajuda a manter a configuração do domínio versionada.
 
 5. **Configurar DNS no provedor do domínio**
    - **Subdomínio convite**

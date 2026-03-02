@@ -1,12 +1,22 @@
 (function () {
   var buttons = document.querySelectorAll('.copy-btn');
   var feedback = document.getElementById('copy-feedback');
+  var feedbackTimeoutId = null;
+
+  if (!buttons.length) return;
 
   function showFeedback(message) {
     if (!feedback) return;
+
+    if (feedbackTimeoutId) {
+      window.clearTimeout(feedbackTimeoutId);
+    }
+
     feedback.textContent = message;
-    window.setTimeout(function () {
+
+    feedbackTimeoutId = window.setTimeout(function () {
       feedback.textContent = '';
+      feedbackTimeoutId = null;
     }, 2500);
   }
 
@@ -20,8 +30,12 @@
     input.select();
 
     try {
-      document.execCommand('copy');
-      showFeedback('Link copiado com sucesso.');
+      var copied = document.execCommand('copy');
+      if (copied) {
+        showFeedback('Link copiado com sucesso.');
+      } else {
+        showFeedback('Não foi possível copiar automaticamente. Copie o link em texto abaixo.');
+      }
     } catch (err) {
       showFeedback('Não foi possível copiar automaticamente. Copie o link em texto abaixo.');
     }
@@ -34,7 +48,7 @@
       var link = button.getAttribute('data-copy');
       if (!link) return;
 
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
         navigator.clipboard
           .writeText(link)
           .then(function () {

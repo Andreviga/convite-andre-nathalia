@@ -29,6 +29,7 @@ body {
 .invite-card {
   width: min(720px, 100%);
   background: var(--card-bg);
+  border: 1px solid rgba(201, 179, 126, 0.38);
   border: 1px solid color-mix(in srgb, var(--gold-soft) 38%, transparent);
   border-radius: 22px;
   padding: clamp(1rem, 4vw, 2rem);
@@ -66,7 +67,9 @@ h1 {
 }
 
 .details {
+  background: #f8f7f3;
   background: color-mix(in srgb, var(--off-white) 65%, #ffffff);
+  border: 1px solid rgba(201, 179, 126, 0.32);
   border: 1px solid color-mix(in srgb, var(--gold-soft) 32%, transparent);
   border-radius: 14px;
   padding: 1rem;
@@ -112,6 +115,10 @@ h1 {
   transform: translateY(-1px);
 }
 
+.btn:active {
+  transform: translateY(0);
+}
+
 .btn-primary {
   background: var(--emerald-dark);
   color: #ffffff;
@@ -125,6 +132,7 @@ h1 {
 }
 
 .links-text {
+  border-top: 1px dashed rgba(201, 179, 126, 0.55);
   border-top: 1px dashed color-mix(in srgb, var(--gold-soft) 55%, transparent);
   padding-top: 1rem;
 }
@@ -153,12 +161,21 @@ h1 {
   margin: 0.4rem 0 0.85rem;
   border: 1px solid var(--gold-soft);
   border-radius: 10px;
+  background: #f8f7f3;
   background: color-mix(in srgb, var(--off-white) 65%, #ffffff);
   color: var(--emerald-dark);
   font-size: 0.9rem;
   font-weight: 700;
   padding: 0.55rem 0.8rem;
   cursor: pointer;
+}
+
+.copy-btn:hover {
+  filter: brightness(0.98);
+}
+
+.copy-btn:active {
+  transform: translateY(1px);
 }
 
 .copy-feedback {
@@ -183,5 +200,18 @@ h1 {
 
   .btn {
     padding: 0.95rem 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .copy-btn {
+    transition: none;
+  }
+
+  .btn:hover,
+  .btn:active,
+  .copy-btn:active {
+    transform: none;
   }
 }
