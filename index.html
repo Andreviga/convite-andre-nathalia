@@ -18,13 +18,51 @@
     <!-- Importação de Fontes Elegantes do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
     
     <!-- Ícones (Phosphor Icons) -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web">
+        document.querySelectorAll(".copyLinkBtn").forEach(btn => {
+            btn.addEventListener("click", async function() {
+                const link = this.getAttribute("data-link");
+                try {
+                    await navigator.clipboard.writeText(link);
+                    const originalText = this.innerText;
+                    this.innerText = "COPIADO ✓";
+                    this.classList.add("bg-wedding-gold", "text-white");
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.classList.remove("bg-wedding-gold", "text-white");
+                    }, 2000);
+                } catch (err) {
+                    console.error("Falha ao copiar link: ", err);
+                }
+            });
+        });
+
+    </script>
 
     <!-- Tailwind CSS para Estilização -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+        document.querySelectorAll(".copyLinkBtn").forEach(btn => {
+            btn.addEventListener("click", async function() {
+                const link = this.getAttribute("data-link");
+                try {
+                    await navigator.clipboard.writeText(link);
+                    const originalText = this.innerText;
+                    this.innerText = "COPIADO ✓";
+                    this.classList.add("bg-wedding-gold", "text-white");
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.classList.remove("bg-wedding-gold", "text-white");
+                    }, 2000);
+                } catch (err) {
+                    console.error("Falha ao copiar link: ", err);
+                }
+            });
+        });
+
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -50,6 +88,25 @@
                 }
             }
         }
+    
+        document.querySelectorAll(".copyLinkBtn").forEach(btn => {
+            btn.addEventListener("click", async function() {
+                const link = this.getAttribute("data-link");
+                try {
+                    await navigator.clipboard.writeText(link);
+                    const originalText = this.innerText;
+                    this.innerText = "COPIADO ✓";
+                    this.classList.add("bg-wedding-gold", "text-white");
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.classList.remove("bg-wedding-gold", "text-white");
+                    }, 2000);
+                } catch (err) {
+                    console.error("Falha ao copiar link: ", err);
+                }
+            });
+        });
+
     </script>
 
     <style>
@@ -144,24 +201,23 @@
                     <path d="M105,50 Q110,45 105,40 Q100,45 105,50" fill="currentColor"/>
                     <path d="M50,15 Q45,10 40,15 Q45,20 50,15" fill="currentColor"/>
                 </svg>
-                <h1 class="font-script text-6xl text-wedding-text tracking-wider relative z-10 pt-4">A&amp;N</h1>
+                <h1 class="font-serif italic text-6xl text-wedding-text tracking-wider relative z-10 pt-4">A&amp;N</h1>
             </div>
 
             <!-- Introdução -->
             <div class="flex items-center justify-center gap-4 mb-8">
                 <div class="h-[1px] w-12 bg-wedding-gold"></div>
-                <p class="font-serif text-lg md:text-xl text-wedding-text italic tracking-wide">Com a bênção de Deus,</p>
                 <div class="h-[1px] w-12 bg-wedding-gold"></div>
             </div>
 
             <!-- Nomes -->
-            <h2 class="font-script text-6xl sm:text-7xl md:text-8xl text-wedding-green-dark mb-6 tracking-normal">
-                André e Nathália
+            <h2 class="font-serif italic text-6xl sm:text-7xl md:text-8xl text-wedding-green-dark mb-6 tracking-normal">
+                André &amp; Nathália
             </h2>
 
             <!-- Convite texto -->
-            <p class="font-sans text-xs sm:text-sm uppercase tracking-[0.2em] text-wedding-text mb-6">
-                Convidam para a celebração de seu casamento.
+            <p class="font-sans text-base sm:text-lg  tracking-[0.2em] text-wedding-text mb-6">
+                convidam para a celebração de seu casamento.
             </p>
 
             <!-- Ornamento Divisor -->
@@ -178,16 +234,16 @@
                 <!-- Coluna Esquerda: Data e Hora -->
                 <div class="flex-1 flex flex-col items-center text-center px-4 w-full">
                     <i class="ph ph-calendar-blank text-3xl text-wedding-gold mb-3"></i>
-                    <p class="font-sans text-[15px] sm:text-[17px] tracking-[0.1em] text-wedding-text uppercase mb-4 whitespace-nowrap">
-                        03 de Maio de 2026
+                    <p class="font-sans text-base sm:text-lg tracking-[0.1em] text-wedding-text uppercase mb-4 whitespace-nowrap">
+                        03 de maio de 2026
                     </p>
                     <div class="flex items-center gap-2 text-wedding-gold mb-2">
                         <svg width="40" height="10" viewBox="0 0 40 10"><path d="M0,5 Q20,-5 40,5" fill="none" stroke="currentColor" stroke-width="1"/></svg>
                     </div>
                     <div class="flex items-center gap-2">
                         <i class="ph ph-clock text-2xl text-wedding-gold"></i>
-                        <p class="font-sans text-[15px] sm:text-[17px] tracking-widest text-wedding-text uppercase">
-                            16:00 H
+                        <p class="font-sans text-base sm:text-lg tracking-widest text-wedding-text uppercase">
+                            16h
                         </p>
                     </div>
                 </div>
@@ -200,16 +256,8 @@
                 <!-- Coluna Direita: Localização -->
                 <div class="flex-1 flex flex-col items-center text-center px-4 w-full">
                     <i class="ph ph-map-pin text-3xl text-wedding-gold mb-3"></i>
-                    <p class="font-serif text-[17px] sm:text-[19px] text-wedding-text mb-2 tracking-wide font-medium">
-                        Rua das Araribás, 25
-                    </p>
-                    <p class="font-sans text-xs sm:text-[13px] tracking-widest text-wedding-text uppercase mb-2">
-                        São Bernardo do Campo — SP
-                    </p>
-                    <p class="font-sans text-xs sm:text-[13px] tracking-widest text-wedding-text uppercase">
-                        CEP 09840-210
-                    </p>
-                <div class="flex gap-3 justify-center mt-5"><a href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20SP%2009840-210" target="_blank" rel="noopener" class="text-[11px] sm:text-xs font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300">Abrir no Maps</a><button id="copyAddress" class="text-[11px] sm:text-xs font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300">Copiar Endereço</button></div></div>
+                    <p class="font-serif text-[17px] sm:text-[19px] text-wedding-text mb-2 tracking-wide font-medium leading-relaxed">Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210</p>
+                <div class="flex gap-3 justify-center mt-5"><a href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20SP%2009840-210" target="_blank" rel="noopener" class="text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">Abrir no Maps</a><button id="copyAddress" class="text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">Copiar Endereço</button></div></div>
             </div>
 
             <!-- Aviso Pós-Cerimónia -->
@@ -218,7 +266,7 @@
                     <path d="M0,10 Q10,0 20,10 T40,10" fill="none" stroke="currentColor" stroke-width="1.5"/>
                     <path d="M15,10 Q10,5 5,10 Q10,15 15,10" fill="currentColor"/>
                 </svg>
-                <p class="font-sans text-[10px] sm:text-xs uppercase tracking-[0.15em] text-wedding-text text-center max-w-[400px]">
+                <p class="font-sans text-[10px] sm:text-base uppercase tracking-[0.15em] text-wedding-text text-center max-w-[400px]">
                     Após a cerimônia, os convidados serão recepcionados no mesmo local
                 </p>
                 <svg width="40" height="20" viewBox="0 0 40 20" class="text-wedding-green opacity-60 scale-x-[-1]">
@@ -235,20 +283,35 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <!-- Botão 1: Informações (Verde) -->
-                    <a href="https://noivos.casar.com/andre-nathalia-03052026" target="_blank" rel="noopener" class="group relative flex flex-col items-center justify-center bg-wedding-green hover:bg-wedding-green-dark transition-all duration-300 text-white rounded-xl py-6 px-4 shadow-button border border-wedding-green/20 min-h-[100px]">
+                    <a href="https://noivos.casar.com/andre-nathalia-03052026" target="_blank" rel="noopener" class="group relative flex flex-col items-center justify-center bg-wedding-green hover:bg-wedding-green-dark transition-all duration-300 text-white rounded-xl py-6 px-4 shadow-button border border-wedding-green/20 min-h-[100px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">
                         <i class="ph ph-info text-2xl text-wedding-gold-light mb-2 opacity-80 group-hover:scale-110 transition-transform"></i>
-                        <span class="font-serif uppercase tracking-widest text-xs sm:text-[13px] text-center">
+                        <span class="font-serif uppercase tracking-widest text-base text-center">
                             Acessar Informações<br>do Casamento
                         </span>
                     </a>
 
                     <!-- Botão 2: Lista de Presentes (Branco) -->
-                    <a href="https://andrenathalia03052026.site/" target="_blank" rel="noopener" class="group relative flex flex-col items-center justify-center bg-wedding-card hover:bg-[#faf9f5] transition-all duration-300 text-wedding-text rounded-xl py-6 px-4 shadow-elegant border border-wedding-gold/40 min-h-[100px]">
+                    <a href="https://andrenathalia03052026.site/" target="_blank" rel="noopener" class="group relative flex flex-col items-center justify-center bg-wedding-card hover:bg-[#faf9f5] transition-all duration-300 text-wedding-text rounded-xl py-6 px-4 shadow-elegant border border-wedding-gold/40 min-h-[100px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">
                         <i class="ph ph-gift text-2xl text-wedding-gold mb-2 group-hover:scale-110 transition-transform"></i>
-                        <span class="font-serif uppercase tracking-widest text-xs sm:text-[13px] text-center">
+                        <span class="font-serif uppercase tracking-widest text-base text-center">
                             Acessar Lista de<br>Presentes
                         </span>
                     </a>
+                </div>
+            </div>
+
+            
+            <!-- Links por escrito para copiar/colar -->
+            <div class="mt-8 text-center px-4">
+                <div class="mb-6">
+                    <p class="font-sans text-base font-semibold text-wedding-green/70 uppercase tracking-widest mb-2">Link Informações do Casamento</p>
+                    <p class="font-serif text-sm sm:text-base text-wedding-text break-all mb-3"><a href="https://noivos.casar.com/andre-nathalia-03052026" target="_blank" rel="noopener" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">https://noivos.casar.com/andre-nathalia-03052026</a></p>
+                    <button class="copyLinkBtn text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2" data-link="https://noivos.casar.com/andre-nathalia-03052026">Copiar Link</button>
+                </div>
+                <div>
+                    <p class="font-sans text-base font-semibold text-wedding-green/70 uppercase tracking-widest mb-2">Link Lista de Presentes</p>
+                    <p class="font-serif text-sm sm:text-base text-wedding-text break-all mb-3"><a href="https://andrenathalia03052026.site/" target="_blank" rel="noopener" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">https://andrenathalia03052026.site/</a></p>
+                    <button class="copyLinkBtn text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2" data-link="https://andrenathalia03052026.site/">Copiar Link</button>
                 </div>
             </div>
 
@@ -269,7 +332,7 @@
                 <p class="font-serif italic text-lg text-wedding-text mb-1">
                     Com carinho,
                 </p>
-                <p class="font-sans text-xs sm:text-sm uppercase tracking-[0.2em] text-wedding-green-dark font-medium pb-4">
+                <p class="font-sans text-base sm:text-lg uppercase tracking-[0.2em] text-wedding-green-dark font-medium pb-4">
                     André & Nathália
                 </p>
             </div>
@@ -295,6 +358,25 @@
                 console.error("Falha ao copiar endereço: ", err);
             }
         });
+    
+        document.querySelectorAll(".copyLinkBtn").forEach(btn => {
+            btn.addEventListener("click", async function() {
+                const link = this.getAttribute("data-link");
+                try {
+                    await navigator.clipboard.writeText(link);
+                    const originalText = this.innerText;
+                    this.innerText = "COPIADO ✓";
+                    this.classList.add("bg-wedding-gold", "text-white");
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.classList.remove("bg-wedding-gold", "text-white");
+                    }, 2000);
+                } catch (err) {
+                    console.error("Falha ao copiar link: ", err);
+                }
+            });
+        });
+
     </script>
 </body>
 </html>
