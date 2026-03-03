@@ -9,8 +9,11 @@
   --gold:#C9B37E;
   --gold2:#E7D6A6;
 
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
   --radius:26px;
-  --shadow: 0 26px 70px rgba(17, 24, 19, .10);
+  --shadow: 0 10px 24px rgba(17, 24, 19, .05);
 }
 
 *{ box-sizing:border-box; }
@@ -18,11 +21,8 @@ html,body{ height:100%; }
 
 body{
   margin:0;
-  font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background:
-    radial-gradient(1200px 700px at 50% 0%, #ffffff 0%, var(--bg) 60%),
-    radial-gradient(900px 500px at 15% 10%, rgba(201,179,126,.10) 0%, transparent 55%),
-    radial-gradient(900px 520px at 85% 15%, rgba(15,79,61,.08) 0%, transparent 55%);
+  font-family: var(--font-sans);
+  background: var(--bg);
   color:#1f2a24;
 }
 
@@ -39,9 +39,7 @@ body{
   width:min(820px, 100%);
   padding: clamp(18px, 4vw, 40px);
   border-radius: var(--radius);
-  background:
-    radial-gradient(900px 520px at 50% 18%, rgba(255,255,255,.88) 0%, rgba(255,255,255,0) 62%),
-    linear-gradient(180deg, #fff, var(--paper));
+  background: linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
   border: 1px solid color-mix(in oklab, var(--border) 88%, white);
   box-shadow: var(--shadow);
   overflow:hidden;
@@ -76,7 +74,7 @@ body{
     repeating-linear-gradient(0deg, rgba(0,0,0,.018), rgba(0,0,0,.018) 1px, transparent 1px, transparent 6px),
     repeating-linear-gradient(90deg, rgba(0,0,0,.012), rgba(0,0,0,.012) 1px, transparent 1px, transparent 7px);
   mix-blend-mode: multiply;
-  opacity:.12;
+  opacity:.10;
 }
 
 /* Botânicas */
@@ -90,7 +88,7 @@ body{
   height:auto;
   display:block;
   mix-blend-mode:multiply;
-  opacity:.74;
+  opacity:.55;
 }
 
 .bot.tl{ top:-18px; left:-18px; width:min(360px, 58vw); }
@@ -117,16 +115,22 @@ body{
 }
 
 .blessing{ margin:0; color:var(--muted); font-size:14px; letter-spacing:.35px; }
-
 .names{
   margin: 10px 0 8px;
-  font-family:"Playfair Display", ui-serif, Georgia, "Times New Roman", Times, serif;
+  font-family: var(--font-serif);
   font-size: clamp(30px, 5.6vw, 48px);
   line-height: 1.04;
   color: color-mix(in oklab, var(--green) 88%, black);
 }
 
-.amp{ color:var(--gold); padding:0 .2em; font-weight:700; }
+.amp,
+.logoAmp{
+  font-style: italic;
+  color:#C4A96A;
+  font-weight:400;
+}
+
+.amp{ padding:0 .2em; }
 
 .invite-line{ margin:0; color:var(--muted); font-size:15px; line-height:1.45; }
 
@@ -141,15 +145,15 @@ body{
 .details{ margin-top:18px; display:grid; gap:12px; }
 
 .detail-card{
-  background: rgba(255,255,255,.78);
+  background: rgba(255,255,255,.82);
   border: 1px solid rgba(232,227,215,.85);
   border-radius:18px;
   padding:14px 16px;
-  backdrop-filter: blur(2px);
+  
 }
 
-.label{ color:var(--muted); font-size:12.5px; letter-spacing:.3px; margin-bottom:4px; }
-.value{ font-size:16px; line-height:1.5; }
+.label{ font-family: var(--font-sans); color:var(--muted); font-size:12.5px; letter-spacing:.3px; margin-bottom:4px; }
+.value{ font-family: var(--font-sans); font-size:16px; line-height:1.5; }
 
 .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
 
@@ -187,7 +191,7 @@ body{
   color:#fff;
   background: linear-gradient(180deg, color-mix(in oklab, var(--green) 92%, white), var(--green));
   border: 1px solid color-mix(in oklab, var(--green) 75%, black);
-  box-shadow: 0 10px 22px rgba(15,79,61,.14);
+  
 }
 .btn--secondary{
   color: var(--green);
@@ -202,6 +206,7 @@ body{
 
 /* Links copiáveis */
 .copylinks{
+  font-family: var(--font-sans);
   margin-top:10px;
   padding-top:12px;
   border-top: 1px solid rgba(232,227,215,.9);
@@ -227,12 +232,18 @@ body{
 .foot{ text-align:center; color:var(--muted); font-size:12px; margin-top:16px; }
 
 @media (max-width: 420px){
-  .invite::before{ inset:12px; }
-  .frame2{ inset:22px; }
+  .invite{ padding:18px; }
+  .invite::before{ inset:10px; }
+  .frame2{ inset:18px; }
+  .logoMark{ margin-bottom:8px; }
+  .logoName{ margin-bottom:10px; font-size: clamp(30px, 8.2vw, 38px); }
+  .details{ gap:10px; margin-top:12px; }
+  .cta{ gap:10px; margin-top:12px; }
+  .btn{ min-height:56px; }
   .copyrow{ flex-direction:column; align-items:stretch; }
 }
 .logoMark{
-  font-family: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif);
   text-align:center;
   font-size: 22px;
   letter-spacing: .28em;
@@ -241,7 +252,7 @@ body{
 }
 
 .logoName{
-  font-family: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif);
   text-align:center;
   font-size: clamp(40px, 6.2vw, 74px);
   line-height: 1.02;
@@ -251,7 +262,8 @@ body{
 }
 
 .logoAmp{
-  color: var(--gold);
-  font-weight: 700;
+  color:#C4A96A;
+  font-style: italic;
+  font-weight:400;
   padding: 0 .18em;
 }
