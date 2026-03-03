@@ -1,18 +1,26 @@
+/* ══════════════════════════════════════════════
+   André & Nathália — Premium Wedding Invite
+   ══════════════════════════════════════════════ */
+
 :root {
-  --bg: #f7f6f2;
+  --bg: #f4f3ef;
   --paper: #fbfaf7;
-  --border: #e8e3d7;
+  --border: #e2ddd0;
   --green: #0f4f3d;
+  --green-light: #1a6b53;
   --muted: #6f8475;
-  --gold: #c9b37e;
-  --gold2: #e7d6a6;
+  --gold: #b8a06a;
+  --gold2: #d4c48e;
+  --gold-shine: #e8dbb4;
   --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --radius: 26px;
+  --radius: 28px;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
@@ -21,79 +29,95 @@ body {
 }
 
 body {
-  margin: 0;
   font-family: var(--font-sans);
   background:
-    radial-gradient(1200px 680px at 50% -220px, rgba(255, 255, 255, 0.92), transparent 66%),
-    radial-gradient(920px 520px at 10% 18%, rgba(201, 179, 126, 0.2), transparent 72%),
-    radial-gradient(980px 560px at 88% 82%, rgba(111, 132, 117, 0.16), transparent 70%),
+    radial-gradient(ellipse 140% 60% at 50% -10%, rgba(255,255,255,0.95), transparent 65%),
+    radial-gradient(ellipse 80% 50% at 8% 20%, rgba(184,160,106,0.12), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 92% 80%, rgba(111,132,117,0.10), transparent 70%),
     var(--bg);
-  color: #1f2a24;
+  color: #1a2620;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Page centering ── */
 .page {
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(16px, 3vw, 28px);
+  padding: clamp(20px, 4vw, 40px);
 }
 
+/* ── Invite card ── */
 .invite {
   position: relative;
   isolation: isolate;
-  width: min(820px, 100%);
-  padding: clamp(18px, 4vw, 40px);
+  width: min(780px, 100%);
+  padding: clamp(28px, 5vw, 56px) clamp(24px, 4.5vw, 48px);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background:
-    radial-gradient(120% 100% at 50% 15%, rgba(255,255,255,.65) 0%, rgba(255,255,255,0) 55%),
-    radial-gradient(120% 100% at 50% 95%, rgba(0,0,0,.03) 0%, rgba(0,0,0,0) 60%),
+    radial-gradient(120% 80% at 50% 12%, rgba(255,255,255,.60) 0%, rgba(255,255,255,0) 50%),
+    radial-gradient(120% 60% at 50% 95%, rgba(0,0,0,.025) 0%, rgba(0,0,0,0) 55%),
     url("/paper-texture.png"),
-    linear-gradient(180deg, #FFFFFF 0%, #FBFAF7 100%);
+    linear-gradient(175deg, #ffffff 0%, #faf9f5 50%, #f6f4ef 100%);
   background-repeat: no-repeat, no-repeat, repeat, no-repeat;
   background-size: 100% 100%, 100% 100%, 520px 520px, 100% 100%;
-  box-shadow: 0 18px 45px rgba(17, 24, 19, 0.08);
+  box-shadow:
+    0 1px 2px rgba(17,24,19,0.04),
+    0 8px 24px rgba(17,24,19,0.06),
+    0 24px 56px rgba(17,24,19,0.08);
   overflow: hidden;
 }
 
+/* ── Gold inner frame ── */
 .invite::before {
   content: '';
   position: absolute;
-  inset: 14px;
-  border-radius: calc(var(--radius) - 12px);
-  border: 1px solid color-mix(in oklab, var(--gold) 74%, white);
+  inset: 16px;
+  border-radius: calc(var(--radius) - 14px);
+  border: 1px solid;
+  border-image: linear-gradient(
+    160deg,
+    var(--gold) 0%,
+    var(--gold-shine) 40%,
+    var(--gold) 60%,
+    var(--gold2) 100%
+  ) 1;
   pointer-events: none;
   z-index: 4;
 }
 
+/* ── Subtle grain overlay ── */
 .invite::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    repeating-linear-gradient(0deg, rgba(0,0,0,.010), rgba(0,0,0,.010) 1px, transparent 1px, transparent 10px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.008), rgba(0,0,0,.008) 1px, transparent 1px, transparent 12px);
-  opacity: .08;
+    repeating-linear-gradient(0deg, rgba(0,0,0,.008), rgba(0,0,0,.008) 1px, transparent 1px, transparent 10px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.006), rgba(0,0,0,.006) 1px, transparent 1px, transparent 12px);
+  opacity: .06;
   mix-blend-mode: multiply;
   z-index: 1;
 }
 
+/* ── Second frame ── */
 .invite .frame2 {
   position: absolute;
-  inset: 26px;
-  border-radius: calc(var(--radius) - 22px);
-  border: 1px solid rgba(232, 227, 215, 0.8);
+  inset: 28px;
+  border-radius: calc(var(--radius) - 24px);
+  border: 1px solid rgba(226,221,208,0.65);
   pointer-events: none;
   z-index: 4;
 }
 
+/* ── Botanicals (bottom only) ── */
 .bot {
   position: absolute;
   pointer-events: none;
-  opacity: 1;
-  filter: saturate(0.95) contrast(0.98);
+  filter: saturate(0.92) contrast(0.97);
   z-index: 3;
 }
 
@@ -102,165 +126,185 @@ body {
   height: auto;
   display: block;
   mix-blend-mode: multiply;
-  opacity: 0.7;
-}
-
-.bot.tl {
-  top: -24px;
-  left: -24px;
-  width: 52%;
-}
-
-.bot.tr {
-  top: -24px;
-  right: -24px;
-  width: 50%;
+  opacity: 0.72;
 }
 
 .bot.bl {
-  bottom: -28px;
-  left: -28px;
-  width: 64%;
+  bottom: -32px;
+  left: -32px;
+  width: 66%;
 }
 
 .bot.br {
-  bottom: -28px;
-  right: -28px;
-  width: 64%;
+  bottom: -32px;
+  right: -32px;
+  width: 66%;
 }
 
-.head {
-  text-align: center;
-  padding-top: 10px;
-  position: relative;
-  z-index: 5;
-}
-
+/* ── Content layers ── */
+.head,
 .details,
 .cta,
-.foot {
+.foot,
+.copylinks {
   position: relative;
   z-index: 5;
+}
+
+/* ── Header ── */
+.head {
+  text-align: center;
+  padding-top: 6px;
+  padding-bottom: 4px;
 }
 
 .logoMark {
-  width: 84px;
-  height: 84px;
-  margin: 0 auto 14px;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 18px;
   border-radius: 999px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(232, 227, 215, 0.9);
-  background: rgba(255, 255, 255, 0.76);
-  letter-spacing: 0.5px;
+  border: 1px solid rgba(226,221,208,0.85);
+  background: rgba(255,255,255,0.72);
+  letter-spacing: 1px;
   font-family: var(--font-serif);
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 22px;
   color: transparent;
-  background-image: linear-gradient(120deg, var(--gold) 0%, var(--gold2) 35%, var(--gold) 70%);
+  background-image: linear-gradient(135deg, var(--gold) 0%, var(--gold-shine) 50%, var(--gold) 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }
 
 .logoName {
-  margin: 10px 0 8px;
-  font-size: clamp(30px, 5.6vw, 48px);
-  line-height: 1.04;
+  margin: 0 0 10px;
+  font-size: clamp(32px, 6vw, 52px);
+  line-height: 1.02;
   font-family: var(--font-serif);
-  color: color-mix(in oklab, var(--green) 88%, black);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--green);
 }
 
 .logoAmp {
   font-style: italic;
-  color: #c4a96a;
   font-weight: 400;
+  color: var(--gold);
 }
 
 .invite-line {
   margin: 0;
   color: var(--muted);
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 15.5px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 .invite-line--centered {
-  margin-top: 14px;
+  margin-top: 16px;
   text-align: center;
+  font-style: italic;
+  font-family: var(--font-serif);
+  font-size: 16.5px;
+  color: color-mix(in oklab, var(--muted) 80%, var(--green));
 }
 
 .gold-rule {
-  width: 140px;
-  height: 2px;
-  margin: 16px auto 0;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  width: 120px;
+  height: 1.5px;
+  margin: 20px auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-shine), var(--gold), transparent);
   border-radius: 99px;
-  opacity: 0.95;
 }
 
+/* ── Details section ── */
 .details {
-  margin-top: 18px;
+  margin-top: 24px;
   display: grid;
-  gap: 12px;
-  position: relative;
-  z-index: 5;
+  gap: 14px;
 }
 
 .detail-card {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(232, 227, 215, 0.85);
-  border-radius: 18px;
-  padding: 14px 16px;
+  background: rgba(255,255,255,0.78);
+  border: 1px solid rgba(226,221,208,0.7);
+  border-radius: 20px;
+  padding: 18px 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .label {
   color: var(--muted);
-  font-size: 12.5px;
-  letter-spacing: 0.3px;
-  margin-bottom: 4px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
 }
 
 .value {
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.55;
+  color: #1a2620;
 }
 
 .actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
+/* ── CTA section ── */
 .cta {
-  margin-top: 18px;
+  margin-top: 22px;
   display: grid;
-  gap: 10px;
-  position: relative;
-  z-index: 5;
+  gap: 12px;
 }
 
 .btn {
-  min-height: 58px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 18px;
-  padding: 14px 16px;
-  font-weight: 700;
+  border-radius: 16px;
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 15px;
   text-decoration: none;
-  letter-spacing: 0.2px;
-  transition: transform 0.06s ease, filter 0.12s ease;
+  letter-spacing: 0.02em;
+  transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
 }
 
 .btn--primary {
   color: #fff;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--green) 92%, white), var(--green));
-  border: 1px solid color-mix(in oklab, var(--green) 75%, black);
+  background: linear-gradient(180deg, var(--green-light) 0%, var(--green) 100%);
+  border: 1px solid color-mix(in oklab, var(--green) 70%, black);
+  box-shadow:
+    0 1px 2px rgba(15,79,61,0.15),
+    0 4px 12px rgba(15,79,61,0.10);
+}
+
+.btn--primary:hover {
+  box-shadow:
+    0 2px 4px rgba(15,79,61,0.18),
+    0 8px 20px rgba(15,79,61,0.14);
+  filter: brightness(1.04);
 }
 
 .btn--secondary {
   color: var(--green);
-  background: rgba(255, 255, 255, 0.88);
-  border: 2px solid color-mix(in oklab, var(--green) 88%, white);
+  background: rgba(255,255,255,0.85);
+  border: 1.5px solid color-mix(in oklab, var(--green) 25%, var(--border));
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.btn--secondary:hover {
+  background: rgba(255,255,255,0.95);
+  border-color: color-mix(in oklab, var(--green) 40%, var(--border));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .btn:active {
@@ -269,103 +313,160 @@ body {
 
 .btn:focus-visible,
 .chip:focus-visible {
-  outline: 3px solid color-mix(in oklab, var(--gold) 60%, white);
-  outline-offset: 2px;
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
 }
 
+/* ── Chips ── */
 .chip {
   border-radius: 999px;
-  padding: 10px 12px;
-  font-weight: 700;
-  font-size: 14px;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 13.5px;
   cursor: pointer;
-  border: 1px solid rgba(232, 227, 215, 0.95);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226,221,208,0.85);
+  background: rgba(255,255,255,0.88);
   color: var(--green);
   text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  letter-spacing: 0.01em;
 }
 
+.chip:hover {
+  background: rgba(255,255,255,1);
+  border-color: var(--gold2);
+}
+
+/* ── Copy links section ── */
 .copylinks {
-  margin-top: 10px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(232, 227, 215, 0.9);
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(226,221,208,0.75);
   color: var(--muted);
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.65;
   word-break: break-word;
-  position: relative;
-  z-index: 5;
+}
+
+.copylinks p {
+  margin: 0 0 6px;
 }
 
 .copylinks a {
   color: var(--green);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(15,79,61,0.2);
+  transition: border-color 0.15s ease;
+}
+
+.copylinks a:hover {
+  border-color: var(--green);
 }
 
 .copy-feedback {
   min-height: 1.2rem;
   margin-top: 8px;
+  font-size: 13px;
 }
 
+/* ── Footer ── */
 .foot {
   text-align: center;
   color: var(--muted);
-  font-size: 12px;
-  margin-top: 16px;
-  position: relative;
-  z-index: 5;
+  font-size: 12.5px;
+  margin-top: 20px;
+  letter-spacing: 0.02em;
+  font-family: var(--font-serif);
+  font-style: italic;
 }
 
-/* ── Tablet / medium ── */
+/* ══════════════════════════════════════════════
+   Responsive
+   ══════════════════════════════════════════════ */
+
+/* ── Tablet ── */
 @media (max-width: 680px) {
-  .bot.tl { width: 54%; }
-  .bot.tr { width: 52%; }
   .bot.bl,
-  .bot.br { width: 66%; }
+  .bot.br { width: 68%; }
 }
 
 /* ── Mobile ── */
 @media (max-width: 420px) {
   .invite {
-    padding: 18px;
+    padding: 22px 18px;
+    border-radius: 22px;
   }
 
   .invite::before {
-    inset: 10px;
+    inset: 12px;
   }
 
   .invite .frame2 {
-    inset: 18px;
+    inset: 20px;
   }
 
-  .bot.tl,
-  .bot.tr { width: 56%; top: -16px; }
   .bot.bl,
-  .bot.br { width: 70%; bottom: -20px; }
+  .bot.br {
+    width: 72%;
+    bottom: -20px;
+  }
   .bot.bl { left: -20px; }
   .bot.br { right: -20px; }
-  .bot.bl { left: -16px; }
-  .bot.br { right: -16px; }
 
   .logoMark {
-    margin-bottom: 8px;
+    width: 68px;
+    height: 68px;
+    margin-bottom: 14px;
+    font-size: 19px;
   }
 
   .logoName {
-    margin-bottom: 10px;
-    font-size: clamp(28px, 8.8vw, 34px);
+    font-size: clamp(28px, 9vw, 36px);
+    margin-bottom: 8px;
+  }
+
+  .gold-rule {
+    width: 90px;
+    margin-top: 14px;
   }
 
   .details {
     gap: 10px;
-    margin-top: 12px;
+    margin-top: 18px;
+  }
+
+  .detail-card {
+    padding: 14px 16px;
+    border-radius: 16px;
   }
 
   .cta {
     gap: 10px;
-    margin-top: 12px;
+    margin-top: 16px;
   }
 
   .btn {
     min-height: 56px;
+    border-radius: 14px;
+    font-size: 14.5px;
   }
+
+  .foot {
+    margin-top: 16px;
+  }
+}
+
+/* ── Very small screens ── */
+@media (max-width: 340px) {
+  .invite {
+    padding: 18px 14px;
+  }
+
+  .bot.bl,
+  .bot.br {
+    width: 76%;
+    bottom: -16px;
+  }
+  .bot.bl { left: -16px; }
+  .bot.br { right: -16px; }
 }
