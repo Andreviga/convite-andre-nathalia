@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convite Digital — André & Nathália</title>
-    <meta name="theme-color" content="#0f4f3d" />
+    <meta name="theme-color" content="#2F3E32" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta
       name="description"
@@ -34,7 +34,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap"
       rel="stylesheet"
     />
 
@@ -70,111 +70,138 @@
     <main class="page" aria-labelledby="titulo-convite">
       <section class="invite" role="document">
 
-        <!-- Ornamento superior -->
-        <div class="ornament top" aria-hidden="true">&#10047;</div>
+        <!-- ══ Folhagens — substitua os src pelos seus PNGs de eucalipto ══ -->
+        <div class="foliage foliage--top-left" aria-hidden="true">
+          <!-- <img src="/foliage-top-left.png" alt="" /> -->
+        </div>
+        <div class="foliage foliage--top-right" aria-hidden="true">
+          <!-- <img src="/foliage-top-right.png" alt="" /> -->
+        </div>
+        <div class="foliage foliage--bottom-left" aria-hidden="true">
+          <!-- <img src="/foliage-bottom-left.png" alt="" /> -->
+        </div>
+        <div class="foliage foliage--bottom-right" aria-hidden="true">
+          <!-- <img src="/foliage-bottom-right.png" alt="" /> -->
+        </div>
 
-        <header class="head">
-          <p class="monogram">A <span class="amp">&amp;</span> N</p>
-          <div class="rule" aria-hidden="true"></div>
-          <h1 id="titulo-convite" class="names">André <span class="amp">&amp;</span> Nathália</h1>
-          <div class="rule" aria-hidden="true"></div>
-        </header>
+        <!-- ══ Moldura interna ══ -->
+        <div class="inner-frame" aria-hidden="true"></div>
 
-        <p class="subtitle">convidam para a celebração de seu casamento</p>
+        <!-- ══ Conteúdo ══ -->
+        <div class="content">
 
-        <section class="info" aria-label="Detalhes da cerimônia">
-          <div class="info-block">
-            <p class="info-label">Cerimônia</p>
-            <p class="info-value">Três de maio de dois mil e vinte e seis</p>
-            <p class="info-value">às dezesseis horas</p>
-          </div>
+          <!-- Ornamento dourado superior -->
+          <div class="ornament" aria-hidden="true">✦ &nbsp; ✦ &nbsp; ✦</div>
 
-          <div class="info-divider" aria-hidden="true"></div>
+          <!-- Monograma -->
+          <p class="monogram">A <span class="mono-amp">&amp;</span> N</p>
 
-          <div class="info-block">
-            <p class="info-label">Local</p>
-            <p class="info-value" id="wedding-address">
-              Rua das Araribás, 25<br />
-              São Bernardo do Campo — SP<br />
-              CEP 09840-210
-            </p>
-            <div class="actions">
-              <button
-                class="pill copy-btn"
-                type="button"
-                data-copy="Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210"
-                data-success="Endereço copiado com sucesso."
-              >
-                Copiar endereço
-              </button>
-              <a
-                class="pill"
-                href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20-%20SP%20-%2009840-210"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Abrir no Maps</a
-              >
+          <div class="gold-line" aria-hidden="true"></div>
+
+          <!-- Nomes dos noivos (fonte script) -->
+          <h1 id="titulo-convite" class="names">André <span class="names-amp">&amp;</span> Nathália</h1>
+
+          <div class="gold-line" aria-hidden="true"></div>
+
+          <p class="subtitle">Convidam você para a celebração de seu casamento</p>
+
+          <!-- ══ Card de detalhes ══ -->
+          <div class="details-card">
+            <div class="details-col">
+              <p class="details-label">Cerimônia</p>
+              <p class="details-value">03 de Maio de 2026</p>
+              <p class="details-value">às 16h</p>
+            </div>
+            <div class="details-divider" aria-hidden="true"></div>
+            <div class="details-col">
+              <p class="details-label">Local</p>
+              <p class="details-value" id="wedding-address">
+                Rua das Araribás, 25<br />
+                São Bernardo do Campo — SP<br />
+                CEP 09840-210
+              </p>
             </div>
           </div>
-        </section>
 
-        <p class="reception">Após a cerimônia, os convidados serão recepcionados.</p>
-
-        <div class="rule" aria-hidden="true"></div>
-
-        <section class="cta" aria-label="Ações principais">
-          <a
-            class="btn btn--primary"
-            href="https://noivos.casar.com/andre-nathalia-03052026"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Informações do casamento</a
-          >
-          <a
-            class="btn btn--outline"
-            href="https://andrenathalia03052026.site/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Lista de presentes</a
-          >
-        </section>
-
-        <section class="links" aria-label="Links em texto para copiar">
-          <p>
-            Informações do casamento:<br />
-            <a href="https://noivos.casar.com/andre-nathalia-03052026"
-              >noivos.casar.com/andre-nathalia-03052026</a
+          <div class="card-actions">
+            <button
+              class="pill copy-btn"
+              type="button"
+              data-copy="Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210"
+              data-success="Endereço copiado com sucesso."
             >
-          </p>
-          <button
-            class="pill copy-btn"
-            type="button"
-            data-copy="https://noivos.casar.com/andre-nathalia-03052026"
-            data-success="Link copiado."
-          >
-            Copiar link
-          </button>
-          <p>
-            Lista de presentes:<br />
-            <a href="https://andrenathalia03052026.site/"
-              >andrenathalia03052026.site</a
+              📋 Copiar endereço
+            </button>
+            <a
+              class="pill"
+              href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20-%20SP%20-%2009840-210"
+              target="_blank"
+              rel="noopener noreferrer"
+              >📍 Abrir no Maps</a
             >
-          </p>
-          <button
-            class="pill copy-btn"
-            type="button"
-            data-copy="https://andrenathalia03052026.site/"
-            data-success="Link copiado."
-          >
-            Copiar link
-          </button>
-          <p id="copy-feedback" class="copy-feedback" aria-live="polite"></p>
-        </section>
+          </div>
 
-        <!-- Ornamento inferior -->
-        <div class="ornament bottom" aria-hidden="true">&#10047;</div>
+          <p class="reception">Após a cerimônia, os convidados serão recepcionados.</p>
 
-        <footer class="foot">Com carinho, André &amp; Nathália</footer>
+          <div class="gold-line" aria-hidden="true"></div>
+
+          <!-- ══ Botões CTA ══ -->
+          <section class="cta" aria-label="Ações principais">
+            <a
+              class="btn btn--primary"
+              href="https://noivos.casar.com/andre-nathalia-03052026"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Informações do Casamento</a
+            >
+            <a
+              class="btn btn--secondary"
+              href="https://andrenathalia03052026.site/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Lista de Presentes</a
+            >
+          </section>
+
+          <!-- ══ Links para copiar ══ -->
+          <section class="links" aria-label="Links em texto para copiar">
+            <p>
+              Informações do casamento:<br />
+              <a href="https://noivos.casar.com/andre-nathalia-03052026"
+                >noivos.casar.com/andre-nathalia-03052026</a
+              >
+            </p>
+            <button
+              class="pill copy-btn"
+              type="button"
+              data-copy="https://noivos.casar.com/andre-nathalia-03052026"
+              data-success="Link copiado."
+            >
+              Copiar link
+            </button>
+            <p>
+              Lista de presentes:<br />
+              <a href="https://andrenathalia03052026.site/"
+                >andrenathalia03052026.site</a
+              >
+            </p>
+            <button
+              class="pill copy-btn"
+              type="button"
+              data-copy="https://andrenathalia03052026.site/"
+              data-success="Link copiado."
+            >
+              Copiar link
+            </button>
+            <p id="copy-feedback" class="copy-feedback" aria-live="polite"></p>
+          </section>
+
+          <!-- Ornamento dourado inferior -->
+          <div class="ornament" aria-hidden="true">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+          <footer class="foot">Com carinho, André &amp; Nathália</footer>
+
+        </div><!-- /.content -->
       </section>
     </main>
 

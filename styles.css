@@ -1,43 +1,53 @@
-/* ══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════
    Convite de Casamento — André & Nathália
-   Estilo clássico de convite impresso
-   ══════════════════════════════════════════════════════ */
+   Estilo: Clássico Botânico Elegante (convite físico)
+   ═══════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+/* ── Fontes ── */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
 
+/* ── Variáveis ── */
 :root {
-  /* Paleta clássica - tons de papel e tinta */
-  --ivory:  #faf8f4;
-  --cream:  #f5f2eb;
-  --linen:  #eee9df;
-  --ink:    #2c2c2c;
-  --ink-soft:#4a4a4a;
-  --ink-light:#7a7a7a;
-  --gold:   #b5975a;
-  --gold-light:#d4c48e;
-  --gold-dark:#96793d;
-  --green:  #3d5c4a;
-  --green-deep:#2a4434;
+  --bg:         #F3EDE4;           /* fundo da página (linen suave) */
+  --paper:      #FDFBF7;           /* fundo do convite (off-white) */
+  --paper-warm: #FAF8F5;           /* variação mais quente */
+  --green:      #2F3E32;           /* verde eucalipto escuro */
+  --green-soft: #4A5E4D;           /* verde médio */
+  --green-pale: #6B7F6E;           /* verde claro/muted */
+  --gold:       #C4A464;           /* dourado/bronze principal */
+  --gold-light: #D8C48E;           /* dourado claro */
+  --gold-dark:  #A88A4A;           /* dourado escuro */
+  --text:       #2F3E32;           /* texto principal = verde escuro */
+  --text-soft:  #4A5E4D;           /* texto secundário */
+  --text-muted: #7A8B7C;           /* texto terciário */
+  --border:     #E5DFD4;           /* bordas suaves */
 
-  --serif:  'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
-  --sans:   'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --script:     'Great Vibes', cursive;
+  --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans:       'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html { height: 100%; }
 
 body {
   min-height: 100%;
   font-family: var(--sans);
-  background: var(--cream);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Página ── */
+/* ═══════════════════════════════════════════════
+   PÁGINA
+   ═══════════════════════════════════════════════ */
 .page {
   min-height: 100dvh;
   display: flex;
@@ -46,212 +56,270 @@ body {
   padding: clamp(16px, 4vw, 48px);
 }
 
-/* ══════════════════════════════════════════════
-   O CONVITE
-   ══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   O CONVITE (card principal)
+   ═══════════════════════════════════════════════ */
 .invite {
   position: relative;
-  width: min(620px, 100%);
-  padding: clamp(40px, 7vw, 72px) clamp(32px, 6vw, 64px);
+  width: min(680px, 100%);
   text-align: center;
+  overflow: hidden;
 
-  /* Papel */
+  /* Papel texturizado */
   background:
     url("/paper-texture.png"),
-    linear-gradient(178deg, #fdfcfa 0%, var(--ivory) 40%, #f8f5ee 100%);
+    linear-gradient(176deg, #FEFCF9 0%, var(--paper) 35%, var(--paper-warm) 100%);
   background-size: 500px 500px, 100% 100%;
   background-repeat: repeat, no-repeat;
 
-  /* Sombra de papel sobre mesa */
+  /* Sombra elegante de papel */
   box-shadow:
-    0 1px 1px rgba(0,0,0,0.03),
-    0 4px 8px rgba(0,0,0,0.04),
-    0 16px 40px rgba(0,0,0,0.06);
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 12px rgba(0,0,0,0.05),
+    0 20px 48px rgba(47,62,50,0.08);
 }
 
-/* ── Moldura dourada (borda externa) ── */
+/* ── Borda dourada externa ── */
 .invite::before {
   content: '';
   position: absolute;
-  inset: 12px;
-  border: 1.5px solid var(--gold);
+  inset: 0;
+  border: 2px solid var(--gold);
   pointer-events: none;
+  z-index: 5;
 }
 
-/* ── Moldura interna (linha fina) ── */
-.invite::after {
-  content: '';
+/* ── Moldura interna decorativa ── */
+.inner-frame {
   position: absolute;
-  inset: 18px;
-  border: 0.5px solid var(--gold-light);
+  inset: 10px;
+  border: 1px solid var(--gold-light);
+  opacity: 0.55;
   pointer-events: none;
-  opacity: 0.6;
+  z-index: 5;
 }
 
-/* ══════════════════════════════════════════════
-   ORNAMENTOS TIPOGRÁFICOS
-   ══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   FOLHAGENS — Placeholders para PNGs
+   Descomente os <img> no HTML e coloque seus
+   PNGs de eucalipto em aquarela.
+   ═══════════════════════════════════════════════ */
+.foliage {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.foliage img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.85;
+}
+
+.foliage--top-left {
+  top: -20px;
+  left: -20px;
+  width: 45%;
+  max-width: 280px;
+}
+
+.foliage--top-right {
+  top: -20px;
+  right: -20px;
+  width: 45%;
+  max-width: 280px;
+}
+
+.foliage--bottom-left {
+  bottom: -20px;
+  left: -20px;
+  width: 48%;
+  max-width: 300px;
+}
+
+.foliage--bottom-right {
+  bottom: -20px;
+  right: -20px;
+  width: 48%;
+  max-width: 300px;
+}
+
+/* ═══════════════════════════════════════════════
+   CONTEÚDO (sobre tudo, acima das folhagens)
+   ═══════════════════════════════════════════════ */
+.content {
+  position: relative;
+  z-index: 3;
+  padding: clamp(48px, 8vw, 80px) clamp(28px, 6vw, 64px);
+}
+
+/* ═══════════════════════════════════════════════
+   ORNAMENTO DOURADO
+   ═══════════════════════════════════════════════ */
 .ornament {
-  font-size: 28px;
+  font-size: 14px;
   color: var(--gold);
+  letter-spacing: 6px;
   line-height: 1;
-  letter-spacing: 8px;
+  margin: 16px 0;
   user-select: none;
 }
 
-.ornament.top {
-  margin-bottom: 24px;
-}
-
-.ornament.bottom {
-  margin-top: 28px;
+/* ═══════════════════════════════════════════════
+   MONOGRAMA
+   ═══════════════════════════════════════════════ */
+.monogram {
+  font-family: var(--script);
+  font-size: clamp(28px, 5vw, 38px);
+  font-weight: 400;
+  color: var(--gold);
   margin-bottom: 12px;
 }
 
-/* ══════════════════════════════════════════════
-   CABEÇALHO — Monograma + Nomes
-   ══════════════════════════════════════════════ */
-.head {
-  margin-bottom: 20px;
-}
-
-.monogram {
-  font-family: var(--serif);
-  font-size: clamp(18px, 3vw, 22px);
-  font-weight: 300;
-  letter-spacing: 0.35em;
-  color: var(--gold);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.amp {
-  font-style: italic;
-  font-weight: 300;
+.mono-amp {
+  font-family: var(--script);
   color: var(--gold-dark);
 }
 
-.names {
-  font-family: var(--serif);
-  font-size: clamp(36px, 8vw, 58px);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  margin: 16px 0;
-}
-
-.names .amp {
-  font-size: 0.75em;
-  vertical-align: 2px;
-  color: var(--gold);
-}
-
-/* ── Filete decorativo ── */
-.rule {
-  width: 100px;
+/* ═══════════════════════════════════════════════
+   LINHA DOURADA (divisória)
+   ═══════════════════════════════════════════════ */
+.gold-line {
+  width: 120px;
   height: 1px;
-  margin: 0 auto;
+  margin: 16px auto;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
-/* ══════════════════════════════════════════════
-   TEXTO PRINCIPAL
-   ══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   NOMES DOS NOIVOS (fonte script/cursiva)
+   ═══════════════════════════════════════════════ */
+.names {
+  font-family: var(--script);
+  font-size: clamp(42px, 10vw, 72px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--green);
+  margin: 8px 0 4px;
+}
+
+.names-amp {
+  font-family: var(--script);
+  font-size: 0.7em;
+  color: var(--gold);
+}
+
+/* ═══════════════════════════════════════════════
+   SUBTÍTULO
+   ═══════════════════════════════════════════════ */
 .subtitle {
   font-family: var(--serif);
-  font-size: clamp(15px, 2.8vw, 19px);
-  font-weight: 300;
-  font-style: italic;
-  color: var(--ink-soft);
-  letter-spacing: 0.02em;
-  line-height: 1.6;
-  margin-top: 20px;
+  font-size: clamp(13px, 2.2vw, 16px);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  line-height: 1.7;
+  margin-top: 16px;
   margin-bottom: 28px;
 }
 
-/* ══════════════════════════════════════════════
-   INFORMAÇÕES — Data, Hora, Local
-   ══════════════════════════════════════════════ */
-.info {
-  margin-bottom: 24px;
+/* ═══════════════════════════════════════════════
+   CARD DE DETALHES (data + local lado a lado)
+   ═══════════════════════════════════════════════ */
+.details-card {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: rgba(243,237,228,0.45);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(47,62,50,0.04);
 }
 
-.info-block {
-  padding: 12px 0;
+.details-col {
+  flex: 1;
+  padding: 0 16px;
 }
 
-.info-label {
+/* Divisor vertical entre colunas */
+.details-divider {
+  width: 1px;
+  align-self: stretch;
+  background: linear-gradient(180deg, transparent, var(--gold-light), transparent);
+  flex-shrink: 0;
+}
+
+.details-label {
   font-family: var(--sans);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-dark);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.info-value {
+.details-value {
   font-family: var(--serif);
-  font-size: clamp(15px, 2.6vw, 18px);
+  font-size: clamp(14px, 2.4vw, 17px);
   font-weight: 400;
   line-height: 1.65;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
-.info-divider {
-  width: 40px;
-  height: 1px;
-  margin: 4px auto;
-  background: var(--gold-light);
-  opacity: 0.5;
-}
-
-.actions {
+/* Ações abaixo do card */
+.card-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 14px;
+  margin-bottom: 20px;
 }
 
-/* ══════════════════════════════════════════════
+/* ═══════════════════════════════════════════════
    RECEPÇÃO
-   ══════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════ */
 .reception {
   font-family: var(--serif);
-  font-size: clamp(14px, 2.4vw, 16px);
+  font-size: clamp(13px, 2vw, 15.5px);
   font-style: italic;
   font-weight: 300;
-  color: var(--ink-light);
-  line-height: 1.6;
-  margin-bottom: 24px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 20px;
 }
 
-/* ══════════════════════════════════════════════
-   BOTÕES (ações digitais)
-   ══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   BOTÕES CTA
+   ═══════════════════════════════════════════════ */
 .cta {
   display: grid;
-  gap: 12px;
-  margin-top: 24px;
-  margin-bottom: 8px;
+  gap: 14px;
+  max-width: 400px;
+  margin: 24px auto;
 }
 
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 54px;
-  padding: 14px 24px;
+  min-height: 56px;
+  padding: 16px 28px;
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 30px;
   cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .btn:active {
@@ -263,48 +331,55 @@ body {
   outline-offset: 3px;
 }
 
+/* Botão 1: Verde escuro, texto creme */
 .btn--primary {
-  color: #fff;
-  background: linear-gradient(180deg, var(--green) 0%, var(--green-deep) 100%);
-  border: 1px solid var(--green-deep);
-  box-shadow: 0 2px 8px rgba(42,68,52,0.15);
+  color: var(--paper);
+  background: var(--green);
+  border: 1.5px solid var(--green);
+  box-shadow: 0 3px 12px rgba(47,62,50,0.18);
 }
 
 .btn--primary:hover {
-  box-shadow: 0 4px 14px rgba(42,68,52,0.22);
+  background: var(--green-soft);
+  box-shadow: 0 5px 18px rgba(47,62,50,0.24);
 }
 
-.btn--outline {
+/* Botão 2: Creme, texto verde, borda dourada */
+.btn--secondary {
   color: var(--green);
-  background: transparent;
-  border: 1.5px solid var(--green);
+  background: var(--paper);
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 2px 8px rgba(196,164,100,0.12);
 }
 
-.btn--outline:hover {
-  background: rgba(61,92,74,0.04);
+.btn--secondary:hover {
+  background: var(--paper-warm);
+  box-shadow: 0 4px 14px rgba(196,164,100,0.20);
 }
 
-/* ── Pílulas (copiar, maps) ── */
+/* ═══════════════════════════════════════════════
+   PÍLULAS (copiar, maps)
+   ═══════════════════════════════════════════════ */
 .pill {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 8px 14px;
+  padding: 8px 16px;
   font-family: var(--sans);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: var(--green);
-  background: rgba(255,255,255,0.7);
-  border: 1px solid var(--linen);
+  color: var(--green-soft);
+  background: rgba(253,251,247,0.85);
+  border: 1px solid var(--border);
   border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.12s ease, border-color 0.12s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .pill:hover {
-  background: rgba(255,255,255,0.95);
+  background: #fff;
   border-color: var(--gold-light);
 }
 
@@ -313,16 +388,16 @@ body {
   outline-offset: 2px;
 }
 
-/* ══════════════════════════════════════════════
-   LINKS
-   ══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   LINKS PARA COPIAR
+   ═══════════════════════════════════════════════ */
 .links {
   margin-top: 16px;
   padding-top: 20px;
-  border-top: 1px solid var(--linen);
-  font-size: 12.5px;
-  color: var(--ink-light);
-  line-height: 1.65;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
   word-break: break-word;
 }
 
@@ -331,10 +406,10 @@ body {
 }
 
 .links a {
-  color: var(--green);
+  color: var(--green-soft);
   text-decoration: none;
-  border-bottom: 1px solid rgba(61,92,74,0.2);
-  transition: border-color 0.12s ease;
+  border-bottom: 1px solid rgba(47,62,50,0.15);
+  transition: border-color 0.15s ease;
 }
 
 .links a:hover {
@@ -345,63 +420,93 @@ body {
   min-height: 1rem;
   margin-top: 8px;
   font-size: 12px;
+  color: var(--green-soft);
 }
 
-/* ══════════════════════════════════════════════
+/* ═══════════════════════════════════════════════
    RODAPÉ
-   ══════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════ */
 .foot {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
-  font-size: 13px;
-  color: var(--ink-light);
-  letter-spacing: 0.04em;
+  font-family: var(--script);
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--gold);
   margin-top: 8px;
+  letter-spacing: 0.02em;
 }
 
-/* ══════════════════════════════════════════════
+/* ═══════════════════════════════════════════════
    RESPONSIVO
-   ══════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════ */
 
-@media (max-width: 480px) {
-  .invite {
-    padding: 36px 24px;
+/* ── Tablet: card empilhado ── */
+@media (max-width: 580px) {
+  .details-card {
+    flex-direction: column;
+    padding: 24px 20px;
   }
 
-  .invite::before { inset: 8px; }
-  .invite::after  { inset: 13px; }
+  .details-divider {
+    width: 80px;
+    height: 1px;
+    align-self: center;
+    margin: 16px auto;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
 
-  .ornament { font-size: 22px; letter-spacing: 6px; }
-  .ornament.top { margin-bottom: 18px; }
-  .ornament.bottom { margin-top: 20px; margin-bottom: 8px; }
+  .details-col {
+    padding: 0;
+  }
+
+  .foliage--top-left,
+  .foliage--top-right  { width: 42%; }
+  .foliage--bottom-left,
+  .foliage--bottom-right { width: 46%; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 420px) {
+  .content {
+    padding: 36px 20px;
+  }
+
+  .invite::before { border-width: 1.5px; }
+  .inner-frame { inset: 7px; }
 
   .names {
-    font-size: clamp(30px, 9vw, 40px);
+    font-size: clamp(36px, 11vw, 50px);
   }
 
-  .subtitle {
-    margin-top: 16px;
-    margin-bottom: 22px;
+  .monogram {
+    font-size: clamp(24px, 6vw, 32px);
   }
+
+  .gold-line { width: 80px; }
 
   .btn {
-    min-height: 50px;
+    min-height: 52px;
+    padding: 14px 22px;
     font-size: 13.5px;
-    padding: 12px 18px;
   }
 
-  .rule { width: 70px; }
+  .foliage--top-left,
+  .foliage--top-right  { width: 44%; top: -14px; }
+  .foliage--top-left   { left: -14px; }
+  .foliage--top-right  { right: -14px; }
+  .foliage--bottom-left,
+  .foliage--bottom-right { width: 48%; bottom: -14px; }
+  .foliage--bottom-left  { left: -14px; }
+  .foliage--bottom-right { right: -14px; }
 }
 
+/* ── Telas muito pequenas ── */
 @media (max-width: 340px) {
-  .invite {
-    padding: 28px 18px;
+  .content {
+    padding: 28px 16px;
   }
 
-  .invite::before { inset: 6px; }
-  .invite::after  { inset: 10px; }
+  .inner-frame { inset: 5px; }
 
-  .monogram { font-size: 16px; }
-  .names { font-size: clamp(26px, 9vw, 34px); }
+  .names { font-size: clamp(30px, 11vw, 42px); }
+
+  .cta { gap: 10px; }
 }
