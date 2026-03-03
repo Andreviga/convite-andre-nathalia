@@ -1,13 +1,12 @@
 /* ══════════════════════════════════════════════════════
    Convite de Casamento — André & Nathália
-   Premium Physical Invitation Style
-   Fontes originais: Cormorant Garamond + DM Sans
+   Premium Physical Invitation — Compacto
+   Fontes: Cormorant Garamond + DM Sans
    ══════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
 :root {
-  /* Paleta — papel premium + tinta + ouro envelhecido */
   --bg:         #FAF8F5;
   --paper:      #FDFBF7;
   --paper-warm: #FAF6F0;
@@ -30,7 +29,6 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { height: 100%; }
 
 body {
@@ -50,16 +48,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(20px, 5vw, 56px);
+  padding: clamp(8px, 3vw, 48px);
 }
 
 /* ══════════════════════════════════════════════
-   O CONVITE (card principal)
+   O CONVITE
    ══════════════════════════════════════════════ */
 .invite {
   position: relative;
-  width: min(640px, 100%);
-  padding: clamp(52px, 8vw, 88px) clamp(36px, 7vw, 72px);
+  width: min(620px, 100%);
+  padding: clamp(32px, 5vw, 68px) clamp(24px, 5vw, 60px);
   text-align: center;
 
   /* Papel texturizado premium */
@@ -69,7 +67,7 @@ body {
   background-size: 500px 500px, 100% 100%;
   background-repeat: repeat, no-repeat;
 
-  /* Sombra suave — papel "pousado" sobre a mesa */
+  /* Sombra — papel pousado sobre a mesa */
   box-shadow:
     0 1px 2px rgba(0,0,0,0.025),
     0 4px 10px rgba(0,0,0,0.03),
@@ -77,60 +75,54 @@ body {
     0 24px 56px rgba(0,0,0,0.045);
 }
 
-/* ── Moldura dourada externa ── */
+/* Moldura dourada externa */
 .invite::before {
   content: '';
   position: absolute;
-  inset: 14px;
+  inset: 12px;
   border: 1.5px solid var(--gold);
   pointer-events: none;
 }
 
-/* ── Moldura interna decorativa (linha fina) ── */
+/* Moldura interna (filete fino) */
 .invite::after {
   content: '';
   position: absolute;
-  inset: 20px;
+  inset: 17px;
   border: 0.5px solid var(--gold-light);
   pointer-events: none;
   opacity: 0.5;
 }
 
 /* ══════════════════════════════════════════════
-   ORNAMENTOS TIPOGRÁFICOS (✿)
+   ORNAMENTOS
    ══════════════════════════════════════════════ */
 .ornament {
-  font-size: 26px;
+  font-size: 24px;
   color: var(--gold);
   line-height: 1;
   letter-spacing: 8px;
   user-select: none;
 }
 
-.ornament.top {
-  margin-bottom: 32px;
-}
-
-.ornament.bottom {
-  margin-top: 36px;
-  margin-bottom: 16px;
-}
+.ornament.top  { margin-bottom: 16px; }
+.ornament.bottom { margin-top: 20px; margin-bottom: 8px; }
 
 /* ══════════════════════════════════════════════
-   CABEÇALHO — Monograma + Nomes
+   CABEÇALHO
    ══════════════════════════════════════════════ */
 .head {
-  margin-bottom: 28px;
+  margin-bottom: 12px;
 }
 
 .monogram {
   font-family: var(--serif);
-  font-size: clamp(18px, 3vw, 22px);
+  font-size: clamp(16px, 2.5vw, 20px);
   font-weight: 300;
   letter-spacing: 0.35em;
   color: var(--gold);
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .amp {
@@ -141,12 +133,12 @@ body {
 
 .names {
   font-family: var(--serif);
-  font-size: clamp(36px, 8vw, 58px);
+  font-size: clamp(34px, 8vw, 54px);
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -0.01em;
   color: var(--ink);
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .names .amp {
@@ -155,10 +147,10 @@ body {
   color: var(--gold);
 }
 
-/* ── Filete decorativo dourado ── */
+/* Filete decorativo */
 .rule {
   width: 40%;
-  max-width: 120px;
+  max-width: 110px;
   height: 1px;
   margin: 0 auto;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
@@ -169,75 +161,77 @@ body {
    ══════════════════════════════════════════════ */
 .subtitle {
   font-family: var(--serif);
-  font-size: clamp(15px, 2.8vw, 19px);
+  font-size: clamp(14px, 2.6vw, 18px);
   font-weight: 300;
   font-style: italic;
   color: var(--ink-soft);
   letter-spacing: 0.02em;
-  line-height: 1.6;
-  margin-top: 28px;
-  margin-bottom: 36px;
+  line-height: 1.5;
+  margin-top: 14px;
+  margin-bottom: 20px;
 }
 
 /* ══════════════════════════════════════════════
-   CARD DE INFORMAÇÕES (Data + Local)
-   Card branco com sombra suave sobre papel creme
+   CARD DE INFORMAÇÕES (texturizado)
    ══════════════════════════════════════════════ */
 .info {
-  background: var(--white-card);
+  position: relative;
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 32px 28px;
-  margin-bottom: 32px;
+  padding: 22px 22px 16px;
+  margin-bottom: 16px;
+  overflow: hidden;
+
+  /* Fundo branco + textura de papel */
+  background:
+    url("/paper-texture.png"),
+    linear-gradient(180deg, #FFFFFF 0%, #FDFCFA 100%);
+  background-size: 400px 400px, 100% 100%;
+  background-repeat: repeat, no-repeat;
+
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 .info-block {
-  padding: 16px 0;
+  padding: 8px 0;
 }
 
-.info-block:first-child {
-  padding-top: 4px;
-}
-
-.info-block:last-child {
-  padding-bottom: 4px;
-}
+.info-block:first-child { padding-top: 0; }
 
 .info-label {
   font-family: var(--sans);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-dark);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .info-value {
   font-family: var(--serif);
-  font-size: clamp(15px, 2.6vw, 18px);
+  font-size: clamp(14px, 2.4vw, 17px);
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.55;
   color: var(--ink-soft);
 }
 
-/* ── Divisor dourado dentro do card ── */
+/* Divisor dourado */
 .info-divider {
   width: 40%;
-  max-width: 80px;
+  max-width: 70px;
   height: 1px;
-  margin: 8px auto;
+  margin: 4px auto;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
   opacity: 0.55;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
 /* ══════════════════════════════════════════════
@@ -245,32 +239,32 @@ body {
    ══════════════════════════════════════════════ */
 .reception {
   font-family: var(--serif);
-  font-size: clamp(14px, 2.4vw, 16px);
+  font-size: clamp(13px, 2.2vw, 15px);
   font-style: italic;
   font-weight: 300;
   color: var(--ink-light);
-  line-height: 1.65;
-  margin-bottom: 32px;
+  line-height: 1.55;
+  margin-bottom: 14px;
 }
 
 /* ══════════════════════════════════════════════
-   BOTÕES — Refinados e finos
+   BOTÕES
    ══════════════════════════════════════════════ */
 .cta {
   display: grid;
-  gap: 14px;
-  max-width: 420px;
-  margin: 32px auto 12px;
+  gap: 10px;
+  max-width: 400px;
+  margin: 16px auto 8px;
 }
 
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 54px;
-  padding: 15px 28px;
+  min-height: 48px;
+  padding: 13px 24px;
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-decoration: none;
@@ -282,16 +276,14 @@ body {
     transform 0.08s ease;
 }
 
-.btn:active {
-  transform: translateY(1px);
-}
+.btn:active { transform: translateY(1px); }
 
 .btn:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
 
-/* Primário: fundo verde escuro, texto creme da página */
+/* Primário: verde escuro, texto creme */
 .btn--primary {
   color: var(--paper);
   background: var(--green);
@@ -304,7 +296,7 @@ body {
   box-shadow: 0 4px 16px rgba(47,62,50,0.22);
 }
 
-/* Secundário (outline): transparente, texto verde, borda fina dourada */
+/* Secundário: transparente, borda dourada fina */
 .btn--outline {
   color: var(--green);
   background: transparent;
@@ -317,15 +309,15 @@ body {
 }
 
 /* ══════════════════════════════════════════════
-   PÍLULAS (copiar, maps)
+   PÍLULAS
    ══════════════════════════════════════════════ */
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 8px 16px;
+  gap: 3px;
+  padding: 6px 12px;
   font-family: var(--sans);
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--green-soft);
@@ -334,11 +326,11 @@ body {
   border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.12s ease, border-color 0.12s ease;
 }
 
 .pill:hover {
-  background: #fff;
+  background: rgba(255,255,255,0.95);
   border-color: var(--gold-light);
 }
 
@@ -351,24 +343,24 @@ body {
    LINKS
    ══════════════════════════════════════════════ */
 .links {
-  margin-top: 20px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  font-size: 12.5px;
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--linen);
+  font-size: 11.5px;
   color: var(--ink-light);
-  line-height: 1.65;
+  line-height: 1.55;
   word-break: break-word;
 }
 
 .links p {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .links a {
   color: var(--green-soft);
   text-decoration: none;
   border-bottom: 1px solid rgba(61,92,74,0.18);
-  transition: border-color 0.15s ease;
+  transition: border-color 0.12s ease;
 }
 
 .links a:hover {
@@ -377,8 +369,8 @@ body {
 
 .copy-feedback {
   min-height: 1rem;
-  margin-top: 10px;
-  font-size: 12px;
+  margin-top: 6px;
+  font-size: 11px;
   color: var(--green-soft);
 }
 
@@ -389,65 +381,128 @@ body {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: var(--ink-light);
   letter-spacing: 0.04em;
-  margin-top: 12px;
+  margin-top: 6px;
 }
 
 /* ══════════════════════════════════════════════
-   RESPONSIVO
+   RESPONSIVO — Compactar para caber no celular
    ══════════════════════════════════════════════ */
 
+/* Celular padrão (iPhone SE até ~428px) */
 @media (max-width: 480px) {
-  .invite {
-    padding: 40px 26px;
+  .page {
+    padding: 6px;
+    align-items: flex-start;
   }
 
-  .invite::before { inset: 10px; }
-  .invite::after  { inset: 15px; }
+  .invite {
+    padding: 28px 20px;
+  }
 
-  .ornament { font-size: 22px; letter-spacing: 6px; }
-  .ornament.top { margin-bottom: 24px; }
-  .ornament.bottom { margin-top: 28px; margin-bottom: 10px; }
+  .invite::before { inset: 8px; }
+  .invite::after  { inset: 12px; }
+
+  .ornament { font-size: 20px; letter-spacing: 5px; }
+  .ornament.top  { margin-bottom: 10px; }
+  .ornament.bottom { margin-top: 14px; margin-bottom: 6px; }
+
+  .head { margin-bottom: 8px; }
+
+  .monogram {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
 
   .names {
-    font-size: clamp(30px, 9vw, 40px);
+    font-size: clamp(28px, 9vw, 38px);
+    margin: 6px 0;
   }
 
+  .rule { width: 30%; max-width: 70px; }
+
   .subtitle {
-    margin-top: 22px;
-    margin-bottom: 28px;
+    font-size: clamp(13px, 3.4vw, 15px);
+    margin-top: 10px;
+    margin-bottom: 14px;
   }
 
   .info {
-    padding: 24px 20px;
-    margin-bottom: 28px;
+    padding: 16px 16px 12px;
+    margin-bottom: 12px;
+  }
+
+  .info-block { padding: 6px 0; }
+
+  .info-label {
+    font-size: 9.5px;
+    margin-bottom: 4px;
+  }
+
+  .info-value {
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+
+  .info-divider { margin: 2px auto; }
+
+  .actions { margin-top: 10px; gap: 6px; }
+
+  .pill {
+    padding: 5px 10px;
+    font-size: 10.5px;
+  }
+
+  .reception {
+    font-size: 12.5px;
+    margin-bottom: 10px;
+  }
+
+  .cta {
+    gap: 8px;
+    margin: 10px auto 6px;
   }
 
   .btn {
-    min-height: 50px;
-    font-size: 13.5px;
-    padding: 13px 22px;
+    min-height: 44px;
+    padding: 11px 20px;
+    font-size: 13px;
   }
 
-  .rule { width: 35%; max-width: 80px; }
+  .links {
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 10.5px;
+  }
+
+  .links p { margin-bottom: 3px; }
+
+  .foot { font-size: 11.5px; margin-top: 4px; }
 }
 
+/* Celular muito pequeno */
 @media (max-width: 340px) {
+  .page { padding: 4px; }
+
   .invite {
-    padding: 30px 18px;
+    padding: 22px 16px;
   }
 
-  .invite::before { inset: 7px; }
-  .invite::after  { inset: 11px; }
+  .invite::before { inset: 6px; }
+  .invite::after  { inset: 9px; }
 
-  .monogram { font-size: 16px; }
-  .names { font-size: clamp(26px, 9vw, 34px); }
+  .ornament.top  { margin-bottom: 6px; }
+  .ornament { font-size: 18px; }
 
-  .info {
-    padding: 20px 16px;
-  }
+  .monogram { font-size: 14px; margin-bottom: 4px; }
+  .names { font-size: clamp(24px, 9vw, 32px); }
 
-  .cta { gap: 10px; }
+  .subtitle { margin-top: 8px; margin-bottom: 10px; }
+
+  .info { padding: 12px 12px 10px; }
+
+  .cta { gap: 6px; }
+  .btn { min-height: 40px; font-size: 12px; padding: 10px 16px; }
 }
