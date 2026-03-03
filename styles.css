@@ -118,15 +118,15 @@ body {
 }
 
 .bot.bl {
-  bottom: -24px;
-  left: -24px;
-  width: 54%;
+  bottom: -28px;
+  left: -28px;
+  width: 64%;
 }
 
 .bot.br {
-  bottom: -24px;
-  right: -24px;
-  width: 54%;
+  bottom: -28px;
+  right: -28px;
+  width: 64%;
 }
 
 .head {
@@ -320,7 +320,7 @@ body {
   .bot.tl { width: 54%; }
   .bot.tr { width: 52%; }
   .bot.bl,
-  .bot.br { width: 56%; }
+  .bot.br { width: 66%; }
 }
 
 /* ── Mobile ── */
@@ -340,9 +340,9 @@ body {
   .bot.tl,
   .bot.tr { width: 56%; top: -16px; }
   .bot.bl,
-  .bot.br { width: 58%; bottom: -16px; }
-  .bot.tl { left: -16px; }
-  .bot.tr { right: -16px; }
+  .bot.br { width: 70%; bottom: -20px; }
+  .bot.bl { left: -20px; }
+  .bot.br { right: -20px; }
   .bot.bl { left: -16px; }
   .bot.br { right: -16px; }
 
