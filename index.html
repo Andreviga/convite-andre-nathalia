@@ -13,11 +13,10 @@
     <link rel="canonical" href="https://convite.andrenathalia03052026.site/" />
 
     <!-- ══ OG / WhatsApp Preview ══
-         Imagem: /og-convite.jpg  —  1200 × 630 px  (formato retangular largo)
-         Conteúdo sugerido: fundo creme com os nomes "André & Nathália",
-         a data "03.05.2026 · 16h", ornamento dourado e borda.
-         Formato: JPG de alta qualidade (~150-300 KB).
-         Essa é a imagem que aparece como preview grande no WhatsApp. -->
+         Imagem: preview1.png
+         IMPORTANTE: A URL do og:image PRECISA ser absoluta (com https://)
+         para que o WhatsApp, Telegram e redes sociais consigam ler.
+         Ao trocar de domínio, atualize a URL abaixo. -->
     <meta property="og:title" content="André & Nathália — 03/05/2026" />
     <meta
       property="og:description"
@@ -25,7 +24,8 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://convite.andrenathalia03052026.site/" />
-    <meta property="og:image" content="https://convite.andrenathalia03052026.site/og-convite.jpg" />
+    <!-- NOTA DEPLOY: esta URL DEVE ser absoluta (https://...) para o WhatsApp ler a imagem -->
+    <meta property="og:image" content="https://convite.andrenathalia03052026.site/preview1.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="pt_BR" />
@@ -35,7 +35,8 @@
       name="twitter:description"
       content="Cerimônia às 16h • Rua das Araribás, 25 — São Bernardo do Campo/SP. Clique para ver informações e lista de presentes."
     />
-    <meta name="twitter:image" content="https://convite.andrenathalia03052026.site/og-convite.jpg" />
+    <!-- NOTA DEPLOY: esta URL DEVE ser absoluta (https://...) para o Twitter/WhatsApp ler a imagem -->
+    <meta name="twitter:image" content="https://convite.andrenathalia03052026.site/preview1.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,7 +54,7 @@
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "eventStatus": "https://schema.org/EventScheduled",
         "url": "https://convite.andrenathalia03052026.site/",
-        "image": ["https://convite.andrenathalia03052026.site/og-convite.jpg"],
+        "image": ["https://convite.andrenathalia03052026.site/preview1.png"],
         "location": {
           "@type": "Place",
           "name": "Cerimônia de casamento",
@@ -133,26 +134,37 @@
           </div>
         </section>
 
-        <p class="reception">Após a cerimônia, os convidados serão recepcionados.</p>
+        <!-- ══ Texto de Recepção com ornamento lateral ══ -->
+        <div class="reception-wrap">
+          <span class="reception-leaf" aria-hidden="true">&#8212;&#8201;&#10087;&#8201;&#8212;</span>
+          <p class="reception">Após a cerimônia, os convidados serão recepcionados no mesmo local</p>
+          <span class="reception-leaf" aria-hidden="true">&#8212;&#8201;&#10087;&#8201;&#8212;</span>
+        </div>
 
         <div class="rule" aria-hidden="true"></div>
 
-        <!-- ══ Botões CTA ══ -->
+        <p class="cta-intro">Mais informações em nosso site:</p>
+
+        <!-- ══ Botões CTA — estilo card ══ -->
         <section class="cta" aria-label="Ações principais">
           <a
-            class="btn btn--primary"
+            class="btn-card btn-card--primary"
             href="https://noivos.casar.com/andre-nathalia-03052026"
             target="_blank"
             rel="noopener noreferrer"
-            >Informações do Casamento</a
           >
+            <span class="btn-card__icon" aria-hidden="true">&#128141;</span>
+            <span class="btn-card__label">Informações do Casamento</span>
+          </a>
           <a
-            class="btn btn--outline"
+            class="btn-card btn-card--secondary"
             href="https://andrenathalia03052026.site/"
             target="_blank"
             rel="noopener noreferrer"
-            >Lista de Presentes</a
           >
+            <span class="btn-card__icon" aria-hidden="true">&#127873;</span>
+            <span class="btn-card__label">Lista de Presentes</span>
+          </a>
         </section>
 
         <!-- ══ Links para copiar ══ -->

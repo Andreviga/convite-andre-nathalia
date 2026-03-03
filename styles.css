@@ -57,11 +57,18 @@ body {
 .invite {
   position: relative;
   width: min(600px, 100%);
-  padding: clamp(60px, 10vw, 90px) clamp(40px, 8vw, 70px);
+  padding: clamp(60px, 10vw, 90px) clamp(46px, 9vw, 72px);
   text-align: center;
+  overflow: hidden;
 
-  /* Fundo com imagem do convite (moldura + folhas) */
-  background: url("/fundo-convite.jpg") center top / cover no-repeat;
+  /* Fundo com imagem do convite (moldura + folhas)
+     100% 100% garante que a moldura inteira fique visível
+     em qualquer tamanho de ecrã, sem cortar folhas/bordas. */
+  background-color: var(--paper-warm);
+  background-image: url("/fundo-convite.jpg");
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 
   /* Sombra — papel pousado sobre a mesa */
   box-shadow:
@@ -230,77 +237,120 @@ body {
 }
 
 /* ══════════════════════════════════════════════
-   RECEPÇÃO
+   RECEPÇÃO (com ornamentos laterais)
    ══════════════════════════════════════════════ */
-.reception {
-  font-family: var(--serif);
-  font-size: clamp(13px, 2.2vw, 15px);
-  font-style: italic;
-  font-weight: 300;
-  color: var(--ink-light);
-  line-height: 1.55;
-  margin-bottom: 14px;
-}
-
-/* ══════════════════════════════════════════════
-   BOTÕES
-   ══════════════════════════════════════════════ */
-.cta {
-  display: grid;
-  gap: 10px;
-  max-width: 400px;
-  margin: 16px auto 8px;
-}
-
-.btn {
+.reception-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 13px 24px;
-  font-family: var(--sans);
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.reception-leaf {
+  font-size: 14px;
+  color: var(--gold);
+  opacity: 0.7;
+  flex-shrink: 0;
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.reception {
+  font-family: var(--serif);
+  font-size: clamp(10px, 2vw, 12.5px);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  line-height: 1.55;
+  max-width: 320px;
+}
+
+/* ══════════════════════════════════════════════
+   INTRO CTA
+   ══════════════════════════════════════════════ */
+.cta-intro {
+  font-family: var(--serif);
+  font-size: clamp(12px, 2.2vw, 14px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-light);
+  letter-spacing: 0.02em;
+  margin-top: 14px;
+  margin-bottom: 4px;
+}
+
+/* ══════════════════════════════════════════════
+   BOTÕES CARD (com ícone acima do texto)
+   ══════════════════════════════════════════════ */
+.cta {
+  display: grid;
+  gap: 12px;
+  max-width: 400px;
+  margin: 12px auto 8px;
+}
+
+.btn-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 18px 20px;
   text-decoration: none;
-  border-radius: 30px;
+  border-radius: 10px;
   cursor: pointer;
   transition:
     background 0.2s ease,
     box-shadow 0.2s ease,
-    transform 0.08s ease;
+    transform 0.1s ease;
 }
 
-.btn:active { transform: translateY(1px); }
+.btn-card:active { transform: translateY(1px); }
 
-.btn:focus-visible {
+.btn-card:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
 
-/* Primário: verde escuro, texto creme */
-.btn--primary {
+.btn-card__icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.btn-card__label {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Primário: verde escuro, texto creme, ícone acima */
+.btn-card--primary {
   color: var(--paper);
   background: var(--green);
   border: none;
   box-shadow: 0 2px 10px rgba(47,62,50,0.15);
 }
 
-.btn--primary:hover {
+.btn-card--primary:hover {
   background: var(--green-soft);
   box-shadow: 0 4px 16px rgba(47,62,50,0.22);
 }
 
-/* Secundário: transparente, borda dourada fina */
-.btn--outline {
+/* Secundário: creme/branco, texto verde, sombra leve */
+.btn-card--secondary {
   color: var(--green);
-  background: transparent;
-  border: 1px solid var(--gold);
+  background: var(--paper);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
 }
 
-.btn--outline:hover {
-  background: rgba(196,164,100,0.06);
-  border-color: var(--gold-dark);
+.btn-card--secondary:hover {
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+  border-color: var(--gold-light);
 }
 
 /* ══════════════════════════════════════════════
@@ -408,7 +458,7 @@ body {
   }
 
   .invite {
-    padding: 50px 28px;
+    padding: 48px 36px;
   }
 
   .ornament { font-size: 20px; letter-spacing: 5px; }
@@ -461,21 +511,27 @@ body {
     font-size: 10.5px;
   }
 
+  .reception-wrap { gap: 8px; }
+
   .reception {
-    font-size: 12.5px;
-    margin-bottom: 10px;
+    font-size: clamp(9.5px, 2.6vw, 11.5px);
+    max-width: 240px;
   }
+
+  .reception-leaf { font-size: 11px; letter-spacing: 1px; }
 
   .cta {
     gap: 8px;
     margin: 10px auto 6px;
   }
 
-  .btn {
-    min-height: 44px;
-    padding: 11px 20px;
-    font-size: 13px;
+  .btn-card {
+    padding: 14px 16px;
+    gap: 4px;
   }
+
+  .btn-card__icon { font-size: 20px; }
+  .btn-card__label { font-size: 12px; }
 
   .links {
     margin-top: 8px;
@@ -493,7 +549,7 @@ body {
   .page { padding: 4px; }
 
   .invite {
-    padding: 40px 20px;
+    padding: 38px 28px;
   }
 
   .ornament.top  { margin-bottom: 6px; }
@@ -507,5 +563,12 @@ body {
   .info { padding: 12px 12px 10px; }
 
   .cta { gap: 6px; }
-  .btn { min-height: 40px; font-size: 12px; padding: 10px 16px; }
+
+  .btn-card {
+    padding: 12px 14px;
+    gap: 3px;
+  }
+
+  .btn-card__icon { font-size: 18px; }
+  .btn-card__label { font-size: 11px; }
 }
