@@ -178,20 +178,15 @@ body {
    ══════════════════════════════════════════════ */
 .info {
   position: relative;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 22px 22px 16px;
+  border: none;
+  border-radius: 0;
+  padding: 22px 0 16px;
   margin-bottom: 16px;
   overflow: hidden;
 
-  /* Fundo branco + textura de papel */
-  background:
-    url("/paper-texture.png"),
-    linear-gradient(180deg, #FFFFFF 0%, #FDFCFA 100%);
-  background-size: 400px 400px, 100% 100%;
-  background-repeat: repeat, no-repeat;
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  /* Fundo transparente — herda o fundo do convite */
+  background: transparent;
+  box-shadow: none;
 }
 
 .info-block {
