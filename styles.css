@@ -380,12 +380,11 @@ body {
    ══════════════════════════════════════════════ */
 .aliancas {
   display: block;
-  max-width: 150px;
-  width: 40%;
-  height: auto;
-  margin: 12px auto 8px;
-  opacity: 0.92;
-  pointer-events: none;
+  font-size: 36px;
+  line-height: 1;
+  margin: 14px auto 8px;
+  opacity: 0.85;
+  user-select: none;
 }
 
 /* ══════════════════════════════════════════════
