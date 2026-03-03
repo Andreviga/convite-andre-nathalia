@@ -41,6 +41,7 @@ body {
 
 .invite {
   position: relative;
+  isolation: isolate;
   width: min(820px, 100%);
   padding: clamp(18px, 4vw, 40px);
   border-radius: var(--radius);
@@ -68,10 +69,10 @@ body {
   position: absolute;
   inset: 0;
   background: url('/paper-texture.png');
-  background-size: 900px 900px;
+  background-size: 450px 450px;
   pointer-events: none;
-  opacity: 0.16;
-  mix-blend-mode: multiply;
+  opacity: 0.22;
+  mix-blend-mode: normal;
   z-index: 1;
 }
 
