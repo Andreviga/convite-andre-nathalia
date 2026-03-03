@@ -23,7 +23,11 @@ body {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: var(--bg);
+  background:
+    radial-gradient(1200px 680px at 50% -220px, rgba(255, 255, 255, 0.92), transparent 66%),
+    radial-gradient(920px 520px at 10% 18%, rgba(201, 179, 126, 0.2), transparent 72%),
+    radial-gradient(980px 560px at 88% 82%, rgba(111, 132, 117, 0.16), transparent 70%),
+    var(--bg);
   color: #1f2a24;
 }
 
@@ -42,6 +46,7 @@ body {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+  box-shadow: 0 18px 45px rgba(17, 24, 19, 0.08);
   overflow: hidden;
 }
 
@@ -68,7 +73,7 @@ body {
 
 .invite .frame2 {
   position: absolute;
-  inset: 22px;
+  inset: 26px;
   border-radius: calc(var(--radius) - 22px);
   border: 1px solid rgba(232, 227, 215, 0.8);
   pointer-events: none;
@@ -86,31 +91,31 @@ body {
   height: auto;
   display: block;
   mix-blend-mode: multiply;
-  opacity: 0.58;
+  opacity: 0.75;
 }
 
 .bot.tl {
   top: -18px;
   left: -18px;
-  width: min(320px, 52vw);
+  width: min(360px, 58vw);
 }
 
 .bot.tr {
   top: -18px;
   right: -18px;
-  width: min(310px, 50vw);
+  width: min(340px, 56vw);
 }
 
 .bot.bl {
   bottom: -18px;
   left: -18px;
-  width: min(340px, 54vw);
+  width: min(380px, 62vw);
 }
 
 .bot.br {
   bottom: -18px;
   right: -18px;
-  width: min(340px, 54vw);
+  width: min(380px, 62vw);
 }
 
 .head {
