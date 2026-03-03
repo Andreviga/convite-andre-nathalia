@@ -1,351 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>André & Nathália - Casamento</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convite Digital — André & Nathália</title>
+    <meta name="theme-color" content="#0f4f3d" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta
+      name="description"
+      content="Convite digital de casamento de André & Nathália — 03 de maio de 2026, às 16h."
+    />
+    <link rel="canonical" href="https://convite.andrenathalia03052026.site/" />
 
-    <!-- WhatsApp / Open Graph -->
     <meta property="og:title" content="André & Nathália — 03/05/2026" />
-    <meta property="og:description" content="Cerimônia às 16h • Rua das Araribás, 25 — São Bernardo do Campo/SP. Clique para ver informações e lista de presentes." />
+    <meta
+      property="og:description"
+      content="Cerimônia às 16h • Rua das Araribás, 25 — São Bernardo do Campo/SP. Clique para ver informações e lista de presentes."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://convite.andrenathalia03052026.site/" />
-    <meta property="og:image" content="https://convite.andrenathalia03052026.site/preview.jpg" />
+    <meta property="og:image" content="/preview.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
-    
-    <!-- Importação de Fontes Elegantes do Google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-    
-    <!-- Ícones (Phosphor Icons) -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <meta name="twitter:title" content="André & Nathália — 03/05/2026" />
+    <meta
+      name="twitter:description"
+      content="Cerimônia às 16h • Rua das Araribás, 25 — São Bernardo do Campo/SP. Clique para ver informações e lista de presentes."
+    />
+    <meta name="twitter:image" content="/preview.jpg" />
 
-    <!-- Tailwind CSS para Estilização -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'wedding-bg': '#fcfbf8',
-                        'wedding-green': '#3d5244',
-                        'wedding-green-dark': '#2a3a2f',
-                        'wedding-gold': '#bfa26d',
-                        'wedding-gold-light': '#d4be94',
-                        'wedding-text': '#363d38',
-                        'wedding-card': '#ffffff',
-                    },
-                    fontFamily: {
-                        'script': ['"Alex Brush"', 'cursive'],
-                        'serif': ['"Cormorant Garamond"', 'serif'],
-                        'sans': ['"DM Sans"', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'elegant': '0 20px 40px -15px rgba(0,0,0,0.07)',
-                        'button': '0 10px 20px -10px rgba(61,82,68,0.4)',
-                    }
-                }
-            }
-        }
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+      rel="stylesheet"
+    />
 
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Casamento de André e Nathália",
+        "startDate": "2026-05-03T16:00:00-03:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "url": "https://convite.andrenathalia03052026.site/",
+        "image": ["https://convite.andrenathalia03052026.site/preview.jpg"],
+        "location": {
+          "@type": "Place",
+          "name": "Cerimônia de casamento",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Rua das Araribás, 25",
+            "addressLocality": "São Bernardo do Campo",
+            "addressRegion": "SP",
+            "postalCode": "09840-210",
+            "addressCountry": "BR"
+          }
+        },
+        "description": "Convite digital de casamento de André e Nathália com informações da cerimônia e lista de presentes."
+      }
     </script>
 
-    <style>
-        /* Estilos Adicionais Específicos */
-        body {
-            background-color: #fcfbf8;
-            /* Textura suave de papel */
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-        }
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page" aria-labelledby="titulo-convite">
+      <section class="invite" role="document">
+        <div class="frame2" aria-hidden="true"></div>
 
-        .gold-border {
-            position: relative;
-        }
-        
-        .gold-border::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            border: 1px solid #bfa26d;
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
-        }
+        <div class="bot tl" aria-hidden="true"><img src="botanical-top-left.png" alt="" /></div>
+        <div class="bot tr" aria-hidden="true"><img src="botanical-top-right.png" alt="" /></div>
+        <div class="bot bl" aria-hidden="true"><img src="botanical-bottom-left.png" alt="" /></div>
+        <div class="bot br" aria-hidden="true"><img src="botanical-bottom-right.png" alt="" /></div>
 
-        /* Cantos recortados suaves para o cartão central */
-        .scalloped-card {
-            border-radius: 16px;
-            position: relative;
-        }
+        <header class="head">
+          <p class="logoMark">A <span class="logoAmp">&amp;</span> N</p>
+          <h1 id="titulo-convite" class="logoName">André <span class="logoAmp">&amp;</span> Nathália</h1>
+          <p class="invite-line">convidam para a celebração de seu casamento.</p>
+          <div class="gold-rule" aria-hidden="true"></div>
+        </header>
 
-        .leaf-decor {
-            opacity: 0.85;
-            mix-blend-mode: multiply;
-        }
-    
-        /* Variáveis originais usadas no CSS */
-        :root {
-          --green: #0f4f3d;
-          --muted: #6f8475;
-          --gold: #c9b37e;
-        }
+        <section class="details" aria-label="Detalhes da cerimônia">
+          <article class="detail-card">
+            <p class="label">Data e horário</p>
+            <p class="value">03 de maio de 2026, às 16h</p>
+          </article>
 
-        /* Topo Premium Customizado */
-        .logoMark{
-          font-family: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
-          text-align:center;
-          font-size: 22px;
-          letter-spacing: .28em;
-          color: var(--muted);
-          margin: 4px 0 12px;
-        }
-
-        .logoName{
-          font-family: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
-          text-align:center;
-          font-size: clamp(40px, 6.2vw, 74px);
-          line-height: 1.02;
-          letter-spacing: .02em;
-          margin: 0 0 14px;
-          color: color-mix(in oklab, var(--green) 92%, black);
-        }
-
-        .logoAmp{
-          color:#C4A96A;
-          font-style: italic;
-          font-weight:400;
-          padding: 0 .18em;
-        }
-    </style>
-</head>
-<body class="font-sans text-wedding-text antialiased min-h-screen flex items-center justify-center p-4 sm:p-8">
-
-    <!-- Container Principal do Convite -->
-    <div class="gold-border relative bg-wedding-bg w-full max-w-[800px] min-h-[90vh] shadow-2xl overflow-hidden flex flex-col items-center justify-between py-16 px-6 sm:px-12 z-10">
-
-        <!-- Decorações de Folhagens SVG (Cantos) -->
-        <!-- Topo Esquerda -->
-        <svg class="leaf-decor absolute top-0 left-0 w-48 sm:w-64 -translate-x-4 -translate-y-4 pointer-events-none text-wedding-green" viewBox="0 0 200 200" fill="currentColor">
-            <path d="M0,0 C50,20 80,60 90,100 C70,110 30,90 0,60 Z" opacity="0.6"/>
-            <path d="M20,0 C60,10 100,40 120,80 C90,100 40,70 10,30 Z" opacity="0.4"/>
-            <path d="M0,30 C40,50 70,90 80,140 C50,130 20,90 0,60 Z" opacity="0.5"/>
-            <path d="M40,0 C90,20 130,70 140,120 C110,140 60,90 20,40 Z" opacity="0.3"/>
-            <circle cx="110" cy="50" r="3" fill="#bfa26d"/>
-            <circle cx="130" cy="80" r="2" fill="#bfa26d"/>
-            <circle cx="80" cy="120" r="2.5" fill="#bfa26d"/>
-        </svg>
-
-        <!-- Topo Direita -->
-        <svg class="leaf-decor absolute top-0 right-0 w-48 sm:w-64 translate-x-4 -translate-y-4 pointer-events-none text-wedding-green scale-x-[-1]" viewBox="0 0 200 200" fill="currentColor">
-            <path d="M0,0 C50,20 80,60 90,100 C70,110 30,90 0,60 Z" opacity="0.6"/>
-            <path d="M20,0 C60,10 100,40 120,80 C90,100 40,70 10,30 Z" opacity="0.4"/>
-            <path d="M0,30 C40,50 70,90 80,140 C50,130 20,90 0,60 Z" opacity="0.5"/>
-            <circle cx="110" cy="50" r="3" fill="#bfa26d"/>
-            <circle cx="130" cy="80" r="2" fill="#bfa26d"/>
-        </svg>
-
-        <!-- Fundo Esquerda -->
-        <svg class="leaf-decor absolute bottom-0 left-0 w-48 sm:w-64 -translate-x-4 translate-y-4 pointer-events-none text-wedding-green scale-y-[-1]" viewBox="0 0 200 200" fill="currentColor">
-            <path d="M0,0 C50,20 80,60 90,100 C70,110 30,90 0,60 Z" opacity="0.6"/>
-            <path d="M20,0 C60,10 100,40 120,80 C90,100 40,70 10,30 Z" opacity="0.4"/>
-        </svg>
-
-        <!-- Fundo Direita -->
-        <svg class="leaf-decor absolute bottom-0 right-0 w-48 sm:w-64 translate-x-4 translate-y-4 pointer-events-none text-wedding-green scale-[-1]" viewBox="0 0 200 200" fill="currentColor">
-            <path d="M0,0 C50,20 80,60 90,100 C70,110 30,90 0,60 Z" opacity="0.6"/>
-            <path d="M20,0 C60,10 100,40 120,80 C90,100 40,70 10,30 Z" opacity="0.4"/>
-            <path d="M0,30 C40,50 70,90 80,140 C50,130 20,90 0,60 Z" opacity="0.5"/>
-            <circle cx="110" cy="50" r="3" fill="#bfa26d"/>
-        </svg>
-
-
-        <!-- CONTEÚDO PRINCIPAL -->
-        <div class="relative z-20 w-full flex flex-col items-center text-center">
-            
-            <!-- Topo Logo / Nomes -->
-            <div class="flex flex-col items-center justify-center relative z-10 w-full mt-4 mb-2">
-                <div class="logoMark" aria-label="Iniciais">
-                  A <span class="logoAmp">&amp;</span> N
-                </div>
-
-                <h1 class="logoName" aria-label="Nomes">
-                  André <span class="logoAmp">&amp;</span> Nathália
-                </h1>
-            </div>
-
-            <!-- Convite texto -->
-            <p class="font-sans text-base sm:text-lg  tracking-[0.2em] text-wedding-text mb-6">
-                convidam para a celebração de seu casamento.
+          <article class="detail-card" aria-label="Local da cerimônia">
+            <p class="label">Local</p>
+            <p class="value" id="wedding-address">
+              Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210
             </p>
-
-            <!-- Ornamento Divisor -->
-            <div class="mb-10 text-wedding-gold">
-                <svg width="100" height="15" viewBox="0 0 100 15">
-                    <path d="M0,7.5 L40,7.5 M60,7.5 L100,7.5" stroke="currentColor" stroke-width="1"/>
-                    <path d="M50,0 L55,7.5 L50,15 L45,7.5 Z" fill="currentColor"/>
-                </svg>
+            <div class="actions">
+              <button
+                class="chip copy-btn"
+                type="button"
+                data-copy="Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210"
+                data-success="Endereço copiado com sucesso."
+              >
+                Copiar endereço
+              </button>
+              <a
+                class="chip"
+                href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20-%20SP%20-%2009840-210"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Abrir no Maps</a
+              >
             </div>
+          </article>
+        </section>
 
-            <!-- CARTÃO DE INFORMAÇÕES (DATA, HORA, LOCAL) -->
-            <div class="scalloped-card bg-wedding-card w-full max-w-2xl shadow-elegant p-8 sm:p-10 mb-10 flex flex-col md:flex-row items-center justify-center relative border border-wedding-gold/20">
-                
-                <!-- Coluna Esquerda: Data e Hora -->
-                <div class="flex-1 flex flex-col items-center text-center px-4 w-full">
-                    <i class="ph ph-calendar-blank text-3xl text-wedding-gold mb-3"></i>
-                    <p class="font-sans text-base sm:text-lg tracking-[0.1em] text-wedding-text uppercase mb-4 whitespace-nowrap">
-                        03 de maio de 2026
-                    </p>
-                    <div class="flex items-center gap-2 text-wedding-gold mb-2">
-                        <svg width="40" height="10" viewBox="0 0 40 10"><path d="M0,5 Q20,-5 40,5" fill="none" stroke="currentColor" stroke-width="1"/></svg>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="ph ph-clock text-2xl text-wedding-gold"></i>
-                        <p class="font-sans text-base sm:text-lg tracking-widest text-wedding-text uppercase">
-                            16h
-                        </p>
-                    </div>
-                </div>
+        <p class="invite-line invite-line--centered">
+          Após a cerimônia, os convidados serão recepcionados.
+        </p>
 
-                <!-- Divisor Vertical (Sobe no Desktop, Some no Mobile) -->
-                <div class="hidden md:block w-[1px] h-32 bg-wedding-gold opacity-50 mx-4"></div>
-                <!-- Divisor Horizontal (Aparece no Mobile, Some no Desktop) -->
-                <div class="block md:hidden w-full h-[1px] bg-wedding-gold opacity-30 my-6"></div>
+        <section class="cta" aria-label="Ações principais">
+          <a
+            class="btn btn--primary"
+            href="https://noivos.casar.com/andre-nathalia-03052026"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Acessar informações do casamento</a
+          >
+          <a
+            class="btn btn--secondary"
+            href="https://andrenathalia03052026.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Acessar lista de presentes</a
+          >
+        </section>
 
-                <!-- Coluna Direita: Localização -->
-                <div class="flex-1 flex flex-col items-center text-center px-4 w-full">
-                    <i class="ph ph-map-pin text-3xl text-wedding-gold mb-3"></i>
-                    <p class="font-serif text-[17px] sm:text-[19px] text-wedding-text mb-2 tracking-wide font-medium leading-relaxed">Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210</p>
-                <div class="flex gap-3 justify-center mt-5"><a href="https://www.google.com/maps/search/?api=1&query=Rua%20das%20Ararib%C3%A1s%2C%2025%20-%20S%C3%A3o%20Bernardo%20do%20Campo%20SP%2009840-210" target="_blank" rel="noopener" class="text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">Abrir no Maps</a><button id="copyAddress" class="text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">Copiar Endereço</button></div></div>
-            </div>
+        <section class="copylinks" aria-label="Links em texto para copiar">
+          <p>
+            Informações do casamento:<br />
+            <a href="https://noivos.casar.com/andre-nathalia-03052026"
+              >https://noivos.casar.com/andre-nathalia-03052026</a
+            >
+          </p>
+          <button
+            class="chip copy-btn"
+            type="button"
+            data-copy="https://noivos.casar.com/andre-nathalia-03052026"
+            data-success="Link de informações copiado com sucesso."
+          >
+            Copiar link de informações
+          </button>
+          <p>
+            Lista de presentes:<br />
+            <a href="https://andrenathalia03052026.site/">https://andrenathalia03052026.site/</a>
+          </p>
+          <button
+            class="chip copy-btn"
+            type="button"
+            data-copy="https://andrenathalia03052026.site/"
+            data-success="Link da lista copiado com sucesso."
+          >
+            Copiar link da lista
+          </button>
+          <p id="copy-feedback" class="copy-feedback" aria-live="polite"></p>
+        </section>
 
-            <!-- Aviso Pós-Cerimónia -->
-            <div class="flex items-center justify-center gap-4 mb-12 w-full px-4">
-                <svg width="40" height="20" viewBox="0 0 40 20" class="text-wedding-green opacity-60">
-                    <path d="M0,10 Q10,0 20,10 T40,10" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M15,10 Q10,5 5,10 Q10,15 15,10" fill="currentColor"/>
-                </svg>
-                <p class="font-sans text-[10px] sm:text-base uppercase tracking-[0.15em] text-wedding-text text-center max-w-[400px]">
-                    Após a cerimônia, os convidados serão recepcionados no mesmo local
-                </p>
-                <svg width="40" height="20" viewBox="0 0 40 20" class="text-wedding-green opacity-60 scale-x-[-1]">
-                    <path d="M0,10 Q10,0 20,10 T40,10" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M15,10 Q10,5 5,10 Q10,15 15,10" fill="currentColor"/>
-                </svg>
-            </div>
+        <footer class="foot">Com carinho, André &amp; Nathália</footer>
+      </section>
+    </main>
 
-            <!-- Secção de Botões -->
-            <div class="w-full max-w-2xl mb-12">
-                <p class="font-serif italic text-lg sm:text-xl text-wedding-text mb-6">
-                    Mais informações em nosso site:
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                    <!-- Botão 1: Informações (Verde) -->
-                    <a href="https://noivos.casar.com/andre-nathalia-03052026" target="_blank" rel="noopener" class="group relative flex flex-col items-center justify-center bg-wedding-green hover:bg-wedding-green-dark transition-all duration-300 text-white rounded-xl py-6 px-4 shadow-button border border-wedding-green/20 min-h-[100px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">
-                        <i class="ph ph-info text-2xl text-wedding-gold-light mb-2 opacity-80 group-hover:scale-110 transition-transform"></i>
-                        <span class="font-serif uppercase tracking-widest text-base text-center">
-                            Acessar Informações<br>do Casamento
-                        </span>
-                    </a>
-
-                    <!-- Botão 2: Lista de Presentes (Branco) -->
-                    <a href="https://andrenathalia03052026.site/" target="_blank" rel="noopener" class="group relative flex flex-col items-center justify-center bg-wedding-card hover:bg-[#faf9f5] transition-all duration-300 text-wedding-text rounded-xl py-6 px-4 shadow-elegant border border-wedding-gold/40 min-h-[100px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">
-                        <i class="ph ph-gift text-2xl text-wedding-gold mb-2 group-hover:scale-110 transition-transform"></i>
-                        <span class="font-serif uppercase tracking-widest text-base text-center">
-                            Acessar Lista de<br>Presentes
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            
-            <!-- Links por escrito para copiar/colar -->
-            <div class="mt-8 text-center px-4">
-                <div class="mb-6">
-                    <p class="font-sans text-base font-semibold text-wedding-green/70 uppercase tracking-widest mb-2">Link Informações do Casamento</p>
-                    <p class="font-serif text-sm sm:text-base text-wedding-text break-all mb-3"><a href="https://noivos.casar.com/andre-nathalia-03052026" target="_blank" rel="noopener" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">https://noivos.casar.com/andre-nathalia-03052026</a></p>
-                    <button class="copyLinkBtn text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2" data-link="https://noivos.casar.com/andre-nathalia-03052026">Copiar Link</button>
-                </div>
-                <div>
-                    <p class="font-sans text-base font-semibold text-wedding-green/70 uppercase tracking-widest mb-2">Link Lista de Presentes</p>
-                    <p class="font-serif text-sm sm:text-base text-wedding-text break-all mb-3"><a href="https://andrenathalia03052026.site/" target="_blank" rel="noopener" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2">https://andrenathalia03052026.site/</a></p>
-                    <button class="copyLinkBtn text-base font-semibold font-sans tracking-wider uppercase border border-wedding-gold/40 text-wedding-gold px-4 py-2 rounded-full hover:bg-wedding-gold hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wedding-gold focus-visible:ring-offset-2" data-link="https://andrenathalia03052026.site/">Copiar Link</button>
-                </div>
-            </div>
-
-            <!-- Footer: Alianças e Assinatura -->
-            <div class="flex flex-col items-center mt-auto">
-                <!-- Ícone Alianças -->
-                <div class="mb-4 text-wedding-gold relative">
-                    <svg width="80" height="40" viewBox="0 0 80 40">
-                        <!-- Aliança Esquerda -->
-                        <ellipse cx="30" cy="20" rx="15" ry="8" fill="none" stroke="currentColor" stroke-width="3" transform="rotate(-15 30 20)"/>
-                        <!-- Aliança Direita -->
-                        <ellipse cx="50" cy="20" rx="15" ry="8" fill="none" stroke="currentColor" stroke-width="3" transform="rotate(15 50 20)"/>
-                        <!-- Pequeno brilho -->
-                        <circle cx="45" cy="12" r="1.5" fill="#fff"/>
-                    </svg>
-                </div>
-                
-                <p class="font-serif italic text-lg text-wedding-text mb-1">
-                    Com carinho,
-                </p>
-                <p class="font-sans text-base sm:text-lg uppercase tracking-[0.2em] text-wedding-green-dark font-medium pb-4">
-                    André & Nathália
-                </p>
-            </div>
-
-        </div>
-    </div>
-
-<script>
-        document.getElementById("copyAddress").addEventListener("click", async function() {
-            const address = "Rua das Araribás, 25 — São Bernardo do Campo — SP — CEP 09840-210";
-            try {
-                await navigator.clipboard.writeText(address);
-                const btn = this;
-                const originalText = btn.innerText;
-                btn.innerText = "COPIADO ✓";
-                btn.classList.add("bg-wedding-gold", "text-white");
-                
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.classList.remove("bg-wedding-gold", "text-white");
-                }, 2000);
-            } catch (err) {
-                console.error("Falha ao copiar endereço: ", err);
-            }
-        });
-
-    </script>
-<script>
-    document.querySelectorAll(".copyLinkBtn").forEach(btn => {
-        btn.addEventListener("click", async function() {
-            const link = this.getAttribute("data-link");
-            try {
-                await navigator.clipboard.writeText(link);
-                const originalText = this.innerText;
-                this.innerText = "COPIADO \u2713";
-                this.classList.add("bg-wedding-gold", "text-white");
-                setTimeout(() => {
-                    this.innerText = originalText;
-                    this.classList.remove("bg-wedding-gold", "text-white");
-                }, 2000);
-            } catch (err) {
-                console.error("Falha ao copiar link: ", err);
-            }
-        });
-    });
-</script>
-</body>
+    <script src="script.js" defer></script>
+  </body>
 </html>
-
-
-
-
