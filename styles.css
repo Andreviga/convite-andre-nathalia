@@ -106,27 +106,27 @@ body {
 }
 
 .bot.tl {
-  top: -18px;
-  left: -18px;
-  width: min(360px, 58vw);
+  top: -24px;
+  left: -24px;
+  width: 52%;
 }
 
 .bot.tr {
-  top: -18px;
-  right: -18px;
-  width: min(340px, 56vw);
+  top: -24px;
+  right: -24px;
+  width: 50%;
 }
 
 .bot.bl {
-  bottom: -18px;
-  left: -18px;
-  width: min(380px, 62vw);
+  bottom: -24px;
+  left: -24px;
+  width: 54%;
 }
 
 .bot.br {
-  bottom: -18px;
-  right: -18px;
-  width: min(380px, 62vw);
+  bottom: -24px;
+  right: -24px;
+  width: 54%;
 }
 
 .head {
@@ -315,6 +315,15 @@ body {
   z-index: 5;
 }
 
+/* ── Tablet / medium ── */
+@media (max-width: 680px) {
+  .bot.tl { width: 54%; }
+  .bot.tr { width: 52%; }
+  .bot.bl,
+  .bot.br { width: 56%; }
+}
+
+/* ── Mobile ── */
 @media (max-width: 420px) {
   .invite {
     padding: 18px;
@@ -327,6 +336,15 @@ body {
   .invite .frame2 {
     inset: 18px;
   }
+
+  .bot.tl,
+  .bot.tr { width: 56%; top: -16px; }
+  .bot.bl,
+  .bot.br { width: 58%; bottom: -16px; }
+  .bot.tl { left: -16px; }
+  .bot.tr { right: -16px; }
+  .bot.bl { left: -16px; }
+  .bot.br { right: -16px; }
 
   .logoMark {
     margin-bottom: 8px;
