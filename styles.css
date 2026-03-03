@@ -97,20 +97,6 @@ body {
 */
 
 /* ══════════════════════════════════════════════
-   ORNAMENTOS
-   ══════════════════════════════════════════════ */
-.ornament {
-  font-size: 24px;
-  color: var(--gold);
-  line-height: 1;
-  letter-spacing: 8px;
-  user-select: none;
-}
-
-.ornament.top  { margin-bottom: 16px; }
-.ornament.bottom { margin-top: 20px; margin-bottom: 8px; }
-
-/* ══════════════════════════════════════════════
    CABEÇALHO
    ══════════════════════════════════════════════ */
 .head {
@@ -430,10 +416,6 @@ body {
     padding: 48px 36px;
   }
 
-  .ornament { font-size: 20px; letter-spacing: 5px; }
-  .ornament.top  { margin-bottom: 10px; }
-  .ornament.bottom { margin-top: 14px; margin-bottom: 6px; }
-
   .head { margin-bottom: 8px; }
 
   .monogram {
@@ -513,9 +495,6 @@ body {
   .invite {
     padding: 38px 28px;
   }
-
-  .ornament.top  { margin-bottom: 6px; }
-  .ornament { font-size: 18px; }
 
   .monogram { font-size: 14px; margin-bottom: 4px; }
   .names { font-size: clamp(24px, 9vw, 32px); }
