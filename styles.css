@@ -1,38 +1,35 @@
-/* ═══════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    Convite de Casamento — André & Nathália
-   Estilo: Clássico Botânico Elegante (convite físico)
-   ═══════════════════════════════════════════════════════════ */
+   Premium Physical Invitation Style
+   Fontes originais: Cormorant Garamond + DM Sans
+   ══════════════════════════════════════════════════════ */
 
-/* ── Fontes ── */
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
-/* ── Variáveis ── */
 :root {
-  --bg:         #F3EDE4;           /* fundo da página (linen suave) */
-  --paper:      #FDFBF7;           /* fundo do convite (off-white) */
-  --paper-warm: #FAF8F5;           /* variação mais quente */
-  --green:      #2F3E32;           /* verde eucalipto escuro */
-  --green-soft: #4A5E4D;           /* verde médio */
-  --green-pale: #6B7F6E;           /* verde claro/muted */
-  --gold:       #C4A464;           /* dourado/bronze principal */
-  --gold-light: #D8C48E;           /* dourado claro */
-  --gold-dark:  #A88A4A;           /* dourado escuro */
-  --text:       #2F3E32;           /* texto principal = verde escuro */
-  --text-soft:  #4A5E4D;           /* texto secundário */
-  --text-muted: #7A8B7C;           /* texto terciário */
-  --border:     #E5DFD4;           /* bordas suaves */
+  /* Paleta — papel premium + tinta + ouro envelhecido */
+  --bg:         #FAF8F5;
+  --paper:      #FDFBF7;
+  --paper-warm: #FAF6F0;
+  --white-card: #FFFFFF;
+  --ink:        #2c2c2c;
+  --ink-soft:   #4a4a4a;
+  --ink-light:  #7a7a7a;
+  --gold:       #C4A464;
+  --gold-light: #D8C48E;
+  --gold-dark:  #A88A4A;
+  --green:      #2F3E32;
+  --green-soft: #3d5c4a;
+  --green-deep: #24332A;
+  --linen:      #EDE8DD;
+  --border:     #E5DFD4;
 
-  --script:     'Great Vibes', cursive;
-  --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --sans:       'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --serif:  'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --sans:   'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* ── Reset ── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { height: 100%; }
 
@@ -40,222 +37,176 @@ body {
   min-height: 100%;
   font-family: var(--sans);
   background: var(--bg);
-  color: var(--text);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    PÁGINA
-   ═══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 .page {
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(16px, 4vw, 48px);
+  padding: clamp(20px, 5vw, 56px);
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    O CONVITE (card principal)
-   ═══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 .invite {
   position: relative;
-  width: min(680px, 100%);
+  width: min(640px, 100%);
+  padding: clamp(52px, 8vw, 88px) clamp(36px, 7vw, 72px);
   text-align: center;
-  overflow: hidden;
 
-  /* Papel texturizado */
+  /* Papel texturizado premium */
   background:
     url("/paper-texture.png"),
-    linear-gradient(176deg, #FEFCF9 0%, var(--paper) 35%, var(--paper-warm) 100%);
+    linear-gradient(176deg, #FEFCFA 0%, var(--paper) 40%, var(--paper-warm) 100%);
   background-size: 500px 500px, 100% 100%;
   background-repeat: repeat, no-repeat;
 
-  /* Sombra elegante de papel */
+  /* Sombra suave — papel "pousado" sobre a mesa */
   box-shadow:
-    0 1px 2px rgba(0,0,0,0.04),
-    0 4px 12px rgba(0,0,0,0.05),
-    0 20px 48px rgba(47,62,50,0.08);
+    0 1px 2px rgba(0,0,0,0.025),
+    0 4px 10px rgba(0,0,0,0.03),
+    0 10px 30px rgba(0,0,0,0.04),
+    0 24px 56px rgba(0,0,0,0.045);
 }
 
-/* ── Borda dourada externa ── */
+/* ── Moldura dourada externa ── */
 .invite::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border: 2px solid var(--gold);
+  inset: 14px;
+  border: 1.5px solid var(--gold);
   pointer-events: none;
-  z-index: 5;
 }
 
-/* ── Moldura interna decorativa ── */
-.inner-frame {
+/* ── Moldura interna decorativa (linha fina) ── */
+.invite::after {
+  content: '';
   position: absolute;
-  inset: 10px;
-  border: 1px solid var(--gold-light);
-  opacity: 0.55;
+  inset: 20px;
+  border: 0.5px solid var(--gold-light);
   pointer-events: none;
-  z-index: 5;
+  opacity: 0.5;
 }
 
-/* ═══════════════════════════════════════════════
-   FOLHAGENS — Placeholders para PNGs
-   Descomente os <img> no HTML e coloque seus
-   PNGs de eucalipto em aquarela.
-   ═══════════════════════════════════════════════ */
-.foliage {
-  position: absolute;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.foliage img {
-  width: 100%;
-  height: auto;
-  display: block;
-  opacity: 0.85;
-}
-
-.foliage--top-left {
-  top: -20px;
-  left: -20px;
-  width: 45%;
-  max-width: 280px;
-}
-
-.foliage--top-right {
-  top: -20px;
-  right: -20px;
-  width: 45%;
-  max-width: 280px;
-}
-
-.foliage--bottom-left {
-  bottom: -20px;
-  left: -20px;
-  width: 48%;
-  max-width: 300px;
-}
-
-.foliage--bottom-right {
-  bottom: -20px;
-  right: -20px;
-  width: 48%;
-  max-width: 300px;
-}
-
-/* ═══════════════════════════════════════════════
-   CONTEÚDO (sobre tudo, acima das folhagens)
-   ═══════════════════════════════════════════════ */
-.content {
-  position: relative;
-  z-index: 3;
-  padding: clamp(48px, 8vw, 80px) clamp(28px, 6vw, 64px);
-}
-
-/* ═══════════════════════════════════════════════
-   ORNAMENTO DOURADO
-   ═══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   ORNAMENTOS TIPOGRÁFICOS (✿)
+   ══════════════════════════════════════════════ */
 .ornament {
-  font-size: 14px;
+  font-size: 26px;
   color: var(--gold);
-  letter-spacing: 6px;
   line-height: 1;
-  margin: 16px 0;
+  letter-spacing: 8px;
   user-select: none;
 }
 
-/* ═══════════════════════════════════════════════
-   MONOGRAMA
-   ═══════════════════════════════════════════════ */
-.monogram {
-  font-family: var(--script);
-  font-size: clamp(28px, 5vw, 38px);
-  font-weight: 400;
-  color: var(--gold);
-  margin-bottom: 12px;
+.ornament.top {
+  margin-bottom: 32px;
 }
 
-.mono-amp {
-  font-family: var(--script);
-  color: var(--gold-dark);
+.ornament.bottom {
+  margin-top: 36px;
+  margin-bottom: 16px;
 }
 
-/* ═══════════════════════════════════════════════
-   LINHA DOURADA (divisória)
-   ═══════════════════════════════════════════════ */
-.gold-line {
-  width: 120px;
-  height: 1px;
-  margin: 16px auto;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-/* ═══════════════════════════════════════════════
-   NOMES DOS NOIVOS (fonte script/cursiva)
-   ═══════════════════════════════════════════════ */
-.names {
-  font-family: var(--script);
-  font-size: clamp(42px, 10vw, 72px);
-  font-weight: 400;
-  line-height: 1.15;
-  color: var(--green);
-  margin: 8px 0 4px;
-}
-
-.names-amp {
-  font-family: var(--script);
-  font-size: 0.7em;
-  color: var(--gold);
-}
-
-/* ═══════════════════════════════════════════════
-   SUBTÍTULO
-   ═══════════════════════════════════════════════ */
-.subtitle {
-  font-family: var(--serif);
-  font-size: clamp(13px, 2.2vw, 16px);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-soft);
-  line-height: 1.7;
-  margin-top: 16px;
+/* ══════════════════════════════════════════════
+   CABEÇALHO — Monograma + Nomes
+   ══════════════════════════════════════════════ */
+.head {
   margin-bottom: 28px;
 }
 
-/* ═══════════════════════════════════════════════
-   CARD DE DETALHES (data + local lado a lado)
-   ═══════════════════════════════════════════════ */
-.details-card {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  background: rgba(243,237,228,0.45);
+.monogram {
+  font-family: var(--serif);
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.amp {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold-dark);
+}
+
+.names {
+  font-family: var(--serif);
+  font-size: clamp(36px, 8vw, 58px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 20px 0;
+}
+
+.names .amp {
+  font-size: 0.75em;
+  vertical-align: 2px;
+  color: var(--gold);
+}
+
+/* ── Filete decorativo dourado ── */
+.rule {
+  width: 40%;
+  max-width: 120px;
+  height: 1px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ══════════════════════════════════════════════
+   SUBTÍTULO
+   ══════════════════════════════════════════════ */
+.subtitle {
+  font-family: var(--serif);
+  font-size: clamp(15px, 2.8vw, 19px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  margin-top: 28px;
+  margin-bottom: 36px;
+}
+
+/* ══════════════════════════════════════════════
+   CARD DE INFORMAÇÕES (Data + Local)
+   Card branco com sombra suave sobre papel creme
+   ══════════════════════════════════════════════ */
+.info {
+  background: var(--white-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px 24px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(47,62,50,0.04);
+  border-radius: 10px;
+  padding: 32px 28px;
+  margin-bottom: 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
-.details-col {
-  flex: 1;
-  padding: 0 16px;
+.info-block {
+  padding: 16px 0;
 }
 
-/* Divisor vertical entre colunas */
-.details-divider {
-  width: 1px;
-  align-self: stretch;
-  background: linear-gradient(180deg, transparent, var(--gold-light), transparent);
-  flex-shrink: 0;
+.info-block:first-child {
+  padding-top: 4px;
 }
 
-.details-label {
+.info-block:last-child {
+  padding-bottom: 4px;
+}
+
+.info-label {
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -263,63 +214,72 @@ body {
   margin-bottom: 10px;
 }
 
-.details-value {
+.info-value {
   font-family: var(--serif);
-  font-size: clamp(14px, 2.4vw, 17px);
+  font-size: clamp(15px, 2.6vw, 18px);
   font-weight: 400;
   line-height: 1.65;
-  color: var(--text-soft);
+  color: var(--ink-soft);
 }
 
-/* Ações abaixo do card */
-.card-actions {
+/* ── Divisor dourado dentro do card ── */
+.info-divider {
+  width: 40%;
+  max-width: 80px;
+  height: 1px;
+  margin: 8px auto;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.55;
+}
+
+.actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-top: 18px;
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    RECEPÇÃO
-   ═══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 .reception {
   font-family: var(--serif);
-  font-size: clamp(13px, 2vw, 15.5px);
+  font-size: clamp(14px, 2.4vw, 16px);
   font-style: italic;
   font-weight: 300;
-  color: var(--text-muted);
+  color: var(--ink-light);
   line-height: 1.65;
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
-/* ═══════════════════════════════════════════════
-   BOTÕES CTA
-   ═══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   BOTÕES — Refinados e finos
+   ══════════════════════════════════════════════ */
 .cta {
   display: grid;
   gap: 14px;
-  max-width: 400px;
-  margin: 24px auto;
+  max-width: 420px;
+  margin: 32px auto 12px;
 }
 
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
-  padding: 16px 28px;
+  min-height: 54px;
+  padding: 15px 28px;
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-decoration: none;
   border-radius: 30px;
   cursor: pointer;
   transition:
-    transform 0.1s ease,
+    background 0.2s ease,
     box-shadow 0.2s ease,
-    background 0.2s ease;
+    transform 0.08s ease;
 }
 
 .btn:active {
@@ -331,42 +291,41 @@ body {
   outline-offset: 3px;
 }
 
-/* Botão 1: Verde escuro, texto creme */
+/* Primário: fundo verde escuro, texto creme da página */
 .btn--primary {
   color: var(--paper);
   background: var(--green);
-  border: 1.5px solid var(--green);
-  box-shadow: 0 3px 12px rgba(47,62,50,0.18);
+  border: none;
+  box-shadow: 0 2px 10px rgba(47,62,50,0.15);
 }
 
 .btn--primary:hover {
   background: var(--green-soft);
-  box-shadow: 0 5px 18px rgba(47,62,50,0.24);
+  box-shadow: 0 4px 16px rgba(47,62,50,0.22);
 }
 
-/* Botão 2: Creme, texto verde, borda dourada */
-.btn--secondary {
+/* Secundário (outline): transparente, texto verde, borda fina dourada */
+.btn--outline {
   color: var(--green);
-  background: var(--paper);
-  border: 1.5px solid var(--gold);
-  box-shadow: 0 2px 8px rgba(196,164,100,0.12);
+  background: transparent;
+  border: 1px solid var(--gold);
 }
 
-.btn--secondary:hover {
-  background: var(--paper-warm);
-  box-shadow: 0 4px 14px rgba(196,164,100,0.20);
+.btn--outline:hover {
+  background: rgba(196,164,100,0.06);
+  border-color: var(--gold-dark);
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    PÍLULAS (copiar, maps)
-   ═══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 .pill {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 8px 16px;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--green-soft);
@@ -388,27 +347,27 @@ body {
   outline-offset: 2px;
 }
 
-/* ═══════════════════════════════════════════════
-   LINKS PARA COPIAR
-   ═══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   LINKS
+   ══════════════════════════════════════════════ */
 .links {
-  margin-top: 16px;
-  padding-top: 20px;
+  margin-top: 20px;
+  padding-top: 24px;
   border-top: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.7;
+  font-size: 12.5px;
+  color: var(--ink-light);
+  line-height: 1.65;
   word-break: break-word;
 }
 
 .links p {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .links a {
   color: var(--green-soft);
   text-decoration: none;
-  border-bottom: 1px solid rgba(47,62,50,0.15);
+  border-bottom: 1px solid rgba(61,92,74,0.18);
   transition: border-color 0.15s ease;
 }
 
@@ -418,95 +377,77 @@ body {
 
 .copy-feedback {
   min-height: 1rem;
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 12px;
   color: var(--green-soft);
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    RODAPÉ
-   ═══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 .foot {
-  font-family: var(--script);
-  font-size: clamp(18px, 3vw, 24px);
-  color: var(--gold);
-  margin-top: 8px;
-  letter-spacing: 0.02em;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 13.5px;
+  color: var(--ink-light);
+  letter-spacing: 0.04em;
+  margin-top: 12px;
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    RESPONSIVO
-   ═══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 
-/* ── Tablet: card empilhado ── */
-@media (max-width: 580px) {
-  .details-card {
-    flex-direction: column;
-    padding: 24px 20px;
+@media (max-width: 480px) {
+  .invite {
+    padding: 40px 26px;
   }
 
-  .details-divider {
-    width: 80px;
-    height: 1px;
-    align-self: center;
-    margin: 16px auto;
-    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
-  }
+  .invite::before { inset: 10px; }
+  .invite::after  { inset: 15px; }
 
-  .details-col {
-    padding: 0;
-  }
-
-  .foliage--top-left,
-  .foliage--top-right  { width: 42%; }
-  .foliage--bottom-left,
-  .foliage--bottom-right { width: 46%; }
-}
-
-/* ── Mobile ── */
-@media (max-width: 420px) {
-  .content {
-    padding: 36px 20px;
-  }
-
-  .invite::before { border-width: 1.5px; }
-  .inner-frame { inset: 7px; }
+  .ornament { font-size: 22px; letter-spacing: 6px; }
+  .ornament.top { margin-bottom: 24px; }
+  .ornament.bottom { margin-top: 28px; margin-bottom: 10px; }
 
   .names {
-    font-size: clamp(36px, 11vw, 50px);
+    font-size: clamp(30px, 9vw, 40px);
   }
 
-  .monogram {
-    font-size: clamp(24px, 6vw, 32px);
+  .subtitle {
+    margin-top: 22px;
+    margin-bottom: 28px;
   }
 
-  .gold-line { width: 80px; }
+  .info {
+    padding: 24px 20px;
+    margin-bottom: 28px;
+  }
 
   .btn {
-    min-height: 52px;
-    padding: 14px 22px;
+    min-height: 50px;
     font-size: 13.5px;
+    padding: 13px 22px;
   }
 
-  .foliage--top-left,
-  .foliage--top-right  { width: 44%; top: -14px; }
-  .foliage--top-left   { left: -14px; }
-  .foliage--top-right  { right: -14px; }
-  .foliage--bottom-left,
-  .foliage--bottom-right { width: 48%; bottom: -14px; }
-  .foliage--bottom-left  { left: -14px; }
-  .foliage--bottom-right { right: -14px; }
+  .rule { width: 35%; max-width: 80px; }
 }
 
-/* ── Telas muito pequenas ── */
 @media (max-width: 340px) {
-  .content {
-    padding: 28px 16px;
+  .invite {
+    padding: 30px 18px;
   }
 
-  .inner-frame { inset: 5px; }
+  .invite::before { inset: 7px; }
+  .invite::after  { inset: 11px; }
 
-  .names { font-size: clamp(30px, 11vw, 42px); }
+  .monogram { font-size: 16px; }
+  .names { font-size: clamp(26px, 9vw, 34px); }
+
+  .info {
+    padding: 20px 16px;
+  }
 
   .cta { gap: 10px; }
 }
