@@ -1,472 +1,407 @@
-/* ══════════════════════════════════════════════
-   André & Nathália — Premium Wedding Invite
-   ══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   Convite de Casamento — André & Nathália
+   Estilo clássico de convite impresso
+   ══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
 
 :root {
-  --bg: #f4f3ef;
-  --paper: #fbfaf7;
-  --border: #e2ddd0;
-  --green: #0f4f3d;
-  --green-light: #1a6b53;
-  --muted: #6f8475;
-  --gold: #b8a06a;
-  --gold2: #d4c48e;
-  --gold-shine: #e8dbb4;
-  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --radius: 28px;
+  /* Paleta clássica - tons de papel e tinta */
+  --ivory:  #faf8f4;
+  --cream:  #f5f2eb;
+  --linen:  #eee9df;
+  --ink:    #2c2c2c;
+  --ink-soft:#4a4a4a;
+  --ink-light:#7a7a7a;
+  --gold:   #b5975a;
+  --gold-light:#d4c48e;
+  --gold-dark:#96793d;
+  --green:  #3d5c4a;
+  --green-deep:#2a4434;
+
+  --serif:  'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --sans:   'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html,
-body {
-  height: 100%;
-}
+html { height: 100%; }
 
 body {
-  font-family: var(--font-sans);
-  background:
-    radial-gradient(ellipse 140% 60% at 50% -10%, rgba(255,255,255,0.95), transparent 65%),
-    radial-gradient(ellipse 80% 50% at 8% 20%, rgba(184,160,106,0.12), transparent 70%),
-    radial-gradient(ellipse 80% 50% at 92% 80%, rgba(111,132,117,0.10), transparent 70%),
-    var(--bg);
-  color: #1a2620;
+  min-height: 100%;
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Page centering ── */
+/* ── Página ── */
 .page {
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(20px, 4vw, 40px);
+  padding: clamp(16px, 4vw, 48px);
 }
 
-/* ── Invite card ── */
+/* ══════════════════════════════════════════════
+   O CONVITE
+   ══════════════════════════════════════════════ */
 .invite {
   position: relative;
-  isolation: isolate;
-  width: min(780px, 100%);
-  padding: clamp(28px, 5vw, 56px) clamp(24px, 4.5vw, 48px);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
+  width: min(620px, 100%);
+  padding: clamp(40px, 7vw, 72px) clamp(32px, 6vw, 64px);
+  text-align: center;
+
+  /* Papel */
   background:
-    radial-gradient(120% 80% at 50% 12%, rgba(255,255,255,.60) 0%, rgba(255,255,255,0) 50%),
-    radial-gradient(120% 60% at 50% 95%, rgba(0,0,0,.025) 0%, rgba(0,0,0,0) 55%),
     url("/paper-texture.png"),
-    linear-gradient(175deg, #ffffff 0%, #faf9f5 50%, #f6f4ef 100%);
-  background-repeat: no-repeat, no-repeat, repeat, no-repeat;
-  background-size: 100% 100%, 100% 100%, 520px 520px, 100% 100%;
+    linear-gradient(178deg, #fdfcfa 0%, var(--ivory) 40%, #f8f5ee 100%);
+  background-size: 500px 500px, 100% 100%;
+  background-repeat: repeat, no-repeat;
+
+  /* Sombra de papel sobre mesa */
   box-shadow:
-    0 1px 2px rgba(17,24,19,0.04),
-    0 8px 24px rgba(17,24,19,0.06),
-    0 24px 56px rgba(17,24,19,0.08);
-  overflow: hidden;
+    0 1px 1px rgba(0,0,0,0.03),
+    0 4px 8px rgba(0,0,0,0.04),
+    0 16px 40px rgba(0,0,0,0.06);
 }
 
-/* ── Gold inner frame ── */
+/* ── Moldura dourada (borda externa) ── */
 .invite::before {
   content: '';
   position: absolute;
-  inset: 16px;
-  border-radius: calc(var(--radius) - 14px);
-  border: 1px solid;
-  border-image: linear-gradient(
-    160deg,
-    var(--gold) 0%,
-    var(--gold-shine) 40%,
-    var(--gold) 60%,
-    var(--gold2) 100%
-  ) 1;
+  inset: 12px;
+  border: 1.5px solid var(--gold);
   pointer-events: none;
-  z-index: 4;
 }
 
-/* ── Subtle grain overlay ── */
+/* ── Moldura interna (linha fina) ── */
 .invite::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 18px;
+  border: 0.5px solid var(--gold-light);
   pointer-events: none;
-  background:
-    repeating-linear-gradient(0deg, rgba(0,0,0,.008), rgba(0,0,0,.008) 1px, transparent 1px, transparent 10px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.006), rgba(0,0,0,.006) 1px, transparent 1px, transparent 12px);
-  opacity: .06;
-  mix-blend-mode: multiply;
-  z-index: 1;
+  opacity: 0.6;
 }
 
-/* ── Second frame ── */
-.invite .frame2 {
-  position: absolute;
-  inset: 28px;
-  border-radius: calc(var(--radius) - 24px);
-  border: 1px solid rgba(226,221,208,0.65);
-  pointer-events: none;
-  z-index: 4;
+/* ══════════════════════════════════════════════
+   ORNAMENTOS TIPOGRÁFICOS
+   ══════════════════════════════════════════════ */
+.ornament {
+  font-size: 28px;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: 8px;
+  user-select: none;
 }
 
-/* ── Botanicals (bottom only) ── */
-.bot {
-  position: absolute;
-  pointer-events: none;
-  filter: saturate(0.92) contrast(0.97);
-  z-index: 3;
+.ornament.top {
+  margin-bottom: 24px;
 }
 
-.bot img {
-  width: 100%;
-  height: auto;
-  display: block;
-  mix-blend-mode: multiply;
-  opacity: 0.72;
+.ornament.bottom {
+  margin-top: 28px;
+  margin-bottom: 12px;
 }
 
-.bot.bl {
-  bottom: -32px;
-  left: -32px;
-  width: 66%;
-}
-
-.bot.br {
-  bottom: -32px;
-  right: -32px;
-  width: 66%;
-}
-
-/* ── Content layers ── */
-.head,
-.details,
-.cta,
-.foot,
-.copylinks {
-  position: relative;
-  z-index: 5;
-}
-
-/* ── Header ── */
+/* ══════════════════════════════════════════════
+   CABEÇALHO — Monograma + Nomes
+   ══════════════════════════════════════════════ */
 .head {
-  text-align: center;
-  padding-top: 6px;
-  padding-bottom: 4px;
+  margin-bottom: 20px;
 }
 
-.logoMark {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 18px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(226,221,208,0.85);
-  background: rgba(255,255,255,0.72);
-  letter-spacing: 1px;
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 22px;
-  color: transparent;
-  background-image: linear-gradient(135deg, var(--gold) 0%, var(--gold-shine) 50%, var(--gold) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+.monogram {
+  font-family: var(--serif);
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
 }
 
-.logoName {
-  margin: 0 0 10px;
-  font-size: clamp(32px, 6vw, 52px);
-  line-height: 1.02;
-  font-family: var(--font-serif);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--green);
-}
-
-.logoAmp {
+.amp {
   font-style: italic;
+  font-weight: 300;
+  color: var(--gold-dark);
+}
+
+.names {
+  font-family: var(--serif);
+  font-size: clamp(36px, 8vw, 58px);
   font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 16px 0;
+}
+
+.names .amp {
+  font-size: 0.75em;
+  vertical-align: 2px;
   color: var(--gold);
 }
 
-.invite-line {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15.5px;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
+/* ── Filete decorativo ── */
+.rule {
+  width: 100px;
+  height: 1px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
-.invite-line--centered {
-  margin-top: 16px;
-  text-align: center;
+/* ══════════════════════════════════════════════
+   TEXTO PRINCIPAL
+   ══════════════════════════════════════════════ */
+.subtitle {
+  font-family: var(--serif);
+  font-size: clamp(15px, 2.8vw, 19px);
+  font-weight: 300;
   font-style: italic;
-  font-family: var(--font-serif);
-  font-size: 16.5px;
-  color: color-mix(in oklab, var(--muted) 80%, var(--green));
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  margin-top: 20px;
+  margin-bottom: 28px;
 }
 
-.gold-rule {
-  width: 120px;
-  height: 1.5px;
-  margin: 20px auto 0;
-  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-shine), var(--gold), transparent);
-  border-radius: 99px;
+/* ══════════════════════════════════════════════
+   INFORMAÇÕES — Data, Hora, Local
+   ══════════════════════════════════════════════ */
+.info {
+  margin-bottom: 24px;
 }
 
-/* ── Details section ── */
-.details {
-  margin-top: 24px;
-  display: grid;
-  gap: 14px;
+.info-block {
+  padding: 12px 0;
 }
 
-.detail-card {
-  background: rgba(255,255,255,0.78);
-  border: 1px solid rgba(226,221,208,0.7);
-  border-radius: 20px;
-  padding: 18px 20px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-.label {
-  color: var(--muted);
-  font-size: 11.5px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+.info-label {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: 5px;
+  color: var(--gold-dark);
+  margin-bottom: 8px;
 }
 
-.value {
-  font-size: 16px;
-  line-height: 1.55;
-  color: #1a2620;
+.info-value {
+  font-family: var(--serif);
+  font-size: clamp(15px, 2.6vw, 18px);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.info-divider {
+  width: 40px;
+  height: 1px;
+  margin: 4px auto;
+  background: var(--gold-light);
+  opacity: 0.5;
 }
 
 .actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 12px;
+  justify-content: center;
+  margin-top: 14px;
 }
 
-/* ── CTA section ── */
+/* ══════════════════════════════════════════════
+   RECEPÇÃO
+   ══════════════════════════════════════════════ */
+.reception {
+  font-family: var(--serif);
+  font-size: clamp(14px, 2.4vw, 16px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-light);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ══════════════════════════════════════════════
+   BOTÕES (ações digitais)
+   ══════════════════════════════════════════════ */
 .cta {
-  margin-top: 22px;
   display: grid;
   gap: 12px;
+  margin-top: 24px;
+  margin-bottom: 8px;
 }
 
 .btn {
-  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
-  padding: 16px 20px;
+  min-height: 54px;
+  padding: 14px 24px;
+  font-family: var(--sans);
+  font-size: 14px;
   font-weight: 600;
-  font-size: 15px;
+  letter-spacing: 0.04em;
   text-decoration: none;
-  letter-spacing: 0.02em;
-  transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  border-radius: 6px;
   cursor: pointer;
-}
-
-.btn--primary {
-  color: #fff;
-  background: linear-gradient(180deg, var(--green-light) 0%, var(--green) 100%);
-  border: 1px solid color-mix(in oklab, var(--green) 70%, black);
-  box-shadow:
-    0 1px 2px rgba(15,79,61,0.15),
-    0 4px 12px rgba(15,79,61,0.10);
-}
-
-.btn--primary:hover {
-  box-shadow:
-    0 2px 4px rgba(15,79,61,0.18),
-    0 8px 20px rgba(15,79,61,0.14);
-  filter: brightness(1.04);
-}
-
-.btn--secondary {
-  color: var(--green);
-  background: rgba(255,255,255,0.85);
-  border: 1.5px solid color-mix(in oklab, var(--green) 25%, var(--border));
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-
-.btn--secondary:hover {
-  background: rgba(255,255,255,0.95);
-  border-color: color-mix(in oklab, var(--green) 40%, var(--border));
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
 }
 
 .btn:active {
   transform: translateY(1px);
 }
 
-.btn:focus-visible,
-.chip:focus-visible {
+.btn:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
 
-/* ── Chips ── */
-.chip {
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 600;
-  font-size: 13.5px;
-  cursor: pointer;
-  border: 1px solid rgba(226,221,208,0.85);
-  background: rgba(255,255,255,0.88);
+.btn--primary {
+  color: #fff;
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-deep) 100%);
+  border: 1px solid var(--green-deep);
+  box-shadow: 0 2px 8px rgba(42,68,52,0.15);
+}
+
+.btn--primary:hover {
+  box-shadow: 0 4px 14px rgba(42,68,52,0.22);
+}
+
+.btn--outline {
   color: var(--green);
+  background: transparent;
+  border: 1.5px solid var(--green);
+}
+
+.btn--outline:hover {
+  background: rgba(61,92,74,0.04);
+}
+
+/* ── Pílulas (copiar, maps) ── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--green);
+  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--linen);
+  border-radius: 999px;
+  cursor: pointer;
   text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease;
-  letter-spacing: 0.01em;
+  transition: background 0.12s ease, border-color 0.12s ease;
 }
 
-.chip:hover {
-  background: rgba(255,255,255,1);
-  border-color: var(--gold2);
+.pill:hover {
+  background: rgba(255,255,255,0.95);
+  border-color: var(--gold-light);
 }
 
-/* ── Copy links section ── */
-.copylinks {
-  margin-top: 14px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(226,221,208,0.75);
-  color: var(--muted);
-  font-size: 13px;
+.pill:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ══════════════════════════════════════════════
+   LINKS
+   ══════════════════════════════════════════════ */
+.links {
+  margin-top: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--linen);
+  font-size: 12.5px;
+  color: var(--ink-light);
   line-height: 1.65;
   word-break: break-word;
 }
 
-.copylinks p {
-  margin: 0 0 6px;
+.links p {
+  margin-bottom: 6px;
 }
 
-.copylinks a {
+.links a {
   color: var(--green);
   text-decoration: none;
-  border-bottom: 1px solid rgba(15,79,61,0.2);
-  transition: border-color 0.15s ease;
+  border-bottom: 1px solid rgba(61,92,74,0.2);
+  transition: border-color 0.12s ease;
 }
 
-.copylinks a:hover {
+.links a:hover {
   border-color: var(--green);
 }
 
 .copy-feedback {
-  min-height: 1.2rem;
+  min-height: 1rem;
   margin-top: 8px;
-  font-size: 13px;
-}
-
-/* ── Footer ── */
-.foot {
-  text-align: center;
-  color: var(--muted);
-  font-size: 12.5px;
-  margin-top: 20px;
-  letter-spacing: 0.02em;
-  font-family: var(--font-serif);
-  font-style: italic;
+  font-size: 12px;
 }
 
 /* ══════════════════════════════════════════════
-   Responsive
+   RODAPÉ
    ══════════════════════════════════════════════ */
-
-/* ── Tablet ── */
-@media (max-width: 680px) {
-  .bot.bl,
-  .bot.br { width: 68%; }
+.foot {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 13px;
+  color: var(--ink-light);
+  letter-spacing: 0.04em;
+  margin-top: 8px;
 }
 
-/* ── Mobile ── */
-@media (max-width: 420px) {
+/* ══════════════════════════════════════════════
+   RESPONSIVO
+   ══════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
   .invite {
-    padding: 22px 18px;
-    border-radius: 22px;
+    padding: 36px 24px;
   }
 
-  .invite::before {
-    inset: 12px;
+  .invite::before { inset: 8px; }
+  .invite::after  { inset: 13px; }
+
+  .ornament { font-size: 22px; letter-spacing: 6px; }
+  .ornament.top { margin-bottom: 18px; }
+  .ornament.bottom { margin-top: 20px; margin-bottom: 8px; }
+
+  .names {
+    font-size: clamp(30px, 9vw, 40px);
   }
 
-  .invite .frame2 {
-    inset: 20px;
-  }
-
-  .bot.bl,
-  .bot.br {
-    width: 72%;
-    bottom: -20px;
-  }
-  .bot.bl { left: -20px; }
-  .bot.br { right: -20px; }
-
-  .logoMark {
-    width: 68px;
-    height: 68px;
-    margin-bottom: 14px;
-    font-size: 19px;
-  }
-
-  .logoName {
-    font-size: clamp(28px, 9vw, 36px);
-    margin-bottom: 8px;
-  }
-
-  .gold-rule {
-    width: 90px;
-    margin-top: 14px;
-  }
-
-  .details {
-    gap: 10px;
-    margin-top: 18px;
-  }
-
-  .detail-card {
-    padding: 14px 16px;
-    border-radius: 16px;
-  }
-
-  .cta {
-    gap: 10px;
+  .subtitle {
     margin-top: 16px;
+    margin-bottom: 22px;
   }
 
   .btn {
-    min-height: 56px;
-    border-radius: 14px;
-    font-size: 14.5px;
+    min-height: 50px;
+    font-size: 13.5px;
+    padding: 12px 18px;
   }
 
-  .foot {
-    margin-top: 16px;
-  }
+  .rule { width: 70px; }
 }
 
-/* ── Very small screens ── */
 @media (max-width: 340px) {
   .invite {
-    padding: 18px 14px;
+    padding: 28px 18px;
   }
 
-  .bot.bl,
-  .bot.br {
-    width: 76%;
-    bottom: -16px;
-  }
-  .bot.bl { left: -16px; }
-  .bot.br { right: -16px; }
+  .invite::before { inset: 6px; }
+  .invite::after  { inset: 10px; }
+
+  .monogram { font-size: 16px; }
+  .names { font-size: clamp(26px, 9vw, 34px); }
 }
