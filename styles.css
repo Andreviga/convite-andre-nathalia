@@ -369,6 +369,7 @@ body {
 /* ══════════════════════════════════════════════
    FEEDBACK CÓPIA
    ══════════════════════════════════════════════ */
+.copy-feedback {
   min-height: 1rem;
   margin-top: 6px;
   font-size: 11px;

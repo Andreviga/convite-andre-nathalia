@@ -3,8 +3,6 @@
   var feedback = document.getElementById('copy-feedback');
   var feedbackTimeoutId = null;
 
-  if (!buttons.length) return;
-
   function showFeedback(message) {
     if (!feedback) return;
 
@@ -42,6 +40,8 @@
 
     document.body.removeChild(input);
   }
+
+  if (!buttons.length) return;
 
   buttons.forEach(function (button) {
     button.addEventListener('click', function () {
