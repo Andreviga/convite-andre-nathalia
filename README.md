@@ -13,3 +13,7 @@ Arquivos:
 4. Teste:
    - /preview.jpg abre no navegador
    - Envie no WhatsApp: https://convite.andrenathalia03052026.site/?v=2
+
+## App de convites (`convidei/`)
+
+A pasta `convidei/` contém o gerador de convites (Next.js), independente deste convite estático. Veja `convidei/README.md`.
