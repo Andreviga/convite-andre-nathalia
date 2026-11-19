@@ -61,4 +61,17 @@ export const MIGRATIONS: string[][] = [
     )`,
     `create index guests_event_idx on guests(event_id)`,
   ],
+  [
+    `create table payments (
+      id text primary key,
+      event_id text not null references events(id) on delete cascade,
+      provider text not null,
+      provider_payment_id text not null,
+      status text not null,
+      amount numeric(10,2) not null,
+      created_at timestamptz not null default now(),
+      updated_at timestamptz not null default now(),
+      unique (provider, provider_payment_id)
+    )`,
+  ],
 ];
