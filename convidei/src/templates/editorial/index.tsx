@@ -42,7 +42,7 @@ export const def: TemplateDef = {
     { id: "nanquim", name: "Papel e nanquim", vars: { bg: "#E7E3DA", paper: "#F6F3EC", ink: "#121211", soft: "#59554E", accent: "#B4391F", line: "#CFC9BC", btnInk: "#F6F3EC", seal: "#121211", sealInk: "#F6F3EC", liner: "#121211" } },
     { id: "invertido", name: "Invertido", vars: { bg: "#070707", paper: "#151514", ink: "#F3EFE6", soft: "#B9B3A7", accent: "#E2674E", line: "#3B3934", btnInk: "#151514", seal: "#F3EFE6", sealInk: "#151514", liner: "#F3EFE6" } },
     { id: "bordo", name: "Bordô", vars: { bg: "#2E0A12", paper: "#4A111D", ink: "#F6EBDD", soft: "#DDBFB5", accent: "#E3A98C", line: "#6E2A36", btnInk: "#4A111D", seal: "#F6EBDD", sealInk: "#4A111D", liner: "#F6EBDD" } },
-    { id: "oliva", name: "Verde-oliva", vars: { bg: "#E2E0CF", paper: "#F4F2E6", ink: "#2C3218", soft: "#5A5E44", accent: "#7A7F2E", line: "#CBC9B1", btnInk: "#F4F2E6", seal: "#3F4722", sealInk: "#F4F2E6", liner: "#3F4722" } },
+    { id: "oliva", name: "Verde-oliva", vars: { bg: "#E2E0CF", paper: "#F4F2E6", ink: "#2C3218", soft: "#5A5E44", accent: "#5F6B1E", line: "#CBC9B1", btnInk: "#F4F2E6", seal: "#3F4722", sealInk: "#F4F2E6", liner: "#3F4722" } },
     { id: "azul-tinta", name: "Azul-tinta", vars: { bg: "#DFE2EA", paper: "#F5F4EF", ink: "#14224A", soft: "#4E5878", accent: "#2A49B8", line: "#C5CAD8", btnInk: "#F5F4EF", seal: "#14224A", sealInk: "#F5F4EF", liner: "#14224A" } },
   ],
   Art,

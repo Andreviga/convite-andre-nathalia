@@ -5,19 +5,20 @@ import type { ArtProps, TemplateDef } from "../types";
 
 const n = (v: number) => Math.round(v * 10) / 10;
 
-/** Sol nascente: meia-esfera cheia, um halo em fio e raios alternados, pousado sobre uma linha ondulada. */
+/** Sol nascente: meia-esfera cheia, um halo em fio e raios alternados (sem os dois horizontais, que viravam linha de base),
+ *  pousado sobre uma linha ondulada. A caixa é justa ao desenho: nada de respiro morto no alto do arco. */
 function Sun() {
   const cx = 90;
   const cy = 70;
   const rays: string[] = [];
-  for (let i = 0; i <= 14; i++) {
+  for (let i = 1; i < 14; i++) {
     const a = Math.PI + (Math.PI * i) / 14;
     const from = 39;
     const to = i % 2 === 0 ? 56 : 48;
     rays.push(`M${n(cx + Math.cos(a) * from)} ${n(cy + Math.sin(a) * from)}L${n(cx + Math.cos(a) * to)} ${n(cy + Math.sin(a) * to)}`);
   }
   return (
-    <svg className="tc-sun" viewBox="0 0 180 88" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" aria-hidden="true">
+    <svg className="tc-sun" viewBox="30 11 120 76" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" aria-hidden="true">
       <path d={`M${cx - 24} ${cy}a24 24 0 0 1 48 0z`} fill="currentColor" stroke="none" />
       <path d={`M${cx - 31} ${cy}a31 31 0 0 1 62 0`} />
       <path d={rays.join("")} />
@@ -35,35 +36,46 @@ function Wave() {
   );
 }
 
-/** Uma pluma de capim-dos-pampas: haste em curva e barbas finas, densas, que crescem e somem em fuso. */
-function plume(bx: number, by: number, qx: number, qy: number, tx: number, ty: number, size: number): string {
+/** Ruído determinístico em [0, 1): o mesmo desenho no servidor e no navegador, sem cara de régua. */
+const noise = (k: number) => {
+  const v = Math.sin(k * 12.9898) * 43758.5453;
+  return v - Math.floor(v);
+};
+
+/** Uma pluma de capim-dos-pampas: haste em curva e barbas soltas, de comprimento e ângulo irregulares,
+ *  que pesam e caem perto da ponta. `seed` muda o desenho de cada pluma; `steps` muda a densidade. */
+function plume(bx: number, by: number, qx: number, qy: number, tx: number, ty: number, size: number, steps: number, seed: number): string {
   const parts: string[] = [`M${bx} ${by}Q${qx} ${qy} ${tx} ${ty}`];
-  const steps = 15;
   for (let i = 0; i < steps; i++) {
     const s = i / (steps - 1);
-    const t = 0.4 + 0.58 * s;
+    const t = 0.36 + 0.62 * s;
     const u = 1 - t;
     const x = u * u * bx + 2 * u * t * qx + t * t * tx;
     const y = u * u * by + 2 * u * t * qy + t * t * ty;
     const ang = Math.atan2(2 * u * (qy - by) + 2 * t * (ty - qy), 2 * u * (qx - bx) + 2 * t * (tx - qx));
-    const len = size * (0.14 + 0.86 * Math.sin(Math.PI * (0.14 + 0.86 * s)) ** 0.8);
+    const env = 0.16 + 0.84 * Math.sin(Math.PI * (0.12 + 0.86 * s)) ** 0.8;
     for (const side of [-1, 1]) {
-      const a1 = ang + side * 0.2;
-      const a2 = ang + side * 0.5;
-      parts.push(`M${n(x)} ${n(y)}Q${n(x + Math.cos(a1) * len * 0.6)} ${n(y + Math.sin(a1) * len * 0.6)} ${n(x + Math.cos(a2) * len)} ${n(y + Math.sin(a2) * len)}`);
+      const k = seed + i * 2 + (side + 1) / 2;
+      // o lado de baixo da pluma (o que olha para o chão) é mais cheio e cai mais
+      const under = Math.sign(Math.cos(ang)) === side ? 1 : 0;
+      const len = size * env * (0.7 + 0.42 * noise(k) + 0.2 * under);
+      const a1 = ang + side * (0.14 + 0.12 * noise(k + 40));
+      const a2 = ang + side * (0.3 + 0.26 * noise(k + 80));
+      const drop = len * (0.03 + 0.14 * s * s + 0.1 * under);
+      parts.push(`M${n(x)} ${n(y)}Q${n(x + Math.cos(a1) * len * 0.55)} ${n(y + Math.sin(a1) * len * 0.55 + drop * 0.2)} ${n(x + Math.cos(a2) * len)} ${n(y + Math.sin(a2) * len + drop)}`);
     }
   }
   return parts.join("");
 }
 
-/** Três plumas em leque, de alturas desiguais, amarradas por um laço. */
+/** Três plumas desiguais (uma alta, uma que tomba para a esquerda, uma curta à direita), amarradas por um laço. */
 function Pampas() {
   return (
-    <svg className="tc-pampas" viewBox="0 0 150 84" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" aria-hidden="true">
-      <path d={plume(75, 82, 72, 44, 40, 15, 12)} />
-      <path d={plume(75, 82, 73, 40, 75, 3, 14)} />
-      <path d={plume(75, 82, 79, 46, 106, 22, 11)} />
-      <path d="M70.5 70.5c3-1.6 6-1.6 9 0" />
+    <svg className="tc-pampas" viewBox="0 0 120 72" fill="none" stroke="currentColor" strokeWidth="0.95" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={plume(60, 71, 56, 38, 67, 4, 14, 18, 3)} />
+      <path d={plume(60, 71, 57, 40, 23, 20, 12.5, 15, 17)} />
+      <path d={plume(60, 71, 63, 49, 94, 33, 11, 12, 29)} />
+      <path d="M56.4 61.5c2.4-1.5 4.8-1.5 7.2 0" />
     </svg>
   );
 }

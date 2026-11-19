@@ -14,10 +14,22 @@
   --paper-pad: clamp(24px, 8.5cqw, 40px);
   --paper-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 16%, transparent), 0 14px 34px color-mix(in srgb, var(--ink) 13%, transparent);
   /* dois passos de ritmo vertical */
-  --az-s: clamp(14px, 4.4cqw, 20px);
-  --az-l: clamp(24px, 7.6cqw, 34px);
+  --az-s: clamp(11px, 4.4cqw, 20px);
+  --az-l: clamp(19px, 7.6cqw, 34px);
+  --az-day: clamp(50px, 16cqw, 62px); /* corpo do dia; as caixas laterais têm a altura do algarismo */
+  /* destaque um pouco mais escuro, para traço fino e letra sobre o papel (na paleta siciliana o amarelo puro some) */
+  --az-accent-ink: color-mix(in srgb, var(--accent) 72%, var(--ink));
+  /* o azulejo em duas máscaras (traços na cor da tinta, flores na cor de destaque), para a barra do envelope */
+  --az-tile-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' fill='none'%3E%3Cg stroke='%23000'%3E%3Cg stroke-width='2.4'%3E%3Ccircle cx='0' cy='0' r='12.6'/%3E%3Ccircle cx='48' cy='0' r='12.6'/%3E%3Ccircle cx='0' cy='48' r='12.6'/%3E%3Ccircle cx='48' cy='48' r='12.6'/%3E%3C/g%3E%3Cg stroke-width='1.3'%3E%3Cg transform='rotate(0 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3Cg transform='rotate(90 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3Cg transform='rotate(180 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3Cg transform='rotate(270 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='4.3' stroke-width='1.1'/%3E%3C/g%3E%3C/svg%3E");
+  --az-tile-accent: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' fill='none'%3E%3Cmask id='m'%3E%3Crect width='48' height='48' fill='%23fff'/%3E%3Ccircle cx='24' cy='24' r='4.85' fill='%23000'/%3E%3C/mask%3E%3Ccircle cx='0' cy='0' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='0' cy='0' r='3.4' fill='%23000'/%3E%3Ccircle cx='48' cy='0' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='48' cy='0' r='3.4' fill='%23000'/%3E%3Ccircle cx='0' cy='48' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='0' cy='48' r='3.4' fill='%23000'/%3E%3Ccircle cx='48' cy='48' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='48' cy='48' r='3.4' fill='%23000'/%3E%3Cg mask='url(%23m)' fill='%23000'%3E%3Cg transform='rotate(0 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3Cg transform='rotate(90 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3Cg transform='rotate(180 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3Cg transform='rotate(270 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='1.6' fill='%23000'/%3E%3C/svg%3E");
   /* cercadura das seções: fiada de losangos, pintada com a cor de destaque por máscara */
   --az-chain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='9'%3E%3Cpath d='M8 .8l4.6 3.7L8 8.2 3.4 4.5z'/%3E%3Ccircle cx='0' cy='4.5' r='1.3'/%3E%3Ccircle cx='16' cy='4.5' r='1.3'/%3E%3C/svg%3E");
+}
+/* A Playfair traz algarismos de texto por padrão: "11" lê-se como "II". Algarismos alinhados em tudo o que usa a serifa
+   (declarado em cada elemento, porque o atalho `font` da base zera a herança). */
+.inv[data-template="azulejo"] :is(.inv-names, .inv-place, .inv-dateline, .inv-section-title, .inv-big, .rsvp-state-title, .env-to strong) {
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
 }
 
 /* ───────── Capa ───────── */
@@ -34,9 +46,11 @@
 .inv[data-template="azulejo"] .inv-headline { font-size: 12px; font-weight: 500; line-height: 1.75; margin-bottom: var(--az-s) !important; }
 
 .inv[data-template="azulejo"] .inv-names { font-style: italic; padding: 0; letter-spacing: -0.005em; }
-.inv[data-template="azulejo"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 1.5; color: var(--accent); }
+.inv[data-template="azulejo"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 1.5; color: var(--az-accent-ink); }
 .inv[data-template="azulejo"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.3); }
-.inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.18; }
+.inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.9); line-height: 1.16; }
+/* título comprido: o dia encolhe um pouco para não passar por cima do título */
+.inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] ~ .inv-date { --az-day: clamp(42px, 13cqw, 50px); }
 
 .inv[data-template="azulejo"] .inv-message { font: 400 17px/1.5 var(--font-ui); max-width: 30ch; margin-top: var(--az-s) !important; }
 .inv[data-template="azulejo"] .inv-art-divider { margin: var(--az-l) 0 0; }
@@ -44,9 +58,10 @@
 /* Data: dia ao centro entre dia da semana e hora; o mês ocupa a linha de baixo inteira, para as laterais nunca apertarem. */
 .inv[data-template="azulejo"] .inv-date { margin-top: var(--az-l); column-gap: clamp(14px, 5cqw, 22px); row-gap: 8px; }
 .inv[data-template="azulejo"] .inv-date-main { display: contents; }
-.inv[data-template="azulejo"] .inv-date-day { grid-column: 2; grid-row: 1; font-size: clamp(50px, 16cqw, 62px); font-weight: 400; line-height: 0.9; }
-.inv[data-template="azulejo"] .inv-date-month { grid-column: 1 / -1; grid-row: 2; font-size: 13.5px; letter-spacing: 0.2em; padding-left: 0.2em; color: var(--ink); }
-.inv[data-template="azulejo"] .inv-date-side { font-size: 13.5px; font-weight: 500; letter-spacing: 0.13em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
+.inv[data-template="azulejo"] .inv-date-day { grid-column: 2; grid-row: 1; font-size: var(--az-day); font-weight: 400; line-height: 0.9; transform: translateY(-0.055em); }
+.inv[data-template="azulejo"] .inv-date-month { grid-column: 1 / -1; grid-row: 2; font-size: clamp(14.5px, 4.2cqw, 16px); letter-spacing: 0.16em; padding-left: 0.16em; color: var(--ink); }
+/* os fios das laterais coincidem com o topo e a base do algarismo */
+.inv[data-template="azulejo"] .inv-date-side { display: grid; place-items: center; height: calc(var(--az-day) * 0.73); padding-block: 0; font-size: clamp(14.5px, 4.2cqw, 16px); font-weight: 500; letter-spacing: 0.1em; padding-left: 0.1em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
 .inv[data-template="azulejo"] .inv-place { font: 400 19px/1.4 var(--font-text); color: var(--ink); margin-top: var(--az-s) !important; }
 .inv[data-template="azulejo"] .inv-countdown { background: none; padding: 0; font: 500 12px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); margin-top: var(--az-s) !important; }
 
@@ -60,7 +75,7 @@
   width: 106px;
   height: 9px;
   transform: translateX(-50%);
-  background: var(--accent);
+  background: var(--az-accent-ink);
   -webkit-mask: var(--az-chain) center / 16px 9px repeat-x;
   mask: var(--az-chain) center / 16px 9px repeat-x;
   pointer-events: none;
@@ -79,19 +94,33 @@
 .inv[data-template="azulejo"] .env-to { font-size: 15.5px; }
 .inv[data-template="azulejo"] .env-to strong { font-style: italic; font-weight: 400; font-size: 32px; }
 .inv[data-template="azulejo"] .env-cta { border-radius: 2px; font-weight: 500; font-size: 13.5px; letter-spacing: 0.2em; }
-.inv[data-template="azulejo"] .env-liner { top: 2px; }
-/* cercadura discreta na frente do envelope, a mesma das seções */
-.inv[data-template="azulejo"] .env-front::before {
+/* Barra de azulejos na base do envelope fechado (a mesma fiada do cartão, com a cercadura): duas camadas por máscara,
+   acima da frente e abaixo da aba e do lacre. */
+.inv[data-template="azulejo"] .env-body::before, .inv[data-template="azulejo"] .env-body::after {
   content: "";
   position: absolute;
-  left: 50%;
-  bottom: 10%;
-  width: 106px;
-  height: 9px;
-  transform: translateX(-50%);
+  z-index: 1;
+  inset: auto 0 0;
+  box-sizing: content-box;
+  aspect-ratio: 12 / 1;
+  padding-top: 6px;
+  border-radius: 0 0 4px 4px;
+  pointer-events: none;
+}
+.inv[data-template="azulejo"] .env-body::before {
+  background: var(--ink);
+  -webkit-mask: linear-gradient(#000, #000) top / 100% 1px no-repeat, linear-gradient(#000, #000) 0 3px / 100% 2px no-repeat, var(--az-tile-ink) 0 0 / calc(100% / 12) auto repeat-x content-box;
+  mask: linear-gradient(#000, #000) top / 100% 1px no-repeat, linear-gradient(#000, #000) 0 3px / 100% 2px no-repeat, var(--az-tile-ink) 0 0 / calc(100% / 12) auto repeat-x content-box;
+}
+.inv[data-template="azulejo"] .env-body::after {
   background: var(--accent);
-  opacity: 0.85;
-  -webkit-mask: var(--az-chain) center / 16px 9px repeat-x;
-  mask: var(--az-chain) center / 16px 9px repeat-x;
+  -webkit-mask: var(--az-tile-accent) 0 0 / calc(100% / 12) auto repeat-x content-box;
+  mask: var(--az-tile-accent) 0 0 / calc(100% / 12) auto repeat-x content-box;
 }
 .inv[data-template="azulejo"] .env-card { inset: 9% 10% 10%; }
+
+/* Telas curtas (celular pequeno): ritmo mais justo para o cartão inteiro caber na primeira tela. */
+@media (max-height: 680px) {
+  .inv[data-template="azulejo"] { --az-s: clamp(9px, 3.4cqw, 14px); --az-l: clamp(15px, 5.4cqw, 22px); }
+  .inv[data-template="azulejo"] .inv-cover { padding-top: 12px; gap: 6px; }
+}

@@ -19,10 +19,13 @@
   --aq-pen: color-mix(in srgb, var(--seal) 62%, var(--ink));
   /* mancha estática usada como máscara (seções e envelope); a cor vem da paleta */
   --aq-wash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 86' preserveAspectRatio='none'%3E%3Cfilter id='w' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='9' result='a'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='a' scale='34' xChannelSelector='R' yChannelSelector='G' result='s'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='2' seed='4' result='b'/%3E%3CfeDisplacementMap in='s' in2='b' scale='6' xChannelSelector='G' yChannelSelector='R' result='e'/%3E%3CfeGaussianBlur in='e' stdDeviation='.6' result='wet'/%3E%3CfeGaussianBlur in='e' stdDeviation='5' result='i'/%3E%3CfeComposite in='wet' in2='i' operator='arithmetic' k2='1.9' k3='-1.05' result='p'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.03' numOctaves='4' seed='15' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.7 0 0 0 -.12' result='g'/%3E%3CfeComposite in='p' in2='g' operator='in'/%3E%3C/filter%3E%3Cg filter='url(%23w)'%3E%3Cpath d='M-40-40H168C172-10 150 6 122 12C92 18 78 38 52 44C28 50 4 44-40 56Z' fill-opacity='.6'/%3E%3Cpath d='M-40-40H86C88-14 70-2 50 4C30 10 10 8-40 20Z' fill-opacity='.35'/%3E%3C/g%3E%3C/svg%3E");
+  /* outras duas manchas, para as seções não repetirem o mesmo desenho */
+  --aq-wash-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 86' preserveAspectRatio='none'%3E%3Cfilter id='w' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='21' result='a'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='a' scale='34' xChannelSelector='R' yChannelSelector='G' result='s'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='2' seed='8' result='b'/%3E%3CfeDisplacementMap in='s' in2='b' scale='6' xChannelSelector='G' yChannelSelector='R' result='e'/%3E%3CfeGaussianBlur in='e' stdDeviation='.6' result='wet'/%3E%3CfeGaussianBlur in='e' stdDeviation='5' result='i'/%3E%3CfeComposite in='wet' in2='i' operator='arithmetic' k2='1.9' k3='-1.05' result='p'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.03' numOctaves='4' seed='27' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.7 0 0 0 -.12' result='g'/%3E%3CfeComposite in='p' in2='g' operator='in'/%3E%3C/filter%3E%3Cg filter='url(%23w)'%3E%3Cpath d='M440-40H236C232-8 256 8 286 13C316 18 330 40 358 47C384 53 406 48 440 62Z' fill-opacity='.6'/%3E%3Cpath d='M440-40H322C320-14 340 0 362 5C384 10 404 8 440 22Z' fill-opacity='.35'/%3E%3C/g%3E%3C/svg%3E");
+  --aq-wash-c: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 86' preserveAspectRatio='none'%3E%3Cfilter id='w' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='33' result='a'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='a' scale='34' xChannelSelector='R' yChannelSelector='G' result='s'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='2' seed='12' result='b'/%3E%3CfeDisplacementMap in='s' in2='b' scale='6' xChannelSelector='G' yChannelSelector='R' result='e'/%3E%3CfeGaussianBlur in='e' stdDeviation='.6' result='wet'/%3E%3CfeGaussianBlur in='e' stdDeviation='5' result='i'/%3E%3CfeComposite in='wet' in2='i' operator='arithmetic' k2='1.9' k3='-1.05' result='p'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.03' numOctaves='4' seed='40' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.7 0 0 0 -.12' result='g'/%3E%3CfeComposite in='p' in2='g' operator='in'/%3E%3C/filter%3E%3Cg filter='url(%23w)'%3E%3Cpath d='M-40-40H132C134-16 114-5 90 1C66 7 50 25 26 30C8 34-12 30-40 40Z' fill-opacity='.6'/%3E%3Cpath d='M-40-40H60C62-18 46-8 30-4C14 0 0-2-40 10Z' fill-opacity='.35'/%3E%3Cellipse cx='176' cy='20' rx='17' ry='7' fill-opacity='.38'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* ───── Cartão: sem moldura; a aquarela sangra pelos cantos e o texto fica em área limpa ───── */
-.inv[data-template="aquarela"] .inv-paper { overflow: hidden; padding: 29cqw var(--paper-pad) 22cqw; }
+.inv[data-template="aquarela"] .inv-paper { overflow: hidden; padding: 24cqw var(--paper-pad) 14.5cqw; }
 .inv[data-template="aquarela"] .inv-paper::before { display: none; }
 .inv[data-template="aquarela"] .inv-art-top,
 .inv[data-template="aquarela"] .inv-art-bottom { position: absolute; left: 0; right: 0; z-index: 0; margin: 0; display: block; mix-blend-mode: multiply; }
@@ -35,10 +38,11 @@
 .inv[data-template="aquarela"] .inv-hello strong { font-weight: 500; }
 .inv[data-template="aquarela"] .inv-headline { font-size: 13px; font-weight: 500; margin-bottom: var(--aq-step) !important; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="aquarela"] .inv-names { padding: 0.12em 0 0.06em; overflow-wrap: break-word; }
-.inv[data-template="aquarela"] .inv-amp { color: var(--aq-pen); margin: 0.02em 0 -0.04em; }
+/* folga em volta do conector: descendentes do primeiro nome (g, j) e acentos do segundo (É, Â) não encostam nele */
+.inv[data-template="aquarela"] .inv-amp { color: var(--aq-pen); margin: 0.2em 0 0.12em; }
 .inv[data-template="aquarela"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.84); }
 .inv[data-template="aquarela"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.08); }
-.inv[data-template="aquarela"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); line-height: 1.16; }
+.inv[data-template="aquarela"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.2; }
 .inv[data-template="aquarela"] .inv-message { font-size: 19px; margin-top: var(--aq-step) !important; }
 .inv[data-template="aquarela"] .inv-art-divider { margin: var(--aq-step-lg) 0; }
 /* o raminho só separa os nomes da data: sem data, some */
@@ -55,6 +59,8 @@
 .inv[data-template="aquarela"] .inv-date-month { grid-column: 1 / -1; grid-row: 2; font-size: 15px; font-weight: 600; letter-spacing: 0.18em; color: var(--ink); }
 .inv[data-template="aquarela"] .inv-place { font: italic 500 19px/1.4 var(--font-text); color: var(--ink); margin-top: var(--aq-step) !important; }
 .inv[data-template="aquarela"] .inv-countdown { background: none; padding: 0 0 0 0.2em; margin-top: var(--aq-step) !important; font: 500 12.5px/1.3 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+/* na miniatura (390 x 660) a contagem regressiva sai, para o cartão caber inteiro, com o canto de baixo à mostra */
+.thumb > .inv[data-template="aquarela"] .inv-countdown { display: none; }
 .inv[data-template="aquarela"] .inv-more { font-family: var(--font-label); font-size: 12.5px; }
 
 /* ───── Seções: o mesmo papel, com uma aguada leve no alto (máscara estática, colorida pela paleta) ───── */
@@ -72,10 +78,17 @@
   -webkit-mask: var(--aq-wash) left top / 100% 100% no-repeat;
   mask: var(--aq-wash) left top / 100% 100% no-repeat;
 }
-.inv[data-template="aquarela"] .inv-section:nth-of-type(even)::before { transform: scaleX(-1); }
+/* três manchas diferentes, em cantos, alturas e intensidades alternados: nunca a mesma duas vezes seguidas */
+.inv[data-template="aquarela"] .inv-section:nth-of-type(3n + 2)::before { height: 104px; opacity: 0.5; -webkit-mask-image: var(--aq-wash-b); mask-image: var(--aq-wash-b); background: linear-gradient(260deg, var(--seal), var(--accent) 45%, var(--accent)); }
+.inv[data-template="aquarela"] .inv-section:nth-of-type(3n)::before { height: 72px; opacity: 0.46; -webkit-mask-image: var(--aq-wash-c); mask-image: var(--aq-wash-c); }
+.inv[data-template="aquarela"] .inv-section:nth-of-type(6n + 4)::before { height: 96px; opacity: 0.52; transform: scaleX(-1); }
+.inv[data-template="aquarela"] .inv-section:nth-of-type(6n + 5)::before { transform: scaleX(-1); }
 .inv[data-template="aquarela"] .inv-kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.22em; color: var(--soft); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
-.inv[data-template="aquarela"] .inv-section-title { font: italic 500 34px/1.15 var(--font-text); }
+.inv[data-template="aquarela"] .inv-section-title { font: 500 32px/1.15 var(--font-text); } /* romano: o circunflexo do itálico da Cormorant sai deslocado ("Você vem?") */
 .inv[data-template="aquarela"] .inv-big { font-size: 23px; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+/* texto das seções na mesma serifa da capa; a sem serifa fica só nos botões e campos */
+.inv[data-template="aquarela"] .inv-text { font: 500 20px/1.45 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="aquarela"] .inv-hint { font: 500 18px/1.4 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="aquarela"] .inv-rule { background: none; height: 14px; margin: 20px 0 16px; position: relative; }
 .inv[data-template="aquarela"] .inv-rule::before { content: ""; position: absolute; left: 50%; top: 50%; width: 72px; height: 1px; transform: translateX(-50%); background: linear-gradient(to right, transparent, var(--accent) 30%, var(--accent) 70%, transparent); }
 .inv[data-template="aquarela"] .inv-btn-quiet { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
@@ -87,3 +100,5 @@
 .inv[data-template="aquarela"] .env-cta { font: 600 13.5px/1 var(--font-label); letter-spacing: 0.22em; padding-left: calc(22px + 0.22em); border-color: var(--aq-pen); }
 /* uma aguada no canto de baixo do envelope fechado: anuncia o que vem dentro */
 .inv[data-template="aquarela"] .env-front::before { content: ""; position: absolute; right: 0; bottom: 0; width: 100%; height: 34%; transform: rotate(180deg); background: linear-gradient(100deg, var(--seal), var(--accent) 45%, var(--accent)); opacity: 0.55; mix-blend-mode: multiply; -webkit-mask: var(--aq-wash) left top / 100% 100% no-repeat; mask: var(--aq-wash) left top / 100% 100% no-repeat; }
+/* forro: a base vira o avesso da aba em torno do próprio centro, então o triângulo precisa ser o espelho do da frente para coincidir com a aba aberta */
+.inv[data-template="aquarela"] .env-liner { clip-path: polygon(0 100%, 100% 100%, 50% 42%); }

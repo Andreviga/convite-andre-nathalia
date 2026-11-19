@@ -6,25 +6,73 @@
   --names-size: clamp(46px, 15.5cqw, 70px);
   --names-weight: 400;
   --names-leading: 1.12;
-  --amp-scale: 0.42;
+  --amp-scale: 0.5;
   --label-tracking: 0.2em;
   --radius: 2px;
   --btn-radius: 2px;
   --frame-inset: 13px;
 }
+/* Algarismos alinhados em tudo: os de texto da Cormorant fazem "16h30" virar "16h3o" e "11" virar "ıı". */
+.inv[data-template="classico"] * { font-variant-numeric: lining-nums !important; } /* !important: os atalhos "font:" da base e do modelo zeram esta propriedade */
+
+/* ───────── Capa ───────── */
 /* moldura dupla: fio de 1px e, por dentro, um fio mais fino */
 .inv[data-template="classico"] .inv-paper::before { border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
 .inv[data-template="classico"] .inv-paper { padding-block: calc(var(--paper-pad) + 18px); }
 .inv[data-template="classico"] .inv-headline { font-size: 13.5px; font-weight: 500; }
 .inv[data-template="classico"] .inv-names { padding: 0.16em 0 0.1em; }
-.inv[data-template="classico"] .inv-amp { margin: -0.1em 0 -0.05em; }
+/* o conector tem folga dos dois lados: descendentes do nome de cima e acentos de maiúscula do nome de baixo (Ângela & Érica) */
+.inv[data-template="classico"] .inv-amp { margin: 0.04em 0 0.3em; line-height: 1.1; }
+/* título único comprido (frase): itálico de texto em vez de caligrafia, que só fica bem em nomes */
+.inv[data-template="classico"] .inv-names[data-count="1"][data-long="true"] { font-family: var(--font-text); font-style: italic; font-weight: 500; font-size: calc(var(--names-size) * 0.62); line-height: 1.2; text-wrap: balance; padding: 0.1em 0; }
 .inv[data-template="classico"] .inv-message { font-size: 20px; }
-.inv[data-template="classico"] .inv-date-side, .inv[data-template="classico"] .inv-date-month { font-size: 13px; letter-spacing: 0.12em; border-color: var(--accent); }
 .inv[data-template="classico"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); }
 .inv[data-template="classico"] .inv-hello strong { font-weight: 500; }
-.inv[data-template="classico"] .inv-date-day { font-weight: 400; font-size: 58px; }
+
+/* Data: dia da semana e hora ladeiam só o numeral; o mês vai na linha de baixo, de ponta a ponta.
+   (Na base o mês alargava a coluna do meio e espremia as laterais: a hora vazava dos fios em 360px e cruzava a moldura em 320px.) */
+.inv[data-template="classico"] .inv-date { gap: 8px clamp(10px, 4cqw, 16px); }
+.inv[data-template="classico"] .inv-date-main { display: contents; }
+.inv[data-template="classico"] .inv-date-day { grid-column: 2; grid-row: 1; font-weight: 400; font-size: clamp(48px, 16cqw, 58px); }
+.inv[data-template="classico"] .inv-date-month { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+.inv[data-template="classico"] .inv-date-side, .inv[data-template="classico"] .inv-date-month { font-size: clamp(12.5px, 4cqw, 14.5px); letter-spacing: 0.12em; border-color: var(--accent); }
+.inv[data-template="classico"] .inv-date-side { padding-left: 0.12em; overflow: hidden; text-overflow: clip; }
 .inv[data-template="classico"] .inv-place { font-style: italic; font-size: 18px; }
-.inv[data-template="classico"] .inv-countdown { background: none; font: 500 13px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0; }
+.inv[data-template="classico"] .inv-countdown { background: none; font: 500 13.5px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0 0 0 0.18em; }
+.inv[data-template="classico"] .inv-more { font-family: var(--font-label); font-size: 13px; }
+
+/* ───────── Seções: a mesma papelaria da capa (serifa e versaletes), sem cara de aplicativo ───────── */
 .inv[data-template="classico"] .inv-kicker { font-size: 13.5px; }
 .inv[data-template="classico"] .inv-section { box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px var(--line); }
-.inv[data-template="classico"] .env-to strong { font-family: var(--font-names); font-size: 42px; font-weight: 400; }
+.inv[data-template="classico"] .inv-big { font-size: 23px; }
+.inv[data-template="classico"] .inv-text { font: 400 19.5px/1.45 var(--font-text); }
+.inv[data-template="classico"] .inv-hint { font: italic 400 17.5px/1.45 var(--font-text); }
+.inv[data-template="classico"] .inv-rule { background: color-mix(in srgb, var(--accent) 55%, transparent); }
+.inv[data-template="classico"] .inv-btn { font: 600 15.5px/1.2 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; padding-left: calc(18px + 0.14em); }
+.inv[data-template="classico"] .inv-btn-quiet { border-color: var(--accent); font-weight: 600; font-size: 14.5px; }
+.inv[data-template="classico"] .rsvp-yes, .inv[data-template="classico"] .rsvp-no { font-size: 16.5px; }
+.inv[data-template="classico"] .rsvp-state { border-radius: var(--radius); }
+.inv[data-template="classico"] .inv-link { font: italic 500 18px/1.3 var(--font-text); }
+.inv[data-template="classico"] .inv-saved { font: italic 400 17px/1.45 var(--font-text); }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="classico"] .env-to { font: italic 400 19px/1.4 var(--font-text); }
+.inv[data-template="classico"] .env-to strong { font-family: var(--font-names); font-style: normal; font-size: 42px; font-weight: 400; }
+.inv[data-template="classico"] .env-cta { font: 600 14.5px/1 var(--font-label); letter-spacing: 0.2em; padding-left: calc(22px + 0.2em); border-radius: var(--btn-radius); border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
+/* forro: tinta mais marcada, margem de papel e filete acompanhando as bordas da aba */
+.inv[data-template="classico"] .env-liner { color: color-mix(in srgb, var(--liner) 58%, var(--ink)); }
+.inv[data-template="classico"] .classico-liner-rule { stroke: var(--accent); stroke-width: 19px; }
+.inv[data-template="classico"] .classico-liner-edge { stroke: color-mix(in srgb, var(--paper) 94%, var(--ink)); stroke-width: 17px; }
+/* o cartão que sobe já traz a moldura dupla do convite */
+.inv[data-template="classico"] .env-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), inset 0 0 0 6px var(--paper), inset 0 0 0 7px var(--accent), inset 0 0 0 9px var(--paper), inset 0 0 0 9.6px color-mix(in srgb, var(--accent) 70%, transparent); padding-top: 13%; }
+
+/* ───────── Miniatura (390x660): mesmas fontes e tamanhos, só menos respiro, para a moldura e o floreio de baixo não ficarem cortados ───────── */
+.thumb > .inv[data-template="classico"] .inv-paper { padding-block: calc(var(--paper-pad) - 3px); }
+.thumb > .inv[data-template="classico"] .inv-art-top { margin-bottom: 14px; }
+.thumb > .inv[data-template="classico"] .inv-headline { margin-bottom: 10px !important; }
+.thumb > .inv[data-template="classico"] .inv-message { margin-top: 10px !important; }
+.thumb > .inv[data-template="classico"] .inv-art-divider { margin: 15px 0; }
+.thumb > .inv[data-template="classico"] .inv-date { margin-top: 16px; }
+.thumb > .inv[data-template="classico"] .inv-place { margin-top: 9px !important; }
+.thumb > .inv[data-template="classico"] .inv-countdown { margin-top: 11px !important; }
+.thumb > .inv[data-template="classico"] .inv-art-bottom { margin-top: 15px; }

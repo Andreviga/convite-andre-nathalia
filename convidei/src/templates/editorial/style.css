@@ -41,6 +41,11 @@
 .inv[data-template="editorial"] .inv-names[data-count="2"] .inv-name:last-child { text-align: right; }
 .inv[data-template="editorial"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 0.82; text-align: center; margin: -0.02em 0 0.06em; }
 .inv[data-template="editorial"] .inv-names[data-count="1"] { text-wrap: balance; }
+/* título único não tem "&": o ponto de cor é um filete curto de destaque sob o título, como em abertura de matéria */
+.inv[data-template="editorial"] .inv-names[data-count="1"]::after { content: ""; display: block; width: var(--ed-col); height: 3px; margin-top: 0.34em; background: var(--accent); }
+/* casal com nome comprido: os dois nomes quase enchem a linha e a escada some; vira bloco à esquerda, com o conector na mesma margem */
+.inv[data-template="editorial"] .inv-names[data-count="2"][data-long="true"] .inv-name:last-child { text-align: left; }
+.inv[data-template="editorial"] .inv-names[data-count="2"][data-long="true"] .inv-amp { text-align: left; margin: 0.14em 0 0.16em; }
 .inv[data-template="editorial"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.76); line-height: 1.04; }
 
 .inv[data-template="editorial"] .inv-message { font: italic 400 18px/1.5 var(--font-text); max-width: 27ch; margin: var(--ed-l) 0 0 !important; text-wrap: pretty; }
@@ -49,15 +54,15 @@
 .inv[data-template="editorial"] .inv-date { grid-template-columns: var(--ed-col) auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: end; gap: 6px 0; margin-top: var(--ed-l); padding: 16px 0 15px; border-block: 1px solid var(--ink); }
 .inv[data-template="editorial"] .inv-date-main { display: contents; }
 .inv[data-template="editorial"] .inv-date-day { grid-area: 1 / 1 / 3 / 2; align-self: center; font: 400 clamp(42px, 16cqw, 72px)/0.78 var(--font-names); letter-spacing: -0.02em; padding-bottom: 0.06em; }
-.inv[data-template="editorial"] .inv-date-month { grid-area: 1 / 2 / 2 / 4; font: 500 13.5px/1.2 var(--font-label); letter-spacing: 0.18em; padding-left: 0; color: var(--ink); }
+.inv[data-template="editorial"] .inv-date-month { grid-area: 1 / 2 / 2 / 4; font: 500 15px/1.2 var(--font-label); letter-spacing: 0.16em; padding-left: 0; color: var(--ink); }
 .inv[data-template="editorial"] .inv-date-side { border: 0; padding: 0; font: italic 400 21px/1.15 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="editorial"] .inv-date-side:first-child { grid-area: 2 / 2 / 3 / 3; padding-right: 0.3em; }
 .inv[data-template="editorial"] .inv-date-side:last-child { grid-area: 2 / 3 / 3 / 4; }
 
 .inv[data-template="editorial"] .inv-place { display: grid; grid-template-columns: var(--ed-col) minmax(0, 1fr); align-items: baseline; font: 400 17px/1.35 var(--font-ui); color: var(--ink); margin-top: var(--ed-s) !important; text-wrap: pretty; }
-.inv[data-template="editorial"] .inv-place::before { content: "Local"; font: 500 11px/1.2 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
+.inv[data-template="editorial"] .inv-place::before { content: "Local"; font: 500 12px/1.2 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
 
-.inv[data-template="editorial"] .inv-countdown { display: block; margin-top: var(--ed-l) !important; padding: 0; border-radius: 0; background: none; font: 500 11.5px/1 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
+.inv[data-template="editorial"] .inv-countdown { display: block; margin-top: var(--ed-l) !important; padding: 0; border-radius: 0; background: none; font: 500 12.5px/1 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
 .inv[data-template="editorial"] .inv-art-bottom { justify-content: flex-end; margin-top: var(--ed-l); }
 .inv[data-template="editorial"] .inv-countdown + .inv-art-bottom { margin-top: -10px; }
 
@@ -89,5 +94,18 @@
 .inv[data-template="editorial"] .env-back, .inv[data-template="editorial"] .env-front { border-radius: 0; }
 .inv[data-template="editorial"] .env-cta { border-radius: 0; font: 500 12.5px/1 var(--font-label); letter-spacing: var(--label-tracking); padding: 16px 24px; }
 
-/* miniatura da galeria: recorta a capa a partir do cabeçalho, como capa de revista na banca */
+
+/* selo: nada de cera. Um quadrado chapado, o mesmo sinal de "fim de matéria" da capa, com as iniciais em itálico e um fio interno. */
+.inv[data-template="editorial"] .env-seal { width: 21%; background: var(--seal); filter: none; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 5px 12px rgba(0, 0, 0, 0.16); }
+.inv[data-template="editorial"] .env-seal::after { content: ""; position: absolute; inset: 7%; border: 1px solid color-mix(in srgb, var(--seal-ink) 50%, transparent); }
+.inv[data-template="editorial"] .env-seal svg :is(path, circle, text:first-of-type) { display: none; }
+.inv[data-template="editorial"] .env-seal svg text { font-family: var(--font-text) !important; }
+
+/* miniatura da galeria: o cartão ocupa o quadro inteiro, cabeçalho e nomes no alto, data e local no pé, como capa de revista na banca */
 .inv[data-template="editorial"]:is(.thumb > .inv) .inv-cover { justify-content: flex-start; }
+.inv[data-template="editorial"]:is(.thumb > .inv) .inv-paper { flex: 1; display: flex; flex-direction: column; }
+.inv[data-template="editorial"]:is(.thumb > .inv) .inv-date { margin-top: auto; }
+
+/* Playfair traz algarismos de texto (antigos) por padrão, e a abreviação "font:" zera font-variant e font-feature-settings.
+   O modelo usa só algarismos alinhados, em qualquer elemento: por isso a regra é geral e com prioridade. */
+.inv[data-template="editorial"] *, .inv[data-template="editorial"] *::before, .inv[data-template="editorial"] *::after { font-variant-numeric: lining-nums !important; font-feature-settings: "lnum" 1 !important; }

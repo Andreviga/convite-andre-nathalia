@@ -76,7 +76,7 @@ function Divider() {
   );
 }
 
-/** Eco do leque, pequeno e invertido, no pé do cartão. */
+/** Eco do leque, pequeno e invertido, no pé do cartão: mesma construção do topo (raios que param no arco duplo). */
 function Foot() {
   const cx = 40;
   const cy = 5;
@@ -85,9 +85,11 @@ function Foot() {
       <defs>
         <Foil id="noite-foil-foot" x2={80} />
       </defs>
-      <path d={rays(cx, cy, 7, (i) => (i % 2 === 0 ? 23 : 17.5), 22.5, 1)} />
+      <path d={rays(cx, cy, 7, () => 17.5, 15, 1)} />
       <path d={`M${cx - 18} ${cy}A18 18 0 0 0 ${cx + 18} ${cy}`} />
+      <path d={`M${cx - 21.5} ${cy}A21.5 21.5 0 0 0 ${cx + 21.5} ${cy}`} />
       <path d={`M${cx - 7} ${cy}A7 7 0 0 0 ${cx + 7} ${cy}`} />
+      <path d={`M${cx - 3.5} ${cy}A3.5 3.5 0 0 0 ${cx + 3.5} ${cy}z`} fill="url(#noite-foil-foot)" stroke="none" />
       <path d={`M1 ${cy}H79M14 ${cy - 4}H66`} />
     </svg>
   );

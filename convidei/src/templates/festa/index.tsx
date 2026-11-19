@@ -1,53 +1,46 @@
 import type { ArtProps, TemplateDef } from "../types";
 
-// Festa: pôster de aniversário impresso em duas cores. Um bloco de cor chapada com um meio-sol vazado no papel,
+// Festa: pôster de aniversário impresso em duas cores. Um bloco de cor chapada com um meio-sol e um leque de faixas,
 // título em Fraunces grande (primeira linha em itálico) e texto alinhado à esquerda, como capa de revista.
 // As cores das formas vêm do CSS (classes festa-*), para acompanhar a paleta.
 
 const r1 = (n: number) => Math.round(n * 10) / 10;
 
-/** Raios do sol: traços entre dois raios de um círculo, alternando comprido e curto. */
-function rays(cx: number, cy: number, from: number, to: number, count: number, inner: number, long: number, short: number): string {
+/** Leque de faixas que irradia de um centro e sangra para fora do quadro (o mesmo desenho do forro do envelope). */
+function burst(cx: number, cy: number, radius: number, count: number, dir: 1 | -1): string {
   let d = "";
-  for (let i = 0; i < count; i++) {
-    const a = ((from + ((to - from) * i) / (count - 1)) * Math.PI) / 180;
-    const outer = i % 2 === 0 ? long : short;
-    d += `M${r1(cx + Math.cos(a) * inner)} ${r1(cy - Math.sin(a) * inner)}L${r1(cx + Math.cos(a) * outer)} ${r1(cy - Math.sin(a) * outer)}`;
+  for (let i = 0; i < count; i += 2) {
+    const a0 = (Math.PI * i) / count;
+    const a1 = (Math.PI * (i + 1)) / count;
+    d += `M${cx} ${cy}L${r1(cx + Math.cos(a0) * radius)} ${r1(cy + dir * Math.sin(a0) * radius)}L${r1(cx + Math.cos(a1) * radius)} ${r1(cy + dir * Math.sin(a1) * radius)}Z`;
   }
   return d;
 }
 
-/** Estrela de linha, oito pontas. */
-function Star({ x, y, size }: { x: number; y: number; size: number }) {
-  const s = size;
-  const d = r1(s * 0.42);
-  return <path className="festa-star" d={`M${x} ${y - s}V${y + s}M${x - s} ${y}H${x + s}M${x - d} ${y - d}L${x + d} ${y + d}M${x - d} ${y + d}L${x + d} ${y - d}`} />;
+/** Brilho de quatro pontas, chapado, com os lados côncavos. */
+function spark(x: number, y: number, s: number): string {
+  const k = r1(s * 0.16);
+  return `M${x} ${y - s}Q${x + k} ${y - k} ${x + s} ${y}Q${x + k} ${y + k} ${x} ${y + s}Q${x - k} ${y + k} ${x - s} ${y}Q${x - k} ${y - k} ${x} ${y - s}Z`;
 }
 
-/** Motivo-herói: bloco de cor que sangra até a borda do cartão, com o meio-sol nascendo na linha do papel. */
+/** Motivo-herói: bloco de cor que sangra até a borda do cartão. O meio-sol nasce na linha do papel, fora do centro,
+    e as faixas atravessam o bloco inteiro; três brilhos de tamanhos diferentes equilibram o lado esquerdo. */
 function Sunrise() {
   return (
-    <svg className="festa-sunrise" viewBox="0 0 400 172" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <rect className="festa-field" width="400" height="172" />
-      <path className="festa-rays" d={rays(278, 172, 9, 171, 13, 98, 136, 118)} />
-      <circle className="festa-sun" cx="278" cy="172" r="82" />
-      <Star x={51} y={60} size={17} />
+    <svg className="festa-sunrise" viewBox="0 0 400 160" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <rect className="festa-field" width="400" height="160" />
+      <path className="festa-burst" d={burst(292, 160, 480, 15, -1)} />
+      <circle className="festa-sun" cx="292" cy="160" r="78" />
+      <path className="festa-star" d={spark(62, 84, 21) + spark(108, 122, 9) + spark(34, 128, 6)} />
     </svg>
   );
 }
 
 /** Forro do envelope: o mesmo sol, visto de cima, irradiando do alto da aba. */
 function Liner() {
-  const wedges: string[] = [];
-  const n = 18;
-  for (let i = 0; i < n; i += 2) {
-    const a0 = (Math.PI * i) / n;
-    const a1 = (Math.PI * (i + 1)) / n;
-    wedges.push(`M200 0L${r1(200 + Math.cos(a0) * 420)} ${r1(Math.sin(a0) * 420)}L${r1(200 + Math.cos(a1) * 420)} ${r1(Math.sin(a1) * 420)}Z`);
-  }
   return (
     <svg className="festa-liner" width="100%" height="100%" viewBox="0 0 400 286" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
-      <path className="festa-liner-rays" d={wedges.join("")} />
+      <path className="festa-liner-rays" d={burst(200, 0, 420, 18, 1)} />
       <circle className="festa-liner-sun" cx="200" cy="0" r="46" />
     </svg>
   );
@@ -62,7 +55,7 @@ function Art({ slot }: ArtProps) {
 export const def: TemplateDef = {
   id: "festa",
   name: "Festa",
-  description: "Pôster em cor chapada, meio-sol e título de revista",
+  description: "Pôster em cor chapada, sol em leque e título de revista",
   premium: false,
   suits: ["aniversario", "outro"],
   palettes: [

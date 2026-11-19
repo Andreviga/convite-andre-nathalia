@@ -5,7 +5,7 @@
   --font-text: var(--f-fraunces), "Fraunces", Georgia, serif;
   --font-label: var(--f-jost), "Jost", system-ui, sans-serif;
   --font-ui: var(--f-jost), "Jost", system-ui, sans-serif;
-  --names-size: clamp(42px, 13.6cqw, 60px);
+  --names-size: clamp(34px, 13.6cqw, 60px);
   --names-weight: 400;
   --names-leading: 1.04;
   --names-tracking: -0.012em;
@@ -13,14 +13,14 @@
   --label-tracking: 0.24em;
   --radius: 30px;
   --btn-radius: 999px;
-  --paper-pad: clamp(28px, 9cqw, 42px);
+  --paper-pad: clamp(22px, 9cqw, 42px);
   --frame-inset: 11px;
   --paper-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent), 0 16px 36px color-mix(in srgb, var(--ink) 11%, transparent);
   /* segunda tinta dos ornamentos e o meio-termo entre as duas */
   --doce-a: var(--accent);
   --doce-b: color-mix(in srgb, var(--liner) 68%, var(--ink));
   --doce-mid: color-mix(in srgb, var(--doce-a) 50%, var(--doce-b));
-  --doce-wash-a: color-mix(in srgb, var(--accent) 22%, var(--paper));
+  --doce-wash-a: color-mix(in srgb, var(--accent) 30%, var(--paper));
   --doce-wash-b: color-mix(in srgb, var(--liner) 58%, var(--paper));
   --doce-arch: 50cqw;
   background: linear-gradient(98deg, color-mix(in srgb, var(--accent) 22%, var(--bg)) 0%, var(--bg) 50%, color-mix(in srgb, var(--liner) 52%, var(--bg)) 100%);
@@ -52,17 +52,18 @@
 .inv[data-template="doce"] .inv-art-divider { margin: 28px 0; }
 
 /* Data: o dia dentro de uma lua cheia; dia da semana e hora ao lado, na altura do disco. */
-.inv[data-template="doce"] .inv-date { --disc: 82px; align-items: start; gap: 8px; margin-top: 0; }
-.inv[data-template="doce"] .inv-date-side { display: grid; place-items: center; height: var(--disc); border: 0; padding: 0 0 0 0.14em; font: 500 13.5px/1.3 var(--font-label); letter-spacing: 0.14em; color: var(--ink); }
+.inv[data-template="doce"] .inv-date { --disc: clamp(68px, 23cqw, 82px); align-items: start; gap: 8px; margin-top: 0; }
+.inv[data-template="doce"] .inv-date-side { display: grid; place-items: center; height: var(--disc); border: 0; padding: 0 0 0 0.08em; font: 500 clamp(14px, 4.4cqw, 15.5px)/1.3 var(--font-label); letter-spacing: 0.08em; color: var(--ink); }
 .inv[data-template="doce"] .inv-date-main { display: flex; flex-direction: column; align-items: center; width: var(--disc); gap: 12px; }
-.inv[data-template="doce"] .inv-date-day { display: grid; place-items: center; width: var(--disc); height: var(--disc); border-radius: 50%; background: linear-gradient(98deg, var(--doce-wash-a) 30%, var(--doce-wash-b) 70%); font: 400 42px/1 var(--font-text); letter-spacing: -0.01em; padding-bottom: 0.06em; }
-.inv[data-template="doce"] .inv-date-month { justify-self: center; font: 500 13px/1.3 var(--font-label); letter-spacing: 0.2em; padding-left: 0.2em; color: var(--ink); }
+.inv[data-template="doce"] .inv-date-day { display: grid; place-items: center; width: var(--disc); height: var(--disc); border-radius: 50%; background: linear-gradient(98deg, var(--doce-wash-a) 30%, var(--doce-wash-b) 70%); font: 400 calc(var(--disc) * 0.51)/1 var(--font-text); letter-spacing: -0.01em; padding-bottom: 0.06em; }
+.inv[data-template="doce"] .inv-date-month { justify-self: center; font: 500 clamp(14px, 4.2cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.14em; padding-left: 0.14em; color: var(--ink); }
 .inv[data-template="doce"] .inv-place { font: 400 17px/1.45 var(--font-text); margin-top: 14px !important; }
 .inv[data-template="doce"] .inv-countdown { margin-top: 28px !important; font: 500 12px/1 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; padding: 9px 16px 9px calc(16px + 0.16em); background: linear-gradient(98deg, var(--doce-wash-a), var(--doce-wash-b)); }
 .inv[data-template="doce"] .inv-more { letter-spacing: 0.22em; }
 
-/* Miniatura: o cartão começa do alto, para o arco e o móbile aparecerem inteiros. */
-.inv[data-template="doce"][data-still="true"] .inv-cover { justify-content: flex-start; }
+/* Miniatura (390x660): sem a contagem e com o divisor mais justo, o cartão cabe inteiro, do arco ao pé. */
+.inv[data-template="doce"][data-still="true"] .inv-countdown { display: none; }
+.inv[data-template="doce"][data-still="true"] .inv-art-divider { margin: 20px 0; }
 
 /* ───────── Seções ───────── */
 .inv[data-template="doce"] .inv-section { border-radius: var(--radius); padding: 34px 24px; box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 9%, transparent), 0 8px 22px color-mix(in srgb, var(--ink) 7%, transparent); }
@@ -72,8 +73,12 @@
 .inv[data-template="doce"] .inv-rule { width: 40px; height: 3px; margin: 26px auto; background: radial-gradient(circle, color-mix(in srgb, var(--doce-mid) 80%, var(--paper)) 1.5px, transparent 1.7px) 0 0 / 10px 3px repeat-x; }
 .inv[data-template="doce"] .inv-btn { font-weight: 500; letter-spacing: 0.01em; border-color: color-mix(in srgb, var(--ink) 55%, var(--paper)); }
 .inv[data-template="doce"] .inv-grid-2 .inv-btn { font-size: 15.5px; padding-inline: 8px; }
+/* telas estreitas: "Google Agenda" e "Outras agendas" ficam em uma linha */
+@container (max-width: 340px) {
+  .inv[data-template="doce"] .inv-grid-2 .inv-btn { font-size: 14.5px; padding-inline: 4px; letter-spacing: 0; white-space: nowrap; }
+}
 .inv[data-template="doce"] .inv-btn-main { border-color: var(--ink); }
-.inv[data-template="doce"] .inv-btn-quiet { border-color: transparent; background: linear-gradient(98deg, var(--doce-wash-a), var(--doce-wash-b)); }
+.inv[data-template="doce"] .inv-btn-quiet { min-height: 54px; border-color: color-mix(in srgb, var(--doce-mid) 50%, var(--paper)); background: linear-gradient(98deg, var(--doce-wash-a), var(--doce-wash-b)); }
 .inv[data-template="doce"] .rsvp-state { border-radius: 22px; }
 .inv[data-template="doce"] .rsvp-state-title { font-style: italic; font-weight: 400; }
 .inv[data-template="doce"] .inv-field input, .inv[data-template="doce"] .inv-field select, .inv[data-template="doce"] .inv-field textarea { border-radius: 16px; }

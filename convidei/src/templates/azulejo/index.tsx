@@ -8,28 +8,34 @@ import type { ArtProps, TemplateDef } from "../types";
 const T = 48; // lado do módulo, em unidades do desenho
 const INK = { stroke: "var(--ink)" } as const;
 
-/** Um azulejo. `hole` é a cor do fundo (papel ou forro), usada no miolo vazado da flor. */
+/** Um azulejo. `hole` é a cor do fundo (papel ou forro), usada no miolo vazado da flor, na luz das pétalas e na junta. */
 function Tile({ hole }: { hole: string }) {
   const petal = "M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z";
+  const petalLight = "M24 24C24.6 17.4 29.6 12.4 36.4 11.6Z"; // meia pétala mais clara: a pincelada
   const lancet = "M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z";
   const turns = [0, 90, 180, 270];
   return (
     <g>
       {[[0, 0], [T, 0], [0, T], [T, T]].map(([x, y]) => (
         <g key={`${x}-${y}`}>
-          <circle cx={x} cy={y} r="12.6" fill="none" strokeWidth="3" style={INK} />
-          <circle cx={x} cy={y} r="7.6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+          <circle cx={x} cy={y} r="12.6" fill="none" strokeWidth="2.4" style={INK} />
+          <circle cx={x} cy={y} r="7.8" fill="none" stroke="currentColor" strokeWidth="1.3" />
           <circle cx={x} cy={y} r="3.4" fill="currentColor" />
         </g>
       ))}
       {turns.map((a) => (
-        <path key={`p${a}`} d={petal} fill="currentColor" transform={`rotate(${a} 24 24)`} />
+        <g key={`p${a}`} transform={`rotate(${a} 24 24)`}>
+          <path d={petal} fill="currentColor" />
+          <path d={petalLight} opacity="0.26" style={{ fill: hole }} />
+        </g>
       ))}
       {turns.map((a) => (
-        <path key={`l${a}`} d={lancet} fill="none" strokeWidth="0.9" strokeLinejoin="round" style={INK} transform={`rotate(${a} 24 24)`} />
+        <path key={`l${a}`} d={lancet} fill="none" strokeWidth="1.3" strokeLinejoin="round" style={INK} transform={`rotate(${a} 24 24)`} />
       ))}
-      <circle cx="24" cy="24" r="4.3" strokeWidth="0.9" style={{ fill: hole, ...INK }} />
+      <circle cx="24" cy="24" r="4.3" strokeWidth="1.1" style={{ fill: hole, ...INK }} />
       <circle cx="24" cy="24" r="1.6" fill="currentColor" />
+      {/* junta entre azulejos: um fio da cor do fundo que interrompe as argolas */}
+      <path d={`M0 0V${T}M${T} 0V${T}M0 0H${T}M0 ${T}H${T}`} strokeWidth="1" opacity="0.8" style={{ stroke: hole }} />
     </g>
   );
 }

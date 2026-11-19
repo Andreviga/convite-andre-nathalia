@@ -62,7 +62,7 @@
 
 .inv[data-template="noite"] .inv-hello { font: 400 15.5px/1.4 var(--font-text); letter-spacing: 0.02em; margin-bottom: var(--s1) !important; }
 .inv[data-template="noite"] .inv-hello strong { font-weight: 500; }
-.inv[data-template="noite"] .inv-headline { font-size: 12px; font-weight: 400; line-height: 1.8; margin-bottom: var(--s1) !important; }
+.inv[data-template="noite"] .inv-headline { font-size: 13px; font-weight: 400; line-height: 1.75; letter-spacing: 0.26em; padding-left: 0.26em; margin-bottom: var(--s1) !important; }
 
 .inv[data-template="noite"] .inv-names { padding: 0; }
 .inv[data-template="noite"] .inv-name {
@@ -79,18 +79,20 @@
 .inv[data-template="noite"] .inv-amp::before, .inv[data-template="noite"] .inv-amp::after { content: ""; width: 1.6em; height: 1px; background: var(--gold-line); }
 .inv[data-template="noite"] .inv-names[data-count="1"] { font-size: clamp(40px, 14cqw, 60px); }
 .inv[data-template="noite"] .inv-names[data-count="1"][data-long="true"] { font-size: clamp(25px, 8.2cqw, 36px); line-height: 1.24; }
+/* casal com nome composto: espaçamento menor para cada nome caber em uma linha (nome / & / nome) */
+.inv[data-template="noite"] .inv-names[data-count="2"][data-long="true"] { --names-tracking: 0.03em; font-size: clamp(24px, 9.6cqw, 36px); }
 
 .inv[data-template="noite"] .inv-message { font: 400 17px/1.55 var(--font-text); font-style: normal; color: color-mix(in srgb, var(--ink) 90%, var(--paper)); margin-top: var(--s2) !important; max-width: 27ch; }
 
 /* data: dia da semana | dia | hora, e o mês numa linha própria (assim as laterais têm sempre a mesma largura) */
-.inv[data-template="noite"] .inv-date { margin-top: var(--s2); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "a day b" "month month month"; column-gap: 16px; row-gap: 10px; }
+.inv[data-template="noite"] .inv-date { margin-top: var(--s2); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "a day b" "month month month"; column-gap: clamp(8px, 3.6cqw, 14px); row-gap: 12px; }
 .inv[data-template="noite"] .inv-date-main { display: contents; }
-.inv[data-template="noite"] .inv-date-side { grid-area: a; font: 500 13px/1.3 var(--font-label); letter-spacing: 0.14em; padding: 10px 0 10px 0.14em; min-height: 39px; color: var(--ink); border-color: var(--gold-line); }
+.inv[data-template="noite"] .inv-date-side { grid-area: a; font: 500 clamp(12.5px, 4.4cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.09em; padding: 10px 0 10px 0.09em; color: var(--ink); border-color: var(--gold-line); }
 .inv[data-template="noite"] .inv-date-side:last-child { grid-area: b; }
-.inv[data-template="noite"] .inv-date-day { grid-area: day; justify-self: center; font: 300 62px/0.9 var(--font-text); letter-spacing: 0.02em; color: var(--ink); }
-.inv[data-template="noite"] .inv-date-month { grid-area: month; justify-self: center; font: 500 13px/1.3 var(--font-label); letter-spacing: 0.24em; padding-left: 0.24em; color: var(--ink); }
+.inv[data-template="noite"] .inv-date-day { grid-area: day; justify-self: center; font: 300 clamp(52px, 18.6cqw, 62px)/0.9 var(--font-text); letter-spacing: 0.02em; color: var(--ink); }
+.inv[data-template="noite"] .inv-date-month { grid-area: month; justify-self: center; font: 500 clamp(13.5px, 4.4cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.2em; padding-left: 0.2em; color: var(--ink); }
 .inv[data-template="noite"] .inv-place { font: 400 17px/1.45 var(--font-text); color: var(--ink); margin-top: var(--s2) !important; }
-.inv[data-template="noite"] .inv-countdown { background: none; border-radius: 0; padding: 0 0 0 0.3em; margin-top: var(--s1) !important; font: 400 12px/1.4 var(--font-label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--soft); }
+.inv[data-template="noite"] .inv-countdown { background: none; border-radius: 0; padding: 0 0 0 0.26em; margin-top: var(--s1) !important; font: 400 13px/1.4 var(--font-label); letter-spacing: 0.26em; text-transform: uppercase; color: var(--soft); }
 .inv[data-template="noite"] .inv-more { font-weight: 400; letter-spacing: 0.3em; padding-left: calc(16px + 0.3em); }
 
 /* fundo: escamas quase invisíveis */
@@ -117,12 +119,13 @@
     linear-gradient(var(--c), var(--c)) 100% 100% / 3px 3px;
   background-repeat: no-repeat;
 }
-.inv[data-template="noite"] .inv-kicker { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 12px; font-weight: 400; letter-spacing: 0.3em; padding-left: 0.3em; color: var(--accent); margin-bottom: 12px !important; }
+.inv[data-template="noite"] .inv-kicker { display: flex; align-items: center; justify-content: center; gap: clamp(8px, 3cqw, 12px); font-size: 12.5px; font-weight: 400; letter-spacing: clamp(2.4px, 1cqw, 3.6px); padding-left: clamp(2.4px, 1cqw, 3.6px); white-space: nowrap; color: var(--accent); margin-bottom: 12px !important; }
 .inv[data-template="noite"] .inv-kicker::before, .inv[data-template="noite"] .inv-kicker::after { content: ""; width: 22px; height: 1px; background: var(--gold-line); flex: none; }
-.inv[data-template="noite"] .inv-kicker::after { margin-left: -0.3em; }
+.inv[data-template="noite"] .inv-kicker::after { margin-left: calc(-1 * clamp(2.4px, 1cqw, 3.6px)); }
 .inv[data-template="noite"] .inv-section-title {
-  font: 400 30px/1.2 var(--font-names);
+  font: 400 clamp(29px, 9.6cqw, 34px)/1.2 var(--font-names);
   letter-spacing: 0.1em;
+  -webkit-text-stroke: 0.5px var(--accent); /* Poiret One só tem um peso: o contorno engrossa o traço */
   text-transform: uppercase;
   padding-left: 0.1em;
   margin-bottom: 10px !important;
@@ -141,10 +144,10 @@
 .inv[data-template="noite"] .inv-btn:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
 .inv[data-template="noite"] .inv-btn-main { background: linear-gradient(100deg, var(--accent), color-mix(in srgb, var(--accent) 80%, var(--ink)) 48%, var(--accent)); border-color: var(--accent); color: var(--paper); box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 4px color-mix(in srgb, var(--paper) 55%, transparent); }
 .inv[data-template="noite"] .inv-btn-main:hover { background: var(--accent); }
-.inv[data-template="noite"] .inv-grid-2 .inv-btn { font-size: 15px; padding-inline: 6px; letter-spacing: 0.01em; }
+.inv[data-template="noite"] .inv-grid-2 .inv-btn { font-size: clamp(13.5px, 4.6cqw, 15px); padding-inline: 4px; letter-spacing: 0.01em; }
 .inv[data-template="noite"] .inv-btn-quiet { border-color: color-mix(in srgb, var(--accent) 40%, var(--paper)); font-size: 15.5px; }
 .inv[data-template="noite"] .rsvp-state { border-radius: 0; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent); }
-.inv[data-template="noite"] .rsvp-state-title { font: 400 26px/1.2 var(--font-names); letter-spacing: 0.08em; text-transform: uppercase; }
+.inv[data-template="noite"] .rsvp-state-title { font: 400 27px/1.2 var(--font-names); letter-spacing: 0.08em; text-transform: uppercase; -webkit-text-stroke: 0.5px currentColor; }
 .inv[data-template="noite"] .inv-field input, .inv[data-template="noite"] .inv-field select, .inv[data-template="noite"] .inv-field textarea { background: color-mix(in srgb, var(--paper) 90%, var(--ink)); border-color: color-mix(in srgb, var(--accent) 55%, var(--paper)); border-radius: 0; }
 .inv[data-template="noite"] .inv-qr { border-radius: 0; border-color: var(--accent); }
 .inv[data-template="noite"] .inv-sticky { border-top-color: color-mix(in srgb, var(--accent) 45%, var(--paper)); }
@@ -154,17 +157,40 @@
 .inv[data-template="noite"] .env-back { background: color-mix(in srgb, var(--paper) 80%, var(--bg)); }
 .inv[data-template="noite"] .env-front { background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 95%, var(--ink)), var(--paper) 70%); }
 /* aba: um fio dourado acompanha as duas diagonais (triângulo dourado por baixo, face recuada 3px) */
-.inv[data-template="noite"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 1.5px)); background: var(--foil); }
+.inv[data-template="noite"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 1.5px)); background: var(--foil); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .inv[data-template="noite"] .env-flap-face { clip-path: polygon(2px 0, calc(100% - 2px) 0, 50% 58%); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 97%, var(--ink)), color-mix(in srgb, var(--paper) 91%, var(--ink))); }
-.inv[data-template="noite"] .env-liner { color: color-mix(in srgb, var(--liner) 62%, var(--paper)); }
+/* avesso da aba: virado no eixo vertical, o forro fica exatamente atrás da face (o triângulo é simétrico) */
+.inv[data-template="noite"] .env-liner { transform: rotateY(180deg); color: color-mix(in srgb, var(--liner) 62%, var(--paper)); }
+/* o cartão sai por cima do forro da aba aberta e por trás da frente do envelope */
+.inv[data-template="noite"] .env[data-state="opening"] .env-card { z-index: 1; }
+.inv[data-template="noite"] .env[data-state="opening"] .env-front { z-index: 2; }
 .inv[data-template="noite"] .env-card-line { opacity: 0.9; }
-.inv[data-template="noite"] .env-to { font: 400 12px/1.6 var(--font-label); letter-spacing: 0.3em; text-transform: uppercase; padding-left: 0.3em; }
-.inv[data-template="noite"] .env-to strong { font: 400 27px/1.25 var(--font-names); letter-spacing: 0.08em; margin-top: 8px; color: var(--accent); background: var(--foil); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.inv[data-template="noite"] .env-to { font: 400 13px/1.6 var(--font-label); letter-spacing: 0.3em; text-transform: uppercase; padding-left: 0.3em; }
+.inv[data-template="noite"] .env-to strong { font: 400 clamp(25px, 8.4cqw, 29px)/1.25 var(--font-names); letter-spacing: 0.08em; -webkit-text-stroke: 0.5px var(--accent); margin-top: 8px; color: var(--accent); background: var(--foil); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .inv[data-template="noite"] .env-cta { font: 500 13px/1 var(--font-ui); letter-spacing: 0.24em; padding: 15px 22px 15px calc(22px + 0.24em); border-radius: 0; border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 4px color-mix(in srgb, var(--accent) 60%, transparent); }
 
-/* ───────── Miniatura (capa parada, reduzida): mesma composição, ritmo mais curto para caber inteira ───────── */
-.inv[data-template="noite"][data-still="true"] { --s2: 17px; --s1: 10px; }
-.inv[data-template="noite"][data-still="true"] .inv-paper { padding-block: 40px 38px; zoom: 0.9; }
-.inv[data-template="noite"][data-still="true"] .noite-fan { width: 36cqw; }
-.inv[data-template="noite"][data-still="true"] .inv-art-bottom { margin: 0; }
-.inv[data-template="noite"][data-still="true"] .noite-foot, .inv[data-template="noite"][data-still="true"] .inv-countdown { display: none; }
+/* ───────── Fecho da página: o losango do divisor, depois da última seção ───────── */
+.inv[data-template="noite"] .inv-sheet::after {
+  content: "";
+  display: block;
+  width: 132px;
+  height: 12px;
+  margin: 30px auto 0;
+  background: var(--foil);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 12' fill='none' stroke='%23000'%3E%3Cpath d='M0 6h44M88 6h44M66 .8l5.2 5.2-5.2 5.2-5.2-5.2z'/%3E%3Cpath d='M66 3.7l2.3 2.3-2.3 2.3-2.3-2.3zM52.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3zM79.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3z' fill='%23000' stroke='none'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 12' fill='none' stroke='%23000'%3E%3Cpath d='M0 6h44M88 6h44M66 .8l5.2 5.2-5.2 5.2-5.2-5.2z'/%3E%3Cpath d='M66 3.7l2.3 2.3-2.3 2.3-2.3-2.3zM52.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3zM79.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3z' fill='%23000' stroke='none'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* ───────── Telas baixas: ritmo mais curto para a capa caber (ou quase) na primeira tela ───────── */
+@media (max-height: 780px) and (max-width: 500px) {
+  .inv[data-template="noite"]:not([data-still="true"]) { --s2: 20px; --s1: 10px; }
+  .inv[data-template="noite"]:not([data-still="true"]) .inv-paper { padding-block: calc(var(--paper-pad) + 2px) var(--paper-pad); }
+  .inv[data-template="noite"]:not([data-still="true"]) .noite-fan { width: clamp(112px, 37cqw, 150px); }
+  .inv[data-template="noite"]:not([data-still="true"]) .inv-cover { padding-top: 12px; gap: 8px; }
+}
+
+/* ───────── Miniatura (capa parada, 390x660): mesma composição, ritmo mais curto para caber inteira ───────── */
+.inv[data-template="noite"][data-still="true"] { --s2: 18px; --s1: 10px; }
+.inv[data-template="noite"][data-still="true"] .inv-paper { padding-block: 40px 38px; }
+.inv[data-template="noite"][data-still="true"] .noite-fan { width: 38cqw; }
+.inv[data-template="noite"][data-still="true"] .inv-countdown, .inv[data-template="noite"][data-still="true"] .inv-sheet::after { display: none; }

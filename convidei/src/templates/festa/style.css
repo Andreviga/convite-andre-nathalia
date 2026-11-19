@@ -1,14 +1,14 @@
 /* Modelo Festa. Todas as regras ficam sob .inv[data-template="festa"].
    Pôster em duas cores: fundo escuro chapado, cartão claro, um bloco de cor com meio-sol e título grande alinhado à esquerda.
-   Passos verticais: 12px (mesmo grupo) e 28px (entre grupos). */
+   Passos verticais: 12px (mesmo grupo) e 20px (entre grupos). */
 .inv[data-template="festa"] {
   --font-names: var(--f-fraunces), "Fraunces", Georgia, serif;
   --font-text: var(--f-jost), "Jost", system-ui, sans-serif;
   --font-label: var(--f-jost), "Jost", system-ui, sans-serif;
   --font-ui: var(--f-jost), "Jost", system-ui, sans-serif;
-  --names-size: clamp(50px, 17.5cqw, 82px);
+  --names-size: clamp(50px, 17.5cqw, 72px);
   --names-weight: 600;
-  --names-leading: 0.98;
+  --names-leading: 1.12; /* cabe descendente (g, ç) sobre maiúscula acentuada (É, Â) na linha de baixo */
   --names-tracking: -0.02em;
   --amp-scale: 1;
   --label-tracking: 0.2em;
@@ -20,47 +20,49 @@
 }
 
 /* ───────── Capa ───────── */
-.inv[data-template="festa"] .inv-paper { text-align: left; padding: 0 var(--paper-pad) calc(var(--paper-pad) + 4px); overflow: hidden; }
+.inv[data-template="festa"] .inv-cover { padding-top: 14px; gap: 10px; }
+.inv[data-template="festa"] .inv-paper { text-align: left; padding: 0 var(--paper-pad) var(--paper-pad); overflow: hidden; }
 .inv[data-template="festa"] .inv-paper::before { display: none; } /* pôster não tem moldura */
 
 /* motivo-herói: bloco de cor que sangra até as bordas */
-.inv[data-template="festa"] .inv-art-top { display: block; margin: 0 calc(-1 * var(--paper-pad)) 28px; }
-.inv[data-template="festa"] .festa-sunrise { width: 100%; height: clamp(120px, 40cqw, 190px); }
+.inv[data-template="festa"] .inv-art-top { display: block; margin: 0 calc(-1 * var(--paper-pad)) 22px; }
+.inv[data-template="festa"] .festa-sunrise { width: 100%; height: clamp(104px, 34cqw, 160px); }
 .inv[data-template="festa"] .festa-field { fill: var(--accent); }
-.inv[data-template="festa"] .festa-sun { fill: var(--ink); }
-.inv[data-template="festa"] .festa-rays { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; }
-.inv[data-template="festa"] .festa-star { fill: none; stroke: var(--paper); stroke-width: 2.2; stroke-linecap: round; }
+.inv[data-template="festa"] .festa-burst { fill: color-mix(in srgb, var(--accent) 80%, var(--paper)); }
+.inv[data-template="festa"] .festa-sun, .inv[data-template="festa"] .festa-star { fill: var(--ink); }
 
 .inv[data-template="festa"] .inv-hello { font: 400 16px/1.4 var(--font-text); margin-bottom: 12px !important; }
 .inv[data-template="festa"] .inv-headline { font-size: 12.5px; font-weight: 600; line-height: 1.5; color: var(--ink); padding-left: 0; margin-bottom: 12px !important; }
 
-.inv[data-template="festa"] .inv-names { padding: 0 0 0.06em; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; hyphens: manual; }
+/* text-indent: a primeira linha é itálica e projeta o pé do J e do f para a esquerda; o recuo devolve a letra à coluna */
+.inv[data-template="festa"] .inv-names { padding: 0 0 0.06em; text-indent: 0.035em; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; hyphens: manual; }
 /* título único: a primeira linha em itálico faz o contraste de capa de revista */
 .inv[data-template="festa"] .inv-names[data-count="1"]::first-line { font-style: italic; font-weight: 500; }
-/* par de nomes: primeiro nome em itálico, "&" na cor de destaque; o texto corre e quebra como um título */
-.inv[data-template="festa"] .inv-names[data-count="2"] { display: block; font-size: calc(var(--names-size) * 0.94); }
+/* par de nomes: primeiro nome em itálico, "&" fino no tom secundário da paleta; o texto corre e quebra como um título */
+.inv[data-template="festa"] .inv-names[data-count="2"] { display: block; font-size: calc(var(--names-size) * 0.86); text-wrap: wrap; } /* quebra simples: o "&" fica com o primeiro nome sempre que cabe, nunca sozinho numa linha por equilíbrio */
 .inv[data-template="festa"] .inv-names[data-count="2"] .inv-name:first-child { font-style: italic; font-weight: 500; }
 .inv[data-template="festa"] .inv-amp::before, .inv[data-template="festa"] .inv-amp::after { content: " "; }
-.inv[data-template="festa"] .inv-names[data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.02; }
-.inv[data-template="festa"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.78); }
-.inv[data-template="festa"] .inv-amp { font-family: var(--font-names); font-style: italic; font-weight: 400; line-height: inherit; letter-spacing: inherit; color: color-mix(in srgb, var(--accent) 62%, var(--ink)); }
+.inv[data-template="festa"] .inv-names[data-long="true"] { font-size: calc(var(--names-size) * 0.74); }
+/* casal com nome comprido: reduz até um nome composto ("Maria Eduarda") caber numa linha só */
+.inv[data-template="festa"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.68); }
+.inv[data-template="festa"] .inv-amp { font-family: var(--font-names); font-style: italic; font-weight: 400; line-height: inherit; letter-spacing: inherit; color: var(--soft); }
 
-.inv[data-template="festa"] .inv-message { font: 400 17px/1.5 var(--font-text); color: var(--soft); margin: 12px 0 0 !important; max-width: 30ch; text-wrap: pretty; }
+.inv[data-template="festa"] .inv-message { font: 400 17px/1.5 var(--font-text); color: var(--soft); margin: 12px 0 0 !important; max-width: none; text-wrap: balance; }
 
 /* data: numeral grande à esquerda, mês, dia da semana e hora empilhados */
-.inv[data-template="festa"] .inv-date { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto; column-gap: 16px; row-gap: 3px; align-content: center; align-items: center; margin-top: 28px; padding-top: 18px; border-top: 2px solid var(--ink); }
+.inv[data-template="festa"] .inv-date { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto; column-gap: 16px; row-gap: 3px; align-content: center; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 2px solid var(--ink); }
 .inv[data-template="festa"] .inv-date-main { display: contents; }
 .inv[data-template="festa"] .inv-date-day { grid-column: 1; grid-row: 1 / span 3; font: 600 68px/0.8 var(--font-names); letter-spacing: -0.03em; padding-bottom: 0.06em; }
-.inv[data-template="festa"] .inv-date-month { grid-column: 2; grid-row: 1; font: 600 14px/1.35 var(--font-label); letter-spacing: 0.16em; color: var(--ink); padding-left: 0; }
+.inv[data-template="festa"] .inv-date-month { grid-column: 2; grid-row: 1; font: 600 15px/1.3 var(--font-label); letter-spacing: 0.12em; color: var(--ink); padding-left: 0; }
 .inv[data-template="festa"] .inv-date-side { grid-column: 2; border: 0; padding: 0; font: 400 18px/1.3 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); }
 .inv[data-template="festa"] .inv-date-side:first-child { grid-row: 2; }
 .inv[data-template="festa"] .inv-date-side:first-child::first-letter { text-transform: uppercase; }
-.inv[data-template="festa"] .inv-date-side:last-child { grid-row: 3; font-weight: 600; }
+.inv[data-template="festa"] .inv-date-side:last-child { grid-row: 3; font: 600 22px/1.15 var(--font-text); } /* a hora pesa tanto quanto o dia */
 /* a frase completa da data continua disponível para leitores de tela */
 .inv[data-template="festa"] .inv-dateline { display: block; position: absolute; width: 1px; height: 1px; margin: 0 !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-.inv[data-template="festa"] .inv-place { font: 500 18px/1.35 var(--font-text); color: var(--ink); margin-top: 12px !important; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--ink) 22%, var(--paper)); }
-.inv[data-template="festa"] .inv-countdown { margin-top: 28px !important; font: 600 12.5px/1 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; padding: 9px 14px 9px calc(14px + 0.08em); border-radius: 999px; background: var(--ink); color: var(--btn-ink); }
+.inv[data-template="festa"] .inv-place { font: 500 18px/1.35 var(--font-text); color: var(--ink); margin-top: 10px !important; padding-top: 10px; border-top: 1px solid color-mix(in srgb, var(--ink) 22%, var(--paper)); }
+.inv[data-template="festa"] .inv-countdown { margin-top: 18px !important; font: 600 12.5px/1 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; padding: 9px 14px 9px calc(14px + 0.08em); border-radius: 999px; background: var(--ink); color: var(--btn-ink); }
 
 .inv[data-template="festa"] .inv-more { color: var(--on-bg); font-weight: 600; }
 
@@ -71,6 +73,8 @@
 .inv[data-template="festa"] .inv-big { font: 600 24px/1.2 var(--font-names); letter-spacing: -0.01em; font-variant-numeric: lining-nums; }
 .inv[data-template="festa"] .inv-big::first-letter { text-transform: uppercase; }
 .inv[data-template="festa"] .inv-text { font-size: 17.5px; }
+/* a hora, logo abaixo da data, com o mesmo peso do local */
+.inv[data-template="festa"] #detalhes > .inv-kicker:first-child + .inv-big + .inv-text { font: 600 21px/1.3 var(--font-text); color: var(--ink); margin-top: 2px; }
 .inv[data-template="festa"] .inv-hint { font-size: 16px; }
 .inv[data-template="festa"] .inv-rule { background: color-mix(in srgb, var(--ink) 18%, var(--paper)); }
 .inv[data-template="festa"] .inv-btn { font: 600 16.5px/1.2 var(--font-ui); letter-spacing: 0.01em; border-width: 1.5px; }
@@ -92,9 +96,5 @@
 .inv[data-template="festa"] .env-body { filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35)); }
 .inv[data-template="festa"] .festa-liner-rays { fill: var(--accent); }
 .inv[data-template="festa"] .festa-liner-sun { fill: var(--ink); }
-/* avesso da aba: quando o envelope abre, o lado de dentro mostra o mesmo sol do forro (só opacidade, uma vez) */
-.inv[data-template="festa"] .env-flap-face::after { content: ""; position: absolute; inset: 0; opacity: 0; background: radial-gradient(circle at 50% 0, var(--ink) 0 16%, transparent 16.4%), repeating-conic-gradient(from 90deg at 50% 0, var(--accent) 0 9deg, var(--liner) 9deg 18deg); }
-.inv[data-template="festa"] .env[data-state="opening"] .env-flap-face::after { opacity: 1; transition: opacity 0.01s linear 0.5s; }
-@media (prefers-reduced-motion: reduce) {
-  .inv[data-template="festa"] .env[data-state="opening"] .env-flap-face::after { opacity: 0; transition: none; }
-}
+/* lacre na mesma família do título */
+.inv[data-template="festa"] .env-seal text { font-family: var(--font-names) !important; font-weight: 500; }

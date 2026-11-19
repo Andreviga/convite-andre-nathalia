@@ -1,56 +1,102 @@
 import type { ArtProps, TemplateDef } from "../types";
 
 // Doce: chá de bebê e revelação com cara de papelaria adulta. Cartão em arco, tipografia serifada macia como protagonista
-// e um único motivo: o móbile de berço (lua, nuvem, estrelas) em traço fino, pendurado no alto do arco.
+// e um único motivo: o móbile de berço (lua, nuvem, estrelas) em traço fino, pendurado no alto do arco
+// (nos outros tipos de evento, o mesmo céu vira uma guirlanda de estrelas, sem haste nem fios).
 // Duas tintas de ornamento: currentColor (accent) e --doce-b (derivada do forro). Nas paletas de uma cor elas quase se
 // confundem; na paleta "Menino ou menina?" viram azul de um lado e rosa do outro.
 
 const B = "var(--doce-b, currentColor)";
 const MID = "var(--doce-mid, currentColor)";
 
-/** Estrela de cinco pontas com cantos arredondados pelo traço. */
+type Pt = [number, number];
+const f = (n: number) => n.toFixed(2);
+const mix = (a: Pt, b: Pt, k: number): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+
+/** Estrela de cinco pontas, centrada em (cx, cy), com pontas e reentrâncias amaciadas (curvas, não só o traço). */
 function star(cx: number, cy: number, r: number, turn = 0): string {
-  const pts: string[] = [];
+  const pts: Pt[] = [];
   for (let i = 0; i < 10; i++) {
-    const radius = i % 2 === 0 ? r : r * 0.5;
+    const radius = i % 2 === 0 ? r : r * 0.56;
     const a = (Math.PI / 5) * i - Math.PI / 2 + turn;
-    pts.push(`${(cx + radius * Math.cos(a)).toFixed(2)} ${(cy + radius * Math.sin(a)).toFixed(2)}`);
+    pts.push([cx + radius * Math.cos(a), cy + radius * Math.sin(a)]);
   }
-  return `M${pts.join("L")}Z`;
+  return (
+    pts
+      .map((p, i) => {
+        const k = i % 2 === 0 ? 0.3 : 0.16;
+        const a = mix(p, pts[(i + 9) % 10], k);
+        const b = mix(p, pts[(i + 1) % 10], k);
+        return `${i ? "L" : "M"}${f(a[0])} ${f(a[1])}Q${f(p[0])} ${f(p[1])} ${f(b[0])} ${f(b[1])}`;
+      })
+      .join("") + "Z"
+  );
+}
+/** A mesma estrela, posicionada pela ponta de cima: é ali que o fio do móbile amarra. */
+function hungStar(tipX: number, tipY: number, r: number, turn = 0): string {
+  // a ponta amaciada fica 0.3 da aresta abaixo do vértice teórico; o fio vai até o vértice e a curva o encontra
+  return star(tipX - r * Math.sin(turn), tipY + r * Math.cos(turn), r, turn);
 }
 
-// Lua crescente centrada em (0,0), raio 15.
+// Lua crescente centrada em (0,0), raio 15. Girada -18°, a ponta de cima fica em (-3.57, -14.57).
 const MOON = "M1.11-14.96A15 15 0 1 0 14.24 4.73 12 12 0 1 1 1.11-14.96Z";
-// Nuvem centrada em (0,0), cerca de 30 x 18.
-const CLOUD = "M-9.5 8.5h19.5a5.6 5.6 0 0 0 .9-11.1 8.2 8.2 0 0 0-15.4-2.6A6.9 6.9 0 0 0-9.5 8.5Z";
+// Nuvem de três gomos, centrada em (0,0), cerca de 28 x 17; o alto do gomo maior fica em (4.5, -9.15).
+const CLOUD = "M-11 8h22a5.4 5.4 0 0 0 1-10.7 7.6 7.6 0 0 0-13.6-3.4 5 5 0 0 0-7.6 3.6A5.4 5.4 0 0 0-11 8Z";
 
+/** Móbile de berço. Três pesos de traço: haste 1.4, peças 1.15, fios 0.8. Cada fio termina exatamente no alto da sua peça. */
 function Mobile() {
   return (
-    <svg className="doce-mobile" viewBox="0 0 220 96" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {/* fio central e haste curva */}
+    <svg className="doce-mobile" viewBox="0 0 220 88" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {/* fio central (começa abaixo da moldura), argola e haste curva */}
       <g stroke={MID}>
-        <path d="M110 0v20" />
-        <path d="M28 30Q110 10 192 30" />
-        <circle cx="110" cy="20" r="1.6" fill={MID} stroke="none" />
-        <path d="M110 20v25" />
+        <path d="M110 1.6V15.6M110 20V43.4" strokeWidth="0.8" />
+        <circle cx="110" cy="17.8" r="2.2" strokeWidth="0.9" />
+        <path d="M29 30.5Q110 9.5 191 30.5" strokeWidth="1.4" />
       </g>
       {/* lado esquerdo: tinta A */}
       <g stroke="currentColor">
-        <path d="M28 30v17M68 21.5v39" />
-        <path d={star(28, 57, 9, -0.12)} fill="currentColor" fillOpacity="0.16" />
-        <path d={CLOUD} transform="translate(68 72)" fill="currentColor" fillOpacity="0.16" />
-        <circle cx="47" cy="45" r="1.1" fill="currentColor" stroke="none" />
+        <path d="M29 30.5V43M65 23.6V58.9" strokeWidth="0.8" />
+        <circle cx="29" cy="30.5" r="1.5" fill="currentColor" stroke="none" />
+        <path d={hungStar(29, 42.5, 9.5, -0.14)} fill="currentColor" fillOpacity="0.16" />
+        <path d={CLOUD} transform="translate(60.5 68)" fill="currentColor" fillOpacity="0.16" />
+        <circle cx="46" cy="47" r="1.2" fill="currentColor" stroke="none" />
+        <circle cx="87" cy="38" r="0.8" fill="currentColor" stroke="none" />
       </g>
-      {/* centro: a lua */}
-      <g transform="translate(109 63) rotate(-18)" stroke={MID}>
+      {/* centro: a lua, pendurada pela ponta de cima */}
+      <g transform="translate(113.57 58) rotate(-18)" stroke={MID}>
         <path d={MOON} fill={MID} fillOpacity="0.18" />
       </g>
       {/* lado direito: tinta B */}
       <g stroke={B}>
-        <path d="M152 21.5v42M192 30v14" />
-        <path d={star(152, 75, 11, 0.1)} fill={B} fillOpacity="0.16" />
-        <path d={star(192, 51, 6.5, 0.2)} fill={B} fillOpacity="0.16" />
-        <circle cx="172" cy="54" r="1.1" fill={B} stroke="none" />
+        <path d="M151 23V60M191 30.5V40" strokeWidth="0.8" />
+        <circle cx="191" cy="30.5" r="1.5" fill={B} stroke="none" />
+        <path d={hungStar(151, 59, 11.5, 0.1)} fill={B} fillOpacity="0.16" />
+        <path d={hungStar(191, 39, 6.8, 0.22)} fill={B} fillOpacity="0.16" />
+        <circle cx="173" cy="52" r="1.2" fill={B} stroke="none" />
+        <circle cx="131" cy="36" r="0.8" fill={B} stroke="none" />
+      </g>
+    </svg>
+  );
+}
+
+/** Para eventos que não são de bebê (casamento, 15 anos, formatura...): o mesmo céu, sem haste nem fios. */
+function Garland() {
+  return (
+    <svg className="doce-mobile doce-garland" viewBox="0 0 220 60" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <g stroke="currentColor">
+        <path d={star(40, 43, 5.5, -0.2)} fill="currentColor" fillOpacity="0.16" />
+        <path d={star(66, 31, 8, -0.1)} fill="currentColor" fillOpacity="0.16" />
+        <circle cx="53" cy="27" r="1" fill="currentColor" stroke="none" />
+        <circle cx="86" cy="21" r="1.3" fill="currentColor" stroke="none" />
+      </g>
+      <g transform="translate(109 30) rotate(-18) scale(0.92)" stroke={MID} strokeWidth="1.25">
+        <path d={MOON} fill={MID} fillOpacity="0.18" />
+      </g>
+      <g stroke={B}>
+        <path d={star(154, 31, 8, 0.1)} fill={B} fillOpacity="0.16" />
+        <path d={star(180, 43, 5.5, 0.2)} fill={B} fillOpacity="0.16" />
+        <circle cx="134" cy="21" r="1.3" fill={B} stroke="none" />
+        <circle cx="167" cy="27" r="1" fill={B} stroke="none" />
       </g>
     </svg>
   );
@@ -82,8 +128,11 @@ function Liner() {
   );
 }
 
-function Art({ slot }: ArtProps) {
-  if (slot === "top") return <Mobile />;
+// O móbile de berço só faz sentido em chá e aniversário (e na galeria, onde o tipo pode não vir).
+const BABY = new Set(["cha", "aniversario"]);
+
+function Art({ slot, eventType }: ArtProps) {
+  if (slot === "top") return !eventType || BABY.has(eventType) ? <Mobile /> : <Garland />;
   if (slot === "divider") return <Divider />;
   if (slot === "liner") return <Liner />;
   return null;
