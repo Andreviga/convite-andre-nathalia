@@ -1,1 +1,94 @@
 /* Modelo Monograma. Todas as regras ficam sob .inv[data-template="monograma"]. */
+.inv[data-template="monograma"] {
+  --font-names: var(--f-serif), "Cormorant Garamond", Georgia, serif;
+  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
+  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
+  --names-size: clamp(38px, 12.4cqw, 56px);
+  --names-weight: 500;
+  --names-leading: 1.06;
+  --amp-scale: 0.6;
+  --label-tracking: 0.26em;
+  --radius: 2px;
+  --btn-radius: 2px;
+  --frame-inset: 11px;
+  --paper-pad: clamp(28px, 9.5cqw, 44px);
+  /* dois passos de respiro, repetidos em toda a capa */
+  --mg-step: 14px;
+  --mg-gap: clamp(26px, 8.4cqw, 36px);
+  /* par de folhas (o mesmo do divisor), usado como máscara nas seções */
+  --mg-sprig: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 12'%3E%3Cpath d='M19 6C15.4 2.5 9.6 3.1 6 6c3.6 2.9 9.4 3.5 13 0zM25 6c3.6-3.5 9.4-2.9 13 0-3.6 2.9-9.4 3.5-13 0z'/%3E%3Ccircle cx='22' cy='6' r='1.2'/%3E%3C/svg%3E");
+}
+
+/* ───────── Capa ───────── */
+/* O cartão vira coluna flex para a data curta subir e ficar logo abaixo do brasão, como em papelaria gravada. */
+.inv[data-template="monograma"] .inv-paper { display: flex; flex-direction: column; padding-block: calc(var(--paper-pad) + 12px) calc(var(--paper-pad) + 14px); }
+.inv[data-template="monograma"] .inv-paper > * { order: 2; }
+.inv[data-template="monograma"] .inv-paper > .inv-art-top { order: 0; margin-bottom: 0; }
+.inv[data-template="monograma"] .inv-paper > .inv-date { order: 1; }
+/* moldura: fio duplo, ecoando o medalhão */
+.inv[data-template="monograma"] .inv-paper::before { border-color: color-mix(in srgb, var(--accent) 62%, transparent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.5px color-mix(in srgb, var(--accent) 42%, transparent); }
+
+/* brasão */
+.inv[data-template="monograma"] .mg-crest { width: clamp(150px, 50cqw, 216px); height: auto; overflow: visible; }
+.inv[data-template="monograma"] .mg-crest-leaf { color: var(--accent); }
+.inv[data-template="monograma"] .mg-crest-ink { color: var(--ink); }
+
+/* data curta sob o brasão: "14 · MARÇO · 2027" */
+.inv[data-template="monograma"] .inv-date { display: flex; justify-content: center; margin-top: var(--mg-step); margin-bottom: var(--mg-gap); }
+.inv[data-template="monograma"] .inv-date-side { display: none; }
+.inv[data-template="monograma"] .inv-date-main { display: flex; align-items: baseline; justify-content: center; gap: 0; padding-left: 0.28em; }
+.inv[data-template="monograma"] .inv-date-day, .inv[data-template="monograma"] .inv-date-month { font: 600 12.5px/1.2 var(--font-label); letter-spacing: 0.28em; text-transform: uppercase; color: var(--soft); padding: 0; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-date-day::after { content: "\00a0·\00a0"; }
+/* sem data, o brasão guarda o mesmo respiro */
+.inv[data-template="monograma"] .inv-paper > .inv-art-top:not(:has(~ .inv-date)) { margin-bottom: var(--mg-gap); }
+
+.inv[data-template="monograma"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); margin-bottom: var(--mg-step) !important; }
+.inv[data-template="monograma"] .inv-hello strong { font-weight: 600; }
+.inv[data-template="monograma"] .inv-headline { font-size: 13px; font-weight: 600; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-bottom: var(--mg-step) !important; }
+
+/* nomes: Cormorant itálico, sem script */
+.inv[data-template="monograma"] .inv-names { font-style: italic; padding: 0.04em 0 0.1em; }
+.inv[data-template="monograma"] .inv-amp { font-size: calc(1em * var(--amp-scale)); line-height: 1.1; margin: 0.06em 0 0.02em; color: var(--accent); }
+.inv[data-template="monograma"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.16); line-height: 1.1; }
+.inv[data-template="monograma"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.14; }
+
+.inv[data-template="monograma"] .inv-message { font-size: 19px; line-height: 1.42; margin-top: var(--mg-step) !important; max-width: 25ch; }
+.inv[data-template="monograma"] .inv-art-divider { margin: var(--mg-gap) 0 0; }
+.inv[data-template="monograma"] .mg-divider { width: clamp(104px, 34cqw, 132px); height: auto; }
+
+/* data por extenso: a informação principal depois dos nomes */
+.inv[data-template="monograma"] .inv-dateline { display: block; font: 600 21px/1.34 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-top: var(--mg-gap) !important; max-width: 17em; margin-inline: auto !important; }
+.inv[data-template="monograma"] .inv-dateline::first-letter { text-transform: uppercase; }
+.inv[data-template="monograma"] .inv-place { font: 500 18px/1.4 var(--font-text); margin-top: 8px !important; }
+.inv[data-template="monograma"] .inv-countdown { align-self: center; background: none; border-radius: 0; padding: 0 0 0 0.22em; margin-top: var(--mg-gap) !important; font: 600 12.5px/1.2 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--soft); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-more { font: 600 12.5px/1 var(--font-label); letter-spacing: 0.24em; padding-left: calc(16px + 0.24em); }
+
+/* ───────── Seções ───────── */
+.inv[data-template="monograma"] .inv-section { padding: 30px 24px 32px; box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px color-mix(in srgb, var(--line) 70%, transparent); }
+/* cada seção abre com o par de folhas do brasão */
+.inv[data-template="monograma"] .inv-section::before { content: ""; display: block; width: 44px; height: 12px; margin: 0 auto 14px; background: var(--accent); -webkit-mask: var(--mg-sprig) center / contain no-repeat; mask: var(--mg-sprig) center / contain no-repeat; opacity: 0.85; }
+.inv[data-template="monograma"] .inv-kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.24em; padding-left: 0.24em; }
+.inv[data-template="monograma"] .inv-section-title { font: italic 500 33px/1.12 var(--font-text); margin-bottom: 8px !important; }
+.inv[data-template="monograma"] .inv-big { font: 600 23px/1.28 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-rule { width: 56px; margin: 26px auto; background: color-mix(in srgb, var(--accent) 55%, transparent); }
+.inv[data-template="monograma"] .inv-btn { letter-spacing: 0.01em; }
+.inv[data-template="monograma"] .inv-btn-quiet { border-color: color-mix(in srgb, var(--ink) 34%, var(--paper)); }
+.inv[data-template="monograma"] .rsvp-state { border-radius: 2px; }
+.inv[data-template="monograma"] .rsvp-state-title { font-style: italic; }
+.inv[data-template="monograma"] .inv-field input, .inv[data-template="monograma"] .inv-field select, .inv[data-template="monograma"] .inv-field textarea, .inv[data-template="monograma"] .inv-qr { border-radius: 2px; }
+
+/* assinatura: o monograma pequeno fechando a página */
+.inv[data-template="monograma"] .inv-sheet { padding-bottom: 132px; }
+.inv[data-template="monograma"] .mg-sign { position: absolute; left: 50%; bottom: 40px; width: 62px; height: auto; margin-left: -31px; color: var(--accent); opacity: 0.6; }
+.thumb > .inv[data-template="monograma"] .mg-sign { display: none; }
+.thumb > .inv[data-template="monograma"] .inv-sheet { padding-bottom: 0; }
+
+/* ───────── Envelope ───────── */
+/* forro escuro estampado com o monograma */
+.inv[data-template="monograma"] .env-liner { color: color-mix(in srgb, var(--liner) 72%, var(--paper)); }
+.inv[data-template="monograma"] .env-to { font: italic 400 18px/1.4 var(--font-text); }
+.inv[data-template="monograma"] .env-to strong { font: italic 500 34px/1.12 var(--font-text); margin-top: 4px; }
+.inv[data-template="monograma"] .env-cta { border-radius: 2px; font: 600 13.5px/1 var(--font-label); letter-spacing: 0.24em; padding: 15px 22px 15px calc(22px + 0.24em); }
+.inv[data-template="monograma"] .env-card { color: var(--accent); }
+/* sem data nem local, o divisor não fica sobrando no fim do cartão */
+.inv[data-template="monograma"] .inv-art-divider:not(:has(~ .inv-dateline, ~ .inv-place)) { display: none; }

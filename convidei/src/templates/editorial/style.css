@@ -1,1 +1,93 @@
 /* Modelo Editorial. Todas as regras ficam sob .inv[data-template="editorial"]. */
+/* Capa de revista: nomes enormes em caixa alta (Playfair Display), itálico de contraste, tudo alinhado à esquerda numa grade
+   de duas colunas, fios de ponta a ponta. Dois passos de espaço vertical: --ed-s (dentro de um grupo) e --ed-l (entre grupos). */
+.inv[data-template="editorial"] {
+  --font-names: var(--f-playfair), "Playfair Display", "Bodoni Moda", Didot, Georgia, serif;
+  --font-text: var(--f-playfair), "Playfair Display", Georgia, serif;
+  --font-label: var(--f-jost), "Jost", "Futura", system-ui, sans-serif;
+  --font-ui: var(--f-jost), "Jost", "Futura", system-ui, sans-serif;
+  --names-size: clamp(38px, 13.2cqw, 60px);
+  --names-weight: 400;
+  --names-leading: 1;
+  --names-tracking: -0.02em;
+  --names-transform: uppercase;
+  --amp-scale: 0.64;
+  --label-tracking: 0.22em;
+  --radius: 0px;
+  --btn-radius: 0px;
+  --paper-pad: clamp(18px, 6.5cqw, 30px);
+  --paper-shadow: 0 1px 2px rgba(0, 0, 0, 0.14), 0 16px 36px rgba(0, 0, 0, 0.13);
+  --ed-s: 12px;
+  --ed-l: 28px;
+  --ed-col: 23cqw; /* coluna da esquerda da grade: numeral do dia e rótulos */
+}
+
+/* ───────── Capa ───────── */
+.inv[data-template="editorial"] .inv-paper { text-align: left; padding-block: calc(var(--paper-pad) + 2px) var(--paper-pad); }
+.inv[data-template="editorial"] .inv-paper::before { display: none; } /* sem moldura: quem organiza a página são os fios */
+
+/* cabeçalho de revista: fio grosso, "Nº 01", marca, "Convite", fio fino */
+.inv[data-template="editorial"] .inv-art-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--ed-l); padding: 9px 0 8px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); color: var(--accent); }
+.inv[data-template="editorial"] .inv-art-top::before { content: "Nº 01"; font: italic 400 15px/1 var(--font-text); font-variant-numeric: lining-nums; color: var(--ink); }
+.inv[data-template="editorial"] .inv-art-top::after { content: "Convite"; font: 500 11px/1 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--ink); }
+
+.inv[data-template="editorial"] .inv-hello { font: 400 16px/1.4 var(--font-ui); margin-bottom: var(--ed-s) !important; }
+.inv[data-template="editorial"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="editorial"] .inv-headline { font-size: 11.5px; line-height: 1.75; padding-left: 0; max-width: 30ch; margin-bottom: var(--ed-s) !important; text-wrap: pretty; }
+
+/* nomes: o primeiro encosta à esquerda, o segundo à direita, e o conector em itálico fica entre os dois */
+.inv[data-template="editorial"] .inv-names { padding: 0.04em 0 0; text-wrap: wrap; hyphens: manual; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="editorial"] .inv-names[data-count="2"] { align-items: stretch; }
+.inv[data-template="editorial"] .inv-names[data-count="2"] .inv-name:last-child { text-align: right; }
+.inv[data-template="editorial"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 0.82; text-align: center; margin: -0.02em 0 0.06em; }
+.inv[data-template="editorial"] .inv-names[data-count="1"] { text-wrap: balance; }
+.inv[data-template="editorial"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.76); line-height: 1.04; }
+
+.inv[data-template="editorial"] .inv-message { font: italic 400 18px/1.5 var(--font-text); max-width: 27ch; margin: var(--ed-l) 0 0 !important; text-wrap: pretty; }
+
+/* data como rodapé de revista: numeral grande à esquerda; mês, dia da semana e hora à direita, entre dois fios */
+.inv[data-template="editorial"] .inv-date { grid-template-columns: var(--ed-col) auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: end; gap: 6px 0; margin-top: var(--ed-l); padding: 16px 0 15px; border-block: 1px solid var(--ink); }
+.inv[data-template="editorial"] .inv-date-main { display: contents; }
+.inv[data-template="editorial"] .inv-date-day { grid-area: 1 / 1 / 3 / 2; align-self: center; font: 400 clamp(42px, 16cqw, 72px)/0.78 var(--font-names); letter-spacing: -0.02em; padding-bottom: 0.06em; }
+.inv[data-template="editorial"] .inv-date-month { grid-area: 1 / 2 / 2 / 4; font: 500 13.5px/1.2 var(--font-label); letter-spacing: 0.18em; padding-left: 0; color: var(--ink); }
+.inv[data-template="editorial"] .inv-date-side { border: 0; padding: 0; font: italic 400 21px/1.15 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="editorial"] .inv-date-side:first-child { grid-area: 2 / 2 / 3 / 3; padding-right: 0.3em; }
+.inv[data-template="editorial"] .inv-date-side:last-child { grid-area: 2 / 3 / 3 / 4; }
+
+.inv[data-template="editorial"] .inv-place { display: grid; grid-template-columns: var(--ed-col) minmax(0, 1fr); align-items: baseline; font: 400 17px/1.35 var(--font-ui); color: var(--ink); margin-top: var(--ed-s) !important; text-wrap: pretty; }
+.inv[data-template="editorial"] .inv-place::before { content: "Local"; font: 500 11px/1.2 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
+
+.inv[data-template="editorial"] .inv-countdown { display: block; margin-top: var(--ed-l) !important; padding: 0; border-radius: 0; background: none; font: 500 11.5px/1 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
+.inv[data-template="editorial"] .inv-art-bottom { justify-content: flex-end; margin-top: var(--ed-l); }
+.inv[data-template="editorial"] .inv-countdown + .inv-art-bottom { margin-top: -10px; }
+
+.inv[data-template="editorial"] .inv-more { font-family: var(--font-label); font-size: 11px; letter-spacing: var(--label-tracking); }
+
+/* ───────── Seções: páginas internas da mesma revista ───────── */
+.inv[data-template="editorial"] .inv-cover { counter-reset: editorial-n; }
+.inv[data-template="editorial"] .inv-section { text-align: left; padding: 22px var(--paper-pad) 26px; border-top: 2px solid var(--ink); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.08); }
+.inv[data-template="editorial"] .inv-kicker { counter-increment: editorial-n; font-size: 11.5px; padding-left: 0; margin-bottom: 10px !important; }
+.inv[data-template="editorial"] .inv-kicker::before { content: counter(editorial-n, decimal-leading-zero) " \2014\00a0 "; color: var(--ink); font-variant-numeric: lining-nums; }
+.inv[data-template="editorial"] .inv-section-title { font: italic 400 36px/1.1 var(--font-text); letter-spacing: -0.01em; margin-bottom: 10px !important; }
+.inv[data-template="editorial"] .inv-big { font: 500 23px/1.25 var(--font-text); }
+.inv[data-template="editorial"] .inv-text { margin-top: 4px; }
+.inv[data-template="editorial"] .inv-rule { background: var(--ink); opacity: 0.22; margin: 24px 0 20px; }
+.inv[data-template="editorial"] .inv-btn { font: 500 17px/1.2 var(--font-ui); letter-spacing: 0.01em; }
+.inv[data-template="editorial"] .inv-btn-quiet { font-size: 16px; border-color: color-mix(in srgb, var(--ink) 38%, var(--paper)); }
+.inv[data-template="editorial"] .rsvp-yes, .inv[data-template="editorial"] .rsvp-no { font-size: 18.5px; }
+.inv[data-template="editorial"] .rsvp-state { border-radius: 0; text-align: left; }
+.inv[data-template="editorial"] .rsvp-state-title { font: italic 400 30px/1.15 var(--font-text); }
+.inv[data-template="editorial"] .inv-field input, .inv[data-template="editorial"] .inv-field select, .inv[data-template="editorial"] .inv-field textarea { border-radius: 0; background: color-mix(in srgb, var(--paper) 94%, var(--ink)); }
+.inv[data-template="editorial"] .inv-pix { justify-items: start; }
+.inv[data-template="editorial"] .inv-qr { border-radius: 0; }
+.inv[data-template="editorial"] .inv-sticky { border-top-color: var(--ink); }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="editorial"] .env-to { font: 500 11.5px/1.4 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+.inv[data-template="editorial"] .env-to strong { font: italic 400 34px/1.1 var(--font-text); letter-spacing: -0.01em; text-transform: none; margin-top: 8px; }
+.inv[data-template="editorial"] .env-liner { color: color-mix(in srgb, var(--liner) 76%, var(--paper)); }
+.inv[data-template="editorial"] .env-back, .inv[data-template="editorial"] .env-front { border-radius: 0; }
+.inv[data-template="editorial"] .env-cta { border-radius: 0; font: 500 12.5px/1 var(--font-label); letter-spacing: var(--label-tracking); padding: 16px 24px; }
+
+/* miniatura da galeria: recorta a capa a partir do cabeçalho, como capa de revista na banca */
+.inv[data-template="editorial"]:is(.thumb > .inv) .inv-cover { justify-content: flex-start; }

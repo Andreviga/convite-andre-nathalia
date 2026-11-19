@@ -63,13 +63,14 @@ export function Envelope({ storageKey, guestName, initials, liner }: { storageKe
           </span>
           <span className="env-body" aria-hidden="true">
             <span className="env-back" />
-            <span className="env-liner">{liner}</span>
             <span className="env-card">
               <span className="env-card-line" />
             </span>
             <span className="env-front" />
             <span className="env-flap">
               <span className="env-flap-face" />
+              {/* avesso da aba: o forro aparece quando ela se abre */}
+              <span className="env-liner">{liner}</span>
             </span>
             <span className="env-seal">
               <WaxSeal initials={initials} />

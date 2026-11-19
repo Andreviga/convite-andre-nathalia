@@ -1,1 +1,97 @@
 /* Modelo Azulejo. Todas as regras ficam sob .inv[data-template="azulejo"]. */
+.inv[data-template="azulejo"] {
+  --font-names: var(--f-playfair), "Playfair Display", Georgia, serif;
+  --font-text: var(--f-playfair), "Playfair Display", Georgia, serif;
+  --font-label: var(--f-jost), "Jost", system-ui, sans-serif;
+  --font-ui: var(--f-jost), "Jost", system-ui, sans-serif;
+  --names-size: clamp(36px, 12cqw, 54px);
+  --names-weight: 400;
+  --names-leading: 1.1;
+  --amp-scale: 0.56;
+  --label-tracking: 0.22em;
+  --radius: 2px;
+  --btn-radius: 2px;
+  --paper-pad: clamp(24px, 8.5cqw, 40px);
+  --paper-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 16%, transparent), 0 14px 34px color-mix(in srgb, var(--ink) 13%, transparent);
+  /* dois passos de ritmo vertical */
+  --az-s: clamp(14px, 4.4cqw, 20px);
+  --az-l: clamp(24px, 7.6cqw, 34px);
+  /* cercadura das seções: fiada de losangos, pintada com a cor de destaque por máscara */
+  --az-chain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='9'%3E%3Cpath d='M8 .8l4.6 3.7L8 8.2 3.4 4.5z'/%3E%3Ccircle cx='0' cy='4.5' r='1.3'/%3E%3Ccircle cx='16' cy='4.5' r='1.3'/%3E%3C/svg%3E");
+}
+
+/* ───────── Capa ───────── */
+/* O friso sangra até as bordas do cartão, no topo e na base; o texto fica todo na área limpa do meio. */
+.inv[data-template="azulejo"] .inv-paper { padding-block: 0; overflow: hidden; }
+.inv[data-template="azulejo"] .inv-paper::before { display: none; }
+.inv[data-template="azulejo"] .inv-art-top, .inv[data-template="azulejo"] .inv-art-bottom { display: block; margin-inline: calc(var(--paper-pad) * -1); }
+.inv[data-template="azulejo"] .inv-art-top { margin-bottom: var(--az-l); }
+.inv[data-template="azulejo"] .inv-art-bottom { margin-top: var(--az-l); }
+.inv[data-template="azulejo"] .inv-art-top svg, .inv[data-template="azulejo"] .inv-art-bottom svg { width: 100%; height: auto; }
+
+.inv[data-template="azulejo"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="azulejo"] .inv-hello { font-size: 16px; margin-bottom: var(--az-s) !important; }
+.inv[data-template="azulejo"] .inv-headline { font-size: 12px; font-weight: 500; line-height: 1.75; margin-bottom: var(--az-s) !important; }
+
+.inv[data-template="azulejo"] .inv-names { font-style: italic; padding: 0; letter-spacing: -0.005em; }
+.inv[data-template="azulejo"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 1.5; color: var(--accent); }
+.inv[data-template="azulejo"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.3); }
+.inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.18; }
+
+.inv[data-template="azulejo"] .inv-message { font: 400 17px/1.5 var(--font-ui); max-width: 30ch; margin-top: var(--az-s) !important; }
+.inv[data-template="azulejo"] .inv-art-divider { margin: var(--az-l) 0 0; }
+
+/* Data: dia ao centro entre dia da semana e hora; o mês ocupa a linha de baixo inteira, para as laterais nunca apertarem. */
+.inv[data-template="azulejo"] .inv-date { margin-top: var(--az-l); column-gap: clamp(14px, 5cqw, 22px); row-gap: 8px; }
+.inv[data-template="azulejo"] .inv-date-main { display: contents; }
+.inv[data-template="azulejo"] .inv-date-day { grid-column: 2; grid-row: 1; font-size: clamp(50px, 16cqw, 62px); font-weight: 400; line-height: 0.9; }
+.inv[data-template="azulejo"] .inv-date-month { grid-column: 1 / -1; grid-row: 2; font-size: 13.5px; letter-spacing: 0.2em; padding-left: 0.2em; color: var(--ink); }
+.inv[data-template="azulejo"] .inv-date-side { font-size: 13.5px; font-weight: 500; letter-spacing: 0.13em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
+.inv[data-template="azulejo"] .inv-place { font: 400 19px/1.4 var(--font-text); color: var(--ink); margin-top: var(--az-s) !important; }
+.inv[data-template="azulejo"] .inv-countdown { background: none; padding: 0; font: 500 12px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); margin-top: var(--az-s) !important; }
+
+/* ───────── Seções ───────── */
+.inv[data-template="azulejo"] .inv-section { padding-top: 46px; box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent), 0 6px 18px color-mix(in srgb, var(--ink) 8%, transparent); }
+.inv[data-template="azulejo"] .inv-section::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 106px;
+  height: 9px;
+  transform: translateX(-50%);
+  background: var(--accent);
+  -webkit-mask: var(--az-chain) center / 16px 9px repeat-x;
+  mask: var(--az-chain) center / 16px 9px repeat-x;
+  pointer-events: none;
+}
+.inv[data-template="azulejo"] .inv-kicker { font-size: 12px; }
+.inv[data-template="azulejo"] .inv-section-title { font-style: italic; font-weight: 400; font-size: 30px; }
+.inv[data-template="azulejo"] .inv-big { font-weight: 400; font-size: 23px; }
+.inv[data-template="azulejo"] .rsvp-state-title { font-style: italic; font-weight: 400; }
+.inv[data-template="azulejo"] .inv-btn { font-weight: 500; letter-spacing: 0.02em; }
+.inv[data-template="azulejo"] .inv-btn-main { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 55%, transparent); }
+.inv[data-template="azulejo"] .rsvp-state, .inv[data-template="azulejo"] .inv-field input, .inv[data-template="azulejo"] .inv-field select, .inv[data-template="azulejo"] .inv-field textarea { border-radius: 2px; }
+.inv[data-template="azulejo"] .inv-more { font-size: 12px; }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="azulejo"] .env-liner { color: var(--accent); }
+.inv[data-template="azulejo"] .env-to { font-size: 15.5px; }
+.inv[data-template="azulejo"] .env-to strong { font-style: italic; font-weight: 400; font-size: 32px; }
+.inv[data-template="azulejo"] .env-cta { border-radius: 2px; font-weight: 500; font-size: 13.5px; letter-spacing: 0.2em; }
+.inv[data-template="azulejo"] .env-liner { top: 2px; }
+/* cercadura discreta na frente do envelope, a mesma das seções */
+.inv[data-template="azulejo"] .env-front::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  width: 106px;
+  height: 9px;
+  transform: translateX(-50%);
+  background: var(--accent);
+  opacity: 0.85;
+  -webkit-mask: var(--az-chain) center / 16px 9px repeat-x;
+  mask: var(--az-chain) center / 16px 9px repeat-x;
+}
+.inv[data-template="azulejo"] .env-card { inset: 9% 10% 10%; }

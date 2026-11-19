@@ -5,6 +5,8 @@ import { Monogram } from "./Monogram";
 
 export type CoverData = {
   template: string;
+  /** Tipo de evento (id de EVENT_TYPES), para ornamentos que só fazem sentido em um tipo. */
+  type?: string;
   title: string;
   headline: string;
   message: string;
@@ -39,7 +41,7 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
   return (
     <header className="inv-cover">
       <div className="inv-paper">
-        <div className="inv-art inv-art-top"><Art slot="top" initials={initials} /></div>
+        <div className="inv-art inv-art-top"><Art slot="top" initials={initials} eventType={data.type} /></div>
         <div className="inv-monogram"><Monogram initials={initials} /></div>
         {guestName ? (
           <p className="inv-hello">
@@ -47,7 +49,7 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
           </p>
         ) : null}
         {data.headline ? <p className="inv-headline">{data.headline}</p> : null}
-        <h1 className="inv-names" data-count={names.length} data-long={title.length > 16}>
+        <h1 className="inv-names" data-count={names.length} data-long={names.length === 2 ? Math.max(names[0].length, names[1].length) >= 11 : title.length > 16}>
           {names.length === 2 ? (
             <>
               <span className="inv-name">{names[0]}</span>
@@ -59,7 +61,7 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
           )}
         </h1>
         {data.message ? <p className="inv-message">{data.message}</p> : null}
-        <div className="inv-art inv-art-divider"><Art slot="divider" initials={initials} /></div>
+        <div className="inv-art inv-art-divider"><Art slot="divider" initials={initials} eventType={data.type} /></div>
         {bits ? (
           <>
             <div className="inv-date" aria-hidden="true">
@@ -81,7 +83,7 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
         ) : null}
         {place ? <p className="inv-place">{place}</p> : null}
         {left ? <p className="inv-countdown">{left}</p> : null}
-        <div className="inv-art inv-art-bottom"><Art slot="bottom" initials={initials} /></div>
+        <div className="inv-art inv-art-bottom"><Art slot="bottom" initials={initials} eventType={data.type} /></div>
       </div>
       {more ? (
         <a className="inv-more" href="#detalhes">

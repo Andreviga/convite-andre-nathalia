@@ -18,7 +18,7 @@ export type Palette = { id: string; name: string; vars: PaletteVars };
 
 export type ArtSlot = "backdrop" | "top" | "divider" | "bottom" | "liner";
 
-export type ArtProps = { slot: ArtSlot; initials: string[] };
+export type ArtProps = { slot: ArtSlot; initials: string[]; /** id do tipo de evento, quando conhecido */ eventType?: string };
 
 export type TemplateDef = {
   id: string;

@@ -32,7 +32,7 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
   const activePalette = paletteOf(def, palette);
   const set = (key: keyof typeof cover) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setCover((c) => ({ ...c, [key]: e.target.value }));
   // Na prévia, campos vazios aparecem com um exemplo, para a pessoa ver o desenho completo desde o início.
-  const data: CoverData = { ...cover, template: tpl, title: cover.title || current.titlePlaceholder, event_date: cover.event_date || `${Number(today.slice(0, 4)) + 1}-09-11` };
+  const data: CoverData = { ...cover, template: tpl, type, title: cover.title || current.titlePlaceholder, event_date: cover.event_date || `${Number(today.slice(0, 4)) + 1}-09-11` };
 
   function changeType(next: string) {
     const from = eventType(type);

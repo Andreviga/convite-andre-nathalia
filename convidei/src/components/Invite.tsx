@@ -68,10 +68,10 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
                 </a>
                 <div className="inv-grid-2">
                   <a className="inv-btn" href={wazeUrl(place)} target="_blank" rel="noopener noreferrer">
-                    Abrir no Waze
+                    Waze
                   </a>
                   <a className="inv-btn" href={uberUrl(event.venue_name, event.address)} target="_blank" rel="noopener noreferrer">
-                    Pedir Uber
+                    Uber
                   </a>
                 </div>
                 {event.address ? <CopyButton className="inv-btn inv-btn-quiet" value={event.address} label="Copiar endereço" done="Endereço copiado!" /> : null}
@@ -94,7 +94,7 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
               Google Agenda
             </a>
             <a className="inv-btn inv-btn-quiet" href={preview ? calendarUrl : `/c/${event.slug}/agenda`} target={preview ? "_blank" : undefined} rel="noopener noreferrer">
-              iPhone ou Outlook
+              Outras agendas
             </a>
           </div>
         </section>
