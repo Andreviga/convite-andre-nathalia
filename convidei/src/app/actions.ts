@@ -6,6 +6,8 @@ import { checkLogin, createUser, endSession, requireUser, startSession } from "@
 import { EVENT_TYPES, TEMPLATES, template as findTemplate } from "@/lib/catalog";
 import { one, q } from "@/lib/db";
 import { eventBySlug, eventForUser, guestByToken, guestCount, rsvpClosed, type GiftLink } from "@/lib/events";
+import { createCheckout, mercadoPagoEnabled } from "@/lib/mercadopago";
+import { baseUrl } from "@/lib/url";
 import { isDate, isTime, onlyDigits, safeUrl, todayBR } from "@/lib/format";
 import { newId, newToken, slugify } from "@/lib/ids";
 import { normalizePixKey, PIX_KEY_TYPES } from "@/lib/pix";
@@ -168,11 +170,23 @@ export async function deleteEvent(form: FormData) {
   redirect("/painel");
 }
 
-export async function requestUpgrade(form: FormData) {
+export async function startUpgrade(form: FormData) {
   const user = await requireUser();
-  const id = text(form, "id", 64);
-  await q("update events set upgrade_requested_at = now() where id = $1 and user_id = $2", [id, user.id]);
-  redirect(`/painel/${id}/premium?pedido=1`);
+  const event = await eventForUser(text(form, "id", 64), user.id);
+  if (!event) redirect("/painel");
+  if (isPremium(event.plan)) redirect(`/painel/${event.id}/premium`);
+  await q("update events set upgrade_requested_at = now() where id = $1", [event.id]);
+  // Sem a chave do Mercado Pago configurada, só registra o interesse.
+  if (!mercadoPagoEnabled()) redirect(`/painel/${event.id}/premium`);
+
+  let checkoutUrl: string;
+  try {
+    checkoutUrl = await createCheckout(event, user.email, await baseUrl());
+  } catch (error) {
+    console.error("Falha ao criar checkout", error);
+    redirect(`/painel/${event.id}/premium?erro=1`);
+  }
+  redirect(checkoutUrl);
 }
 
 /* ───────── Convidados (anfitrião) ───────── */

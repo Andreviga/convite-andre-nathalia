@@ -55,3 +55,28 @@ test("agenda", () => {
 test("csv não deixa virar fórmula", () => {
   assert.equal(csvCell('=SOMA(1;2) "x"'), `"'=SOMA(1;2) ""x"""`);
 });
+
+import { createHmac } from "node:crypto";
+import { planEffect, validSignature } from "../src/lib/mercadopago.ts";
+
+test("mercado pago: só pagamento aprovado, em reais e no valor cheio libera o Premium", () => {
+  const base = { id: 1, external_reference: "e", transaction_amount: 79, currency_id: "BRL" };
+  assert.equal(planEffect({ ...base, status: "approved" }), "premium");
+  assert.equal(planEffect({ ...base, status: "approved", transaction_amount: 1 }), "none");
+  assert.equal(planEffect({ ...base, status: "approved", currency_id: "ARS" }), "none");
+  assert.equal(planEffect({ ...base, status: "pending" }), "none");
+  assert.equal(planEffect({ ...base, status: "rejected" }), "none");
+  assert.equal(planEffect({ ...base, status: "refunded" }), "free");
+  assert.equal(planEffect({ ...base, status: "charged_back" }), "free");
+});
+
+test("mercado pago: assinatura do aviso", () => {
+  const now = 1_800_000_000_000;
+  const ts = String(now);
+  const v1 = createHmac("sha256", "segredo").update(`id:123;request-id:req-1;ts:${ts};`).digest("hex");
+  assert.equal(validSignature("segredo", `ts=${ts},v1=${v1}`, "req-1", "123", now), true);
+  assert.equal(validSignature("outro", `ts=${ts},v1=${v1}`, "req-1", "123", now), false);
+  assert.equal(validSignature("segredo", `ts=${ts},v1=${v1}`, "req-1", "999", now), false);
+  assert.equal(validSignature("segredo", `ts=${ts},v1=${v1}`, "req-1", "123", now + 3_600_000), false);
+  assert.equal(validSignature("segredo", null, "req-1", "123", now), false);
+});
