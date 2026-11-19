@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { crc16, normalizePixKey, pixPayload } from "../src/lib/pix.ts";
-import { csvCell, daysUntil, googleCalendarUrl, icsFile, isDate, longDate, prettyTime, safeUrl, whatsappNumber } from "../src/lib/format.ts";
+import { calendarTitle, capitalize, csvCell, daysUntil, eventCalendarTitle, googleCalendarUrl, icsFile, isDate, longDate, prettyTime, safeUrl, whatsappNumber } from "../src/lib/format.ts";
 import { slugify } from "../src/lib/ids.ts";
 
 test("crc16 bate com o vetor padrão CCITT-FALSE", () => {
@@ -50,6 +50,28 @@ test("agenda", () => {
   const ics = icsFile({ ...ev, uid: "1", url: "https://x" });
   assert.ok(ics.includes("DTSTART;TZID=America/Sao_Paulo:20260503T223000"));
   assert.ok(ics.includes("LOCATION:Rua A\\, 1"));
+  // Outlook e afins precisam do bloco do fuso; o lembrete vem um dia antes; o link do convite vai na descrição.
+  assert.ok(ics.includes("BEGIN:VTIMEZONE\r\nTZID:America/Sao_Paulo"));
+  assert.ok(ics.indexOf("END:VTIMEZONE") < ics.indexOf("BEGIN:VEVENT"));
+  assert.ok(ics.includes("TRIGGER:-P1D"));
+  assert.ok(ics.includes("DESCRIPTION:x\\n\\nConvite: https://x"));
+  assert.ok(!icsFile({ ...ev, time: "", uid: "1", url: "https://x" }).includes("VTIMEZONE"));
+  const google = new URL(googleCalendarUrl({ ...ev, url: "https://convidei.app/c/ana-e-leo" }));
+  assert.equal(google.searchParams.get("details"), "x\n\nConvite: https://convidei.app/c/ana-e-leo");
+  assert.equal(new URL(googleCalendarUrl(ev)).searchParams.get("details"), "x");
+});
+
+test("título na agenda e maiúscula inicial", () => {
+  assert.equal(calendarTitle("Casamento", "André & Nathalia"), "Casamento de André & Nathalia");
+  assert.equal(calendarTitle("15 anos", "Maria Clara"), "15 anos de Maria Clara");
+  assert.equal(calendarTitle("Aniversário", "Helena faz 30"), "Helena faz 30");
+  assert.equal(calendarTitle("Chá de bebê", "Chá do Miguel"), "Chá do Miguel");
+  assert.equal(calendarTitle("Casamento", "Casamento Ana e Leo"), "Casamento Ana e Leo");
+  assert.equal(calendarTitle("", "Jantar de fim de ano"), "Jantar de fim de ano");
+  assert.equal(eventCalendarTitle("quinze-anos", "Sofia"), "15 anos de Sofia");
+  assert.equal(eventCalendarTitle("outro", "Sofia"), "Sofia");
+  assert.equal(capitalize("sábado, 3 de maio"), "Sábado, 3 de maio");
+  assert.equal(capitalize(""), "");
 });
 
 test("csv não deixa virar fórmula", () => {
@@ -89,4 +111,46 @@ test("nomes: separa o casal e tira as iniciais", () => {
   assert.deepEqual(splitTitle("Helena faz 30").names, ["Helena faz 30"]);
   assert.deepEqual(splitTitle("Chá do Miguel").initials, ["C"]);
   assert.equal(splitTitle("Formatura de Direito e Jantar de confraternização da turma de 2026").names.length, 1);
+});
+
+import { glueTitle, titleRuns, titleShape } from "../src/lib/names.ts";
+
+test("nomes: partículas e travessão colados com espaço não separável", () => {
+  const dots = (text: string) => glueTitle(text).replaceAll(" ", "·");
+  // o travessão cola na palavra anterior (nunca abre linha); "de", "da", "do", "e" colam na seguinte (nunca fecham linha)
+  assert.equal(dots("Formatura de Direito — Turma 2026"), "Formatura de·Direito·— Turma 2026");
+  assert.equal(dots("Chá revelação da Ana e do Pedro"), "Chá revelação da·Ana e·do·Pedro");
+  assert.equal(dots("Bodas dos Santos – 50 anos"), "Bodas dos·Santos·– 50 anos");
+  assert.equal(dots("  Chá   do  Miguel "), "Chá do·Miguel");
+  assert.equal(dots("Maria E João"), "Maria E·João");
+  // sem partícula, nada muda; partícula no fim não cola em nada
+  assert.equal(dots("Helena faz 30"), "Helena faz 30");
+  assert.equal(dots("Festa de"), "Festa de");
+  // trecho colado comprido demais não caberia na linha: a partícula fica solta
+  assert.equal(dots("Jantar de Confraternização"), "Jantar de Confraternização");
+  assert.equal(glueTitle(""), "");
+});
+
+test("nomes: algarismos e travessão separados do texto", () => {
+  assert.deepEqual(titleRuns("Helena faz 30"), [{ text: "Helena faz ", num: false }, { text: "30", num: true }]);
+  assert.deepEqual(titleRuns("Direito — Turma 2026").filter((r) => r.num).map((r) => r.text), ["—", "2026"]);
+  assert.deepEqual(titleRuns("15 anos da Bia").map((r) => r.text), ["15", " anos da Bia"]);
+  assert.deepEqual(titleRuns("Ana-Clara"), [{ text: "Ana-Clara", num: false }]);
+  assert.deepEqual(titleRuns(""), []);
+});
+
+test("nomes: medidas do título para a capa", () => {
+  assert.deepEqual(titleShape("Sofia"), { count: 1, words: 1, longest: 5, long: false, short: true, phrase: false });
+  assert.deepEqual(titleShape("Maximiliano"), { count: 1, words: 1, longest: 11, long: false, short: false, phrase: false });
+  assert.deepEqual(titleShape("Helena faz 30"), { count: 1, words: 3, longest: 6, long: false, short: false, phrase: false });
+  // "de·Direito·—" é o maior trecho inseparável (12 letras)
+  assert.deepEqual(titleShape("Formatura de Direito — Turma 2026"), { count: 1, words: 6, longest: 12, long: true, short: false, phrase: true });
+  assert.deepEqual(titleShape("Chá revelação da Ana e do Pedro"), { count: 1, words: 7, longest: 10, long: true, short: false, phrase: true });
+  // nome comprido não é frase: o modelo pode mantê-lo na caligrafia
+  assert.equal(titleShape("Maximiliano Albuquerque").phrase, false);
+  assert.equal(titleShape("Maximiliano Albuquerque").long, true);
+  assert.deepEqual(titleShape("Maria Eduarda & Luiz Henrique"), { count: 2, words: 2, longest: 13, long: true, short: false, phrase: false });
+  // nome de casal com mais de 14 letras pode quebrar: conta a maior palavra
+  assert.equal(titleShape("Ana & Maximiliano Albuquerque").longest, 11);
+  assert.deepEqual(titleShape("Ana & Leo"), { count: 2, words: 1, longest: 3, long: false, short: false, phrase: false });
 });

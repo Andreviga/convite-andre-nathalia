@@ -1,5 +1,6 @@
+import type { CSSProperties } from "react";
 import { dateBits, daysUntil, isDate, prettyTime } from "@/lib/format";
-import { splitTitle } from "@/lib/names";
+import { glueTitle, splitTitle, titleRuns, titleShape } from "@/lib/names";
 import { templateDef } from "@/templates";
 import { Monogram } from "./Monogram";
 
@@ -24,6 +25,14 @@ function countdown(days: number): string | null {
 }
 
 /**
+ * Texto de um título ou nome, pronto para quebrar bem: partículas e travessão colados por espaço não separável (glueTitle)
+ * e algarismos e travessões em <span class="inv-num">, que os modelos de fonte caligráfica compõem na serifa.
+ */
+export function TitleText({ text }: { text: string }) {
+  return titleRuns(glueTitle(text)).map((run, i) => (run.num ? <span key={i} className="inv-num">{run.text}</span> : run.text));
+}
+
+/**
  * A capa do convite (o "cartão"). Componente puro: serve no servidor, na prévia ao vivo do editor e nas miniaturas.
  * A estrutura é a mesma para todos os modelos; cada um muda fontes, cores e ornamentos pelo CSS e pelo Art.
  */
@@ -31,6 +40,7 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
   const def = templateDef(data.template);
   const title = data.title.trim() || "Seu nome aqui";
   const { names, connector, initials } = splitTitle(title);
+  const shape = titleShape(title);
   const hasDate = isDate(data.event_date);
   const bits = hasDate ? dateBits(data.event_date) : null;
   const time = prettyTime(data.event_time);
@@ -49,15 +59,25 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
           </p>
         ) : null}
         {data.headline ? <p className="inv-headline">{data.headline}</p> : null}
-        <h1 className="inv-names" data-count={names.length} data-long={names.length === 2 ? Math.max(names[0].length, names[1].length) >= 11 : title.length > 16}>
+        {/* Os atributos descrevem o título para o CSS (ver README dos modelos); --longest dimensiona a fonte para a maior palavra caber. */}
+        <h1
+          className="inv-names"
+          data-count={shape.count}
+          data-long={shape.long}
+          data-words={shape.words}
+          data-longest={shape.longest}
+          data-short={shape.short || undefined}
+          data-phrase={shape.phrase || undefined}
+          style={{ "--longest": shape.longest } as CSSProperties}
+        >
           {names.length === 2 ? (
             <>
-              <span className="inv-name">{names[0]}</span>
+              <span className="inv-name"><TitleText text={names[0]} /></span>
               <span className="inv-amp">{connector}</span>
-              <span className="inv-name">{names[1]}</span>
+              <span className="inv-name"><TitleText text={names[1]} /></span>
             </>
           ) : (
-            <span className="inv-name">{title}</span>
+            <span className="inv-name"><TitleText text={title} /></span>
           )}
         </h1>
         {data.message ? <p className="inv-message">{data.message}</p> : null}

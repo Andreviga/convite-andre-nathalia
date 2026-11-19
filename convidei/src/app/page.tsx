@@ -33,7 +33,7 @@ export default async function Home() {
               <Link href="/entrar" className="btn btn-sm btn-ghost">
                 Entrar
               </Link>
-              <Link href="/criar-conta" className="btn btn-sm btn-primary">
+              <Link href={start} className="btn btn-sm btn-primary">
                 Criar convite
               </Link>
             </>
@@ -45,7 +45,7 @@ export default async function Home() {
         <section className="wrap hero">
           <div>
             <p className="eyebrow">Convite digital com confirmação de presença</p>
-            <h1>
+            <h1 className="hero-title">
               Chega de convite em PDF que <em>ninguém consegue abrir.</em>
             </h1>
             <p className="hero-lead">

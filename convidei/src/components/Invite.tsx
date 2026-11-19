@@ -1,10 +1,13 @@
 import QRCode from "qrcode";
 import { BRAND } from "@/lib/brand";
 import { rsvpClosed, type EventRow, type GuestRow } from "@/lib/events";
-import { dateBits, googleCalendarUrl, mapsUrl, prettyTime, shortDate, todayBR, uberUrl, wazeUrl } from "@/lib/format";
+import { capitalize, eventCalendarTitle, dateBits, googleCalendarUrl, mapsUrl, prettyTime, shortDate, todayBR, uberUrl, wazeUrl } from "@/lib/format";
 import { splitTitle } from "@/lib/names";
 import { pixPayload } from "@/lib/pix";
 import { isPremium } from "@/lib/plans";
+import { OPEN_MAX_PEOPLE } from "@/lib/remember";
+import { answerText } from "@/lib/rsvp-text";
+import { baseUrl } from "@/lib/url";
 import { paletteOf, paletteStyle, templateDef } from "@/templates";
 import { CopyButton } from "./CopyButton";
 import { Envelope } from "./Envelope";
@@ -18,9 +21,13 @@ type Props = {
   /** Demonstração: mostra tudo, mas ninguém confirma presença de verdade. */
   preview?: boolean;
   envelope?: boolean;
+  /** A pessoa acabou de responder e foi trazida de volta: o foco vai para a confirmação. */
+  justAnswered?: boolean;
+  /** Abre a confirmação já no modo "mudar minha resposta". */
+  changing?: boolean;
 };
 
-export async function Invite({ event, guest, preview = false, envelope = true }: Props) {
+export async function Invite({ event, guest, preview = false, envelope = true, justAnswered = false, changing = false }: Props) {
   const def = templateDef(event.template);
   const palette = paletteOf(def, event.palette);
   const { initials } = splitTitle(event.title);
@@ -29,12 +36,15 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
   const today = todayBR();
   const closed = rsvpClosed(event, today);
   const place = [event.venue_name, event.address].filter(Boolean).join(", ");
-  const calendar = { title: event.title, date: event.event_date, time: event.event_time, location: place, details: event.message };
+  const inviteUrl = preview ? undefined : `${await baseUrl()}/c/${event.slug}`;
+  const calendar = { title: eventCalendarTitle(event.type, event.title), date: event.event_date, time: event.event_time, location: place, details: event.message, url: inviteUrl };
   const calendarUrl = googleCalendarUrl(calendar);
   const pix = event.pix_key ? pixPayload(event.pix_key, event.pix_holder, event.pix_city) : null;
   const qr = pix ? await QRCode.toString(pix, { type: "svg", margin: 1, errorCorrectionLevel: "M", color: { dark: "#111111", light: "#ffffff" } }) : null;
   const hasGifts = Boolean(pix || event.gift_links.length || event.gift_message);
   const canRsvp = Boolean(guest) || event.open_rsvp;
+  const answered = guest && guest.status !== "pending" ? answerText(guest.status, guest.people_count, guest.max_people) : null;
+  const viaOpenLink = guest?.source === "open";
   const Art = def.Art;
 
   return (
@@ -52,7 +62,7 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
         <section className="inv-section" id="detalhes" aria-label="Data e local">
           <p className="inv-kicker">Quando</p>
           <p className="inv-big">
-            {bits.weekday}, {Number(bits.day)} de {bits.month} de {bits.year}
+            {capitalize(bits.weekday)}, {Number(bits.day)} de {bits.month} de {bits.year}
           </p>
           {time ? <p className="inv-text">às {time}</p> : null}
 
@@ -89,7 +99,7 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
 
           <hr className="inv-rule" />
           <p className="inv-kicker">Para não esquecer</p>
-          <div className="inv-grid-2" style={{ marginTop: 10 }}>
+          <div className="inv-grid-2 inv-calendar">
             <a className="inv-btn inv-btn-quiet" href={calendarUrl} target="_blank" rel="noopener noreferrer">
               Google Agenda
             </a>
@@ -97,16 +107,17 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
               Outras agendas
             </a>
           </div>
+          <p className="inv-hint inv-calendar-hint">No iPhone ou no Outlook, toque em “Outras agendas”.</p>
         </section>
 
         {canRsvp ? (
           <section className="inv-section" id="confirmar" aria-labelledby="rsvp-title">
-            <p className="inv-kicker">Sua resposta</p>
+            <p className="inv-kicker">{answered ? "Confirmação" : "Sua resposta"}</p>
             <h2 id="rsvp-title" className="inv-section-title">
-              Você vem?
+              {answered ? "Sua resposta" : "Você vem?"}
             </h2>
-            {guest && guest.max_people > 1 ? <p className="inv-hint">Este convite é para até {guest.max_people} pessoas.</p> : null}
-            {event.rsvp_deadline && !closed ? <p className="inv-hint">Responda até {shortDate(event.rsvp_deadline)}.</p> : null}
+            {guest && guest.max_people > 1 && !viaOpenLink && !(closed && answered) ? <p className="inv-hint">Este convite é para até {guest.max_people} pessoas.</p> : null}
+            {event.rsvp_deadline && !closed ? <p className="inv-hint">{answered ? "Você pode mudar a resposta até" : "Responda até"} {shortDate(event.rsvp_deadline)}.</p> : null}
             {preview ? (
               <div className="rsvp">
                 <div className="rsvp-buttons" aria-hidden="true">
@@ -117,20 +128,43 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
                   Demonstração: no convite de verdade, um toque aqui já confirma a presença.
                 </p>
               </div>
+            ) : closed && guest && answered ? (
+              /* Prazo encerrado: quem respondeu continua vendo a própria resposta (e o atalho da agenda). */
+              <div className="rsvp">
+                <div className="rsvp-state" data-status={guest.status}>
+                  <p className="rsvp-state-title">{answered.title}</p>
+                  <p>{answered.line}</p>
+                </div>
+                {guest.status === "yes" ? (
+                  <a className="inv-btn inv-btn-quiet rsvp-calendar" href={calendarUrl} target="_blank" rel="noopener noreferrer">
+                    Salvar na agenda
+                  </a>
+                ) : null}
+                <p className="inv-hint rsvp-closed">O prazo para mudar a resposta terminou. Se precisar, fale com quem convidou você.</p>
+              </div>
             ) : closed ? (
-              <p className="inv-hint" style={{ marginTop: 10 }}>
-                O prazo para confirmar terminou. Se precisar, fale com quem convidou você.
-              </p>
+              <p className="inv-hint rsvp-closed">O prazo para confirmar terminou. Se precisar, fale com quem convidou você.</p>
             ) : (
-              <RsvpForm
-                slug={event.slug}
-                token={guest?.token}
-                maxPeople={guest?.max_people ?? 6}
-                initialStatus={guest?.status ?? "pending"}
-                initialPeople={guest?.people_count ?? 1}
-                initialNote={guest?.note ?? ""}
-                calendarUrl={calendarUrl}
-              />
+              <>
+                <RsvpForm
+                  slug={event.slug}
+                  token={guest?.token}
+                  maxPeople={guest?.max_people ?? OPEN_MAX_PEOPLE}
+                  initialStatus={guest?.status ?? "pending"}
+                  initialPeople={guest?.people_count ?? 0}
+                  initialNote={guest?.note ?? ""}
+                  calendarUrl={calendarUrl}
+                  justAnswered={justAnswered}
+                  startEditing={changing}
+                />
+                {guest && viaOpenLink && event.open_rsvp ? (
+                  <p className="rsvp-links rsvp-other">
+                    <a className="inv-link" href={`/c/${event.slug}?novo=1#confirmar`}>
+                      Não é {guest.name}? Responder como outra pessoa
+                    </a>
+                  </p>
+                ) : null}
+              </>
             )}
           </section>
         ) : null}
@@ -178,13 +212,24 @@ export async function Invite({ event, guest, preview = false, envelope = true }:
           </section>
         ) : null}
 
-        {!isPremium(event.plan) ? (
-          <footer className="inv-footer">
-            <a href="/?ref=convite">
-              Convite feito com <strong>{BRAND}</strong> · crie o seu grátis
-            </a>
-          </footer>
-        ) : null}
+        {/* Fecho: o convite termina assinado, como papelaria, e não num botão. */}
+        <footer className="inv-end">
+          <div className="inv-section inv-sign">
+            <div className="inv-art inv-sign-art" aria-hidden="true"><Art slot="divider" initials={initials} eventType={event.type} /></div>
+            <p className="inv-kicker">Esperamos você</p>
+            <p className="inv-sign-names">{event.title}</p>
+            <p className="inv-sign-date">
+              {Number(bits.day)} de {bits.month} de {bits.year}
+            </p>
+          </div>
+          {!isPremium(event.plan) || preview ? (
+            <p className="inv-footer">
+              <a href="/?ref=convite">
+                Convite feito com <strong>{BRAND}</strong>
+              </a>
+            </p>
+          ) : null}
+        </footer>
       </main>
 
       {canRsvp && !closed && !preview ? <StickyRsvp pending={(guest?.status ?? "pending") === "pending"} /> : null}

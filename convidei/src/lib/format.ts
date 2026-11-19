@@ -97,7 +97,41 @@ function stamp(date: string, time: string, addHours = 0): string {
   return `${moment.getUTCFullYear()}${pad(moment.getUTCMonth() + 1)}${pad(moment.getUTCDate())}T${pad(moment.getUTCHours())}${pad(moment.getUTCMinutes())}00`;
 }
 
-export type CalendarEvent = { title: string; date: string; time: string; location: string; details: string };
+export type CalendarEvent = { title: string; date: string; time: string; location: string; details: string; /** Link do convite, para a pessoa voltar a ele a partir da agenda. */ url?: string };
+
+/** "sábado" -> "Sábado": para começo de frase nas seções do convite. */
+export function capitalize(text: string): string {
+  return text.charAt(0).toLocaleUpperCase("pt-BR") + text.slice(1);
+}
+
+const NAME_JOINERS = new Set(["&", "e", "de", "da", "do", "das", "dos"]);
+
+/**
+ * Título do compromisso na agenda. Quando o título do evento é só o nome de alguém ("André & Nathalia", "Sofia"),
+ * acrescenta o tipo: "Casamento de André & Nathalia". Frases ("Helena faz 30", "Chá do Miguel") ficam como estão.
+ */
+export function calendarTitle(typeLabel: string, title: string): string {
+  const clean = title.trim().replace(/\s+/g, " ");
+  const label = typeLabel.trim();
+  if (!clean || !label) return clean;
+  const words = clean.split(" ");
+  const onlyNames = words.length <= 7 && words.every((word) => NAME_JOINERS.has(word.toLocaleLowerCase("pt-BR")) || /^\p{Lu}[\p{L}'.-]*$/u.test(word));
+  const firstLabelWord = label.split(" ")[0].toLocaleLowerCase("pt-BR");
+  const repeats = /\p{L}/u.test(firstLabelWord) && clean.toLocaleLowerCase("pt-BR").includes(firstLabelWord);
+  return onlyNames && !repeats ? `${label} de ${clean}` : clean;
+}
+
+// Tipos de evento (ids de EVENT_TYPES) em que "<Tipo> de <nomes>" faz sentido como título do compromisso.
+const CALENDAR_LABEL: Record<string, string> = { casamento: "Casamento", aniversario: "Aniversário", "quinze-anos": "15 anos", formatura: "Formatura" };
+
+/** Título do compromisso a partir do tipo do evento (id) e do título do convite. */
+export function eventCalendarTitle(typeId: string, title: string): string {
+  return calendarTitle(CALENDAR_LABEL[typeId] ?? "", title);
+}
+
+function calendarDetails(ev: CalendarEvent): string {
+  return [ev.details.trim(), ev.url ? `Convite: ${ev.url}` : ""].filter(Boolean).join("\n\n");
+}
 
 export function googleCalendarUrl(ev: CalendarEvent): string {
   const { y, m, d } = parts(ev.date);
@@ -106,7 +140,7 @@ export function googleCalendarUrl(ev: CalendarEvent): string {
   const dates = isTime(ev.time)
     ? `${stamp(ev.date, ev.time)}/${stamp(ev.date, ev.time, 4)}`
     : `${y}${pad(m)}${pad(d)}/${next.getUTCFullYear()}${pad(next.getUTCMonth() + 1)}${pad(next.getUTCDate())}`;
-  const params = new URLSearchParams({ action: "TEMPLATE", text: ev.title, dates, ctz: TZ, location: ev.location, details: ev.details });
+  const params = new URLSearchParams({ action: "TEMPLATE", text: ev.title, dates, ctz: TZ, location: ev.location, details: calendarDetails(ev) });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
@@ -114,11 +148,15 @@ function icsEscape(text: string): string {
   return text.replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/([,;])/g, "\\$1");
 }
 
+// Brasília não tem horário de verão desde 2019: um único bloco fixo em -03:00 basta para o Outlook e afins entenderem o TZID.
+const VTIMEZONE = ["BEGIN:VTIMEZONE", `TZID:${TZ}`, "BEGIN:STANDARD", "DTSTART:19700101T000000", "TZOFFSETFROM:-0300", "TZOFFSETTO:-0300", "TZNAME:-03", "END:STANDARD", "END:VTIMEZONE"];
+
 export function icsFile(ev: CalendarEvent & { uid: string; url: string }): string {
   const { y, m, d } = parts(ev.date);
   const pad = (n: number) => String(n).padStart(2, "0");
   const next = new Date(Date.UTC(y, m - 1, d + 1));
-  const when = isTime(ev.time)
+  const timed = isTime(ev.time);
+  const when = timed
     ? [`DTSTART;TZID=${TZ}:${stamp(ev.date, ev.time)}`, `DTEND;TZID=${TZ}:${stamp(ev.date, ev.time, 4)}`]
     : [
         `DTSTART;VALUE=DATE:${y}${pad(m)}${pad(d)}`,
@@ -129,14 +167,20 @@ export function icsFile(ev: CalendarEvent & { uid: string; url: string }): strin
     "VERSION:2.0",
     "PRODID:-//Convidei//Convite//PT-BR",
     "CALSCALE:GREGORIAN",
+    ...(timed ? VTIMEZONE : []),
     "BEGIN:VEVENT",
     `UID:${ev.uid}@convidei`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "")}`,
     ...when,
     `SUMMARY:${icsEscape(ev.title)}`,
     `LOCATION:${icsEscape(ev.location)}`,
-    `DESCRIPTION:${icsEscape(ev.details)}`,
+    `DESCRIPTION:${icsEscape(calendarDetails(ev))}`,
     `URL:${ev.url}`,
+    "BEGIN:VALARM",
+    "ACTION:DISPLAY",
+    `DESCRIPTION:${icsEscape(ev.title)}`,
+    "TRIGGER:-P1D",
+    "END:VALARM",
     "END:VEVENT",
     "END:VCALENDAR",
     "",

@@ -27,6 +27,7 @@
   --names-leading: 1.08;
   --names-tracking: 0;
   --names-transform: none;
+  --names-em: 0.5; /* largura média de uma letra da fonte dos nomes, em em: a base usa para a maior palavra do título caber na linha */
   --amp-scale: 0.5;
   --label-tracking: 0.24em;
   --radius: 4px; /* cantos do papel */
@@ -101,11 +102,11 @@
 .inv-hello { font: 400 15px/1.4 var(--font-ui); color: var(--soft); margin-bottom: 18px !important; }
 .inv-hello strong { font-weight: 600; color: var(--ink); }
 .inv-headline {
-  font: 500 11.5px/1.7 var(--font-label);
-  letter-spacing: var(--label-tracking);
+  font: 500 14px/1.6 var(--font-label); /* piso de 14px: é informação, não enfeite. Para caber, aperta-se o espaçamento, não o corpo. */
+  letter-spacing: min(var(--label-tracking), 0.16em);
   text-transform: uppercase;
   color: var(--soft);
-  padding-left: var(--label-tracking); /* compensa o espaçamento da última letra: centro óptico */
+  padding-left: min(var(--label-tracking), 0.16em); /* compensa o espaçamento da última letra: centro óptico */
   margin-bottom: 20px !important;
   text-wrap: balance;
 }
@@ -117,25 +118,42 @@
   letter-spacing: var(--names-tracking);
   text-transform: var(--names-transform);
   text-wrap: balance;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word; /* último recurso (palavra de 20 letras ou mais); antes disso a fonte encolhe, ver .inv-name */
   padding: 0.08em 0;
 }
 .inv-names[data-count="2"] { display: flex; flex-direction: column; align-items: center; }
+/* Nunca partir palavra no meio: a fonte de cada nome encolhe até a maior palavra (--longest letras, vem do InviteCover) caber
+   na largura útil do cartão. 1em é o tamanho que o modelo escolheu para .inv-names, então vale por cima de qualquer regra de
+   modelo; --names-em é a largura média de uma letra na fonte dele. Não encolhe além de 55%. */
+.inv-name { font-size: clamp(0.55em, calc((100cqw - 2 * var(--paper-pad)) / (var(--longest, 8) * var(--names-em))), 1em); }
+.inv-names[data-count="1"] .inv-name { display: block; }
+/* Algarismos e travessão do título: sempre alinhados. Nos modelos de fonte caligráfica, trocam para a serifa (ver README). */
+.inv-num { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv-amp { font-family: var(--f-serif), Georgia, serif; font-style: italic; font-weight: 400; font-size: calc(1em * var(--amp-scale)); line-height: 1.25; letter-spacing: 0; text-transform: none; color: var(--accent); }
 .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.78); }
 .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.84); } /* casal com nome comprido */
 .inv-message { font: italic 400 19px/1.45 var(--font-text); color: var(--soft); margin-top: 20px !important; max-width: 26ch; margin-inline: auto !important; text-wrap: balance; white-space: pre-line; }
 
-.inv-date { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 12px; margin-top: 28px; }
-.inv-date-side { font: 500 11.5px/1.3 var(--font-label); letter-spacing: 0.13em; text-transform: uppercase; color: var(--soft); border-block: 1px solid var(--line); padding: 9px 0 9px 0.13em; white-space: nowrap; }
-.inv-date-main { display: grid; justify-items: center; gap: 2px; }
-.inv-date-day { font: 500 54px/0.95 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
-.inv-date-month { font: 500 11.5px/1.3 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding-left: 0.18em; white-space: nowrap; font-variant-numeric: lining-nums; }
+/* Data: dia da semana e hora ladeiam só o numeral; o mês vai na linha de baixo, de ponta a ponta. (.inv-date-main não gera
+   caixa: se o mês ficasse na coluna do meio, ele a alargava e espremia as laterais até a hora cruzar a moldura em telas de
+   320px.) As laterais encolhem com a largura do convite e, se ainda assim não couberem ("às 20h30" com letra grande), quebram
+   em duas linhas em vez de vazar. O modelo que redesenha a data redefine as posições na grade. */
+.inv-date { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px clamp(8px, 3.4cqw, 12px); margin-top: 28px; }
+.inv-date-main { display: contents; }
+.inv-date-side { grid-row: 1; font: 500 clamp(12px, 3.9cqw, 14px)/1.3 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.12em; text-transform: uppercase; color: var(--soft); border-block: 1px solid var(--line); padding: 9px 0 9px 0.12em; text-wrap: balance; }
+.inv-date-side:first-child { grid-column: 1; }
+.inv-date-side:last-child { grid-column: 3; }
+.inv-date-day { grid-column: 2; grid-row: 1; font: 500 54px/0.95 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv-date-month { grid-column: 1 / -1; grid-row: 2; font: 500 clamp(12px, 3.9cqw, 14px)/1.3 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding-left: 0.18em; white-space: nowrap; font-variant-numeric: lining-nums; }
 .inv-dateline { display: none; font: 500 18px/1.4 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-top: 26px !important; text-wrap: balance; }
+/* Leitor de tela: a data grande (.inv-date) é aria-hidden; quem lê a data por extenso é .inv-dateline. Por isso ela não pode ficar
+   em display:none: fica visualmente oculta. O modelo que mostra a linha de data no lugar da data grande (monograma) fica de fora.
+   :where() mantém a especificidade baixa, para os modelos continuarem mandando. */
+.inv:where(:not([data-template="monograma"])) .inv-dateline { display: block; position: absolute; width: 1px; height: 1px; margin: 0 !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .inv-place { font: 400 16px/1.4 var(--font-text); color: var(--soft); margin-top: 16px !important; text-wrap: balance; }
-.inv-countdown { display: inline-block; margin-top: 18px !important; font: 500 12.5px/1 var(--font-ui); padding: 7px 14px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--ink); }
+.inv-countdown { display: inline-block; margin-top: 18px !important; font: 500 14px/1 var(--font-ui); font-variant-numeric: lining-nums; padding: 7px 14px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--ink); }
 
-.inv-more { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; font: 500 11.5px/1 var(--font-ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); text-decoration: none; }
+.inv-more { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; font: 500 14px/1 var(--font-ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); text-decoration: none; }
 .inv-more svg { width: 14px; height: 14px; animation: inv-nudge 2.4s ease-in-out infinite; }
 @keyframes inv-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 
@@ -146,90 +164,185 @@
 .inv-paper > :nth-child(n + 9) { --i: 8; }
 @keyframes inv-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .inv[data-still="true"] .inv-paper > * { animation: none; }
+/* Com o envelope fechado na frente, a entrada espera: só roda quando ele começa a abrir. (data-ready só existe com JavaScript:
+   sem ele o envelope some sozinho e a entrada não pode ficar parada.) */
+.inv:has(.env[data-ready="true"][data-state="closed"]) .inv-paper > * { animation-play-state: paused; }
+html.env-seen .inv .inv-paper > * { animation-play-state: running; }
 
 /* ───────── Seções abaixo da capa ───────── */
-.inv-section { position: relative; background: var(--paper); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07); padding: 30px 24px; margin-top: 16px; text-align: center; scroll-margin-top: 16px; }
+/* O texto das seções usa as fontes do modelo (--font-text, --font-label), como a capa: a página inteira é o mesmo convite,
+   não um aplicativo embaixo de um cartão. Só os campos de formulário ficam em --font-ui (sans), pela legibilidade ao digitar.
+   Nada aqui tem largura mínima fixa: com zoom de 200% (tela de ~180px) tudo quebra linha em vez de ser cortado. */
+.inv-section { position: relative; background: var(--paper); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07); padding: 30px clamp(12px, 7.4cqw, 24px); margin-top: 16px; text-align: center; scroll-margin-top: 16px; overflow-wrap: break-word; }
 .inv-section > * { position: relative; z-index: 1; }
 .inv-section-title { font: 500 30px/1.15 var(--font-text); margin-bottom: 6px !important; text-wrap: balance; }
-.inv-kicker { font: 500 11.5px/1.5 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--soft); padding-left: 0.22em; margin-bottom: 8px !important; }
-.inv-hint { font-size: 15px; line-height: 1.5; color: var(--soft); }
-.inv-text { font-size: 17px; white-space: pre-line; text-wrap: pretty; }
+.inv-kicker { font: 500 14px/1.5 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--soft); padding-left: 0.16em; margin-bottom: 8px !important; }
+.inv-hint { font: 400 16.5px/1.5 var(--font-text); color: var(--soft); text-wrap: pretty; }
+.inv-text { font: 400 18px/1.5 var(--font-text); white-space: pre-line; text-wrap: pretty; }
 .inv-big { font: 500 22px/1.3 var(--font-text); text-wrap: balance; }
 .inv-rule { height: 1px; background: var(--line); border: 0; margin: 22px 0; }
-.inv-stack { display: grid; gap: 10px; margin-top: 18px; }
-.inv-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.inv-stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 18px; }
+.inv-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.inv-grid-2 .inv-btn { padding-inline: 8px; text-wrap: balance; } /* par de botões: mesma altura (a grade estica) e quebra equilibrada */
+.inv-calendar { margin-top: 10px; }
+.inv-calendar-hint { margin-top: 10px !important; }
+@container (max-width: 270px) { .inv-grid-2 { grid-template-columns: minmax(0, 1fr); } }
 
-.inv-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 54px; padding: 12px 18px; border-radius: var(--btn-radius); border: 1px solid var(--ink); background: transparent; color: var(--ink); font: 600 16.5px/1.2 var(--font-ui); text-decoration: none; text-align: center; cursor: pointer; transition: background 0.15s, transform 0.1s; -webkit-tap-highlight-color: transparent; }
+.inv-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-width: 0; min-height: 54px; padding: 12px clamp(8px, 4.6cqw, 18px); border-radius: var(--btn-radius); border: 1px solid var(--ink); background: transparent; color: var(--ink); font: 600 16.5px/1.2 var(--font-label); text-decoration: none; text-align: center; overflow-wrap: anywhere; cursor: pointer; transition: background 0.15s, transform 0.1s; -webkit-tap-highlight-color: transparent; }
 .inv-btn:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); }
 .inv-btn:active { transform: translateY(1px); }
 .inv-btn-main { background: var(--ink); color: var(--btn-ink); }
 .inv-btn-main:hover { background: color-mix(in srgb, var(--ink) 88%, var(--paper)); }
-.inv-btn-quiet { border-color: var(--line); font-weight: 500; font-size: 15.5px; min-height: 50px; }
+/* Botão discreto ainda é botão: borda com 3:1 sobre o papel e um leve preenchimento (a cor --line sozinha quase some). */
+.inv-btn-quiet { border-color: color-mix(in srgb, var(--ink) 52%, var(--paper)); background: color-mix(in srgb, var(--ink) 4%, transparent); font-weight: 500; font-size: 16px; min-height: 50px; }
 .inv-btn:disabled { opacity: 0.5; cursor: progress; }
 .inv-btn svg { width: 20px; height: 20px; flex: none; }
-.inv-link { background: none; border: 0; padding: 10px; font: 500 15.5px/1.3 var(--font-ui); color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.inv :is(a, button, input, select, textarea):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.inv-link { display: inline-block; background: none; border: 0; padding: 10px; font: 500 17px/1.3 var(--font-text); color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+/* Foco: --ink tem contraste garantido com o papel em todas as paletas (o --accent ficava abaixo de 3:1 em várias). */
+.inv :is(a, button, input, select, textarea, [tabindex]):focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.inv .inv-btn-main:focus-visible, .inv .rsvp-radio input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 3px var(--paper); }
+/* Algarismos alinhados em todo texto das seções. Vem com !important porque os atalhos "font:" (da base e dos modelos) zeram a propriedade. */
+.inv-section, .inv-section *, .inv-footer, .inv-footer *, .inv-sticky * { font-variant-numeric: lining-nums !important; }
+.inv-cover, .inv-cover * { font-variant-numeric: lining-nums !important; } /* a capa também: data, hora, local e contagem nunca saem "16h3o" */
+/* Piso de 14px para os rótulos em caixa alta (chamada, contagem, "Detalhes", rótulos de seção): todos os modelos os reduziam
+   para 11–13,5px, pequeno demais para quem tem 70 anos. Vale por cima do tamanho do modelo (mesma especificidade, vem depois);
+   o modelo que quiser um rótulo MAIOR define --label-size. As miniaturas ficam de fora (têm altura fixa, afinada por modelo). */
+.inv[data-template] :is(.inv-headline, .inv-countdown, .inv-more, .inv-kicker):not(.thumb *) { font-size: max(14px, var(--label-size, 0px)); }
 
 /* Confirmação */
 .rsvp { margin-top: 18px; text-align: left; }
-.rsvp-buttons { display: grid; gap: 10px; }
+.rsvp-buttons, .rsvp-ask { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 .rsvp-yes, .rsvp-no { min-height: 60px; font-size: 18px; }
-.rsvp-state { text-align: center; padding: 20px 16px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 13%, var(--paper)); }
-.rsvp-state-title { font: 500 28px/1.15 var(--font-text); }
-.rsvp-state p + p { margin-top: 4px; }
-.rsvp-details { display: grid; gap: 12px; margin-top: 16px; }
-.inv-field { display: grid; gap: 6px; font-size: 15px; font-weight: 500; color: var(--ink); }
-.inv-field input, .inv-field select, .inv-field textarea { width: 100%; min-height: 52px; font: 400 17px/1.4 var(--font-ui); color: var(--ink); background: color-mix(in srgb, var(--paper) 55%, #fff); border: 1px solid color-mix(in srgb, var(--ink) 30%, var(--paper)); border-radius: 10px; padding: 12px 14px; }
+/* Convite para várias pessoas: o botão de confirmar é o próprio número. */
+.rsvp-count { border: 0; padding: 0; margin: 0; min-width: 0; }
+.rsvp-count legend { padding: 0; margin-bottom: 10px; font: 400 18px/1.4 var(--font-text); color: var(--ink); text-wrap: pretty; }
+.rsvp-count legend strong { font-weight: 600; }
+.rsvp-count-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.rsvp-count-grid:is([data-n="2"], [data-n="4"]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.inv .rsvp-n { flex-direction: column; gap: 2px; min-height: 76px; padding: 10px 6px; }
+.inv .rsvp-n-num { font: 600 30px/1 var(--font-ui); }
+.inv .rsvp-n-word { font: 500 15px/1.1 var(--font-ui); letter-spacing: 0; text-transform: none; }
+.inv .inv-btn[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+.rsvp-current { font: 400 17px/1.4 var(--font-text); color: var(--ink); text-align: center; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 13%, var(--paper)); }
+.rsvp-current strong { font-weight: 600; }
+.rsvp-links { text-align: center; margin-top: 6px !important; }
+.inv .rsvp-other .inv-link { font-size: 16px; font-weight: 400; color: var(--soft); }
+.rsvp-calendar { margin-top: 10px; }
+.rsvp-closed { margin-top: 12px !important; text-align: center; }
+/* Link geral: número de pessoas em "fichas" grandes, sem nenhuma marcada de saída. */
+.rsvp-radios { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.rsvp-radio { position: relative; display: block; }
+.rsvp-radio input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.rsvp-radio span { display: grid; place-items: center; min-height: 54px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--ink) 52%, var(--paper)); background: color-mix(in srgb, var(--paper) 55%, #fff); font: 600 21px/1 var(--font-ui); color: var(--ink); }
+.rsvp-radio input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--btn-ink); }
+.rsvp-state { text-align: center; padding: 20px 16px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 13%, var(--paper)); scroll-margin-top: 24px; }
+.rsvp-state:focus-visible { outline-offset: 2px; }
+.rsvp-state-title { font: 500 28px/1.15 var(--font-text); text-wrap: balance; }
+.rsvp-state p + p { margin-top: 4px; font: 400 18px/1.45 var(--font-text); }
+.rsvp-details { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 16px; }
+.inv-field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; font: 500 17px/1.4 var(--font-text); color: var(--ink); }
+.inv-field input, .inv-field select, .inv-field textarea { width: 100%; min-width: 0; min-height: 52px; font: 400 17px/1.4 var(--font-ui); color: var(--ink); background: color-mix(in srgb, var(--paper) 55%, #fff); border: 1px solid color-mix(in srgb, var(--ink) 30%, var(--paper)); border-radius: 10px; padding: 12px 14px; }
 .inv-field textarea { resize: vertical; min-height: 84px; }
-.inv-error { color: #8f2417; background: #fbe6e1; border-radius: 10px; padding: 12px 14px; font-size: 15.5px; }
-.inv-saved { color: var(--soft); font-size: 15px; text-align: center; }
+.inv-error { color: #8f2417; background: #fbe6e1; border-radius: 10px; padding: 12px 14px; font: 500 16px/1.45 var(--font-ui); }
+.inv-saved { color: var(--ink); font: 400 17px/1.45 var(--font-text); text-align: center; }
+.inv-saved:empty { display: none; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* Presentes */
-.inv-pix { display: grid; justify-items: center; gap: 10px; }
-.inv-qr { width: 196px; height: 196px; padding: 10px; background: #fff; border-radius: 12px; border: 1px solid var(--line); }
+.inv-pix { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 10px; }
+.inv-qr { width: min(196px, 100%); aspect-ratio: 1; padding: 10px; background: #fff; border-radius: 12px; border: 1px solid var(--line); }
 .inv-qr svg { width: 100%; height: 100%; }
 
-.inv-footer { text-align: center; margin-top: 28px; font-size: 13.5px; }
+/* Fecho: o convite termina assinado (ornamento, nomes, data), como papelaria. Abaixo, discreto, o crédito. */
+.inv-sign { padding-block: 34px; }
+.inv-sign-art { display: flex; justify-content: center; margin-bottom: 18px; }
+.inv-sign-art svg { max-width: 100%; }
+.inv-sign-names { font-family: var(--font-names); font-weight: var(--names-weight); font-size: calc(var(--names-size) * 0.62); line-height: 1.2; letter-spacing: var(--names-tracking); text-transform: var(--names-transform); text-wrap: balance; overflow-wrap: anywhere; padding: 0.1em 0; }
+.inv-sign-date { font: 400 18px/1.4 var(--font-text); color: var(--soft); margin-top: 6px !important; }
+.inv-footer { text-align: center; margin-top: 18px !important; font: 400 15px/1.4 var(--font-label); }
 .inv-footer a { color: var(--soft); text-decoration: none; display: inline-block; padding: 12px; }
-.inv-footer strong { color: var(--ink); }
+.inv-footer strong { color: var(--ink); font-weight: 600; }
 
-/* Barra fixa de confirmação */
-.inv-sticky { position: fixed; inset: auto 0 0 0; z-index: 20; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(8px); border-top: 1px solid var(--line); transform: translateY(110%); transition: transform 0.3s ease; }
-.inv-sticky[data-show="true"] { transform: none; }
+/* Barra fixa de confirmação: só entra depois da capa (StickyRsvp) e a página reserva o espaço dela, para nunca cobrir o fecho. */
+.inv-sticky { position: fixed; inset: auto 0 0 0; z-index: 20; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(8px); border-top: 1px solid var(--line); transform: translateY(110%); visibility: hidden; transition: transform 0.3s ease, visibility 0s 0.3s; }
+.inv-sticky[data-show="true"] { transform: none; visibility: visible; transition: transform 0.3s ease; }
 .inv-sticky .inv-btn { max-width: 440px; margin: 0 auto; display: flex; }
+.inv:has(.inv-sticky) .inv-sheet { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+
+/* Telas muito estreitas (ou zoom de 200%): menos margem, nada cortado. */
+@media (max-width: 300px) {
+  .inv-sheet { padding-inline: 10px; }
+  .inv-section-title, .rsvp-state-title { font-size: 25px; }
+  .rsvp-count-grid, .rsvp-count-grid:is([data-n="2"], [data-n="4"]) { grid-template-columns: minmax(0, 1fr); }
+  .inv .rsvp-n { flex-direction: row; gap: 8px; min-height: 56px; }
+  .inv .rsvp-n-num { font-size: 24px; }
+  .inv .rsvp-n-word { font-size: 17px; overflow-wrap: normal; }
+}
+
+/* Telas largas (computador): a coluna do convite ganha um pouco de largura e um "tampo" mais claro atrás, em vez de uma tira solta num mar de cor. */
+@media (min-width: 900px) {
+  .inv { background: radial-gradient(ellipse 560px 70% at 50% 0, color-mix(in srgb, var(--paper) 42%, var(--bg)), transparent 100%) fixed, var(--bg); }
+  .inv-sheet { max-width: 520px; padding-bottom: 72px; }
+  .inv-section { margin-top: 20px; padding-block: 38px; }
+}
 
 /* ───────── Envelope com lacre (abertura) ───────── */
-.env { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: var(--bg); padding: 24px; animation: env-timeout 0.6s 9s forwards; }
+/* O conjunto (texto, envelope, botão) fica centrado na área livre da tela. --env-bar é a altura de uma barra fixa embaixo
+   (a demonstração de modelo define; ver globals.css). Sem JavaScript, o envelope some sozinho em 5 s (env-timeout). */
+.env { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: var(--bg); padding: 24px 24px calc(24px + var(--env-bar, 0px)); animation: env-timeout 0.6s 4.4s forwards; }
 .env-seen .env, .env[data-state="gone"] { display: none; }
 .env[data-ready="true"] { animation: none; }
 @keyframes env-timeout { to { opacity: 0; visibility: hidden; } }
-.env-hit { display: grid; justify-items: center; gap: 26px; width: 100%; max-width: 380px; padding: 0; border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+/* Largura limitada também pela altura livre: o conjunto cabe inteiro e a aba aberta (58% da altura do envelope, para cima)
+   não passa do topo da tela, mesmo em telas baixas. */
+.env-hit { display: grid; justify-items: center; gap: 22px; width: min(100%, 380px, (100svh - var(--env-bar, 0px) - 250px) * 1.4, (50svh - var(--env-bar, 0px) / 2 + 6px) * 1.29); min-width: min(100%, 200px); padding: 0; border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .env-hit::before { content: ""; position: fixed; inset: 0; } /* a tela inteira abre o convite */
 .env-body { position: relative; width: 100%; aspect-ratio: 7 / 5; perspective: 1200px; filter: drop-shadow(0 18px 28px rgba(50, 38, 24, 0.22)); }
-.env-back, .env-front, .env-flap, .env-card { position: absolute; inset: 0; }
+/* Camadas, de trás para a frente: fundo (auto), cartão (1), sombra do bolso (2), frente (3), enfeites do modelo sobre a frente (4), aba (5), lacre (6).
+   Na abertura a aba passa para trás do cartão (z-index 0) quando está de pé, no meio do giro. */
+.env-back, .env-front, .env-flap, .env-card, .env-shade { position: absolute; inset: 0; }
 .env-back { background: color-mix(in srgb, var(--paper) 88%, var(--ink)); border-radius: 4px; }
-.env-card { inset: 8% 6% 10%; background: var(--paper); border-radius: 2px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14); display: grid; place-items: start center; padding-top: 9%; color: var(--accent); transition: transform 0.75s cubic-bezier(0.3, 0, 0.2, 1) 0.45s; }
+.env-card { inset: 8% 6% 10%; z-index: 1; background: var(--paper); border-radius: 2px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14); display: grid; place-items: start center; padding-top: 9%; color: var(--accent); transition: transform 0.75s cubic-bezier(0.3, 0, 0.2, 1) 0.45s; }
 .env-card-line { width: 34%; height: 1px; background: currentColor; box-shadow: 0 9px 0 currentColor; opacity: 0.6; }
-.env-front { background: var(--paper); clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); border-radius: 4px; background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 94%, var(--ink)), var(--paper) 60%); }
+/* sombra que a borda do bolso faz no cartão: sem ela, bolso e cartão (da mesma cor) viram uma mancha só */
+.env-shade { z-index: 2; filter: blur(3px); opacity: 0.2; transform: translateY(-1.5%); pointer-events: none; }
+.env-shade::before { content: ""; position: absolute; inset: 0; background: #000; clip-path: polygon(3% 4%, 50% 54%, 97% 4%, 97% 70%, 3% 70%); }
+/* translateZ(0): sem camada própria, o Chromium perde o clip-path da frente enquanto o cartão anima */
+.env-front { z-index: 3; transform: translateZ(0); background: var(--paper); clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); border-radius: 4px; background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 94%, var(--ink)), var(--paper) 60%); }
 .env-front::after { content: ""; position: absolute; inset: 0; background-image: var(--grain); mix-blend-mode: multiply; opacity: 0.5; }
-.env-flap { transform-origin: top; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.15s; z-index: 3; }
-.env-flap-face { position: absolute; inset: 0; backface-visibility: hidden; clip-path: polygon(0 0, 100% 0, 50% 58%); background: color-mix(in srgb, var(--paper) 96%, var(--ink)); background-image: linear-gradient(to bottom, var(--paper), color-mix(in srgb, var(--paper) 92%, var(--ink))); }
-/* avesso da aba, com o forro: só aparece quando a aba vira */
-.env-liner { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 58%); transform: rotateX(180deg); backface-visibility: hidden; background: var(--liner); color: color-mix(in srgb, var(--liner) 70%, var(--ink)); overflow: hidden; }
-.env-seal { position: absolute; left: 50%; top: 56%; width: 27%; aspect-ratio: 1; transform: translate(-50%, -50%); z-index: 4; transition: transform 0.35s ease, opacity 0.3s ease; animation: env-pulse 2.6s ease-in-out infinite; filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.28)); }
+.env-flap { transform-origin: top; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.15s, z-index 0s 0.5s; z-index: 5; }
+.env-flap-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; clip-path: polygon(0 0, 100% 0, 50% 58%); background: color-mix(in srgb, var(--paper) 96%, var(--ink)); background-image: linear-gradient(to bottom, var(--paper), color-mix(in srgb, var(--paper) 92%, var(--ink))); }
+/* Avesso da aba, com o forro: só aparece quando a aba vira. Fica exatamente atrás da face (rotateY: o triângulo é simétrico),
+   então a aba aberta sai presa à borda de cima do envelope, de ponta para cima. O desenho do forro aparece girado em 180°:
+   a parte visível é o triângulo de cima do slot (0 0, 100% 0, 50% 58%), com a borda de cima do desenho na dobra. */
+.env-liner { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 58%); transform: rotateY(180deg); backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--liner); color: color-mix(in srgb, var(--liner) 70%, var(--ink)); overflow: hidden; }
+/* O lacre chama a atenção pulsando três vezes e para (nada de animação sem fim). */
+.env-seal { --seal-font: var(--font-names); position: absolute; left: 50%; top: 56%; width: 27%; aspect-ratio: 1; transform: translate(-50%, -50%); z-index: 6; transition: transform 0.35s ease, opacity 0.3s ease; animation: env-pulse 2.4s ease-in-out 0.8s 3; filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.28)); }
 .env-seal svg { width: 100%; height: 100%; }
-@keyframes env-pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.045); } }
-.env-to { font: 400 15px/1.4 var(--font-ui); color: var(--soft); }
+.env-seal .seal-wax { fill: var(--seal); }
+/* Iniciais na fonte dos nomes do modelo (troque com --seal-font, --seal-weight, --seal-style, --seal-size em .env-seal).
+   O contorno num tom escuro da própria cera garante a leitura quando --seal-ink e --seal são próximos. */
+.env-seal .seal-initials { font-family: var(--seal-font); font-size: calc(var(--seal-size, 36px) * var(--seal-fit, 1)); font-weight: var(--seal-weight, 500); font-style: var(--seal-style, normal); letter-spacing: 0; fill: var(--seal-ink); stroke: var(--seal-ink); stroke-width: 0.7px; stroke-linejoin: round; }
+.env-seal .seal-initials-edge { fill: color-mix(in srgb, var(--seal) 42%, #000); stroke: color-mix(in srgb, var(--seal) 42%, #000); stroke-width: 3.4px; }
+.env-seal svg[data-count="1"] .seal-initials { font-size: calc(var(--seal-size, 36px) * 1.28 * var(--seal-fit, 1)); }
+@keyframes env-pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.05); } }
+.env-to { font: 400 16px/1.4 var(--font-ui); color: var(--soft); }
 .env-to strong { display: block; font: 500 30px/1.15 var(--font-text); color: var(--ink); margin-top: 2px; text-wrap: balance; }
-.env-cta { display: inline-flex; align-items: center; gap: 10px; font: 600 14px/1 var(--font-ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); padding: 14px 22px; border: 1px solid var(--ink); border-radius: 999px; }
+/* "Toque para abrir" com cara de botão: cheio, texto de 16px, 52px de altura. */
+.env-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 4px 30px; font: 600 16px/1.1 var(--font-ui); letter-spacing: 0.1em; text-transform: uppercase; color: var(--btn-ink); background: var(--ink); border: 1px solid var(--ink); border-radius: var(--btn-radius); box-shadow: 0 6px 16px color-mix(in srgb, var(--ink) 20%, transparent); }
 .env { transition: opacity 0.5s ease 1.25s; }
 .env[data-state="opening"] { opacity: 0; pointer-events: none; }
 .env[data-state="opening"] .env-seal { animation: none; opacity: 0; transform: translate(-50%, -50%) scale(1.15); }
 .env[data-state="opening"] .env-flap { transform: rotateX(180deg); z-index: 0; }
-.env[data-state="opening"] .env-card { transform: translateY(-62%); }
+/* O cartão sobe só até a borda de baixo dele continuar escondida atrás do bolso (o decote vai até 54%). */
+.env[data-state="opening"] .env-card { transform: translateY(-40%); }
 .env[data-state="opening"] .env-to, .env[data-state="opening"] .env-cta { opacity: 0; transition: opacity 0.3s; }
+/* A entrada do texto da capa recomeça quando o envelope é aberto (e não escondida atrás dele): troca o nome da animação. */
+.inv:has(> .env[data-opened="true"]) .inv-paper > * { animation-name: inv-rise-env; animation-delay: calc(var(--i, 0) * 70ms + var(--rise-delay, 1450ms)); }
+@keyframes inv-rise-env { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+/* foco levado ao conteúdo depois da abertura: sem contorno no título */
+.inv [data-env-focus]:focus { outline: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .inv-paper > *, .inv-more svg, .env-seal { animation: none !important; }
@@ -238,13 +351,19 @@
 }
 
 /* ───────── Miniaturas e prévias (a capa real, reduzida) ───────── */
-.thumb { --s: 0.4; position: relative; width: calc(390px * var(--s)); height: calc(660px * var(--s)); overflow: hidden; border-radius: 8px; background: #eee; flex: none; }
-.thumb > .inv { position: absolute; top: 0; left: 0; width: 390px; height: 660px; min-height: 0; transform: scale(var(--s)); transform-origin: top left; }
-.thumb .inv-sheet { padding-bottom: 0; }
-.thumb .inv-cover { min-height: 660px; padding: 14px 0; justify-content: center; }
+/* A miniatura é uma janela (.thumb) de qualquer tamanho; dentro dela a capa é composta na largura de um celular (largura da
+   janela dividida por --s, 390px no padrão) e reduzida por transform. Quando o cartão é mais alto que a janela, ThumbFit mede
+   e define --fit (< 1): a capa encolhe mais um pouco e aparece inteira, centrada, com o fundo do modelo em volta. É o único
+   mecanismo: modelo nenhum precisa apertar respiros ou esconder linhas "para caber", nem saber onde a miniatura está.
+   Quem usa só define --s, largura e altura de .thumb. (Os !important valem por cima de alturas fixas antigas em globals.css.) */
+.thumb { --s: 0.4; --fit: 1; position: relative; width: calc(390px * var(--s)); height: calc(660px * var(--s)); overflow: hidden; border-radius: 8px; background: #eee; flex: none; }
+.thumb > .inv { position: absolute; top: 0; left: 0; width: calc(100% / (var(--s) * var(--fit))); height: calc(100% / (var(--s) * var(--fit))) !important; min-height: 0; transform: scale(calc(var(--s) * var(--fit))); transform-origin: top left; }
+.thumb .inv-sheet { width: calc(100% * var(--fit)); max-width: none; height: 100%; padding-bottom: 0; }
+.thumb .inv-cover { min-height: 100% !important; padding: 14px 0; justify-content: center; }
 
 /* Faixa de prévia: modelo Premium em evento do plano grátis. */
 .inv-ribbon { position: sticky; top: 0; z-index: 30; padding: 8px 14px; text-align: center; font: 500 13px/1.3 var(--font-ui); background: #26201c; color: #f5dfae; }
 
-/* Na demonstração de modelo há uma barra fixa embaixo: o envelope sobe para o botão de abrir não ficar atrás dela. */
-body:has(.demo-bar) .env { padding-bottom: 200px; }
+/* Na demonstração de modelo há uma barra fixa embaixo (164px fechada): o envelope se centra na área acima dela. */
+body:has(.demo-bar) .env { --env-bar: 164px; }
+body:has(.demo-bar details[open]) .env { --env-bar: 388px; } /* com o painel "Ver com os seus nomes" aberto */

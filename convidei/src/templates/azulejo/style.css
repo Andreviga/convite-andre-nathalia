@@ -7,6 +7,7 @@
   --names-size: clamp(36px, 12cqw, 54px);
   --names-weight: 400;
   --names-leading: 1.1;
+  --names-em: 0.52;
   --amp-scale: 0.56;
   --label-tracking: 0.22em;
   --radius: 2px;
@@ -56,12 +57,11 @@
 .inv[data-template="azulejo"] .inv-art-divider { margin: var(--az-l) 0 0; }
 
 /* Data: dia ao centro entre dia da semana e hora; o mês ocupa a linha de baixo inteira, para as laterais nunca apertarem. */
-.inv[data-template="azulejo"] .inv-date { margin-top: var(--az-l); column-gap: clamp(14px, 5cqw, 22px); row-gap: 8px; }
-.inv[data-template="azulejo"] .inv-date-main { display: contents; }
-.inv[data-template="azulejo"] .inv-date-day { grid-column: 2; grid-row: 1; font-size: var(--az-day); font-weight: 400; line-height: 0.9; transform: translateY(-0.055em); }
-.inv[data-template="azulejo"] .inv-date-month { grid-column: 1 / -1; grid-row: 2; font-size: clamp(14.5px, 4.2cqw, 16px); letter-spacing: 0.16em; padding-left: 0.16em; color: var(--ink); }
+.inv[data-template="azulejo"] .inv-date { margin-top: var(--az-l); column-gap: clamp(9px, 5cqw, 22px); row-gap: 8px; }
+.inv[data-template="azulejo"] .inv-date-day { font-size: var(--az-day); font-weight: 400; line-height: 0.9; transform: translateY(-0.055em); }
+.inv[data-template="azulejo"] .inv-date-month { font-size: clamp(14.5px, 4.2cqw, 16px); letter-spacing: 0.16em; padding-left: 0.16em; color: var(--ink); }
 /* os fios das laterais coincidem com o topo e a base do algarismo */
-.inv[data-template="azulejo"] .inv-date-side { display: grid; place-items: center; height: calc(var(--az-day) * 0.73); padding-block: 0; font-size: clamp(14.5px, 4.2cqw, 16px); font-weight: 500; letter-spacing: 0.1em; padding-left: 0.1em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
+.inv[data-template="azulejo"] .inv-date-side { display: grid; place-items: center; height: calc(var(--az-day) * 0.73); padding-block: 0; font-size: clamp(12.5px, 4.4cqw, 16px); font-weight: 500; letter-spacing: 0.1em; padding-left: 0.1em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
 .inv[data-template="azulejo"] .inv-place { font: 400 19px/1.4 var(--font-text); color: var(--ink); margin-top: var(--az-s) !important; }
 .inv[data-template="azulejo"] .inv-countdown { background: none; padding: 0; font: 500 12px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); margin-top: var(--az-s) !important; }
 
@@ -91,15 +91,15 @@
 
 /* ───────── Envelope ───────── */
 .inv[data-template="azulejo"] .env-liner { color: var(--accent); }
-.inv[data-template="azulejo"] .env-to { font-size: 15.5px; }
+.inv[data-template="azulejo"] .env-to { font-size: 16px; }
 .inv[data-template="azulejo"] .env-to strong { font-style: italic; font-weight: 400; font-size: 32px; }
-.inv[data-template="azulejo"] .env-cta { border-radius: 2px; font-weight: 500; font-size: 13.5px; letter-spacing: 0.2em; }
+.inv[data-template="azulejo"] .env-cta { border-radius: 2px; font-weight: 500; letter-spacing: 0.12em; }
 /* Barra de azulejos na base do envelope fechado (a mesma fiada do cartão, com a cercadura): duas camadas por máscara,
    acima da frente e abaixo da aba e do lacre. */
 .inv[data-template="azulejo"] .env-body::before, .inv[data-template="azulejo"] .env-body::after {
   content: "";
   position: absolute;
-  z-index: 1;
+  z-index: 4;
   inset: auto 0 0;
   box-sizing: content-box;
   aspect-ratio: 12 / 1;

@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Clássico: papelaria formal gravada. Eixo central, moldura dupla, nomes em caligrafia copperplate, uma só cor de tinta.
 
@@ -8,13 +9,14 @@ const SCROLL_TOP = "M131 10.05L130.3 10.06L129.56 10.2L128.85 10.48L128.19 10.92
 const SCROLL_BOTTOM = "M87.99 12.15L88.53 12.17L89.1 12.1L89.69 11.91L90.25 11.6L90.75 11.16L91.17 10.59L91.48 9.93L91.65 9.18L91.65 8.38L91.49 7.56L91.13 6.76L90.6 6.03L89.89 5.4L89.04 4.92L88.06 4.62L87.01 4.53L85.92 4.67L84.84 5.05L83.84 5.67L82.96 6.52L82.26 7.57L81.78 8.78L81.56 10.11L81.63 11.5L82 12.89L82.67 14.21L83.64 15.39L84.87 16.37L86.32 17.09L87.95 17.5L89.39 17.58L90.77 17.5L92.14 17.29L93.48 16.97L94.81 16.57L96.12 16.09L97.41 15.56L98.7 14.99L99.98 14.39L101.26 13.77L102.54 13.15L103.83 12.55L105.12 11.97L106.44 11.42L107.78 10.92L109.14 10.48L110.54 10.11L111.97 9.83L113.46 9.63L115 9.54L116.57 9.55L118.11 9.64L119.64 9.81L121.15 10.04L122.65 10.33L124.16 10.66L125.67 11.04L127.2 11.45L128.75 11.87L130.33 12.31L131.94 12.74L133.59 13.17L135.29 13.58L137.04 13.95L138.85 14.29L140.72 14.58L142.66 14.8L144.69 14.97L146.8 15.05L149 15.06L149 14.94L146.81 14.85L144.71 14.67L142.71 14.41L140.8 14.07L138.97 13.68L137.2 13.24L135.5 12.76L133.85 12.25L132.24 11.73L130.67 11.19L129.13 10.66L127.6 10.13L126.08 9.62L124.56 9.14L123.04 8.7L121.49 8.31L119.93 7.98L118.33 7.72L116.69 7.55L115 7.46L113.3 7.49L111.65 7.65L110.06 7.92L108.52 8.28L107.04 8.73L105.6 9.25L104.2 9.82L102.85 10.44L101.53 11.08L100.24 11.73L98.98 12.39L97.75 13.03L96.53 13.65L95.33 14.24L94.13 14.78L92.93 15.26L91.73 15.68L90.52 16.03L89.28 16.29L88.05 16.5L86.65 16.17L85.37 15.56L84.28 14.73L83.42 13.71L82.81 12.57L82.47 11.36L82.39 10.15L82.56 8.99L82.96 7.93L83.56 7.01L84.31 6.26L85.17 5.71L86.09 5.36L87.03 5.23L87.94 5.29L88.78 5.53L89.52 5.94L90.13 6.46L90.6 7.08L90.91 7.75L91.06 8.44L91.07 9.12L90.94 9.75L90.69 10.31L90.35 10.79L89.93 11.16L89.47 11.43L88.99 11.6L88.5 11.66L88.01 11.65Z";
 
 function Flourish() {
+  const u = useUid();
   return (
     <svg viewBox="0 0 220 28" width="204" height="26" fill="currentColor">
-      <g id="classico-scroll-top">
+      <g id={`classico-scroll-top-${u}`}>
         <path d={SCROLL_TOP} />
         <circle cx="131" cy="10.3" r="1.25" />
       </g>
-      <use href="#classico-scroll-top" transform="translate(220 0) scale(-1 1)" />
+      <use href={`#classico-scroll-top-${u}`} transform="translate(220 0) scale(-1 1)" />
       <path d="M110 7.5l4.6 6.5-4.6 6.5-4.6-6.5z" />
     </svg>
   );
@@ -22,14 +24,15 @@ function Flourish() {
 
 // Rodapé: variante menor, de uma volta só, virada para cima e com um ponto no centro (não é o espelho do topo).
 function FlourishSmall() {
+  const u = useUid();
   return (
     <svg viewBox="0 0 160 20" width="148" height="18.5" fill="currentColor">
       <g transform="translate(0 20) scale(1 -1)">
-        <g id="classico-scroll-bottom">
+        <g id={`classico-scroll-bottom-${u}`}>
           <path d={SCROLL_BOTTOM} />
           <circle cx="88" cy="11.9" r="1" />
         </g>
-        <use href="#classico-scroll-bottom" transform="translate(160 0) scale(-1 1)" />
+        <use href={`#classico-scroll-bottom-${u}`} transform="translate(160 0) scale(-1 1)" />
         <circle cx="80" cy="12" r="1.6" />
       </g>
     </svg>
@@ -50,10 +53,11 @@ function Rule() {
 
 // Forro do envelope: treliça de losangos com florão de quatro pétalas, e uma margem de papel com filete junto às bordas da aba.
 function Liner() {
+  const u = useUid();
   return (
     <svg width="100%" height="100%">
       <defs>
-        <pattern id="classico-liner" width="26" height="26" patternUnits="userSpaceOnUse">
+        <pattern id={`classico-liner-${u}`} width="26" height="26" patternUnits="userSpaceOnUse">
           <path d="M0 13L13 0l13 13-13 13z" fill="none" stroke="currentColor" strokeWidth="0.8" />
           <path d="M13 7.4c2.3 1.8 2.3 3.8 0 5.6-2.3-1.8-2.3-3.8 0-5.6zM13 18.6c-2.3-1.8-2.3-3.8 0-5.6 2.3 1.8 2.3 3.8 0 5.6zM7.4 13c1.8-2.3 3.8-2.3 5.6 0-1.8 2.3-3.8 2.3-5.6 0zM18.6 13c-1.8 2.3-3.8 2.3-5.6 0 1.8-2.3 3.8-2.3 5.6 0z" fill="currentColor" />
           <circle cx="0" cy="0" r="1.2" fill="currentColor" />
@@ -62,7 +66,7 @@ function Liner() {
           <circle cx="26" cy="26" r="1.2" fill="currentColor" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#classico-liner)" />
+      <rect width="100%" height="100%" fill={`url(#classico-liner-${u})`} />
       {/* a aba é um triângulo (0,0) (100%,0) (50%,58%): margem de papel e filete acompanhando as duas bordas */}
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" fill="none">
         <path className="classico-liner-rule" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />

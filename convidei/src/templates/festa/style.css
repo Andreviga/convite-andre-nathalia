@@ -10,6 +10,7 @@
   --names-weight: 600;
   --names-leading: 1.12; /* cabe descendente (g, ç) sobre maiúscula acentuada (É, Â) na linha de baixo */
   --names-tracking: -0.02em;
+  --names-em: 0.58;
   --amp-scale: 1;
   --label-tracking: 0.2em;
   --radius: 3px;
@@ -53,7 +54,7 @@
 .inv[data-template="festa"] .inv-date { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto; column-gap: 16px; row-gap: 3px; align-content: center; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 2px solid var(--ink); }
 .inv[data-template="festa"] .inv-date-main { display: contents; }
 .inv[data-template="festa"] .inv-date-day { grid-column: 1; grid-row: 1 / span 3; font: 600 68px/0.8 var(--font-names); letter-spacing: -0.03em; padding-bottom: 0.06em; }
-.inv[data-template="festa"] .inv-date-month { grid-column: 2; grid-row: 1; font: 600 15px/1.3 var(--font-label); letter-spacing: 0.12em; color: var(--ink); padding-left: 0; }
+.inv[data-template="festa"] .inv-date-month { grid-column: 2; grid-row: 1; font: 600 clamp(12.5px, 4.3cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.12em; color: var(--ink); padding-left: 0; }
 .inv[data-template="festa"] .inv-date-side { grid-column: 2; border: 0; padding: 0; font: 400 18px/1.3 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); }
 .inv[data-template="festa"] .inv-date-side:first-child { grid-row: 2; }
 .inv[data-template="festa"] .inv-date-side:first-child::first-letter { text-transform: uppercase; }
@@ -92,9 +93,9 @@
 .inv[data-template="festa"] .env-hit { color: var(--on-bg); }
 .inv[data-template="festa"] .env-to { color: var(--on-bg); font-size: 16px; }
 .inv[data-template="festa"] .env-to strong { font: italic 500 34px/1.1 var(--font-names); letter-spacing: -0.015em; color: var(--on-bg); margin-top: 4px; }
-.inv[data-template="festa"] .env-cta { color: var(--on-bg); border: 1.5px solid var(--on-bg); border-radius: var(--btn-radius); }
+.inv[data-template="festa"] .env-cta { color: var(--ink); background: var(--on-bg); border-color: var(--on-bg); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); } /* claro sobre o fundo escuro */
 .inv[data-template="festa"] .env-body { filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35)); }
 .inv[data-template="festa"] .festa-liner-rays { fill: var(--accent); }
 .inv[data-template="festa"] .festa-liner-sun { fill: var(--ink); }
-/* lacre na mesma família do título */
-.inv[data-template="festa"] .env-seal text { font-family: var(--font-names) !important; font-weight: 500; }
+/* lacre na mesma família do título (a base já usa --font-names) */
+.inv[data-template="festa"] .env-seal { --seal-weight: 500; }

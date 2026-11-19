@@ -11,6 +11,7 @@
   --names-leading: 1;
   --names-tracking: -0.02em;
   --names-transform: uppercase;
+  --names-em: 0.66; /* caixa alta: letra larga */
   --amp-scale: 0.64;
   --label-tracking: 0.22em;
   --radius: 0px;
@@ -47,6 +48,8 @@
 .inv[data-template="editorial"] .inv-names[data-count="2"][data-long="true"] .inv-name:last-child { text-align: left; }
 .inv[data-template="editorial"] .inv-names[data-count="2"][data-long="true"] .inv-amp { text-align: left; margin: 0.14em 0 0.16em; }
 .inv[data-template="editorial"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.76); line-height: 1.04; }
+/* nome único curto ("Sofia", "Helena") vira manchete: cresce até quase encher a coluna (a base limita para a palavra caber) */
+.inv[data-template="editorial"] .inv-names[data-short="true"] { font-size: calc(var(--names-size) * 1.6); }
 
 .inv[data-template="editorial"] .inv-message { font: italic 400 18px/1.5 var(--font-text); max-width: 27ch; margin: var(--ed-l) 0 0 !important; text-wrap: pretty; }
 
@@ -88,18 +91,19 @@
 .inv[data-template="editorial"] .inv-sticky { border-top-color: var(--ink); }
 
 /* ───────── Envelope ───────── */
-.inv[data-template="editorial"] .env-to { font: 500 11.5px/1.4 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+.inv[data-template="editorial"] .env-to { font: 500 14px/1.4 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; }
 .inv[data-template="editorial"] .env-to strong { font: italic 400 34px/1.1 var(--font-text); letter-spacing: -0.01em; text-transform: none; margin-top: 8px; }
 .inv[data-template="editorial"] .env-liner { color: color-mix(in srgb, var(--liner) 76%, var(--paper)); }
 .inv[data-template="editorial"] .env-back, .inv[data-template="editorial"] .env-front { border-radius: 0; }
-.inv[data-template="editorial"] .env-cta { border-radius: 0; font: 500 12.5px/1 var(--font-label); letter-spacing: var(--label-tracking); padding: 16px 24px; }
+.inv[data-template="editorial"] .env-cta { border-radius: 0; font: 500 16px/1.1 var(--font-label); letter-spacing: 0.14em; }
 
 
 /* selo: nada de cera. Um quadrado chapado, o mesmo sinal de "fim de matéria" da capa, com as iniciais em itálico e um fio interno. */
 .inv[data-template="editorial"] .env-seal { width: 21%; background: var(--seal); filter: none; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 5px 12px rgba(0, 0, 0, 0.16); }
 .inv[data-template="editorial"] .env-seal::after { content: ""; position: absolute; inset: 7%; border: 1px solid color-mix(in srgb, var(--seal-ink) 50%, transparent); }
-.inv[data-template="editorial"] .env-seal svg :is(path, circle, text:first-of-type) { display: none; }
-.inv[data-template="editorial"] .env-seal svg text { font-family: var(--font-text) !important; }
+.inv[data-template="editorial"] .env-seal svg :is(path, circle, .seal-initials-edge) { display: none; }
+.inv[data-template="editorial"] .env-seal { --seal-font: var(--font-text); --seal-style: italic; --seal-weight: 400; }
+.inv[data-template="editorial"] .env-seal .seal-initials { stroke: none; }
 
 /* miniatura da galeria: o cartão ocupa o quadro inteiro, cabeçalho e nomes no alto, data e local no pé, como capa de revista na banca */
 .inv[data-template="editorial"]:is(.thumb > .inv) .inv-cover { justify-content: flex-start; }

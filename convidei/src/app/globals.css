@@ -85,8 +85,9 @@ input::placeholder, textarea::placeholder { color: #a39a90; }
 .hero { display: grid; gap: 36px; align-items: center; padding-block: 28px 56px; }
 @media (min-width: 900px) { .hero { grid-template-columns: 1.1fr 0.9fr; padding-block: 48px 80px; } }
 .eyebrow { display: inline-block; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 14px !important; }
-.hero h1 { font: 500 clamp(44px, 9vw, 76px) / 0.98 var(--display); letter-spacing: -0.02em; text-wrap: balance; }
-.hero h1 em { font-style: italic; color: var(--brand); }
+/* Classe própria: ".hero h1" vazava para o h1 do convite dentro do celular do hero. */
+.hero-title { font: 500 clamp(44px, 9vw, 76px) / 0.98 var(--display); letter-spacing: -0.02em; text-wrap: balance; }
+.hero-title em { font-style: italic; color: var(--brand); }
 .hero-lead { font-size: 19px; color: var(--muted); margin-top: 18px !important; max-width: 46ch; text-wrap: pretty; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 26px; }
 .hero-note { font-size: 14px; color: var(--muted); margin-top: 12px !important; }
@@ -233,23 +234,36 @@ details.bulk form { margin-top: 10px; }
 .gallery-card:hover .thumb { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(60, 45, 30, 0.14), 0 18px 34px rgba(60, 45, 30, 0.16); }
 .gallery-name { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-weight: 600; font-size: 15.5px; margin-top: 4px; }
 .gallery-desc { font-size: 13.5px; line-height: 1.35; color: var(--muted); }
+.gallery-heading { font: 600 19px/1.3 var(--body); margin-top: 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.gallery-heading span { font-weight: 400; font-size: 14.5px; color: var(--muted); }
+.gallery-heading-rest { margin-top: 40px; padding-top: 26px; border-top: 1px solid var(--line); }
 @media (min-width: 720px) { .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 30px 20px; } .gallery-card, .gallery-card .thumb { --s: 0.55; } }
 
-/* Barra da demonstração de um modelo */
-.demo-bar { position: fixed; inset: auto 0 0 0; z-index: 40; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); font-family: var(--body); color: var(--ink); }
-.demo-bar-in { max-width: 472px; margin: 0 auto; display: grid; gap: 8px; }
-.demo-row { display: flex; align-items: center; gap: 10px; }
+/* Barra da demonstração de um modelo. Compacta: 1ª linha com voltar, nome e cores; 2ª com "Pôr seus nomes" e "Usar este modelo".
+   Altura: 113px (modelo grátis) e de 168px a 196px (Premium, com o aviso em 2 ou 3 linhas), mais a área segura do aparelho. */
+.demo-bar { position: fixed; inset: auto 0 0 0; z-index: 40; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border-top: 1px solid var(--line); padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); font-family: var(--body); color: var(--ink); }
+.demo-bar-in { max-width: 472px; margin: 0 auto; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; }
+.demo-row { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; min-width: 0; }
 .demo-back { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); text-decoration: none; font-size: 18px; flex: none; }
 .demo-title { display: grid; line-height: 1.2; flex: 1; min-width: 0; }
-.demo-title span { font-size: 13px; color: var(--muted); }
-.demo-palettes { display: flex; gap: 8px; }
-.demo-dot { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.18); flex: none; }
+.demo-title strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-title span { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-palettes { display: flex; gap: 7px; flex: none; }
+.demo-dot { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.22); flex: none; }
 .demo-dot[aria-current="true"] { outline: 2px solid var(--brand); outline-offset: 2px; }
-.demo-names summary { cursor: pointer; font-size: 15px; color: var(--brand-dark); padding: 6px 0; font-weight: 500; }
-.demo-form { display: grid; gap: 10px; grid-template-columns: 1fr; padding: 6px 0 4px; }
-@media (min-width: 420px) { .demo-form { grid-template-columns: 1.4fr 1fr; } .demo-form .btn { grid-column: 1 / -1; } }
-.demo-cta { width: 100%; min-height: 52px; font-size: 17px; }
-body:has(.demo-bar) .inv { padding-bottom: 190px; }
+.demo-premium { grid-column: 1 / -1; font-size: 13px; line-height: 1.35; color: var(--amber); background: var(--amber-bg); border-radius: 8px; padding: 6px 10px; }
+.demo-names summary { list-style: none; min-height: 48px; padding: 8px 14px; font-size: 15px; border-color: #b9ad9d; cursor: pointer; }
+.demo-names summary::-webkit-details-marker { display: none; }
+.demo-names[open] summary { background: rgba(38, 32, 28, 0.08); }
+/* O formulário abre como uma folha acima da barra (não aumenta a barra) e some depois de "Atualizar". */
+.demo-form { position: absolute; inset: auto 0 100% 0; display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); padding: 14px max(16px, calc((100% - 472px) / 2)) 14px; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -10px 24px rgba(38, 32, 28, 0.12); }
+@media (min-width: 420px) { .demo-form { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } .demo-form .btn { grid-column: 1 / -1; } }
+.demo-use { margin: 0; min-width: 0; }
+.demo-cta { width: 100%; min-height: 48px; font-size: 16.5px; padding-inline: 12px; }
+@media (max-width: 345px) { .demo-palettes { gap: 4px; } .demo-dot { width: 26px; height: 26px; } .demo-names summary { padding-inline: 10px; font-size: 14.5px; } .demo-cta { font-size: 15.5px; } }
+/* Folga para o fim do convite não ficar atrás da barra. */
+body:has(.demo-bar) .inv { padding-bottom: calc(128px + env(safe-area-inset-bottom)); }
+body:has(.demo-bar[data-premium]) .inv { padding-bottom: calc(210px + env(safe-area-inset-bottom)); }
 
 /* Editor com prévia ao vivo */
 .editor { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); align-items: start; }
@@ -260,14 +274,22 @@ body:has(.demo-bar) .inv { padding-bottom: 190px; }
   .preview-fab { display: none !important; }
 }
 .editor-preview-label { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 8px !important; }
+.editor-preview-all { display: flex; margin: 12px auto 0; }
 .device { width: 344px; border-radius: 34px; padding: 9px; background: #1d1a18; box-shadow: 0 26px 50px -22px rgba(60, 35, 20, 0.45); }
 .device .thumb { --s: 0.836; border-radius: 26px; width: 326px; height: 600px; }
 .device .thumb > .inv { height: calc(600px / 0.836); }
 .device .thumb .inv-cover { min-height: calc(600px / 0.836); }
 .preview-fab { position: fixed; right: 16px; bottom: 96px; z-index: 30; box-shadow: 0 8px 20px rgba(38, 32, 28, 0.25); background: var(--ink); border-color: var(--ink); color: #fff; }
-.preview-modal { position: fixed; inset: 0; z-index: 60; background: #1d1a18; overflow-y: auto; }
-.preview-modal .inv, .preview-modal .inv-cover { min-height: 100dvh; }
-.preview-close { position: fixed; top: 12px; right: 12px; z-index: 61; background: #fff; }
+/* Prévia completa: o convite inteiro, rolável, por cima do editor. */
+.preview-modal { position: fixed; inset: 0; z-index: 60; background: #1d1a18; overflow-y: auto; overscroll-behavior: contain; }
+.preview-top { position: sticky; top: 0; z-index: 61; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px 8px 16px; background: #1d1a18; color: #f1ebe2; font-size: 14px; line-height: 1.3; }
+.preview-close { background: #fff; flex: none; }
+.preview-close:hover { background: #f1ebe2; }
+.preview-modal .inv { min-height: 0; }
+.preview-modal .inv-cover { min-height: calc(100dvh - 54px); }
+.preview-qr { display: grid; place-items: center; text-align: center; font: 500 14px/1.3 var(--body); color: #6b6159; background: repeating-conic-gradient(#ece7df 0 25%, #fff 0 50%) 0 0 / 24px 24px; }
+.preview-end { padding: 18px 20px 28px; text-align: center; font-size: 14.5px; color: #cfc6ba; }
+.field-warn { color: var(--amber) !important; background: var(--amber-bg); border-radius: 8px; padding: 6px 10px; font-size: 14px !important; }
 .tpl-grid { display: grid; gap: 16px 12px; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); justify-items: center; }
 .tpl-pick { position: relative; display: grid; gap: 4px; width: calc(390px * 0.32); cursor: pointer; font-size: 14px; }
 .tpl-pick .thumb { --s: 0.32; outline: 1px solid var(--line); }
@@ -283,7 +305,21 @@ body:has(.demo-bar) .inv { padding-bottom: 190px; }
 .swatch:has(input:checked) { border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
 .swatch:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 2px; }
 .wide { max-width: 1080px; }
-.preview-full { display: grid; place-items: start center; }
-.preview-full .thumb { --s: 1; width: 100%; max-width: 472px; height: auto; min-height: 100dvh; border-radius: 0; }
-.preview-full .thumb > .inv { position: relative; width: 100%; height: auto; min-height: 100dvh; transform: none; }
-.preview-full .thumb .inv-cover { min-height: 100dvh; }
+
+/* Editar um convidado já adicionado (abre dentro da linha dele). */
+.guest-edit summary { list-style: none; cursor: pointer; }
+.guest-edit summary::-webkit-details-marker { display: none; }
+.guest-edit-close, .guest-edit[open] .guest-edit-open { display: none; }
+.guest-edit[open] .guest-edit-close { display: inline; }
+.guest-edit[open] { flex: 1 0 100%; order: 9; }
+.guest-edit-form { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); align-items: end; margin-top: 10px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #fbf8f3; max-width: 560px; }
+@media (min-width: 520px) { .guest-edit-form { grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) 84px; } .guest-edit-form > .btn { justify-self: start; } .guest-edit-form > p { grid-column: 1 / -1; } }
+.guest-edit-note { margin: 0; }
+@media (min-width: 860px) { .guest:has(.guest-edit[open]) { grid-template-columns: 1.4fr 1fr; } .guest:has(.guest-edit[open]) .guest-actions { grid-column: 1 / -1; } }
+
+/* Página do Premium: os modelos exclusivos, com o convite da pessoa. */
+.premium-models { margin-top: 28px; }
+.premium-models h2 { font: 600 18px/1.3 var(--body); margin-bottom: 14px; }
+.premium-models ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px 12px; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); justify-items: center; }
+.premium-models li { display: grid; gap: 6px; justify-items: center; font-size: 14.5px; font-weight: 500; }
+.premium-models .thumb { --s: 0.34; outline: 1px solid var(--line); }

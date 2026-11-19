@@ -2,15 +2,26 @@
 
 import { useEffect, useState } from "react";
 
-/** Botão fixo "Confirmar presença" enquanto o convidado não respondeu e a seção de confirmação não está na tela. */
+/**
+ * Botão fixo "Confirmar presença" para quem ainda não respondeu. Só aparece depois que a capa saiu da tela
+ * (a primeira tela é do convite, sem nada por cima) e some enquanto a seção de confirmação está visível.
+ */
 export function StickyRsvp({ pending }: { pending: boolean }) {
   const [answered, setAnswered] = useState(!pending);
-  const [inView, setInView] = useState(true);
+  const [coverInView, setCoverInView] = useState(true);
+  const [rsvpInView, setRsvpInView] = useState(true);
 
   useEffect(() => {
     const target = document.getElementById("confirmar");
-    if (!target) return;
-    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.15 });
+    const cover = document.querySelector(".inv-cover");
+    if (!target || !cover) return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === cover) setCoverInView(entry.isIntersecting);
+        else setRsvpInView(entry.isIntersecting);
+      }
+    });
+    observer.observe(cover);
     observer.observe(target);
     const done = () => setAnswered(true);
     window.addEventListener("convidei:respondeu", done);
@@ -20,7 +31,8 @@ export function StickyRsvp({ pending }: { pending: boolean }) {
     };
   }, []);
 
-  const show = !answered && !inView;
+  if (answered) return null;
+  const show = !coverInView && !rsvpInView;
   return (
     <div className="inv-sticky" data-show={show} aria-hidden={!show}>
       <a className="inv-btn inv-btn-main" href="#confirmar" tabIndex={show ? 0 : -1}>

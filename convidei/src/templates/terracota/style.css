@@ -7,6 +7,7 @@
   --names-size: clamp(46px, 17cqw, 76px);
   --names-weight: 400;
   --names-leading: 1.04;
+  --names-em: 0.5; /* Alex Brush: maiúsculas largas ("Maria Eduarda" numa linha só) */
   --amp-scale: 0.5;
   --label-tracking: 0.22em;
   --radius: 3px;
@@ -31,31 +32,21 @@
 .inv[data-template="terracota"] .inv-headline { font-weight: 400; font-size: 13px; line-height: 1.6; margin-bottom: 12px !important; max-width: 34ch; margin-inline: auto !important; }
 .inv[data-template="terracota"] .inv-names { padding: 0.14em 0 0.06em; }
 .inv[data-template="terracota"] .inv-amp { line-height: 1; margin: 0.12em 0 0.2em; }
-/* título único comprido: script em três linhas cansa; passa para a serifada em itálico */
-.inv[data-template="terracota"] .inv-names[data-count="1"][data-long="true"] { font: italic 500 clamp(32px, 10.5cqw, 46px) / 1.12 var(--font-text); padding: 0.1em 0; }
+/* frase (travessão ou quatro palavras ou mais): script em três linhas cansa; passa para a serifada em itálico. Nome comprido continua em script. */
+.inv[data-template="terracota"] .inv-names[data-phrase="true"] { --names-em: 0.5; font: italic 500 clamp(32px, 10.5cqw, 46px) / 1.12 var(--font-text); padding: 0.1em 0; }
+/* algarismos do título na serifa do modelo (os da script ficam ruins) */
+.inv[data-template="terracota"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-size: 0.66em; font-weight: 500; }
 .inv[data-template="terracota"] .inv-message { font-size: 19px; margin-top: 12px !important; }
 .inv[data-template="terracota"] .inv-art-divider { margin: 18px 0 0; }
 
-.inv[data-template="terracota"] .inv-date { margin-top: 18px; gap: 12px; }
-.inv[data-template="terracota"] .inv-date-side, .inv[data-template="terracota"] .inv-date-month { font-size: 14px; font-weight: 500; letter-spacing: 0.12em; color: var(--ink); }
+.inv[data-template="terracota"] .inv-date { margin-top: 18px; gap: 6px clamp(8px, 3.4cqw, 12px); }
+.inv[data-template="terracota"] .inv-date-side, .inv[data-template="terracota"] .inv-date-month { font-size: clamp(12px, 4.1cqw, 14px); font-weight: 500; letter-spacing: 0.12em; color: var(--ink); }
 .inv[data-template="terracota"] .inv-date-side { border-color: var(--tc-fio); padding: 10px 0 10px 0.12em; }
-.inv[data-template="terracota"] .inv-date-month { padding-left: 0.12em; margin-top: 4px; width: 0; display: flex; justify-content: center; } /* o mês não alarga a coluna do dia: sobra espaço para o dia da semana e a hora */
+.inv[data-template="terracota"] .inv-date-month { padding-left: 0.12em; }
 .inv[data-template="terracota"] .inv-date-day { font-weight: 500; font-size: 60px; }
 .inv[data-template="terracota"] .inv-place { font: italic 500 19px/1.35 var(--font-text); color: var(--ink); margin-top: 18px !important; }
 .inv[data-template="terracota"] .inv-countdown { background: none; padding: 0 0 0 0.2em; margin-top: 12px !important; font: 400 12.5px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); }
 .inv[data-template="terracota"] .inv-art-bottom { margin-top: 16px; }
-
-/* Miniaturas (a caixa é mais baixa que a capa): aperta os respiros para o arco aparecer inteiro, da curva à base.
-   Na galeria e no seletor de modelos a contagem sai; nas prévias em moldura de celular ela cabe e fica. */
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) .inv-cover { padding-block: 10px; }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) .inv-paper { padding-top: 7cqw; padding-bottom: calc(var(--paper-pad) - 8px); }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) .tc-sun { width: 27cqw; }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) .tc-pampas { width: 27cqw; }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) :is(.inv-art-top, .inv-hello, .inv-headline) { margin-bottom: 8px !important; }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) .inv-message { margin-top: 8px !important; }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) :is(.inv-art-divider, .inv-date, .inv-place) { margin-top: 12px !important; }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *) .inv-art-bottom { margin-top: 10px; }
-.inv[data-template="terracota"]:is(.thumb > .inv):not(.preview-full *, .device *, .phone *) .inv-countdown { display: none; }
 
 /* ───────── Seções: o arco em miniatura e um pequeno sol sobre o primeiro rótulo ───────── */
 .inv[data-template="terracota"] .inv-section { border-radius: 30px 30px var(--radius) var(--radius); padding: 34px 24px 30px; box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 10%, transparent), 0 8px 20px color-mix(in srgb, var(--ink) 8%, transparent); }
@@ -72,13 +63,10 @@
 .inv[data-template="terracota"] .inv-field input, .inv[data-template="terracota"] .inv-field select, .inv[data-template="terracota"] .inv-field textarea { background: color-mix(in srgb, var(--paper) 90%, var(--ink)); }
 
 /* ───────── Envelope ───────── */
-.inv[data-template="terracota"] .env-to { font: 400 12px/1.5 var(--font-label); letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink); }
+.inv[data-template="terracota"] .env-to { font: 400 14px/1.5 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
 .inv[data-template="terracota"] .env-to strong { font: italic 500 34px/1.15 var(--font-text); letter-spacing: 0; text-transform: none; margin-top: 6px; }
-.inv[data-template="terracota"] .env-cta { font-weight: 500; font-size: 13px; letter-spacing: 0.22em; }
+.inv[data-template="terracota"] .env-cta { font-weight: 500; letter-spacing: 0.12em; }
 .inv[data-template="terracota"] .env-liner { color: color-mix(in srgb, var(--liner) 58%, var(--seal-ink)); }
-/* o contorno do lacre da base passa da própria caixa: o SVG cortava a borda à esquerda em linha reta e deixava um dente no alto.
-   Aqui a borda esquerda aparece inteira e o dente (a emenda do traçado, acima de y=3.5 de 120) é aparado rente à onda. */
-.inv[data-template="terracota"] .env-seal svg { overflow: visible; clip-path: inset(2.9% -6% -6% -6%); }
 /* o cartão que sai do envelope é o da capa: topo em meia-circunferência, fio interno e o pequeno sol */
 .inv[data-template="terracota"] .env-card { border-radius: 999px 999px 2px 2px; }
 .inv[data-template="terracota"] .env-card::before { content: ""; position: absolute; inset: 5px; border: 1px solid var(--tc-fio); border-radius: 999px 999px 1px 1px; }

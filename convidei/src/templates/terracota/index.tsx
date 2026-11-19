@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Terracota: boho terroso. O cartão tem topo em arco; no alto do arco nasce um sol em meia-esfera (motivo-herói),
 // e um ramo de capim-dos-pampas em traço fecha o cartão (detalhe). Uma só cor de ornamento, um só peso de traço.
@@ -82,15 +83,16 @@ function Pampas() {
 
 /** Forro do envelope: arcos concêntricos em escama, na cor do forro. */
 function Liner() {
+  const u = useUid();
   const arcs = (cx: number, cy: number) => [17, 12, 7].map((r) => `M${cx - r} ${cy}a${r} ${r} 0 0 1 ${2 * r} 0`).join("");
   return (
     <svg width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id="terracota-liner" width="36" height="36" patternUnits="userSpaceOnUse">
+        <pattern id={`terracota-liner-${u}`} width="36" height="36" patternUnits="userSpaceOnUse">
           <path d={arcs(18, 18) + arcs(0, 36) + arcs(36, 36)} fill="none" stroke="currentColor" strokeWidth="1.1" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#terracota-liner)" />
+      <rect width="100%" height="100%" fill={`url(#terracota-liner-${u})`} />
     </svg>
   );
 }

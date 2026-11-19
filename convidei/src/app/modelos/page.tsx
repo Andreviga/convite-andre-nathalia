@@ -14,13 +14,30 @@ export const metadata: Metadata = {
   description: "Escolha um modelo de convite digital, veja com os seus nomes e envie pelo WhatsApp com confirmação de presença.",
 };
 
-export default async function Gallery({ searchParams }: { searchParams: Promise<{ tipo?: string }> }) {
-  const { tipo } = await searchParams;
+export default async function Gallery({ searchParams }: { searchParams: Promise<{ tipo?: string | string[] }> }) {
+  const raw = (await searchParams).tipo;
+  const tipo = Array.isArray(raw) ? raw[0] : raw;
   const type = EVENT_TYPES.find((t) => t.id === tipo);
   const user = await currentUser();
   const today = todayBR();
-  // Com um tipo escolhido, os modelos pensados para ele vêm primeiro; os outros continuam disponíveis.
-  const ordered = type ? [...TEMPLATE_DEFS].sort((a, b) => Number(b.suits.includes(type.id)) - Number(a.suits.includes(type.id))) : TEMPLATE_DEFS;
+  // Com um tipo escolhido, os modelos pensados para ele ficam numa seção própria; os outros continuam disponíveis logo abaixo.
+  const suited = type ? TEMPLATE_DEFS.filter((def) => def.suits.includes(type.id)) : [];
+  const others = type ? TEMPLATE_DEFS.filter((def) => !def.suits.includes(type.id)) : TEMPLATE_DEFS;
+  const card = (def: (typeof TEMPLATE_DEFS)[number]) => {
+    const typeId = type?.id ?? def.suits[0];
+    return (
+      <li key={def.id}>
+        <Link href={`/modelos/${def.id}?tipo=${typeId}`} className="gallery-card">
+          <TemplateThumb data={sampleEvent(def.id, { type: typeId })} today={today} />
+          <span className="gallery-name">
+            {def.name}
+            {def.premium ? <span className="tag tag-premium">Premium</span> : <span className="tag">Grátis</span>}
+          </span>
+          <span className="gallery-desc">{def.description}</span>
+        </Link>
+      </li>
+    );
+  };
 
   return (
     <>
@@ -48,23 +65,18 @@ export default async function Gallery({ searchParams }: { searchParams: Promise<
             </Link>
           ))}
         </nav>
-        <ul className="gallery-grid">
-          {ordered.map((def) => {
-            const typeId = type?.id ?? def.suits[0];
-            return (
-              <li key={def.id}>
-                <Link href={`/modelos/${def.id}?tipo=${typeId}`} className="gallery-card">
-                  <TemplateThumb data={sampleEvent(def.id, { type: typeId })} today={today} />
-                  <span className="gallery-name">
-                    {def.name}
-                    {def.premium ? <span className="tag tag-premium">Premium</span> : <span className="tag">Grátis</span>}
-                  </span>
-                  <span className="gallery-desc">{def.description}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {type && suited.length ? (
+          <>
+            <h2 className="gallery-heading">
+              Indicados para {type.label.toLowerCase()} <span>{suited.length === 1 ? "1 modelo" : `${suited.length} modelos`}</span>
+            </h2>
+            <ul className="gallery-grid">{suited.map(card)}</ul>
+            <h2 className="gallery-heading gallery-heading-rest">
+              Outros modelos <span>servem para qualquer festa</span>
+            </h2>
+          </>
+        ) : null}
+        <ul className="gallery-grid">{others.map(card)}</ul>
       </main>
     </>
   );

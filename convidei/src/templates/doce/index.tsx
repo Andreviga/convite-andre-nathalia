@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Doce: chá de bebê e revelação com cara de papelaria adulta. Cartão em arco, tipografia serifada macia como protagonista
 // e um único motivo: o móbile de berço (lua, nuvem, estrelas) em traço fino, pendurado no alto do arco
@@ -113,17 +114,18 @@ function Divider() {
 }
 
 function Liner() {
+  const u = useUid();
   return (
     <svg width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id="doce-liner" width="52" height="52" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
+        <pattern id={`doce-liner-${u}`} width="52" height="52" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
           <path d={MOON} transform="translate(13 14) scale(0.42) rotate(-18)" fill="currentColor" />
           <path d={star(39, 40, 4.6, 0.15)} fill="currentColor" />
           <circle cx="39" cy="13" r="1.2" fill="currentColor" />
           <circle cx="13" cy="40" r="1.2" fill="currentColor" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#doce-liner)" />
+      <rect width="100%" height="100%" fill={`url(#doce-liner-${u})`} />
     </svg>
   );
 }

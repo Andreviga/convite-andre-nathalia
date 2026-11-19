@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Botânico: ramos de eucalipto e oliveira em traço fino, em dois cantos opostos do cartão (nunca espelhados).
 // As folhas são geradas por uma função determinística (mesma saída no servidor e no cliente), com pequenas
@@ -224,10 +225,11 @@ function Divider() {
 }
 
 function Liner() {
+  const u = useUid();
   return (
     <svg width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id="botanico-liner" width="46" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(-18)">
+        <pattern id={`botanico-liner-${u}`} width="46" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(-18)">
           <g fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
             <path d={leaf(6, 30, rad(-48), 17, 3.2, 2, 1, 1, 1.4)} />
             <path d={leaf(10, 31, rad(-8), 13, 2.6, 2, 1, 1, -1)} />
@@ -238,7 +240,7 @@ function Liner() {
           <circle cx="13" cy="8" r="1.2" fill="currentColor" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#botanico-liner)" />
+      <rect width="100%" height="100%" fill={`url(#botanico-liner-${u})`} />
     </svg>
   );
 }

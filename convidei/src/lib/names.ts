@@ -22,3 +22,89 @@ export function splitTitle(title: string): SplitTitle {
   const words = clean.split(" ").filter((word) => /^\p{Lu}/u.test(word));
   return { names: [clean], connector: null, initials: [initial(words[0] ?? clean)].filter(Boolean) };
 }
+
+/** Espaço não separável: a linha nunca quebra nele. */
+export const NBSP = " ";
+
+const PARTICLES = new Set(["de", "da", "do", "das", "dos", "e"]);
+const DASH = /^[—–]$/;
+const letters = (text: string) => [...text].length;
+
+/**
+ * Prepara um título para quebrar bem em várias linhas: cola com espaço não separável as partículas (de, da, do, das, dos, e)
+ * à palavra seguinte e o travessão à palavra anterior. Assim "da" e "e" nunca sobram no fim de uma linha e o travessão nunca
+ * abre uma linha ("Formatura de Direito — / Turma 2026", nunca "… / — Turma 2026").
+ * Um trecho colado não passa de `maxChunk` letras (salvo o travessão, que sempre cola): trecho comprido demais não caberia na
+ * linha e seria partido no meio, o que é pior do que uma partícula solta.
+ */
+export function glueTitle(title: string, maxChunk = 16): string {
+  const words = title.trim().split(/\s+/).filter(Boolean);
+  let out = "";
+  let chunk = 0; // letras do trecho inseparável em construção
+  words.forEach((word, i) => {
+    if (i === 0) {
+      out = word;
+      chunk = letters(word);
+      return;
+    }
+    const prev = words[i - 1];
+    const dash = DASH.test(word);
+    const particle = PARTICLES.has(prev.toLocaleLowerCase("pt-BR")) && !dash;
+    const glue = dash || (particle && chunk + 1 + letters(word) <= maxChunk);
+    out += (glue ? NBSP : " ") + word;
+    chunk = glue ? chunk + 1 + letters(word) : letters(word);
+  });
+  return out;
+}
+
+export type TitleRun = { text: string; num: boolean };
+
+/**
+ * Separa algarismos e travessões do resto do título. Nas fontes caligráficas eles ficam ruins (o "3" parece um "Z"),
+ * então a capa os envolve em <span class="inv-num"> e o modelo os compõe na serifa.
+ */
+export function titleRuns(text: string): TitleRun[] {
+  const runs: TitleRun[] = [];
+  let last = 0;
+  for (const match of text.matchAll(/\d+(?:[.,:/]\d+)*[ºª°]?|[—–]/g)) {
+    if (match.index > last) runs.push({ text: text.slice(last, match.index), num: false });
+    runs.push({ text: match[0], num: true });
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) runs.push({ text: text.slice(last), num: false });
+  return runs;
+}
+
+export type TitleShape = {
+  /** 2 = casal (nome, conector, nome); 1 = título único. */
+  count: number;
+  /** Número de palavras (no casal, do nome com mais palavras). */
+  words: number;
+  /**
+   * Letras do maior trecho que precisa caber numa linha: a maior palavra (ou palavras coladas por glueTitle) e, no casal,
+   * o nome inteiro quando tem até 14 letras.
+   */
+  longest: number;
+  /** Título comprido: casal com um nome de 11 letras ou mais; título único com mais de 16 caracteres. */
+  long: boolean;
+  /** Nome único curto ("Sofia", "Helena"): uma palavra de até 7 letras. Pode ser composto bem maior. */
+  short: boolean;
+  /** Título único que é frase, não nome: tem travessão ou quatro palavras ou mais ("Chá revelação da Ana e do Pedro"). */
+  phrase: boolean;
+};
+
+/** Medidas do título para o CSS decidir tamanho e fonte (viram atributos data-* em .inv-names). */
+export function titleShape(title: string): TitleShape {
+  const { names } = splitTitle(title);
+  const parts = names.map((name) => name.split(" "));
+  const words = Math.max(0, ...parts.map((p) => p.length));
+  if (names.length === 2) {
+    // No casal, um nome composto de até 14 letras ("Maria Eduarda") conta inteiro: cabe numa linha só, em vez de virar duas.
+    const longest = Math.max(0, ...names.flatMap((name) => (letters(name) <= 14 ? [letters(name)] : glueTitle(name).split(" ").map(letters))));
+    return { count: 2, words, longest, long: Math.max(...names.map((n) => n.length)) >= 11, short: false, phrase: false };
+  }
+  const longest = Math.max(0, ...names.flatMap((name) => glueTitle(name).split(" ").map(letters)));
+  const clean = names[0] ?? "";
+  const hasDash = parts[0]?.some((word) => DASH.test(word)) ?? false;
+  return { count: 1, words, longest, long: clean.length > 16, short: words === 1 && letters(clean) <= 7, phrase: hasDash || words >= 4 };
+}

@@ -4,19 +4,21 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { checkLogin, createUser, currentUser, endSession, requireUser, startSession } from "@/lib/auth";
-import { DRAFT_COOKIE } from "@/lib/draft";
+import { DRAFT_COOKIE, draftCookie, draftCookieOptions, takeDraft } from "@/lib/draft";
 import { EVENT_TYPES } from "@/lib/catalog";
 import { paletteOf, TEMPLATE_DEFS, templateDef } from "@/templates";
 import { one, q } from "@/lib/db";
-import { eventBySlug, eventForUser, guestByToken, guestCount, rsvpClosed, type GiftLink } from "@/lib/events";
+import { eventBySlug, eventForUser, guestByToken, guestCount, rsvpClosed, type GiftLink, type GuestRow } from "@/lib/events";
+import { OPEN_MAX_PEOPLE, rsvpCookie } from "@/lib/remember";
 import { createCheckout, mercadoPagoEnabled } from "@/lib/mercadopago";
 import { baseUrl } from "@/lib/url";
 import { isDate, isTime, onlyDigits, safeUrl, todayBR } from "@/lib/format";
 import { newId, newToken, slugify } from "@/lib/ids";
 import { normalizePixKey, PIX_KEY_TYPES } from "@/lib/pix";
 import { guestLimit, isPremium } from "@/lib/plans";
+import { parseGuestLine } from "@/lib/guest-lines";
 
-export type FormState = { error?: string; ok?: string; values?: Record<string, string> };
+export type FormState = { error?: string; ok?: string; values?: Record<string, string>; /** Link de saída mostrado junto do erro (ex.: upgrade). */ link?: { href: string; label: string } };
 
 function text(form: FormData, name: string, max = 200): string {
   const value = form.get(name);
@@ -43,6 +45,7 @@ export async function signUp(_prev: FormState, form: FormData): Promise<FormStat
   const user = await createUser(name, email, password);
   if (!user) return { error: "Já existe uma conta com esse e-mail. Tente entrar.", values };
   await startSession(user.id);
+  await takeDraft(); // conta nova sempre começa no editor; o rascunho da galeria (se houver) fica marcado como usado
   redirect("/painel/novo");
 }
 
@@ -52,11 +55,13 @@ export async function signIn(_prev: FormState, form: FormData): Promise<FormStat
   const user = await checkLogin(email, password);
   if (!user) return { error: "E-mail ou senha incorretos.", values: snapshot(form) };
   await startSession(user.id);
-  redirect((await cookies()).has(DRAFT_COOKIE) ? "/painel/novo" : "/painel");
+  // Só um rascunho recém-escolhido na galeria leva ao editor, e uma vez só: depois disso o login volta a cair no painel.
+  redirect((await takeDraft()) ? "/painel/novo" : "/painel");
 }
 
 export async function signOut() {
   await endSession();
+  (await cookies()).delete(DRAFT_COOKIE); // aparelho compartilhado: o rascunho não passa para a próxima pessoa
   redirect("/");
 }
 
@@ -64,15 +69,20 @@ export async function signOut() {
 
 /** Guarda o modelo e os dados digitados na galeria e leva para a criação do convite (passando pelo cadastro, se preciso). */
 export async function chooseTemplate(form: FormData) {
+  const def = templateDef(text(form, "template", 32));
+  const type = text(form, "type", 32);
+  const date = text(form, "event_date", 10);
   const draft = {
-    template: templateDef(text(form, "template", 32)).id,
-    palette: text(form, "palette", 32),
-    type: text(form, "type", 32),
+    template: def.id,
+    palette: paletteOf(def, text(form, "palette", 32)).id,
+    type: EVENT_TYPES.some((t) => t.id === type) ? type : "",
     title: text(form, "title", 80),
-    event_date: text(form, "event_date", 10),
+    event_date: isDate(date) ? date : "",
   };
-  (await cookies()).set(DRAFT_COOKIE, JSON.stringify(draft), { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 60 * 60 * 24 * 7 });
-  redirect((await currentUser()) ? "/painel/novo" : "/criar-conta");
+  const user = await currentUser();
+  // Quem já está logado vai direto ao editor: o rascunho nasce "usado" e não desvia os próximos logins.
+  (await cookies()).set(DRAFT_COOKIE, draftCookie(draft, Date.now(), Boolean(user)), draftCookieOptions);
+  redirect(user ? "/painel/novo" : "/criar-conta");
 }
 
 /* ───────── Evento ───────── */
@@ -216,14 +226,16 @@ async function insertGuests(eventId: string, plan: string, guests: NewGuest[]): 
   const limit = guestLimit(plan);
   const room = limit === null ? guests.length : Math.max(0, limit - (await guestCount(eventId)));
   const accepted = guests.slice(0, room);
-  for (const g of accepted) {
-    await q("insert into guests (id, event_id, token, name, phone, max_people) values ($1,$2,$3,$4,$5,$6)", [
+  // created_at crescente (1 ms por linha): a lista aparece na ordem em que foi colada.
+  for (const [index, g] of accepted.entries()) {
+    await q("insert into guests (id, event_id, token, name, phone, max_people, created_at) values ($1,$2,$3,$4,$5,$6, now() + ($7::int * interval '1 millisecond'))", [
       newId(),
       eventId,
       newToken(8),
       g.name,
       g.phone,
       g.maxPeople,
+      index,
     ]);
   }
   return { added: accepted.length, skipped: guests.length - accepted.length };
@@ -235,6 +247,7 @@ function people(raw: string): number {
 }
 
 const FULL = "Você chegou ao limite de convites do plano grátis. Faça o upgrade para convidar mais gente.";
+const upgradeLink = (eventId: string) => ({ href: `/painel/${eventId}/premium`, label: "Liberar convites ilimitados" });
 
 export async function addGuest(_prev: FormState, form: FormData): Promise<FormState> {
   const user = await requireUser();
@@ -243,7 +256,7 @@ export async function addGuest(_prev: FormState, form: FormData): Promise<FormSt
   const name = text(form, "name", 80);
   if (name.length < 2) return { error: "Informe o nome do convidado ou da família.", values: snapshot(form) };
   const result = await insertGuests(event.id, event.plan, [{ name, phone: onlyDigits(text(form, "phone", 30)), maxPeople: people(text(form, "max_people", 3)) }]);
-  if (!result.added) return { error: FULL, values: snapshot(form) };
+  if (!result.added) return { error: FULL, values: snapshot(form), link: upgradeLink(event.id) };
   revalidatePath(`/painel/${event.id}`);
   return { ok: `${name} entrou na lista.` };
 }
@@ -252,25 +265,55 @@ export async function addGuestsBulk(_prev: FormState, form: FormData): Promise<F
   const user = await requireUser();
   const event = await eventForUser(text(form, "event_id", 64), user.id);
   if (!event) return { error: "Evento não encontrado." };
+  // Guarda a linha original de cada convidado: as que não couberem voltam para o campo, para a pessoa saber quais faltam.
   const guests: NewGuest[] = [];
+  const sources: string[] = [];
+  const overflow: string[] = [];
   for (const line of text(form, "lines", 20000).split(/\r?\n/)) {
-    const [name = "", second = "", third = ""] = line.split(/[;\t]/).map((cell) => cell.trim());
-    if (name.length < 2) continue;
-    // Aceita "Nome; telefone; pessoas" e também "Nome; pessoas".
-    const secondIsCount = /^\d{1,2}$/.test(second);
-    guests.push({
-      name: name.slice(0, 80),
-      phone: secondIsCount ? "" : onlyDigits(second).slice(0, 15),
-      maxPeople: people(secondIsCount ? second : third),
-    });
-    if (guests.length >= 500) break;
+    const guest = parseGuestLine(line);
+    if (!guest) continue;
+    if (guests.length >= 500) {
+      overflow.push(line.trim());
+      continue;
+    }
+    guests.push(guest);
+    sources.push(line.trim());
   }
   if (!guests.length) return { error: "Cole pelo menos um nome por linha.", values: snapshot(form) };
   const result = await insertGuests(event.id, event.plan, guests);
   revalidatePath(`/painel/${event.id}`);
-  if (!result.added) return { error: FULL, values: snapshot(form) };
-  if (result.skipped) return { ok: `${result.added} convites adicionados.`, error: `${result.skipped} ficaram de fora: ${FULL}` };
-  return { ok: `${result.added} convites adicionados.` };
+  const left = [...sources.slice(result.added), ...overflow];
+  const added = result.added === 1 ? "1 convite adicionado." : `${result.added} convites adicionados.`;
+  if (!left.length) return { ok: added };
+  const values = { lines: left.join("\n") };
+  if (!result.skipped) return { ok: added, error: `A lista é adicionada em partes de 500. ${left.length === 1 ? "Ficou 1 linha" : `Ficaram ${left.length} linhas`} no campo: toque em “Adicionar lista” de novo.`, values };
+  const kept = left.length === 1 ? "1 nome ficou de fora e continua no campo acima" : `${left.length} nomes ficaram de fora e continuam no campo acima`;
+  return {
+    ok: result.added ? added : undefined,
+    error: `${result.added ? `${kept[0].toUpperCase()}${kept.slice(1)}` : "Nenhum convite foi adicionado"}: o plano grátis vai até ${guestLimit(event.plan)} convites.${result.added ? "" : " Os nomes continuam no campo acima."}`,
+    values,
+    link: upgradeLink(event.id),
+  };
+}
+
+/** Corrige nome, celular ou número de pessoas de um convidado sem trocar o link nem apagar a resposta. */
+export async function updateGuest(_prev: FormState, form: FormData): Promise<FormState> {
+  const user = await requireUser();
+  const event = await eventForUser(text(form, "event_id", 64), user.id);
+  if (!event) return { error: "Evento não encontrado." };
+  const values = snapshot(form);
+  const name = text(form, "name", 80);
+  if (name.length < 2) return { error: "Informe o nome do convidado ou da família.", values };
+  const maxPeople = people(text(form, "max_people", 3));
+  // Se a pessoa já confirmou mais gente do que o novo total, a confirmação desce junto (nunca fica acima do convite).
+  const updated = await q(
+    `update guests set name = $1, phone = $2, max_people = $3, people_count = least(people_count, $3)
+     where id = $4 and event_id = $5 returning id`,
+    [name, onlyDigits(text(form, "phone", 30)).slice(0, 15), maxPeople, text(form, "guest_id", 64), event.id],
+  );
+  if (!updated.length) return { error: "Convidado não encontrado. Recarregue a página.", values };
+  revalidatePath(`/painel/${event.id}`);
+  return { ok: "Alterações salvas. O link do convite continua o mesmo.", values };
 }
 
 export async function deleteGuest(form: FormData) {
@@ -291,77 +334,111 @@ export async function markSent(eventId: string, guestId: string) {
 
 /* ───────── Convite público ───────── */
 
-export type RsvpState = { error?: string; saved?: "yes" | "no" };
+export type RsvpState = { error?: string; saved?: "yes" | "no"; people?: number };
 
+type Answer = "yes" | "no";
+const RSVP_CLOSED = "O prazo para confirmar presença já terminou. Fale com quem convidou você.";
+
+/**
+ * Grava a resposta de um convidado. O número de pessoas só muda quando a pessoa informa um novo:
+ * "não vou" guarda o último número (o painel só soma quem está com "sim"), para não voltar a 1 calado se ela mudar de ideia.
+ */
+async function saveAnswer(guest: GuestRow, status: Answer, informed: number | null): Promise<number> {
+  const count = Math.min(Math.max(informed ?? guest.people_count, status === "yes" ? 1 : 0), guest.max_people);
+  await q("update guests set status=$1, people_count=$2, responded_at=now(), opened_at=coalesce(opened_at, now()) where id=$3", [status, count, guest.id]);
+  return count;
+}
+
+/**
+ * Resposta por formulário comum (funciona sem JavaScript). Com `token` é o convite individual: os botões enviam
+ * `status` (sim/não) ou `people` (o número de pessoas, que já vale como "sim"). Sem `token` é o link geral: a pessoa diz o nome.
+ * Nos dois casos termina no convite individual, na seção da resposta.
+ */
 export async function submitRsvp(_prev: RsvpState, form: FormData): Promise<RsvpState> {
   if (text(form, "website", 100)) return { saved: "yes" }; // campo-isca: só robôs preenchem
   const event = await eventBySlug(text(form, "slug", 80));
   if (!event) return { error: "Convite não encontrado." };
-  if (rsvpClosed(event, todayBR())) return { error: "O prazo para confirmar presença já terminou. Fale com quem convidou você." };
+  if (rsvpClosed(event, todayBR())) return { error: RSVP_CLOSED };
 
-  const status = text(form, "status", 3);
-  if (status !== "yes" && status !== "no") return { error: "Escolha se você vai ou não." };
-  const note = text(form, "note", 300);
-  const count = people(text(form, "people", 3));
   const token = text(form, "token", 16);
+  const peopleRaw = text(form, "people", 3);
+  const informed = peopleRaw ? people(peopleRaw) : null;
+  const status = text(form, "status", 3) || (token && informed ? "yes" : "");
+  const hasNote = form.has("note");
+  const note = text(form, "note", 300);
 
   if (token) {
+    if (status !== "yes" && status !== "no") return { error: "Escolha se você vai ou não." };
     const guest = await guestByToken(event.id, token);
     if (!guest) return { error: "Convite não encontrado." };
-    await q("update guests set status=$1, people_count=$2, note=$3, responded_at=now(), opened_at=coalesce(opened_at, now()) where id=$4", [
-      status,
-      status === "yes" ? Math.min(count, guest.max_people) : 0,
-      note,
-      guest.id,
-    ]);
+    await saveAnswer(guest, status, informed);
+    if (hasNote) await q("update guests set note=$1 where id=$2", [note, guest.id]);
     revalidatePath(`/painel/${event.id}`);
-    return { saved: status };
+    redirect(`/c/${event.slug}/${guest.token}?confirmado=${status}#confirmar`);
   }
 
   if (!event.open_rsvp) return { error: "Este convite é individual. Abra pelo link que você recebeu." };
   const name = text(form, "name", 80);
-  if (name.length < 2) return { error: "Escreva seu nome para a gente saber quem confirmou." };
-  const limit = guestLimit(event.plan);
-  if (limit !== null && (await guestCount(event.id)) >= limit) {
-    return { error: "A lista de confirmações deste evento está cheia. Avise quem convidou você." };
+  if (name.length < 2) return { error: "Escreva seu nome para a gente saber quem está respondendo." };
+  if (status !== "yes" && status !== "no") return { error: "Escolha se você vai ou não." };
+  if (status === "yes" && !informed) return { error: "Toque em quantas pessoas vêm, contando com você." };
+
+  // Mesmo aparelho, mesmo nome: atualiza a resposta que já existe em vez de criar outro convidado na lista.
+  const jar = await cookies();
+  const remembered = jar.get(rsvpCookie(event.slug))?.value;
+  const previous = remembered ? await guestByToken(event.id, remembered.slice(0, 16)) : null;
+  const same = (a: string, b: string) => a.trim().toLocaleLowerCase("pt-BR") === b.trim().toLocaleLowerCase("pt-BR");
+  let guestToken: string;
+  if (previous && previous.source === "open" && same(previous.name, name)) {
+    await saveAnswer(previous, status, informed);
+    if (hasNote) await q("update guests set note=$1 where id=$2", [note, previous.id]);
+    guestToken = previous.token;
+  } else {
+    const limit = guestLimit(event.plan);
+    if (limit !== null && (await guestCount(event.id)) >= limit) {
+      return { error: "A lista de confirmações deste evento está cheia. Avise quem convidou você." };
+    }
+    guestToken = newToken(8);
+    // Quem responde pelo link geral pode mudar o número depois, até o teto do link geral (não fica preso ao primeiro número).
+    await q(
+      `insert into guests (id, event_id, token, name, phone, max_people, status, people_count, note, source, opened_at, open_count, responded_at)
+       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,'open',now(),1,now())`,
+      [newId(), event.id, guestToken, name, onlyDigits(text(form, "phone", 30)).slice(0, 15), OPEN_MAX_PEOPLE, status, status === "yes" ? Math.min(informed ?? 1, OPEN_MAX_PEOPLE) : 0, note],
+    );
   }
-  const openCount = Math.min(count, 6);
-  const newTokenValue = newToken(8);
-  await q(
-    `insert into guests (id, event_id, token, name, phone, max_people, status, people_count, note, source, opened_at, open_count, responded_at)
-     values ($1,$2,$3,$4,$5,$6,$7,$8,$9,'open',now(),1,now())`,
-    [newId(), event.id, newTokenValue, name, onlyDigits(text(form, "phone", 30)).slice(0, 15), openCount, status, status === "yes" ? openCount : 0, note],
-  );
+  // Lembra a resposta neste aparelho: ao reabrir o link geral, a pessoa cai no próprio convite.
+  jar.set(rsvpCookie(event.slug), guestToken, { path: `/c/${event.slug}`, maxAge: 60 * 60 * 24 * 365, sameSite: "lax", httpOnly: true });
   revalidatePath(`/painel/${event.id}`);
-  redirect(`/c/${event.slug}/${newTokenValue}?confirmado=${status}`);
+  redirect(`/c/${event.slug}/${guestToken}?confirmado=${status}#confirmar`);
 }
 
-/** Um toque: grava "vou" ou "não vou" na hora. */
-export async function quickRsvp(slug: string, token: string, status: "yes" | "no"): Promise<{ error?: string }> {
+/** Um toque: grava "vou" (com o número de pessoas, quando o convite é para mais de uma) ou "não vou" na hora. */
+export async function quickRsvp(slug: string, token: string, status: Answer, count?: number): Promise<{ error?: string; people?: number }> {
   if (status !== "yes" && status !== "no") return { error: "Escolha se você vai ou não." };
   const event = await eventBySlug(String(slug).slice(0, 80));
   if (!event) return { error: "Convite não encontrado." };
-  if (rsvpClosed(event, todayBR())) return { error: "O prazo para confirmar presença já terminou. Fale com quem convidou você." };
+  if (rsvpClosed(event, todayBR())) return { error: RSVP_CLOSED };
   const guest = await guestByToken(event.id, String(token).slice(0, 16));
   if (!guest) return { error: "Convite não encontrado." };
-  // Ao confirmar, mantém o número de pessoas que a pessoa já tinha informado; senão começa em 1.
-  const count = status === "yes" ? Math.min(Math.max(guest.people_count, 1), guest.max_people) : 0;
-  await q("update guests set status=$1, people_count=$2, responded_at=now(), opened_at=coalesce(opened_at, now()) where id=$3", [status, count, guest.id]);
+  const informed = typeof count === "number" && Number.isFinite(count) ? people(String(Math.trunc(count))) : null;
+  const saved = await saveAnswer(guest, status, informed);
   revalidatePath(`/painel/${event.id}`);
-  return {};
+  return { people: saved };
 }
 
-/** Detalhes opcionais depois da resposta: quantas pessoas e recado. */
+/** Depois da resposta: recado e, se vier no formulário, o número de pessoas. Só mexe no que foi enviado. */
 export async function saveRsvpDetails(_prev: RsvpState, form: FormData): Promise<RsvpState> {
   const event = await eventBySlug(text(form, "slug", 80));
   if (!event) return { error: "Convite não encontrado." };
-  if (rsvpClosed(event, todayBR())) return { error: "O prazo para confirmar presença já terminou." };
+  if (rsvpClosed(event, todayBR())) return { error: RSVP_CLOSED };
   const guest = await guestByToken(event.id, text(form, "token", 16));
   if (!guest || guest.status === "pending") return { error: "Responda primeiro se você vai." };
-  const count = guest.status === "yes" ? Math.min(people(text(form, "people", 3) || String(guest.people_count || 1)), guest.max_people) : 0;
-  await q("update guests set people_count=$1, note=$2 where id=$3", [count, text(form, "note", 300), guest.id]);
+  const peopleRaw = text(form, "people", 3);
+  const count = guest.status === "yes" && peopleRaw ? Math.min(people(peopleRaw), guest.max_people) : guest.people_count;
+  const note = form.has("note") ? text(form, "note", 300) : guest.note;
+  await q("update guests set people_count=$1, note=$2 where id=$3", [count, note, guest.id]);
   revalidatePath(`/painel/${event.id}`);
-  return { saved: guest.status };
+  return { saved: guest.status, people: count };
 }
 
 export async function markOpened(slug: string, token: string) {

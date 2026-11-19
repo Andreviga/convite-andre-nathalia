@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Aquarela: manchas pintadas no canto de cima e no canto de baixo do cartão, sangrando para fora do papel,
 // com ramos de folhas em traço de pena por cima. O texto fica em área limpa, no meio.
@@ -169,32 +170,33 @@ const TOP_MAIN = buildSprig({ stem: [[-8, 13], [38, 13], [92, 24], [138, 56]], c
 const TOP_SMALL = buildSprig({ stem: [[170, -8], [192, 8], [230, 17], [272, 13]], count: 3, size: 0.96, seed: 11, bud: true, thick: 1.3 });
 
 function TopWash() {
+  const u = useUid();
   return (
     <svg viewBox="0 0 440 200" width="100%" preserveAspectRatio="xMinYMin meet" aria-hidden="true">
       <defs>
-        <WashFilter id="aquarela-wash-top" seed={7} />
-        <LeafFilter id="aquarela-leaf-top" seed={3} />
-        <linearGradient id="aquarela-fade-top" x1="200" y1="0" x2="450" y2="40" gradientUnits="userSpaceOnUse">
+        <WashFilter id={`aquarela-wash-top-${u}`} seed={7} />
+        <LeafFilter id={`aquarela-leaf-top-${u}`} seed={3} />
+        <linearGradient id={`aquarela-fade-top-${u}`} x1="200" y1="0" x2="450" y2="40" gradientUnits="userSpaceOnUse">
           <stop offset="0" style={{ stopColor: "var(--accent)" }} stopOpacity={0.34} />
           <stop offset="1" style={{ stopColor: "var(--accent)" }} stopOpacity={0.1} />
         </linearGradient>
-        <radialGradient id="aquarela-pool-top" cx="40" cy="20" r="250" gradientUnits="userSpaceOnUse">
+        <radialGradient id={`aquarela-pool-top-${u}`} cx="40" cy="20" r="250" gradientUnits="userSpaceOnUse">
           <stop offset="0" style={{ stopColor: "var(--accent)" }} stopOpacity={0.26} />
           <stop offset="0.7" style={{ stopColor: "var(--accent)" }} stopOpacity={0.42} />
           <stop offset="1" style={{ stopColor: "var(--accent)" }} stopOpacity={0.5} />
         </radialGradient>
       </defs>
-      <g filter="url(#aquarela-wash-top)">
+      <g filter={`url(#aquarela-wash-top-${u})`}>
         {/* véu claro que escorre para a direita */}
-        <path d="M196-50H490V40C452 56 414 36 372 46C330 56 298 34 256 30C226 26 204-8 196-50Z" fill="url(#aquarela-fade-top)" />
+        <path d="M196-50H490V40C452 56 414 36 372 46C330 56 298 34 256 30C226 26 204-8 196-50Z" fill={`url(#aquarela-fade-top-${u})`} />
         {/* mancha principal */}
-        <path d="M-50-50H258C264 0 232 28 194 40C156 52 142 78 106 88C70 98 30 88-50 100Z" fill="url(#aquarela-pool-top)" style={MULTIPLY} />
+        <path d="M-50-50H258C264 0 232 28 194 40C156 52 142 78 106 88C70 98 30 88-50 100Z" fill={`url(#aquarela-pool-top-${u})`} style={MULTIPLY} />
         {/* segunda cor, por cima, no canto */}
         <path d="M-50-50H128C134-6 106 22 78 34C50 46 30 70-50 78Z" style={{ ...B, ...MULTIPLY }} fillOpacity={0.3} />
         <ellipse cx="300" cy="27" rx="44" ry="18" style={{ ...B, ...MULTIPLY }} fillOpacity={0.16} />
       </g>
       {/* folhas pintadas: filtro próprio, no mesmo lugar do traço */}
-      <g filter="url(#aquarela-leaf-top)" style={MULTIPLY}>
+      <g filter={`url(#aquarela-leaf-top-${u})`} style={MULTIPLY}>
         <SprigPaint sprig={TOP_MAIN} tone={B} />
         <SprigPaint sprig={TOP_SMALL} tone={B} />
       </g>
@@ -217,23 +219,24 @@ function TopWash() {
 const BOT_MAIN = buildSprig({ stem: [[450, 128], [412, 126], [370, 116], [340, 96]], count: 4, size: 1.14, seed: 8, berries: 1, thick: 1.6 });
 
 function BottomWash() {
+  const u = useUid();
   return (
     <svg viewBox="0 0 440 140" width="100%" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">
       <defs>
-        <WashFilter id="aquarela-wash-bottom" seed={23} warp={38} />
-        <LeafFilter id="aquarela-leaf-bottom" seed={17} />
-        <radialGradient id="aquarela-pool-bottom" cx="420" cy="130" r="220" gradientUnits="userSpaceOnUse">
+        <WashFilter id={`aquarela-wash-bottom-${u}`} seed={23} warp={38} />
+        <LeafFilter id={`aquarela-leaf-bottom-${u}`} seed={17} />
+        <radialGradient id={`aquarela-pool-bottom-${u}`} cx="420" cy="130" r="220" gradientUnits="userSpaceOnUse">
           <stop offset="0" style={{ stopColor: "var(--accent)" }} stopOpacity={0.28} />
           <stop offset="0.75" style={{ stopColor: "var(--accent)" }} stopOpacity={0.42} />
           <stop offset="1" style={{ stopColor: "var(--accent)" }} stopOpacity={0.48} />
         </radialGradient>
       </defs>
-      <g filter="url(#aquarela-wash-bottom)">
-        <path d="M490 190H206C212 162 240 150 272 143C304 136 316 114 346 104C378 94 414 96 490 72Z" fill="url(#aquarela-pool-bottom)" />
+      <g filter={`url(#aquarela-wash-bottom-${u})`}>
+        <path d="M490 190H206C212 162 240 150 272 143C304 136 316 114 346 104C378 94 414 96 490 72Z" fill={`url(#aquarela-pool-bottom-${u})`} />
         <path d="M490 190H334C338 166 362 154 388 147C414 140 442 128 490 118Z" style={{ ...B, ...MULTIPLY }} fillOpacity={0.3} />
         <path d="M80 190C90 172 120 166 148 170C168 172 180 181 184 190Z" style={A} fillOpacity={0.16} />
       </g>
-      <g filter="url(#aquarela-leaf-bottom)" style={MULTIPLY}>
+      <g filter={`url(#aquarela-leaf-bottom-${u})`} style={MULTIPLY}>
         <SprigPaint sprig={BOT_MAIN} tone={B} />
       </g>
       <g style={A} fillOpacity={0.55}>
@@ -268,20 +271,21 @@ const LINER_L = buildSprig({ stem: [[30, 262], [66, 240], [108, 212], [146, 172]
 const LINER_R = buildSprig({ stem: [[322, 262], [288, 238], [244, 214], [206, 176]], count: 4, size: 0.9, seed: 30, bud: true, thick: 1.5 });
 
 function Liner() {
+  const u = useUid();
   return (
     <svg viewBox="0 0 350 250" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
       <defs>
-        <WashFilter id="aquarela-wash-liner" seed={41} warp={30} />
-        <LeafFilter id="aquarela-leaf-liner" seed={29} />
+        <WashFilter id={`aquarela-wash-liner-${u}`} seed={41} warp={30} />
+        <LeafFilter id={`aquarela-leaf-liner-${u}`} seed={29} />
       </defs>
-      <g filter="url(#aquarela-wash-liner)">
+      <g filter={`url(#aquarela-wash-liner-${u})`}>
         <path d="M-40 300V170C0 172 36 190 70 202C104 214 136 228 148 300Z" style={A} fillOpacity={0.34} />
         <path d="M390 300V162C352 170 318 188 284 202C250 216 222 234 208 300Z" style={A} fillOpacity={0.3} />
         <path d="M124 300C134 268 160 250 188 254C212 258 228 276 232 300Z" style={A} fillOpacity={0.14} />
         <path d="M-40 300V216C-6 220 22 238 40 300Z" style={{ ...B, ...MULTIPLY }} fillOpacity={0.26} />
         <path d="M390 300V224C364 228 338 250 330 300Z" style={{ ...B, ...MULTIPLY }} fillOpacity={0.2} />
       </g>
-      <g filter="url(#aquarela-leaf-liner)" style={MULTIPLY}>
+      <g filter={`url(#aquarela-leaf-liner-${u})`} style={MULTIPLY}>
         <SprigPaint sprig={LINER_L} tone={B} />
         <SprigPaint sprig={LINER_R} tone={B} />
       </g>

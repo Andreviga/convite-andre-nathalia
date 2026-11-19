@@ -58,7 +58,7 @@
 .inv[data-template="monograma"] .mg-divider { width: clamp(108px, 35cqw, 136px); height: auto; }
 
 /* data por extenso: a informação principal depois dos nomes */
-.inv[data-template="monograma"] .inv-dateline { display: block; font: 600 21px/1.34 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-top: var(--mg-gap) !important; max-width: 17em; margin-inline: auto !important; }
+.inv[data-template="monograma"] .inv-dateline { display: block; font: 500 21px/1.34 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-top: var(--mg-gap) !important; max-width: 17em; margin-inline: auto !important; }
 .inv[data-template="monograma"] .inv-dateline::first-letter { text-transform: uppercase; }
 .inv[data-template="monograma"] .inv-place { font: 500 18px/1.4 var(--font-text); margin-top: 8px !important; }
 .inv[data-template="monograma"] .inv-countdown { align-self: center; background: none; border-radius: 0; padding: 0 0 0 0.22em; margin-top: var(--mg-gap) !important; font: 600 12.5px/1.2 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--soft); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
@@ -95,27 +95,16 @@
 /* na demonstração a página ganha um respiro extra para a barra fixa: a assinatura sobe junto, para não ficar atrás dela */
 body:has(.demo-bar) .inv[data-template="monograma"] .mg-sign { bottom: 222px; }
 .thumb > .inv[data-template="monograma"] .mg-sign { display: none; }
-.thumb > .inv[data-template="monograma"] .inv-sheet { padding-bottom: 0; }
-/* miniatura (390x660): a capa encurta para o cartão caber inteiro, com a data por extenso e o local à vista */
-.thumb > .inv[data-template="monograma"] { --mg-gap: 20px; }
-.thumb > .inv[data-template="monograma"] .inv-paper { padding-block: var(--paper-pad); }
-.thumb > .inv[data-template="monograma"] .mg-crest { width: 40cqw; }
-.thumb > .inv[data-template="monograma"] .inv-date, .thumb > .inv[data-template="monograma"] .inv-countdown { display: none; }
-.thumb > .inv[data-template="monograma"] .inv-paper > .inv-art-top { margin-bottom: var(--mg-gap); }
+.thumb > .inv[data-template="monograma"] .inv-sheet { padding-bottom: 0; } /* a miniatura só tem a capa: sem assinatura nem o respiro dela */
 
 /* ───────── Envelope ───────── */
 /* forro escuro estampado com o monograma */
 .inv[data-template="monograma"] .env-liner { color: color-mix(in srgb, var(--liner) 72%, var(--paper)); }
-/* O avesso da aba precisa cobrir a própria aba: virado no eixo vertical ele fica no lugar (virado no horizontal, o
-   triângulo ia parar solto acima do envelope). A estampa gira junto para as iniciais saírem de pé com a aba aberta. */
-.inv[data-template="monograma"] .env-liner { clip-path: polygon(0 0, 100% 0, 50% 58%); transform: rotateY(180deg); }
+/* A base mostra o forro girado em 180° na aba aberta: a estampa gira de volta para as iniciais saírem de pé. */
 .inv[data-template="monograma"] .env-liner > svg { transform: rotate(180deg); }
-/* o cartão sai por cima da aba aberta e por trás da frente do envelope */
-.inv[data-template="monograma"] .env-card { z-index: 1; }
-.inv[data-template="monograma"] .env-front { z-index: 2; }
 .inv[data-template="monograma"] .env-to { font: italic 400 18px/1.4 var(--font-text); }
 .inv[data-template="monograma"] .env-to strong { font: italic 500 34px/1.12 var(--font-text); margin-top: 4px; }
-.inv[data-template="monograma"] .env-cta { border-radius: 2px; font: 600 13.5px/1 var(--font-label); letter-spacing: 0.24em; padding: 15px 22px 15px calc(22px + 0.24em); }
+.inv[data-template="monograma"] .env-cta { border-radius: 2px; font: 600 16px/1.1 var(--font-label); letter-spacing: 0.14em; }
 .inv[data-template="monograma"] .env-card { color: var(--accent); }
 /* sem data nem local, o divisor não fica sobrando no fim do cartão */
 .inv[data-template="monograma"] .inv-art-divider:not(:has(~ .inv-dateline, ~ .inv-place)) { display: none; }

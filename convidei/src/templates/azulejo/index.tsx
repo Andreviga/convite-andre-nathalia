@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Azulejo: painel de azulejaria portuguesa. Um único módulo de 48 x 48 (flor de quatro pétalas, lancetas nos eixos e
 // argolas nos cantos, que se completam entre azulejos vizinhos) repetido em friso no topo e na base do cartão e no forro
@@ -75,22 +76,24 @@ function Rosette() {
 }
 
 function Liner() {
+  const u = useUid();
   return (
     <svg width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id="azulejo-forro" width={T} height={T} patternUnits="userSpaceOnUse" patternTransform="translate(-3 0) scale(0.62)">
+        <pattern id={`azulejo-forro-${u}`} width={T} height={T} patternUnits="userSpaceOnUse" patternTransform="translate(-3 0) scale(0.62)">
           <Tile hole="var(--liner)" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#azulejo-forro)" />
+      <rect width="100%" height="100%" fill={`url(#azulejo-forro-${u})`} />
     </svg>
   );
 }
 
 function Art({ slot }: ArtProps) {
-  if (slot === "top") return <Frieze id="azulejo-friso-a" />;
+  const u = useUid();
+  if (slot === "top") return <Frieze id={`azulejo-friso-a-${u}`} />;
   if (slot === "divider") return <Rosette />;
-  if (slot === "bottom") return <Frieze id="azulejo-friso-b" flip />;
+  if (slot === "bottom") return <Frieze id={`azulejo-friso-b-${u}`} flip />;
   if (slot === "liner") return <Liner />;
   return null;
 }

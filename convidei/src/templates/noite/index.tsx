@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Noite Déco: hot stamping dourado sobre papel escuro. Motivo-herói: o leque de raios no topo.
 // Detalhe especial: a moldura de fio duplo com cantos escalonados. Todo o resto é tipografia.
@@ -42,19 +43,20 @@ function Corner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
 }
 
 function Fan() {
+  const u = useUid();
   const cx = 80;
   const cy = 78;
   return (
-    <svg className="noite-fan" viewBox="0 0 160 84" fill="none" stroke="url(#noite-foil-top)" strokeWidth="1" strokeLinecap="round" aria-hidden="true">
+    <svg className="noite-fan" viewBox="0 0 160 84" fill="none" stroke={`url(#noite-foil-top-${u})`} strokeWidth="1" strokeLinecap="round" aria-hidden="true">
       <defs>
-        <Foil id="noite-foil-top" x2={160} />
+        <Foil id={`noite-foil-top-${u}`} x2={160} />
       </defs>
       {/* raios: todos até o arco duplo; um sim, um não, passam dele */}
       <path d={rays(cx, cy, 17, (i) => (i % 2 === 0 ? 73 : 55.5), 11.25)} />
       <path d={`M${cx - 56} ${cy}A56 56 0 0 1 ${cx + 56} ${cy}`} />
       <path d={`M${cx - 60} ${cy}A60 60 0 0 1 ${cx + 60} ${cy}`} />
       <path d={`M${cx - 17} ${cy}A17 17 0 0 1 ${cx + 17} ${cy}`} />
-      <path d={`M${cx - 9} ${cy}A9 9 0 0 1 ${cx + 9} ${cy}z`} fill="url(#noite-foil-top)" stroke="none" />
+      <path d={`M${cx - 9} ${cy}A9 9 0 0 1 ${cx + 9} ${cy}z`} fill={`url(#noite-foil-top-${u})`} stroke="none" />
       {/* base: fio duplo em degrau */}
       <path d={`M2 ${cy}H158`} />
       <path d={`M26 ${cy + 4}H134`} />
@@ -63,33 +65,35 @@ function Fan() {
 }
 
 function Divider() {
+  const u = useUid();
   return (
-    <svg className="noite-divider" viewBox="0 0 132 12" width="132" height="12" fill="none" stroke="url(#noite-foil-div)" strokeWidth="1" aria-hidden="true">
+    <svg className="noite-divider" viewBox="0 0 132 12" width="132" height="12" fill="none" stroke={`url(#noite-foil-div-${u})`} strokeWidth="1" aria-hidden="true">
       <defs>
-        <Foil id="noite-foil-div" x2={132} />
+        <Foil id={`noite-foil-div-${u}`} x2={132} />
       </defs>
       <path d="M0 6h44M88 6h44" />
       <path d="M66 .8l5.2 5.2-5.2 5.2-5.2-5.2z" />
-      <path d="M66 3.7l2.3 2.3-2.3 2.3-2.3-2.3z" fill="url(#noite-foil-div)" stroke="none" />
-      <path d="M52.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3zM79.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3z" fill="url(#noite-foil-div)" stroke="none" />
+      <path d="M66 3.7l2.3 2.3-2.3 2.3-2.3-2.3z" fill={`url(#noite-foil-div-${u})`} stroke="none" />
+      <path d="M52.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3zM79.5 3.7l2.3 2.3-2.3 2.3-2.3-2.3z" fill={`url(#noite-foil-div-${u})`} stroke="none" />
     </svg>
   );
 }
 
 /** Eco do leque, pequeno e invertido, no pé do cartão: mesma construção do topo (raios que param no arco duplo). */
 function Foot() {
+  const u = useUid();
   const cx = 40;
   const cy = 5;
   return (
-    <svg className="noite-foot" viewBox="0 0 80 30" width="80" height="30" fill="none" stroke="url(#noite-foil-foot)" strokeWidth="1" strokeLinecap="round" aria-hidden="true">
+    <svg className="noite-foot" viewBox="0 0 80 30" width="80" height="30" fill="none" stroke={`url(#noite-foil-foot-${u})`} strokeWidth="1" strokeLinecap="round" aria-hidden="true">
       <defs>
-        <Foil id="noite-foil-foot" x2={80} />
+        <Foil id={`noite-foil-foot-${u}`} x2={80} />
       </defs>
       <path d={rays(cx, cy, 7, () => 17.5, 15, 1)} />
       <path d={`M${cx - 18} ${cy}A18 18 0 0 0 ${cx + 18} ${cy}`} />
       <path d={`M${cx - 21.5} ${cy}A21.5 21.5 0 0 0 ${cx + 21.5} ${cy}`} />
       <path d={`M${cx - 7} ${cy}A7 7 0 0 0 ${cx + 7} ${cy}`} />
-      <path d={`M${cx - 3.5} ${cy}A3.5 3.5 0 0 0 ${cx + 3.5} ${cy}z`} fill="url(#noite-foil-foot)" stroke="none" />
+      <path d={`M${cx - 3.5} ${cy}A3.5 3.5 0 0 0 ${cx + 3.5} ${cy}z`} fill={`url(#noite-foil-foot-${u})`} stroke="none" />
       <path d={`M1 ${cy}H79M14 ${cy - 4}H66`} />
     </svg>
   );
@@ -120,6 +124,7 @@ function Scales({ id, fill, r }: { id: string; fill: string; r: number }) {
 }
 
 function Art({ slot }: ArtProps) {
+  const u = useUid();
   if (slot === "top")
     return (
       <>
@@ -137,8 +142,8 @@ function Art({ slot }: ArtProps) {
         <Corner pos="br" />
       </>
     );
-  if (slot === "backdrop") return <Scales id="noite-scales-bg" fill="var(--bg)" r={28} />;
-  if (slot === "liner") return <Scales id="noite-scales-liner" fill="var(--liner)" r={16} />;
+  if (slot === "backdrop") return <Scales id={`noite-scales-bg-${u}`} fill="var(--bg)" r={28} />;
+  if (slot === "liner") return <Scales id={`noite-scales-liner-${u}`} fill="var(--liner)" r={16} />;
   return null;
 }
 

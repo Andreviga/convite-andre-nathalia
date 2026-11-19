@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Debutante: noite de gala. Papel escuro, nome em caligrafia com foil, uma tiara de fio fino como motivo-herói
 // e o "15" entre dois brilhos como detalhe. Contorno mais grosso, filigrana mais fina, tudo na cor de destaque da paleta.
@@ -43,6 +44,7 @@ function drop(cx: number, y: number, h: number): string {
 // Tiara: aro duplo com um festão de contas, cinco arcos em ogiva (contorno mais grosso), filigrana fina por dentro,
 // hastes com conta entre os arcos, volutas nas pontas e pedras em gota de tamanhos diferentes, a do centro maior.
 function Tiara() {
+  const u = useUid();
   // metade esquerda; a direita é o espelho
   const arches =
     "M84 63.6C81 48 96.6 41 100 21" + // meio arco central
@@ -54,9 +56,9 @@ function Tiara() {
     "M33 68.9C30.4 62.4 25 58.6 21.8 61C19.6 63 21.4 66.2 24.2 65"; // voluta da ponta
   const beads = Array.from({ length: 19 }, (_, i) => onArc([27.5, 73.6], [100, 60], [172.5, 73.6], (i + 0.5) / 19));
   return (
-    <svg className="deb-tiara" viewBox="0 0 200 82" width="170" height="69.7" fill="none" stroke="url(#debutante-foil)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="deb-tiara" viewBox="0 0 200 82" width="170" height="69.7" fill="none" stroke={`url(#debutante-foil-${u})`} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
       <defs>
-        <linearGradient id="debutante-foil" gradientUnits="userSpaceOnUse" x1="14" y1="6" x2="186" y2="78">
+        <linearGradient id={`debutante-foil-${u}`} gradientUnits="userSpaceOnUse" x1="14" y1="6" x2="186" y2="78">
           <FoilStops />
         </linearGradient>
       </defs>
@@ -71,7 +73,7 @@ function Tiara() {
         <path d={filigree} transform="translate(200 0) scale(-1 1)" />
         <path d="M100 59.4C93.6 54 95 44 100 34.5C105 44 106.4 54 100 59.4Z" />
       </g>
-      <g fill="url(#debutante-foil)" stroke="none">
+      <g fill={`url(#debutante-foil-${u})`} stroke="none">
         {/* festão de contas dentro do aro: uma maior a cada duas */}
         {beads.map(([x, y], i) => (
           <circle key={i} cx={round(x)} cy={round(y)} r={i === 9 ? 1.9 : i % 2 === 1 ? 1.25 : 0.75} />
@@ -105,15 +107,16 @@ function Tiara() {
 
 // Ornamento neutro (eventos que não são festa de 15 anos): um brilho grande entre brilhos menores, sobre um arco fino.
 function Sparkle() {
+  const u = useUid();
   return (
-    <svg className="deb-sparkle" viewBox="0 0 160 46" width="136" height="39.1" fill="none" stroke="url(#debutante-foil)" strokeWidth="0.8" strokeLinecap="round">
+    <svg className="deb-sparkle" viewBox="0 0 160 46" width="136" height="39.1" fill="none" stroke={`url(#debutante-foil-${u})`} strokeWidth="0.8" strokeLinecap="round">
       <defs>
-        <linearGradient id="debutante-foil" gradientUnits="userSpaceOnUse" x1="10" y1="2" x2="150" y2="44">
+        <linearGradient id={`debutante-foil-${u}`} gradientUnits="userSpaceOnUse" x1="10" y1="2" x2="150" y2="44">
           <FoilStops />
         </linearGradient>
       </defs>
       <path d="M34 39Q80 46.5 126 39" />
-      <g fill="url(#debutante-foil)" stroke="none">
+      <g fill={`url(#debutante-foil-${u})`} stroke="none">
         <path d={spark(80, 18, 16)} />
         <path d={spark(50, 25, 6.5)} opacity="0.9" />
         <path d={spark(110, 25, 6.5)} opacity="0.9" />
@@ -131,20 +134,21 @@ function Sparkle() {
 
 // Divisor: o "15" em itálico entre dois brilhos e dois fios que somem nas pontas.
 function Fifteen({ show }: { show: boolean }) {
+  const u = useUid();
   return (
     <svg className="deb-fifteen" viewBox="0 0 220 26" width="220" height="26" fill="none">
       <defs>
-        <linearGradient id="debutante-rule-l" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="72" y2="0">
+        <linearGradient id={`debutante-rule-l-${u}`} gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="72" y2="0">
           <stop offset="0" stopColor="currentColor" stopOpacity="0" />
           <stop offset="1" stopColor="currentColor" stopOpacity="0.85" />
         </linearGradient>
-        <linearGradient id="debutante-rule-r" gradientUnits="userSpaceOnUse" x1="148" y1="0" x2="212" y2="0">
+        <linearGradient id={`debutante-rule-r-${u}`} gradientUnits="userSpaceOnUse" x1="148" y1="0" x2="212" y2="0">
           <stop offset="0" stopColor="currentColor" stopOpacity="0.85" />
           <stop offset="1" stopColor="currentColor" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <rect x="8" y="12.5" width="64" height="1" fill="url(#debutante-rule-l)" />
-      <rect x="148" y="12.5" width="64" height="1" fill="url(#debutante-rule-r)" />
+      <rect x="8" y="12.5" width="64" height="1" fill={`url(#debutante-rule-l-${u})`} />
+      <rect x="148" y="12.5" width="64" height="1" fill={`url(#debutante-rule-r-${u})`} />
       <path d={spark(82, 13, 4.2)} fill="currentColor" />
       <path d={spark(138, 13, 4.2)} fill="currentColor" />
 {show ? (
@@ -161,10 +165,11 @@ function Fifteen({ show }: { show: boolean }) {
 // Fundo da página: poucos brilhos espalhados, parados. Dois ladrilhos grandes de períodos diferentes, sobrepostos,
 // para a repetição não formar grade em tela larga. A faixa do meio fica limpa (máscara no CSS): é onde há texto.
 function Backdrop() {
+  const u = useUid();
   return (
     <svg className="deb-sky" width="100%" height="100%">
       <defs>
-        <pattern id="debutante-sky" width="610" height="940" patternUnits="userSpaceOnUse">
+        <pattern id={`debutante-sky-${u}`} width="610" height="940" patternUnits="userSpaceOnUse">
           <g fill="currentColor">
             <path d={spark(26, 52, 5)} opacity="0.5" />
             <path d={spark(338, 30, 3)} opacity="0.36" />
@@ -184,7 +189,7 @@ function Backdrop() {
             <circle cx="170" cy="702" r="0.9" opacity="0.35" />
           </g>
         </pattern>
-        <pattern id="debutante-sky-b" width="437" height="709" patternUnits="userSpaceOnUse" patternTransform="translate(-61 173)">
+        <pattern id={`debutante-sky-b-${u}`} width="437" height="709" patternUnits="userSpaceOnUse" patternTransform="translate(-61 173)">
           <g fill="currentColor">
             <path d={spark(388, 64, 3.2)} opacity="0.36" />
             <path d={spark(118, 150, 2.2)} opacity="0.28" />
@@ -196,24 +201,25 @@ function Backdrop() {
           </g>
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#debutante-sky)" />
-      <rect width="100%" height="100%" fill="url(#debutante-sky-b)" />
+      <rect width="100%" height="100%" fill={`url(#debutante-sky-${u})`} />
+      <rect width="100%" height="100%" fill={`url(#debutante-sky-b-${u})`} />
     </svg>
   );
 }
 
 // Forro do envelope: treliça em losango com um brilho em cada cruzamento.
 function Liner() {
+  const u = useUid();
   return (
     <svg width="100%" height="100%">
       <defs>
-        <pattern id="debutante-liner" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <pattern id={`debutante-liner-${u}`} width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
           <path d="M0 0.5h26M0.5 0v26" stroke="currentColor" strokeWidth="0.6" opacity="0.5" />
           <path d={spark(13, 13, 4)} fill="currentColor" transform="rotate(45 13 13)" />
           <circle cx="0.5" cy="0.5" r="1" fill="currentColor" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#debutante-liner)" />
+      <rect width="100%" height="100%" fill={`url(#debutante-liner-${u})`} />
     </svg>
   );
 }

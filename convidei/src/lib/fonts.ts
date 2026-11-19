@@ -1,11 +1,14 @@
 import {
-  Alex_Brush, Bodoni_Moda, Cinzel, Cormorant_Garamond, Cormorant_SC, DM_Sans, DM_Serif_Display, Fraunces, Great_Vibes,
+  Alex_Brush, Bodoni_Moda, Cinzel, Cormorant_SC, DM_Sans, DM_Serif_Display, EB_Garamond, Fraunces, Great_Vibes,
   Italianno, Jost, Marcellus, Montserrat, Ms_Madi, Parisienne, Pinyon_Script, Playfair_Display, Poiret_One,
 } from "next/font/google";
 
 // Fontes disponíveis para o app e para os modelos de convite. Cada uma vira uma variável CSS (--f-*).
 // Só as duas do app são pré-carregadas; as dos modelos baixam apenas quando o modelo as usa.
-const serif = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600"], style: ["normal", "italic"], variable: "--f-serif", display: "swap" });
+// Serifa de texto: EB Garamond (variável, pesos 400 a 800, com itálico de verdade). Era a Cormorant Garamond, mas nela (e na
+// Cormorant e na Cormorant Infant) o circunflexo minúsculo é uma cunha fina e alta: "Você", "bebê" e "avô" pareciam ter
+// sujeira sobre a letra. É desenho da fonte, não peso sintetizado. Peso 300 não existe aqui: quem pedir recebe 400.
+const serif = EB_Garamond({ subsets: ["latin"], style: ["normal", "italic"], variable: "--f-serif", display: "swap" });
 const sans = DM_Sans({ subsets: ["latin"], variable: "--f-sans", display: "swap" });
 const sc = Cormorant_SC({ subsets: ["latin"], display: "swap", preload: false, weight: ["400", "500", "600"], variable: "--f-sc" });
 const pinyon = Pinyon_Script({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-pinyon" });

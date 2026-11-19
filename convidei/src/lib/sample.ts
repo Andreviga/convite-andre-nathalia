@@ -1,6 +1,7 @@
 import { TEMPLATE_DEFS, templateDef } from "../templates/index";
 import { EVENT_TYPES, eventType } from "./catalog.ts";
 import type { EventRow, GuestRow } from "./events.ts";
+import { isDate } from "./format.ts";
 
 // Dados de exemplo para mostrar cada modelo sem precisar de um evento real (galeria e prévias).
 const TITLES: Record<string, string> = {
@@ -26,14 +27,15 @@ export function sampleEvent(templateId: string, options: SampleOptions = {}): Ev
   return {
     id: "exemplo",
     user_id: "exemplo",
-    slug: "exemplo",
+    // O slug entra na chave que lembra "envelope já aberto": um por modelo e paleta, para cada demonstração mostrar o seu envelope.
+    slug: `exemplo-${tpl.id}${options.palette ? `-${options.palette}` : ""}`,
     type: type.id,
     template: tpl.id,
     palette: options.palette ?? "",
     title: options.title?.trim() || (TITLES[type.id] ?? "Marina & Rafael"),
     headline: type.headline,
     message: type.message,
-    event_date: options.date && /^\d{4}-\d{2}-\d{2}$/.test(options.date) ? options.date : nextYear(9, 11),
+    event_date: options.date && isDate(options.date) ? options.date : nextYear(9, 11),
     event_time: "16:30",
     venue_name: "Espaço Villa Jardim",
     address: "Rua das Flores, 123 — Jardins, São Paulo/SP",

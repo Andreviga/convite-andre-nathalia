@@ -1,5 +1,5 @@
 import { eventBySlug } from "@/lib/events";
-import { icsFile } from "@/lib/format";
+import { eventCalendarTitle, icsFile } from "@/lib/format";
 import { baseUrl } from "@/lib/url";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
@@ -8,7 +8,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   if (!event) return new Response("Convite não encontrado", { status: 404 });
   const body = icsFile({
     uid: event.id,
-    title: event.title,
+    title: eventCalendarTitle(event.type, event.title),
     date: event.event_date,
     time: event.event_time,
     location: [event.venue_name, event.address].filter(Boolean).join(", "),

@@ -1,13 +1,153 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { saveEvent, type FormState } from "@/app/actions";
 import { EVENT_TYPES, eventType } from "@/lib/catalog";
+import { capitalize, dateBits, isDate, longDate, prettyTime, shortDate } from "@/lib/format";
+import { splitTitle } from "@/lib/names";
 import { PIX_KEY_TYPES } from "@/lib/pix";
-import { paletteOf, TEMPLATE_DEFS, templateDef } from "@/templates";
-import type { CoverData } from "./InviteCover";
-import { TemplateThumb } from "./TemplateThumb";
+import { PREMIUM_PRICE } from "@/lib/plans";
+import { paletteOf, paletteStyle, TEMPLATE_DEFS, templateDef } from "@/templates";
+import type { Palette } from "@/templates/types";
+import { InviteCover, type CoverData } from "./InviteCover";
+import { paletteDot, TemplateThumb } from "./TemplateThumb";
+
+/** Campos do formulário que não têm estado próprio: lidos na hora de abrir a prévia completa. */
+type PreviewExtra = { dress_code: string; rsvp_deadline: string; extra_info: string; gift_message: string; gifts: string[]; pix: boolean; pix_holder: string };
+
+const LEAVE = "Sair sem salvar? O que você preencheu neste convite será perdido.";
+
+/** Botão de mentira: na prévia nada é clicável, só mostra como fica. */
+function Fake({ className, children }: { className: string; children: React.ReactNode }) {
+  return <span className={`inv-btn ${className}`}>{children}</span>;
+}
+
+/**
+ * O convite inteiro, rolável, com o que está no formulário agora (ainda não salvo).
+ * Usa as mesmas classes do convite de verdade (Invite.tsx), sem as partes que dependem do servidor (links, QR code, respostas).
+ */
+function FullPreview({ data, palette, today, extra }: { data: CoverData; palette: Palette; today: string; extra: PreviewExtra }) {
+  const def = templateDef(data.template);
+  const Art = def.Art;
+  const { initials } = splitTitle(data.title);
+  const bits = isDate(data.event_date) ? dateBits(data.event_date) : null;
+  const time = prettyTime(data.event_time);
+  const place = [data.venue_name, data.address].filter(Boolean).join(", ");
+  const hasGifts = Boolean(extra.gift_message || extra.gifts.length || extra.pix);
+  return (
+    <div className="inv" data-template={def.id} data-still="true" style={paletteStyle(palette)} aria-hidden="true">
+      <div className="inv-art inv-art-backdrop"><Art slot="backdrop" initials={initials} /></div>
+      <div className="inv-sheet">
+        <InviteCover data={data} today={today} more={false} />
+
+        <section className="inv-section">
+          {bits ? (
+            <>
+              <p className="inv-kicker">Quando</p>
+              <p className="inv-big">
+                {capitalize(bits.weekday)}, {Number(bits.day)} de {bits.month} de {bits.year}
+              </p>
+              {time ? <p className="inv-text">às {time}</p> : null}
+            </>
+          ) : null}
+          {place ? (
+            <>
+              <hr className="inv-rule" />
+              <p className="inv-kicker">Onde</p>
+              {data.venue_name ? <p className="inv-big">{data.venue_name}</p> : null}
+              {data.address ? <p className="inv-text">{data.address}</p> : null}
+              <div className="inv-stack">
+                <Fake className="inv-btn-main">Abrir no Google Maps</Fake>
+                <div className="inv-grid-2">
+                  <Fake className="">Waze</Fake>
+                  <Fake className="">Uber</Fake>
+                </div>
+              </div>
+            </>
+          ) : null}
+          {extra.dress_code ? (
+            <>
+              <hr className="inv-rule" />
+              <p className="inv-kicker">Traje</p>
+              <p className="inv-big">{extra.dress_code}</p>
+            </>
+          ) : null}
+          <hr className="inv-rule" />
+          <p className="inv-kicker">Para não esquecer</p>
+          <div className="inv-grid-2 inv-calendar">
+            <Fake className="inv-btn-quiet">Google Agenda</Fake>
+            <Fake className="inv-btn-quiet">Outras agendas</Fake>
+          </div>
+        </section>
+
+        <section className="inv-section">
+          <p className="inv-kicker">Sua resposta</p>
+          <p className="inv-section-title">Você vem?</p>
+          {isDate(extra.rsvp_deadline) ? <p className="inv-hint">Responda até {shortDate(extra.rsvp_deadline)}.</p> : null}
+          <div className="rsvp">
+            <div className="rsvp-buttons">
+              <Fake className="inv-btn-main rsvp-yes">Vou comparecer</Fake>
+              <Fake className="rsvp-no">Não poderei ir</Fake>
+            </div>
+          </div>
+        </section>
+
+        {hasGifts ? (
+          <section className="inv-section">
+            <p className="inv-kicker">Com carinho</p>
+            <p className="inv-section-title">Presentes</p>
+            {extra.gift_message ? <p className="inv-text">{extra.gift_message}</p> : null}
+            {extra.gifts.length ? (
+              <div className="inv-stack">
+                {extra.gifts.map((label, i) => (
+                  <Fake key={i} className="inv-btn-main">
+                    {label}
+                  </Fake>
+                ))}
+              </div>
+            ) : null}
+            {extra.pix ? (
+              <>
+                {extra.gifts.length || extra.gift_message ? <hr className="inv-rule" /> : null}
+                <div className="inv-pix">
+                  <p className="inv-kicker">Presentear com Pix</p>
+                  <div className="inv-qr preview-qr">QR code do Pix</div>
+                  {extra.pix_holder ? (
+                    <p className="inv-text">
+                      Em nome de <strong>{extra.pix_holder}</strong>
+                    </p>
+                  ) : null}
+                  <Fake className="inv-btn-main">Copiar código Pix</Fake>
+                </div>
+              </>
+            ) : null}
+          </section>
+        ) : null}
+
+        {extra.extra_info ? (
+          <section className="inv-section">
+            <p className="inv-kicker">Bom saber</p>
+            <p className="inv-text">{extra.extra_info}</p>
+          </section>
+        ) : null}
+
+        <footer className="inv-end">
+          <div className="inv-section inv-sign">
+            <div className="inv-art inv-sign-art"><Art slot="divider" initials={initials} eventType={data.type} /></div>
+            <p className="inv-kicker">Esperamos você</p>
+            <p className="inv-sign-names">{data.title}</p>
+            {bits ? (
+              <p className="inv-sign-date">
+                {Number(bits.day)} de {bits.month} de {bits.year}
+              </p>
+            ) : null}
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}
 
 type Props = { initial: Record<string, string>; eventId?: string; premium: boolean; today: string };
 
@@ -17,6 +157,7 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
   const [type, setType] = useState(v.type || "casamento");
   const [tpl, setTpl] = useState(v.template || eventType(type).template);
   const [palette, setPalette] = useState(v.palette || "");
+  const [pixType, setPixType] = useState(v.pix_key_type || "cpf");
   const [cover, setCover] = useState({
     title: v.title ?? "",
     headline: v.headline ?? eventType(type).headline,
@@ -27,12 +168,133 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
     address: v.address ?? "",
   });
   const [showPreview, setShowPreview] = useState(false);
+  const [extra, setExtra] = useState<PreviewExtra | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  // Controle de "alterações não salvas" e do botão voltar. Tudo em refs: os ouvintes são registrados uma vez só.
+  const flags = useRef({ dirty: false, guard: false, submitting: false, leaving: false, preview: false });
   const current = eventType(type);
   const def = templateDef(tpl);
   const activePalette = paletteOf(def, palette);
   const set = (key: keyof typeof cover) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setCover((c) => ({ ...c, [key]: e.target.value }));
   // Na prévia, campos vazios aparecem com um exemplo, para a pessoa ver o desenho completo desde o início.
   const data: CoverData = { ...cover, template: tpl, type, title: cover.title || current.titlePlaceholder, event_date: cover.event_date || `${Number(today.slice(0, 4)) + 1}-09-11` };
+
+  // Chegou a resposta do servidor (erro de validação): o formulário continua com alterações por salvar.
+  useEffect(() => {
+    flags.current.submitting = false;
+  }, [state]);
+
+  useEffect(() => {
+    const f = flags.current;
+    const unsaved = () => f.dirty && !f.submitting && !f.leaving;
+    // Voltar do aparelho/navegador: com a prévia aberta, fecha a prévia; com alterações por salvar, pergunta antes de sair.
+    const onPop = (event: PopStateEvent) => {
+      const mark = (event.state ?? {}) as { convideiPreview?: boolean; convideiGuard?: boolean };
+      if (mark.convideiPreview) {
+        f.preview = true; // "avançar" de volta para a prévia
+        setShowPreview(true);
+        return;
+      }
+      if (f.preview) {
+        f.preview = false;
+        setShowPreview(false);
+        return;
+      }
+      if (mark.convideiGuard || !f.guard || !unsaved()) return;
+      if (window.confirm(LEAVE)) {
+        f.leaving = true;
+        window.history.back();
+      } else {
+        window.history.pushState({ convideiGuard: true }, "");
+      }
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && f.preview) window.history.back();
+    };
+    // Fechar a aba, recarregar ou digitar outro endereço.
+    const onUnload = (event: BeforeUnloadEvent) => {
+      if (unsaved()) event.preventDefault();
+    };
+    // Links da própria página (Cancelar, "Meus convites", logo): confirma antes de trocar de tela.
+    const onClick = (event: MouseEvent) => {
+      if (!unsaved() || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) return;
+      const link = (event.target as Element | null)?.closest?.("a[href]");
+      if (!link || link.getAttribute("target") === "_blank" || (link.getAttribute("href") ?? "").startsWith("#")) return;
+      if (window.confirm(LEAVE)) f.leaving = true;
+      else {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("beforeunload", onUnload);
+    window.addEventListener("click", onClick, true);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("beforeunload", onUnload);
+      window.removeEventListener("click", onClick, true);
+    };
+  }, []);
+
+  // Com a prévia aberta, a página de trás não rola e o foco vai para o botão de fechar; ao fechar, volta para quem abriu.
+  useEffect(() => {
+    if (!showPreview) return;
+    const root = document.documentElement;
+    const before = root.style.overflow;
+    root.style.overflow = "hidden";
+    closeRef.current?.focus();
+    return () => {
+      root.style.overflow = before;
+      openerRef.current?.focus();
+    };
+  }, [showPreview]);
+
+  /** Primeira alteração: cria uma entrada no histórico para o "voltar" poder perguntar antes de descartar o que foi digitado. */
+  function markDirty() {
+    const f = flags.current;
+    f.dirty = true;
+    if (!f.guard) {
+      f.guard = true;
+      window.history.pushState({ convideiGuard: true }, "");
+    }
+  }
+
+  function openPreview(event: React.MouseEvent<HTMLElement>) {
+    const form = formRef.current;
+    const field = (name: string) => {
+      const value = form ? new FormData(form).get(name) : "";
+      return typeof value === "string" ? value.trim() : "";
+    };
+    setExtra({
+      dress_code: field("dress_code"),
+      rsvp_deadline: field("rsvp_deadline"),
+      extra_info: field("extra_info"),
+      gift_message: field("gift_message"),
+      gifts: [0, 1, 2].filter((i) => field(`gift_url_${i}`)).map((i) => field(`gift_label_${i}`) || "Lista de presentes"),
+      pix: Boolean(field("pix_key")),
+      pix_holder: field("pix_holder"),
+    });
+    openerRef.current = event.currentTarget;
+    flags.current.preview = true;
+    // Entrada própria no histórico: o "voltar" do celular fecha a prévia em vez de sair do editor.
+    window.history.pushState({ convideiPreview: true }, "");
+    setShowPreview(true);
+  }
+
+  /** Envia sem deixar o React 19 "resetar" o formulário: depois de um erro, tudo continua como a pessoa deixou. */
+  function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    flags.current.submitting = true;
+    startTransition(() => action(formData));
+  }
+
+  const pastDate = isDate(cover.event_date) && cover.event_date < today;
+  const premiumNotice = def.premium && !premium;
 
   function changeType(next: string) {
     const from = eventType(type);
@@ -49,8 +311,19 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
 
   return (
     <div className="editor">
-      <form action={action}>
+      <form ref={formRef} action={action} onSubmit={submit} onChange={markDirty}>
         {eventId ? <input type="hidden" name="id" value={eventId} /> : null}
+        {/* O que vale ao salvar é o estado (o mesmo que a prévia mostra), não a marcação dos botões de opção. */}
+        <input type="hidden" name="type" value={type} />
+        <input type="hidden" name="template" value={tpl} />
+        <input type="hidden" name="palette" value={activePalette.id} />
+
+        {premiumNotice ? (
+          <p className="alert alert-info" style={{ marginBottom: 16 }}>
+            <strong>{def.name} é um modelo Premium ({PREMIUM_PRICE} por evento).</strong> Você monta e vê o convite sem pagar; enquanto o evento estiver no plano grátis, os
+            convidados veem uma faixa de “prévia” no topo. Se preferir, escolha um modelo grátis na seção “Modelo”.
+          </p>
+        ) : null}
 
         <section className="panel">
           <h2>Que festa é essa?</h2>
@@ -58,7 +331,7 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
           <div className="choice-grid" role="radiogroup" aria-label="Tipo de evento">
             {EVENT_TYPES.map((t) => (
               <label key={t.id} className="choice">
-                <input type="radio" name="type" value={t.id} checked={type === t.id} onChange={() => changeType(t.id)} />
+                <input type="radio" name="type_pick" value={t.id} checked={type === t.id} onChange={() => changeType(t.id)} />
                 <span aria-hidden="true">{t.emoji}</span> {t.label}
               </label>
             ))}
@@ -91,7 +364,12 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
             <div className="grid-2">
               <label className="field">
                 <span>Data</span>
-                <input type="date" name="event_date" required value={cover.event_date} onChange={set("event_date")} />
+                <input type="date" name="event_date" required value={cover.event_date} onChange={set("event_date")} aria-describedby={pastDate ? "past-date" : undefined} />
+                {pastDate ? (
+                  <small id="past-date" className="field-warn" role="status">
+                    Essa data já passou ({longDate(cover.event_date)}). Confira o dia e o ano.
+                  </small>
+                ) : null}
               </label>
               <label className="field">
                 <span>Horário <small>(opcional)</small></span>
@@ -130,7 +408,7 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
           <div className="tpl-grid" role="radiogroup" aria-label="Modelo do convite">
             {TEMPLATE_DEFS.map((t) => (
               <label key={t.id} className="tpl-pick">
-                <input type="radio" name="template" value={t.id} checked={tpl === t.id} onChange={() => { setTpl(t.id); setPalette(""); }} />
+                <input type="radio" name="template_pick" value={t.id} checked={tpl === t.id} onChange={() => { setTpl(t.id); setPalette(""); }} />
                 <TemplateThumb data={{ ...data, template: t.id }} today={today} />
                 <span className="tpl-pick-name">
                   {t.name}
@@ -147,17 +425,15 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
               <div className="swatches" role="radiogroup" aria-label="Cores">
                 {def.palettes.map((p) => (
                   <label key={p.id} className="swatch">
-                    <input type="radio" name="palette" value={p.id} checked={activePalette.id === p.id} onChange={() => setPalette(p.id)} />
-                    <i style={{ background: `linear-gradient(135deg, ${p.vars.paper} 50%, ${p.vars.ink} 50%)` }} aria-hidden="true" />
+                    <input type="radio" name="palette_pick" value={p.id} checked={activePalette.id === p.id} onChange={() => setPalette(p.id)} />
+                    <i style={{ background: paletteDot(p) }} aria-hidden="true" />
                     {p.name}
                   </label>
                 ))}
               </div>
             </>
-          ) : (
-            <input type="hidden" name="palette" value={activePalette.id} />
-          )}
-          {def.premium && !premium ? (
+          ) : null}
+          {premiumNotice ? (
             <p className="alert alert-info" style={{ marginTop: 14 }}>
               {def.name} é um modelo Premium. Você pode montar e ver o convite à vontade; enquanto o evento estiver no plano grátis, ele aparece para os convidados com uma faixa de “prévia”.
               {eventId ? (
@@ -207,7 +483,7 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
             <div className="grid-2">
               <label className="field">
                 <span>Tipo da chave Pix</span>
-                <select name="pix_key_type" defaultValue={v.pix_key_type || "cpf"}>
+                <select name="pix_key_type" value={pixType} onChange={(e) => setPixType(e.target.value)}>
                   {PIX_KEY_TYPES.map((k) => (
                     <option key={k.id} value={k.id}>
                       {k.label}
@@ -250,23 +526,28 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
       </form>
 
       <aside className="editor-preview" aria-label="Prévia do convite">
-        <p className="editor-preview-label">Prévia · modelo {def.name}</p>
+        <p className="editor-preview-label">Prévia da capa · modelo {def.name}</p>
         <div className="device">
           <TemplateThumb data={data} palette={activePalette.id} today={today} />
         </div>
+        <button type="button" className="btn btn-sm editor-preview-all" onClick={openPreview}>
+          Ver o convite inteiro
+        </button>
       </aside>
 
-      <button type="button" className="btn preview-fab" onClick={() => setShowPreview(true)}>
+      <button type="button" className="btn preview-fab" onClick={openPreview}>
         Ver prévia
       </button>
-      {showPreview ? (
-        <div className="preview-modal" role="dialog" aria-modal="true" aria-label="Prévia do convite">
-          <button type="button" className="btn btn-sm preview-close" onClick={() => setShowPreview(false)}>
-            Fechar prévia
-          </button>
-          <div className="preview-full">
-            <TemplateThumb data={data} palette={activePalette.id} today={today} />
+      {showPreview && extra ? (
+        <div className="preview-modal" role="dialog" aria-modal="true" aria-label="Prévia do convite inteiro">
+          <div className="preview-top">
+            <span>Prévia · role para ver tudo</span>
+            <button ref={closeRef} type="button" className="btn btn-sm preview-close" onClick={() => window.history.back()}>
+              Fechar prévia
+            </button>
           </div>
+          <FullPreview data={data} palette={activePalette} today={today} extra={extra} />
+          <p className="preview-end">Fim da prévia. Os botões funcionam no convite de verdade, depois de salvar.</p>
         </div>
       ) : null}
     </div>

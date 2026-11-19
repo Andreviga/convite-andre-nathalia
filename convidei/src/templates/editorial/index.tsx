@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Editorial: capa de revista. Nomes enormes em caixa alta, composição assimétrica, fios de ponta a ponta e nenhum ornamento figurativo.
 // O único sinal gráfico é o quadradinho de "fim de matéria", que abre o cabeçalho e fecha o cartão.
@@ -13,14 +14,15 @@ function Mark({ size = 7 }: { size?: number }) {
 
 // Forro do envelope: risca de giz, como forro de alfaiataria.
 function Liner() {
+  const u = useUid();
   return (
     <svg width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id="editorial-liner" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)">
+        <pattern id={`editorial-liner-${u}`} width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)">
           <path d="M0 0.5h9" stroke="currentColor" strokeWidth="1" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#editorial-liner)" />
+      <rect width="100%" height="100%" fill={`url(#editorial-liner-${u})`} />
     </svg>
   );
 }

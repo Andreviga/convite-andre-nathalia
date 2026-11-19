@@ -6,6 +6,7 @@
   --names-size: clamp(44px, 15.4cqw, 68px);
   --names-weight: 400;
   --names-leading: 1.12;
+  --names-em: 0.49;
   --amp-scale: 0.5;
   --label-tracking: 0.2em;
   --radius: 3px;
@@ -56,19 +57,20 @@
 .inv[data-template="botanico"] .inv-monogram + .inv-names { margin-top: 7cqw; }
 .inv[data-template="botanico"] .inv-names { padding: 0.1em 0 0.06em; }
 .inv[data-template="botanico"] .inv-amp { color: var(--seal); margin: 0.16em 0 -0.04em; } /* folga para as descendentes do primeiro nome (g, j, p, ç) */
-/* título único comprido: script fica ilegível, então vai em serifada itálica */
-.inv[data-template="botanico"] .inv-names[data-count="1"][data-long="true"] { font: italic 500 clamp(30px, 10.4cqw, 46px)/1.14 var(--font-text); }
+/* frase (travessão ou quatro palavras ou mais): script fica ilegível, então vai em serifada itálica. Nome comprido continua em script. */
+.inv[data-template="botanico"] .inv-names[data-phrase="true"] { --names-em: 0.5; font: italic 500 clamp(30px, 10.4cqw, 46px)/1.14 var(--font-text); }
 .inv[data-template="botanico"] .inv-names[data-count="1"]:not([data-long="true"]) { font-size: calc(var(--names-size) * 1.12); }
+/* algarismos do título na serifa do modelo (os da script ficam ruins) */
+.inv[data-template="botanico"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-size: 0.7em; font-weight: 500; }
 .inv[data-template="botanico"] .inv-message { font-size: 19px; margin-top: 14px !important; }
 .inv[data-template="botanico"] .inv-art-divider { margin: 22px 0 0; }
-.inv[data-template="botanico"] .inv-date { margin-top: 22px; gap: 14px; }
+.inv[data-template="botanico"] .inv-date { margin-top: 22px; gap: 6px clamp(8px, 3.6cqw, 14px); }
 .inv[data-template="botanico"] .inv-date-side,
-.inv[data-template="botanico"] .inv-date-month { font-size: clamp(13px, 3.9cqw, 14.5px); font-weight: 600; letter-spacing: 0.14em; color: var(--ink); }
+.inv[data-template="botanico"] .inv-date-month { font-size: clamp(12.5px, 4.2cqw, 14.5px); font-weight: 600; letter-spacing: 0.14em; color: var(--ink); }
 /* algarismos alinhados em tudo que é data, hora e contagem (o padrão do Cormorant é o estilo antigo: "16h3o") */
 .inv[data-template="botanico"] :is(.inv-date-side, .inv-date-month, .inv-countdown, .inv-big, .inv-headline, .inv-kicker, .inv-names[data-count="1"][data-long="true"], .inv-message, .inv-place, .inv-section-title) { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="botanico"] .inv-date-side { border: 0; padding-block: 0; padding-left: 0.14em; }
-/* o mês não alarga a coluna do meio: assim o dia da semana e a hora têm espaço e ficam simétricos */
-.inv[data-template="botanico"] .inv-date-month { padding-left: 0.14em; margin-top: 4px; width: 0; display: flex; justify-content: center; }
+.inv[data-template="botanico"] .inv-date-month { padding-left: 0.14em; }
 .inv[data-template="botanico"] .inv-date-day { font-size: 60px; font-weight: 500; }
 .inv[data-template="botanico"] .inv-place { font: italic 500 19px/1.4 var(--font-text); margin-top: 22px !important; }
 .inv[data-template="botanico"] .inv-countdown { background: none; padding: 0; margin-top: 14px !important; font: 500 13px/1.2 var(--font-label); letter-spacing: 0.18em; padding-left: 0.18em; text-transform: uppercase; color: var(--soft); }
@@ -89,18 +91,12 @@
 .inv[data-template="botanico"] .env-to { font: italic 400 18px/1.4 var(--font-text); }
 .inv[data-template="botanico"] .env-to strong { font: 400 40px/1.15 var(--font-names); margin-top: 4px; }
 .inv[data-template="botanico"] .env-liner { color: color-mix(in srgb, var(--liner) 52%, var(--ink)); }
-.inv[data-template="botanico"] .env-cta { font: 600 14px/1 var(--font-label); letter-spacing: 0.2em; padding-left: calc(22px + 0.2em); border-color: color-mix(in srgb, var(--ink) 70%, var(--paper)); }
-/* O forro fica no avesso da aba, no mesmo lugar dela: vira pelo eixo vertical (o triângulo é simétrico). Com o giro
-   da base pelo eixo horizontal, o forro aparecia de ponta-cabeça e solto acima do envelope durante a abertura. */
-.inv[data-template="botanico"] .env-liner { transform: rotateY(180deg); }
-/* Depois de virar, a aba aberta fica atrás do cartão que sobe (a troca acontece quando a aba está de perfil). */
-.inv[data-template="botanico"] .env-flap { transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.15s, z-index 0s 0.5s; }
-.inv[data-template="botanico"] .env[data-state="opening"] .env-flap { z-index: -1; }
+.inv[data-template="botanico"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; }
+/* (o avesso da aba, a ordem das camadas na abertura e o translateZ da frente agora vêm da base) */
+.inv[data-template="botanico"] .env-seal { --seal-size: 35px; } /* Parisienne é larga: cabe no anel do lacre */
 /* O bolso do envelope fica um tom abaixo do cartão e ganha sombra leve nas dobras: sem isso, o cartão (da mesma cor
-   do papel) apaga o "V" ao subir. Cada sombra ocupa uma caixa cuja diagonal é a própria dobra.
-   translateZ(0): sem camada própria, o Chromium perde o clip-path do bolso enquanto o cartão anima. */
+   do papel) apaga o "V" ao subir. Cada sombra ocupa uma caixa cuja diagonal é a própria dobra. */
 .inv[data-template="botanico"] .env-front {
-  transform: translateZ(0);
   background-image:
     linear-gradient(to top right, transparent 43%, color-mix(in srgb, var(--ink) 10%, transparent) 50%, transparent 50%),
     linear-gradient(to top left, transparent 43%, color-mix(in srgb, var(--ink) 10%, transparent) 50%, transparent 50%),

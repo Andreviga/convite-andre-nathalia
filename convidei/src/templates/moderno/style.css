@@ -11,6 +11,7 @@
   --names-weight: 300;
   --names-leading: 1;
   --names-tracking: -0.025em;
+  --names-em: 0.54;
   --amp-scale: 0.52;
   --label-tracking: 0.24em;
   --radius: 0px;
@@ -58,7 +59,7 @@
 .inv[data-template="moderno"] .inv-date-side,
 .inv[data-template="moderno"] .inv-date-month { grid-column: 2; font: 500 14px/1.6 var(--font-label); letter-spacing: 0.16em; color: var(--ink); border: 0; border-left: 1px solid var(--ink); padding: 0 0 0 clamp(16px, 5cqw, 22px); }
 .inv[data-template="moderno"] .inv-date-side:first-child { grid-row: 1; padding-top: 3px; }
-.inv[data-template="moderno"] .inv-date-month { grid-row: 2; color: var(--soft); }
+.inv[data-template="moderno"] .inv-date-month { grid-row: 2; color: var(--soft); font-size: clamp(12px, 4.1cqw, 14px); letter-spacing: 0.12em; } /* "setembro · 2027" cabe ao lado do numeral em 320px */
 /* A hora é informação essencial: maior e mais pesada que o dia da semana e o mês. */
 .inv[data-template="moderno"] .inv-date-side:last-child { grid-row: 3; padding-bottom: 3px; font-size: 18px; font-weight: 600; letter-spacing: 0.1em; line-height: 1.45; }
 
@@ -85,9 +86,9 @@
 .inv[data-template="moderno"] .inv-qr { border-radius: 0; }
 
 /* ───────── Envelope ───────── */
-.inv[data-template="moderno"] .env-to { font: 500 11.5px/1.5 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; padding-left: var(--label-tracking); }
-.inv[data-template="moderno"] .env-to strong { font: 300 33px/1.1 var(--font-text); letter-spacing: -0.02em; text-transform: none; margin-top: 8px; padding-right: var(--label-tracking); }
-.inv[data-template="moderno"] .env-cta { border-radius: 0; font: 500 12.5px/1 var(--font-label); letter-spacing: 0.24em; padding: 15px 22px 15px calc(22px + 0.24em); }
+.inv[data-template="moderno"] .env-to { font: 500 14px/1.5 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; padding-left: 0.16em; }
+.inv[data-template="moderno"] .env-to strong { font: 300 33px/1.1 var(--font-text); letter-spacing: -0.02em; text-transform: none; margin-top: 8px; padding-right: 0.16em; }
+.inv[data-template="moderno"] .env-cta { border-radius: 0; font: 500 16px/1.1 var(--font-label); letter-spacing: 0.14em; }
 .inv[data-template="moderno"] .env-back, .inv[data-template="moderno"] .env-front { border-radius: 1px; }
 /* Envelope um tom mais próximo da tinta que o cartão: na paleta escura o cartão (--paper) subia invisível sobre um envelope da mesma cor. */
 .inv[data-template="moderno"] .env-front { background: color-mix(in srgb, var(--paper) 88%, var(--ink)); background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 84%, var(--ink)), color-mix(in srgb, var(--paper) 89%, var(--ink)) 60%); }

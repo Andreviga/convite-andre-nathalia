@@ -1,4 +1,5 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Monograma: papelaria de família. O herói é um brasão gravado com as iniciais (medalhão oval de fio duplo abraçado por
 // dois ramos de louro). O resto é contido: uma só tinta, Cormorant em itálico e versalete, e o mesmo monograma repetido
@@ -165,11 +166,12 @@ function Divider() {
 
 /** Forro do envelope: o monograma repetido em meia-queda, como papel de forro estampado. */
 function Liner({ initials }: { initials: string[] }) {
+  const u = useUid();
   const text = initials.slice(0, 2).map(plain).join("");
   return (
     <svg width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id="monograma-liner" width="46" height="54" patternUnits="userSpaceOnUse">
+        <pattern id={`monograma-liner-${u}`} width="46" height="54" patternUnits="userSpaceOnUse">
           {[
             [11.5, 13.5],
             [34.5, 40.5],
@@ -188,7 +190,7 @@ function Liner({ initials }: { initials: string[] }) {
           <path d="M34.5 11.5l2 2-2 2-2-2zM11.5 38.5l2 2-2 2-2-2z" fill="currentColor" opacity="0.7" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#monograma-liner)" />
+      <rect width="100%" height="100%" fill={`url(#monograma-liner-${u})`} />
     </svg>
   );
 }

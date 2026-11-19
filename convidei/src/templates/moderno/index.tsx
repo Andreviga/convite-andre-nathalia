@@ -1,18 +1,20 @@
 import type { ArtProps, TemplateDef } from "../types";
+import { useUid } from "../uid";
 
 // Moderno: minimalista tipográfico. Sem script e sem ornamento figurativo: composição à esquerda, nomes em serifa leve
 // e grande, apoio em sem serifa de caixa alta espaçada. O único elemento gráfico é o fio (no bloco da data).
 
 /** Forro do envelope: grade de pequenas cruzes de registro, em traço fino. */
 function Liner() {
+  const u = useUid();
   return (
     <svg width="100%" height="100%">
       <defs>
-        <pattern id="moderno-liner" width="22" height="22" patternUnits="userSpaceOnUse">
+        <pattern id={`moderno-liner-${u}`} width="22" height="22" patternUnits="userSpaceOnUse">
           <path d="M5.5 3v5M3 5.5h5M16.5 14v5M14 16.5h5" fill="none" stroke="currentColor" strokeWidth="0.9" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#moderno-liner)" />
+      <rect width="100%" height="100%" fill={`url(#moderno-liner-${u})`} />
     </svg>
   );
 }
