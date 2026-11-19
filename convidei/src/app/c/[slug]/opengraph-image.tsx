@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { template } from "@/lib/catalog";
+import { paletteOf, templateDef } from "@/templates";
 import { eventBySlug } from "@/lib/events";
 import { longDate, prettyTime } from "@/lib/format";
 
@@ -13,7 +13,7 @@ export const contentType = "image/png";
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const event = await eventBySlug(slug);
-  const [bg, ink, accent] = template(event?.template ?? "classico").swatch;
+  const { paper: bg, ink, accent } = paletteOf(templateDef(event?.template ?? "classico"), event?.palette).vars;
   const [display, italic] = await Promise.all([
     readFile(join(process.cwd(), "assets/cormorant-600.woff")),
     readFile(join(process.cwd(), "assets/cormorant-500-italic.woff")),

@@ -9,6 +9,7 @@ export type EventRow = {
   slug: string;
   type: string;
   template: string;
+  palette: string;
   title: string;
   headline: string;
   message: string;

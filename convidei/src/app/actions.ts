@@ -2,8 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { checkLogin, createUser, endSession, requireUser, startSession } from "@/lib/auth";
-import { EVENT_TYPES, TEMPLATES, template as findTemplate } from "@/lib/catalog";
+import { cookies } from "next/headers";
+import { checkLogin, createUser, currentUser, endSession, requireUser, startSession } from "@/lib/auth";
+import { DRAFT_COOKIE } from "@/lib/draft";
+import { EVENT_TYPES } from "@/lib/catalog";
+import { paletteOf, TEMPLATE_DEFS, templateDef } from "@/templates";
 import { one, q } from "@/lib/db";
 import { eventBySlug, eventForUser, guestByToken, guestCount, rsvpClosed, type GiftLink } from "@/lib/events";
 import { createCheckout, mercadoPagoEnabled } from "@/lib/mercadopago";
@@ -49,12 +52,27 @@ export async function signIn(_prev: FormState, form: FormData): Promise<FormStat
   const user = await checkLogin(email, password);
   if (!user) return { error: "E-mail ou senha incorretos.", values: snapshot(form) };
   await startSession(user.id);
-  redirect("/painel");
+  redirect((await cookies()).has(DRAFT_COOKIE) ? "/painel/novo" : "/painel");
 }
 
 export async function signOut() {
   await endSession();
   redirect("/");
+}
+
+/* ───────── Rascunho: escolher um modelo antes de ter conta ───────── */
+
+/** Guarda o modelo e os dados digitados na galeria e leva para a criação do convite (passando pelo cadastro, se preciso). */
+export async function chooseTemplate(form: FormData) {
+  const draft = {
+    template: templateDef(text(form, "template", 32)).id,
+    palette: text(form, "palette", 32),
+    type: text(form, "type", 32),
+    title: text(form, "title", 80),
+    event_date: text(form, "event_date", 10),
+  };
+  (await cookies()).set(DRAFT_COOKIE, JSON.stringify(draft), { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 60 * 60 * 24 * 7 });
+  redirect((await currentUser()) ? "/painel/novo" : "/criar-conta");
 }
 
 /* ───────── Evento ───────── */
@@ -72,10 +90,9 @@ export async function saveEvent(_prev: FormState, form: FormData): Promise<FormS
   const type = text(form, "type", 32);
   if (!EVENT_TYPES.some((t) => t.id === type)) return fail("Escolha o tipo de evento.");
   const tpl = text(form, "template", 32);
-  if (!TEMPLATES.some((t) => t.id === tpl)) return fail("Escolha um modelo.");
-  if (findTemplate(tpl).premium && !isPremium(existing?.plan ?? "free")) {
-    return fail(`O modelo ${findTemplate(tpl).name} faz parte do Premium. Escolha outro modelo ou faça o upgrade depois de criar o evento.`);
-  }
+  if (!TEMPLATE_DEFS.some((t) => t.id === tpl)) return fail("Escolha um modelo.");
+  const def = templateDef(tpl);
+  const palette = paletteOf(def, text(form, "palette", 32)).id;
 
   const title = text(form, "title", 80);
   if (title.length < 2) return fail("Preencha o nome que aparece no convite.");
@@ -131,6 +148,7 @@ export async function saveEvent(_prev: FormState, form: FormData): Promise<FormS
     pixKey ? pixHolder : "",
     pixKey ? pixCity : "",
     form.get("open_rsvp") === "on",
+    palette,
   ];
 
   let eventId = existing?.id;
@@ -138,8 +156,8 @@ export async function saveEvent(_prev: FormState, form: FormData): Promise<FormS
     await q(
       `update events set type=$1, template=$2, title=$3, headline=$4, message=$5, event_date=$6, event_time=$7,
          venue_name=$8, address=$9, dress_code=$10, rsvp_deadline=$11, extra_info=$12, gift_message=$13,
-         gift_links=$14::jsonb, pix_key_type=$15, pix_key=$16, pix_holder=$17, pix_city=$18, open_rsvp=$19
-       where id=$20 and user_id=$21`,
+         gift_links=$14::jsonb, pix_key_type=$15, pix_key=$16, pix_holder=$17, pix_city=$18, open_rsvp=$19, palette=$20
+       where id=$21 and user_id=$22`,
       [...fields, existing.id, user.id],
     );
     revalidatePath(`/c/${existing.slug}`, "layout");
@@ -151,8 +169,8 @@ export async function saveEvent(_prev: FormState, form: FormData): Promise<FormS
       const inserted = await q(
         `insert into events (id, user_id, slug, type, template, title, headline, message, event_date, event_time,
            venue_name, address, dress_code, rsvp_deadline, extra_info, gift_message, gift_links,
-           pix_key_type, pix_key, pix_holder, pix_city, open_rsvp)
-         values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17::jsonb,$18,$19,$20,$21,$22)
+           pix_key_type, pix_key, pix_holder, pix_city, open_rsvp, palette)
+         values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17::jsonb,$18,$19,$20,$21,$22,$23)
          on conflict (slug) do nothing returning id`,
         [eventId, user.id, slug, ...fields],
       );
@@ -161,6 +179,7 @@ export async function saveEvent(_prev: FormState, form: FormData): Promise<FormS
       slug = `${base}-${newToken(4)}`;
     }
   }
+  if (!existing) (await cookies()).delete(DRAFT_COOKIE);
   redirect(`/painel/${eventId}${existing ? "?salvo=1" : "?novo=1"}`);
 }
 
@@ -315,6 +334,34 @@ export async function submitRsvp(_prev: RsvpState, form: FormData): Promise<Rsvp
   );
   revalidatePath(`/painel/${event.id}`);
   redirect(`/c/${event.slug}/${newTokenValue}?confirmado=${status}`);
+}
+
+/** Um toque: grava "vou" ou "não vou" na hora. */
+export async function quickRsvp(slug: string, token: string, status: "yes" | "no"): Promise<{ error?: string }> {
+  if (status !== "yes" && status !== "no") return { error: "Escolha se você vai ou não." };
+  const event = await eventBySlug(String(slug).slice(0, 80));
+  if (!event) return { error: "Convite não encontrado." };
+  if (rsvpClosed(event, todayBR())) return { error: "O prazo para confirmar presença já terminou. Fale com quem convidou você." };
+  const guest = await guestByToken(event.id, String(token).slice(0, 16));
+  if (!guest) return { error: "Convite não encontrado." };
+  // Ao confirmar, mantém o número de pessoas que a pessoa já tinha informado; senão começa em 1.
+  const count = status === "yes" ? Math.min(Math.max(guest.people_count, 1), guest.max_people) : 0;
+  await q("update guests set status=$1, people_count=$2, responded_at=now(), opened_at=coalesce(opened_at, now()) where id=$3", [status, count, guest.id]);
+  revalidatePath(`/painel/${event.id}`);
+  return {};
+}
+
+/** Detalhes opcionais depois da resposta: quantas pessoas e recado. */
+export async function saveRsvpDetails(_prev: RsvpState, form: FormData): Promise<RsvpState> {
+  const event = await eventBySlug(text(form, "slug", 80));
+  if (!event) return { error: "Convite não encontrado." };
+  if (rsvpClosed(event, todayBR())) return { error: "O prazo para confirmar presença já terminou." };
+  const guest = await guestByToken(event.id, text(form, "token", 16));
+  if (!guest || guest.status === "pending") return { error: "Responda primeiro se você vai." };
+  const count = guest.status === "yes" ? Math.min(people(text(form, "people", 3) || String(guest.people_count || 1)), guest.max_people) : 0;
+  await q("update guests set people_count=$1, note=$2 where id=$3", [count, text(form, "note", 300), guest.id]);
+  revalidatePath(`/painel/${event.id}`);
+  return { saved: guest.status };
 }
 
 export async function markOpened(slug: string, token: string) {

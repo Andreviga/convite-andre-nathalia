@@ -10,6 +10,7 @@ import { eventForUser, guestsOf, statsOf, type GuestRow } from "@/lib/events";
 import { longDate, prettyTime, whatsappNumber } from "@/lib/format";
 import { guestLimit, isPremium } from "@/lib/plans";
 import { baseUrl } from "@/lib/url";
+import { templateDef } from "@/templates";
 
 const STATUS: Record<GuestRow["status"], { label: string; className: string }> = {
   yes: { label: "Confirmou", className: "tag tag-yes" },
@@ -60,6 +61,20 @@ export default async function EventPanel({ params, searchParams }: { params: Pro
       {flags.salvo ? (
         <p className="alert alert-ok" role="status" style={{ marginBottom: 16 }}>
           Alterações salvas. Os links já mostram a versão nova.
+        </p>
+      ) : null}
+
+      {templateDef(event.template).premium && !isPremium(event.plan) ? (
+        <p className="alert alert-info" style={{ marginBottom: 16 }}>
+          Este convite usa o modelo Premium {templateDef(event.template).name}. No plano grátis, os convidados veem uma faixa de “prévia” no topo.{" "}
+          <Link href={`/painel/${event.id}/premium`} className="link">
+            Fazer o upgrade
+          </Link>{" "}
+          ou{" "}
+          <Link href={`/painel/${event.id}/editar`} className="link">
+            escolher um modelo grátis
+          </Link>
+          .
         </p>
       ) : null}
 

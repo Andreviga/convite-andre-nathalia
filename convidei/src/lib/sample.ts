@@ -1,4 +1,5 @@
-import { EVENT_TYPES, TEMPLATES, eventType, template } from "./catalog.ts";
+import { TEMPLATE_DEFS, templateDef } from "../templates/index";
+import { EVENT_TYPES, eventType } from "./catalog.ts";
 import type { EventRow, GuestRow } from "./events.ts";
 
 // Dados de exemplo para mostrar cada modelo sem precisar de um evento real (galeria e prévias).
@@ -16,19 +17,23 @@ function nextYear(month: number, day: number): string {
   return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
-export function sampleEvent(templateId: string, typeId?: string): EventRow {
-  const tpl = template(templateId);
-  const type = eventType(typeId ?? EVENT_TYPES.find((t) => t.template === tpl.id)?.id ?? "casamento");
+export type SampleOptions = { type?: string; title?: string; date?: string; palette?: string };
+
+export function sampleEvent(templateId: string, options: SampleOptions = {}): EventRow {
+  const tpl = templateDef(templateId);
+  const known = EVENT_TYPES.some((t) => t.id === options.type);
+  const type = eventType(known ? options.type! : (tpl.suits[0] ?? "casamento"));
   return {
     id: "exemplo",
     user_id: "exemplo",
     slug: "exemplo",
     type: type.id,
     template: tpl.id,
-    title: TITLES[type.id] ?? "Marina & Rafael",
+    palette: options.palette ?? "",
+    title: options.title?.trim() || (TITLES[type.id] ?? "Marina & Rafael"),
     headline: type.headline,
     message: type.message,
-    event_date: nextYear(9, 11),
+    event_date: options.date && /^\d{4}-\d{2}-\d{2}$/.test(options.date) ? options.date : nextYear(9, 11),
     event_time: "16:30",
     venue_name: "Espaço Villa Jardim",
     address: "Rua das Flores, 123 — Jardins, São Paulo/SP",
@@ -55,4 +60,4 @@ export function sampleGuest(): GuestRow {
   };
 }
 
-export const SAMPLE_TEMPLATE_IDS = TEMPLATES.map((t) => t.id);
+export const SAMPLE_TEMPLATE_IDS = TEMPLATE_DEFS.map((t) => t.id);

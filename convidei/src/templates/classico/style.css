@@ -1,0 +1,30 @@
+/* Modelo Clássico. Todas as regras ficam sob .inv[data-template="classico"]. */
+.inv[data-template="classico"] {
+  --font-names: var(--f-pinyon), "Pinyon Script", cursive;
+  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
+  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
+  --names-size: clamp(46px, 15.5cqw, 70px);
+  --names-weight: 400;
+  --names-leading: 1.12;
+  --amp-scale: 0.42;
+  --label-tracking: 0.2em;
+  --radius: 2px;
+  --btn-radius: 2px;
+  --frame-inset: 13px;
+}
+/* moldura dupla: fio de 1px e, por dentro, um fio mais fino */
+.inv[data-template="classico"] .inv-paper::before { border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
+.inv[data-template="classico"] .inv-paper { padding-block: calc(var(--paper-pad) + 18px); }
+.inv[data-template="classico"] .inv-headline { font-size: 13.5px; font-weight: 500; }
+.inv[data-template="classico"] .inv-names { padding: 0.16em 0 0.1em; }
+.inv[data-template="classico"] .inv-amp { margin: -0.1em 0 -0.05em; }
+.inv[data-template="classico"] .inv-message { font-size: 20px; }
+.inv[data-template="classico"] .inv-date-side, .inv[data-template="classico"] .inv-date-month { font-size: 13px; letter-spacing: 0.12em; border-color: var(--accent); }
+.inv[data-template="classico"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); }
+.inv[data-template="classico"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="classico"] .inv-date-day { font-weight: 400; font-size: 58px; }
+.inv[data-template="classico"] .inv-place { font-style: italic; font-size: 18px; }
+.inv[data-template="classico"] .inv-countdown { background: none; font: 500 13px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0; }
+.inv[data-template="classico"] .inv-kicker { font-size: 13.5px; }
+.inv[data-template="classico"] .inv-section { box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px var(--line); }
+.inv[data-template="classico"] .env-to strong { font-family: var(--font-names); font-size: 42px; font-weight: 400; }

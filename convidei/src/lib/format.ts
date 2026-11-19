@@ -78,6 +78,17 @@ export function mapsUrl(venue: string, address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([venue, address].filter(Boolean).join(", "))}`;
 }
 
+export function wazeUrl(place: string): string {
+  return `https://waze.com/ul?q=${encodeURIComponent(place)}&navigate=yes`;
+}
+
+export function uberUrl(venue: string, address: string): string {
+  const params = new URLSearchParams({ action: "setPickup", pickup: "my_location" });
+  params.set("dropoff[formatted_address]", address || venue);
+  if (venue) params.set("dropoff[nickname]", venue);
+  return `https://m.uber.com/ul/?${params.toString()}`;
+}
+
 function stamp(date: string, time: string, addHours = 0): string {
   const { y, m, d } = parts(date);
   const [h, min] = (isTime(time) ? time : "00:00").split(":").map(Number);

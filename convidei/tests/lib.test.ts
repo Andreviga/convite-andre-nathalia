@@ -80,3 +80,13 @@ test("mercado pago: assinatura do aviso", () => {
   assert.equal(validSignature("segredo", `ts=${ts},v1=${v1}`, "req-1", "123", now + 3_600_000), false);
   assert.equal(validSignature("segredo", null, "req-1", "123", now), false);
 });
+
+import { splitTitle } from "../src/lib/names.ts";
+
+test("nomes: separa o casal e tira as iniciais", () => {
+  assert.deepEqual(splitTitle("Marina & Rafael"), { names: ["Marina", "Rafael"], connector: "&", initials: ["M", "R"] });
+  assert.deepEqual(splitTitle("Ângela e João Pedro"), { names: ["Ângela", "João Pedro"], connector: "e", initials: ["Â", "J"] });
+  assert.deepEqual(splitTitle("Helena faz 30").names, ["Helena faz 30"]);
+  assert.deepEqual(splitTitle("Chá do Miguel").initials, ["C"]);
+  assert.equal(splitTitle("Formatura de Direito e Jantar de confraternização da turma de 2026").names.length, 1);
+});
