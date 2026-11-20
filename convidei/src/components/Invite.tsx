@@ -1,7 +1,7 @@
 import QRCode from "qrcode";
 import { BRAND } from "@/lib/brand";
 import { rsvpClosed, type EventRow, type GuestRow } from "@/lib/events";
-import { capitalize, eventCalendarTitle, dateBits, googleCalendarUrl, mapsUrl, prettyTime, shortDate, todayBR, uberUrl, wazeUrl } from "@/lib/format";
+import { calendarMessage, capitalize, eventCalendarTitle, dateBits, googleCalendarUrl, mapsUrl, prettyTime, shortDate, todayBR, uberUrl, wazeUrl } from "@/lib/format";
 import { splitTitle } from "@/lib/names";
 import { pixPayload } from "@/lib/pix";
 import { isPremium } from "@/lib/plans";
@@ -11,6 +11,7 @@ import { baseUrl } from "@/lib/url";
 import { paletteOf, paletteStyle, templateDef } from "@/templates";
 import { CopyButton } from "./CopyButton";
 import { Envelope } from "./Envelope";
+import { envelopeKey, sealNeedsEdge } from "@/lib/envelope";
 import { InviteCover } from "./InviteCover";
 import { RsvpForm } from "./RsvpForm";
 import { StickyRsvp } from "./StickyRsvp";
@@ -37,21 +38,21 @@ export async function Invite({ event, guest, preview = false, envelope = true, j
   const closed = rsvpClosed(event, today);
   const place = [event.venue_name, event.address].filter(Boolean).join(", ");
   const inviteUrl = preview ? undefined : `${await baseUrl()}/c/${event.slug}`;
-  const calendar = { title: eventCalendarTitle(event.type, event.title), date: event.event_date, time: event.event_time, location: place, details: event.message, url: inviteUrl };
+  const calendar = { title: eventCalendarTitle(event.type, event.title), date: event.event_date, time: event.event_time, location: place, details: calendarMessage(event.title, event.message), url: inviteUrl };
   const calendarUrl = googleCalendarUrl(calendar);
   const pix = event.pix_key ? pixPayload(event.pix_key, event.pix_holder, event.pix_city) : null;
   const qr = pix ? await QRCode.toString(pix, { type: "svg", margin: 1, errorCorrectionLevel: "M", color: { dark: "#111111", light: "#ffffff" } }) : null;
   const hasGifts = Boolean(pix || event.gift_links.length || event.gift_message);
   const canRsvp = Boolean(guest) || event.open_rsvp;
-  const answered = guest && guest.status !== "pending" ? answerText(guest.status, guest.people_count, guest.max_people) : null;
   const viaOpenLink = guest?.source === "open";
+  const answered = guest && guest.status !== "pending" ? answerText(guest.status, guest.people_count, guest.max_people, viaOpenLink) : null;
   const Art = def.Art;
 
   return (
     <div className="inv" data-template={def.id} data-envelope={envelope} style={paletteStyle(palette)}>
       <div className="inv-art inv-art-backdrop" aria-hidden="true"><Art slot="backdrop" initials={initials} /></div>
       {envelope ? (
-        <Envelope storageKey={`convidei:envelope:${event.slug}:${guest?.token ?? "geral"}`} guestName={guest?.name} initials={initials} liner={<Art slot="liner" initials={initials} />} />
+        <Envelope storageKey={event.id === "exemplo" ? envelopeKey("demo", def.id) : envelopeKey("event", event.slug)} sealEdge={sealNeedsEdge(palette.vars.seal, palette.vars.sealInk)} guestName={guest?.name} initials={initials} liner={<Art slot="liner" initials={initials} />} />
       ) : null}
 
       {def.premium && !isPremium(event.plan) && !preview ? <p className="inv-ribbon">Prévia de modelo Premium · {BRAND}</p> : null}
@@ -156,6 +157,7 @@ export async function Invite({ event, guest, preview = false, envelope = true, j
                   calendarUrl={calendarUrl}
                   justAnswered={justAnswered}
                   startEditing={changing}
+                  viaOpenLink={viaOpenLink}
                 />
                 {guest && viaOpenLink && event.open_rsvp ? (
                   <p className="rsvp-links rsvp-other">

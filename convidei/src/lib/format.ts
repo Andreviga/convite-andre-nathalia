@@ -144,6 +144,35 @@ export function googleCalendarUrl(ev: CalendarEvent): string {
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
+/** Texto do convite para a agenda. A frase do casamento começa em minúscula ("convidam para…") e pede os nomes na frente. */
+export function calendarMessage(title: string, message: string): string {
+  const text = message.trim();
+  return /^\p{Ll}/u.test(text) ? `${title.trim()} ${text}` : text;
+}
+
+/**
+ * Dobra uma linha de conteúdo do .ics em pedaços de até 75 octetos (RFC 5545, 3.1): as continuações começam com um espaço,
+ * que conta no limite. Corta entre caracteres inteiros, nunca no meio de uma letra acentuada ou de um emoji em UTF-8.
+ */
+export function icsFold(line: string): string {
+  const size = (ch: string) => Buffer.byteLength(ch, "utf8");
+  const out: string[] = [];
+  let current = "";
+  let bytes = 0;
+  for (const ch of line) {
+    const n = size(ch);
+    if (bytes + n > 75) {
+      out.push(current);
+      current = " ";
+      bytes = 1;
+    }
+    current += ch;
+    bytes += n;
+  }
+  out.push(current);
+  return out.join("\r\n");
+}
+
 function icsEscape(text: string): string {
   return text.replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/([,;])/g, "\\$1");
 }
@@ -183,8 +212,10 @@ export function icsFile(ev: CalendarEvent & { uid: string; url: string }): strin
     "END:VALARM",
     "END:VEVENT",
     "END:VCALENDAR",
-    "",
-  ].join("\r\n");
+  ]
+    .map(icsFold)
+    .concat("")
+    .join("\r\n");
 }
 
 export function csvCell(value: unknown): string {

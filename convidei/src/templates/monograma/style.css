@@ -38,8 +38,11 @@
 .inv[data-template="monograma"] .inv-date { display: flex; justify-content: center; margin-top: var(--mg-step); margin-bottom: var(--mg-gap); }
 .inv[data-template="monograma"] .inv-date-side { display: none; }
 .inv[data-template="monograma"] .inv-date-main { display: flex; align-items: baseline; justify-content: center; gap: 0; padding-left: 0.28em; }
-.inv[data-template="monograma"] .inv-date-day, .inv[data-template="monograma"] .inv-date-month { font: 600 12.5px/1.2 var(--font-label); letter-spacing: 0.28em; text-transform: uppercase; color: var(--soft); padding: 0; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-date-day, .inv[data-template="monograma"] .inv-date-month { font: 600 14px/1.2 var(--font-label); letter-spacing: 0.24em; text-transform: uppercase; color: var(--soft); padding: 0; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="monograma"] .inv-date-day::after { content: "\00a0·\00a0"; }
+/* evento sem horário: o ano continua na linha do mês e a lateral do ano não aparece */
+.inv[data-template="monograma"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="monograma"] .inv-date .inv-date-alt { display: none; }
 /* sem data, o brasão guarda o mesmo respiro */
 .inv[data-template="monograma"] .inv-paper > .inv-art-top:not(:has(~ .inv-date)) { margin-bottom: var(--mg-gap); }
 
@@ -49,7 +52,7 @@
 
 /* nomes: Cormorant itálico, sem script */
 .inv[data-template="monograma"] .inv-names { font-style: italic; padding: 0.04em 0 0.1em; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
-.inv[data-template="monograma"] .inv-amp { font-size: calc(1em * var(--amp-scale)); line-height: 1.1; margin: 0.06em 0 0.02em; color: var(--accent); }
+.inv[data-template="monograma"] .inv-amp { font-size: calc(1em * var(--amp-scale)); line-height: 1.1; margin: 0.24em 0 0.1em; color: var(--accent); } /* folga para descendentes (g, j, ç) em cima e acentos de maiúscula (É, Â) embaixo */
 .inv[data-template="monograma"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.16); line-height: 1.1; }
 .inv[data-template="monograma"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.14; }
 
@@ -60,6 +63,8 @@
 /* data por extenso: a informação principal depois dos nomes */
 .inv[data-template="monograma"] .inv-dateline { display: block; font: 500 21px/1.34 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-top: var(--mg-gap) !important; max-width: 17em; margin-inline: auto !important; }
 .inv[data-template="monograma"] .inv-dateline::first-letter { text-transform: uppercase; }
+/* cartão estreito: corpo um pouco menor, para a data por extenso caber em duas linhas */
+@container (max-width: 300px) { .inv[data-template="monograma"] .inv-dateline { font-size: 19px; } }
 .inv[data-template="monograma"] .inv-place { font: 500 18px/1.4 var(--font-text); margin-top: 8px !important; }
 .inv[data-template="monograma"] .inv-countdown { align-self: center; background: none; border-radius: 0; padding: 0 0 0 0.22em; margin-top: var(--mg-gap) !important; font: 600 12.5px/1.2 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--soft); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="monograma"] .inv-more { font: 600 12.5px/1 var(--font-label); letter-spacing: 0.24em; padding-left: calc(16px + 0.24em); }
@@ -113,3 +118,13 @@ body:has(.demo-bar) .inv[data-template="monograma"] .mg-sign { bottom: 222px; }
 /* Alinhados em tudo: no itálico da Cormorant o "0" antigo lê-se como "o" ("Helena faz 3o"). Fica no fim e vale para
    cada elemento, porque o atalho `font` zera font-variant-numeric em toda regra que o usa. */
 .inv[data-template="monograma"] :is(.inv-sheet, .env) * { font-variant-numeric: lining-nums; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="monograma"] { --thumb-h: 828px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 759px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 759px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 789px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 816px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 684px; }

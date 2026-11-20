@@ -56,22 +56,30 @@
 /* sem saudação nem chamada, os nomes descem um pouco para não encostar no ramo de oliveira */
 .inv[data-template="botanico"] .inv-monogram + .inv-names { margin-top: 7cqw; }
 .inv[data-template="botanico"] .inv-names { padding: 0.1em 0 0.06em; }
-.inv[data-template="botanico"] .inv-amp { color: var(--seal); margin: 0.16em 0 -0.04em; } /* folga para as descendentes do primeiro nome (g, j, p, ç) */
+.inv[data-template="botanico"] .inv-amp { color: var(--seal); margin: 0.34em 0 0; } /* folga para as descendentes do primeiro nome (g, j, p, ç) */
 /* frase (travessão ou quatro palavras ou mais): script fica ilegível, então vai em serifada itálica. Nome comprido continua em script. */
 .inv[data-template="botanico"] .inv-names[data-phrase="true"] { --names-em: 0.5; font: italic 500 clamp(30px, 10.4cqw, 46px)/1.14 var(--font-text); }
 .inv[data-template="botanico"] .inv-names[data-count="1"]:not([data-long="true"]) { font-size: calc(var(--names-size) * 1.12); }
 /* algarismos do título na serifa do modelo (os da script ficam ruins) */
-.inv[data-template="botanico"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-size: 0.7em; font-weight: 500; }
+.inv[data-template="botanico"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.84em; font-weight: 500; }
+/* título curto ("Helena faz 30", "Chá do Miguel") cabe inteiro numa linha: a medida passa a ser o título todo (--line), para "faz 30" não cair sozinho embaixo */
+.inv[data-template="botanico"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
+
 .inv[data-template="botanico"] .inv-message { font-size: 19px; margin-top: 14px !important; }
 .inv[data-template="botanico"] .inv-art-divider { margin: 22px 0 0; }
 .inv[data-template="botanico"] .inv-date { margin-top: 22px; gap: 6px clamp(8px, 3.6cqw, 14px); }
 .inv[data-template="botanico"] .inv-date-side,
-.inv[data-template="botanico"] .inv-date-month { font-size: clamp(12.5px, 4.2cqw, 14.5px); font-weight: 600; letter-spacing: 0.14em; color: var(--ink); }
+.inv[data-template="botanico"] .inv-date-month { font-size: clamp(14px, 4.2cqw, 14.5px); font-weight: 600; letter-spacing: 0.14em; color: var(--ink); }
 /* algarismos alinhados em tudo que é data, hora e contagem (o padrão do Cormorant é o estilo antigo: "16h3o") */
 .inv[data-template="botanico"] :is(.inv-date-side, .inv-date-month, .inv-countdown, .inv-big, .inv-headline, .inv-kicker, .inv-names[data-count="1"][data-long="true"], .inv-message, .inv-place, .inv-section-title) { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="botanico"] .inv-date-side { border: 0; padding-block: 0; padding-left: 0.14em; }
 .inv[data-template="botanico"] .inv-date-month { padding-left: 0.14em; }
 .inv[data-template="botanico"] .inv-date-day { font-size: 60px; font-weight: 500; }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="botanico"] .inv-date { column-gap: 6px; }
+  .inv[data-template="botanico"] .inv-date-side { letter-spacing: 0.06em; padding-left: 0.06em; }
+}
 .inv[data-template="botanico"] .inv-place { font: italic 500 19px/1.4 var(--font-text); margin-top: 22px !important; }
 .inv[data-template="botanico"] .inv-countdown { background: none; padding: 0; margin-top: 14px !important; font: 500 13px/1.2 var(--font-label); letter-spacing: 0.18em; padding-left: 0.18em; text-transform: uppercase; color: var(--soft); }
 
@@ -93,7 +101,7 @@
 .inv[data-template="botanico"] .env-liner { color: color-mix(in srgb, var(--liner) 52%, var(--ink)); }
 .inv[data-template="botanico"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; }
 /* (o avesso da aba, a ordem das camadas na abertura e o translateZ da frente agora vêm da base) */
-.inv[data-template="botanico"] .env-seal { --seal-size: 35px; } /* Parisienne é larga: cabe no anel do lacre */
+.inv[data-template="botanico"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; } /* lacre gravado em capitais romanas: a caligráfica dos nomes não cabe na cera */
 /* O bolso do envelope fica um tom abaixo do cartão e ganha sombra leve nas dobras: sem isso, o cartão (da mesma cor
    do papel) apaga o "V" ao subir. Cada sombra ocupa uma caixa cuja diagonal é a própria dobra. */
 .inv[data-template="botanico"] .env-front {
@@ -106,3 +114,13 @@
   background-repeat: no-repeat;
 }
 .inv[data-template="botanico"] .env-flap-face { background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 99%, var(--ink)), color-mix(in srgb, var(--paper) 94%, var(--ink))); }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="botanico"] { --thumb-h: 749px; }
+.inv[data-template="botanico"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 641px; }
+.inv[data-template="botanico"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 658px; }
+.inv[data-template="botanico"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 635px; }
+.inv[data-template="botanico"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 641px; }
+.inv[data-template="botanico"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 615px; }

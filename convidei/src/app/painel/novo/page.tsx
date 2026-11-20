@@ -3,14 +3,15 @@ import Link from "next/link";
 import { EventForm } from "@/components/EventForm";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/auth";
-import { readDraft } from "@/lib/draft";
+import { DRAFT_PARAM, readDraft } from "@/lib/draft";
 import { todayBR } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Novo convite" };
 
-export default async function NewEvent() {
+export default async function NewEvent({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   if (!(await currentUser())) redirect("/criar-conta");
-  const draft = await readDraft();
+  // O rascunho da galeria só vale para quem chegou por "Usar este modelo"; aberto pelo painel, o convite novo começa em branco.
+  const draft = (await searchParams)[DRAFT_PARAM] === "1" ? await readDraft() : {};
   return (
     <div className="wide">
       <Link href="/painel" className="crumb">

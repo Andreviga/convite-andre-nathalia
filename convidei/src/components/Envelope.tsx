@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { WaxSeal } from "./WaxSeal";
 
 const AUTO_OPEN_MS = 4500;
@@ -11,7 +11,7 @@ const ANIMATION_MS = 1900;
  * Abre com um toque em qualquer lugar da tela, e sozinho depois de alguns segundos, para ninguém ficar preso.
  * Enquanto está na frente, o resto do convite (os irmãos de .env) fica inerte: sem foco de teclado e fora do leitor de tela.
  */
-export function Envelope({ storageKey, guestName, initials, liner }: { storageKey: string; guestName?: string; initials: string[]; liner?: ReactNode }) {
+export function Envelope({ storageKey, guestName, initials, liner, sealEdge = true }: { storageKey: string; guestName?: string; initials: string[]; liner?: ReactNode; sealEdge?: boolean }) {
   const [state, setState] = useState<"closed" | "opening" | "gone">("closed");
   const [ready, setReady] = useState(false);
   // Abriu nesta visita (diferente de "já tinha aberto antes"): é o que dispara a entrada do texto da capa.
@@ -34,13 +34,16 @@ export function Envelope({ storageKey, guestName, initials, liner }: { storageKe
     setOpened(true);
   }
 
-  useEffect(() => {
+  // Antes da primeira pintura: quem já abriu nesta visita não vê o envelope (na carga direta, o script do <head> já pôs
+  // env-seen em <html>; na navegação sem recarregar, é aqui que se decide). A classe de uma página anterior não vale para esta.
+  useLayoutEffect(() => {
     let seen = false;
     try {
       seen = sessionStorage.getItem(storageKey) === "1";
     } catch {
       seen = false;
     }
+    document.documentElement.classList.toggle("env-seen", seen);
     if (seen) setState("gone");
     else timers.current.push(window.setTimeout(open, AUTO_OPEN_MS));
     setReady(true);
@@ -48,6 +51,35 @@ export function Envelope({ storageKey, guestName, initials, liner }: { storageKe
     return () => pending.forEach((id) => window.clearTimeout(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageKey]);
+
+  // Barra fixa embaixo (a da demonstração de modelo): mede a altura de verdade, com o painel aberto ou não, e publica em
+  // --env-bar, para o conjunto se centrar na área livre e o botão nunca ficar atrás dela.
+  useLayoutEffect(() => {
+    const env = root.current;
+    const bar = document.querySelector<HTMLElement>(".demo-bar");
+    if (!env || !bar || state === "gone") return;
+    const update = () => {
+      let top = bar.getBoundingClientRect().top;
+      bar.querySelectorAll<HTMLElement>("details[open] > :not(summary)").forEach((el) => {
+        const box = el.getBoundingClientRect();
+        if (box.height > 0) top = Math.min(top, box.top);
+      });
+      const height = Math.max(0, Math.round(document.documentElement.clientHeight - top));
+      env.style.setProperty("--env-bar", `${height}px`);
+    };
+    update();
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(update);
+    observer?.observe(bar);
+    bar.querySelectorAll("details > :not(summary)").forEach((el) => observer?.observe(el));
+    bar.addEventListener("toggle", update, true);
+    window.addEventListener("resize", update);
+    return () => {
+      observer?.disconnect();
+      bar.removeEventListener("toggle", update, true);
+      window.removeEventListener("resize", update);
+      env.style.removeProperty("--env-bar");
+    };
+  }, [state === "gone"]);
 
   // Convite inerte enquanto o envelope cobre a tela; ao sair, o foco vai para o conteúdo.
   useEffect(() => {
@@ -95,10 +127,7 @@ export function Envelope({ storageKey, guestName, initials, liner }: { storageKe
   const label = guestName ? `Um convite para ${guestName}. Toque para abrir.` : "Chegou um convite para você. Toque para abrir.";
 
   return (
-    <>
-      {/* Quem já abriu nesta visita não vê o envelope piscar ao recarregar. */}
-      <script dangerouslySetInnerHTML={{ __html: `try{if(sessionStorage.getItem(${JSON.stringify(storageKey)})==="1")document.documentElement.classList.add("env-seen")}catch(e){}` }} />
-      <div ref={root} className="env" data-state={state} data-ready={ready} data-opened={opened}>
+    <div ref={root} className="env" data-state={state} data-ready={ready} data-opened={opened}>
         <button type="button" className="env-hit" onClick={open} aria-label={label}>
           <span className="env-to">
             {guestName ? (
@@ -125,12 +154,11 @@ export function Envelope({ storageKey, guestName, initials, liner }: { storageKe
               <span className="env-liner">{liner}</span>
             </span>
             <span className="env-seal">
-              <WaxSeal initials={initials} />
+              <WaxSeal initials={initials} edge={sealEdge} />
             </span>
           </span>
           <span className="env-cta">Toque para abrir</span>
         </button>
       </div>
-    </>
   );
 }

@@ -46,7 +46,7 @@ export default async function Premium({ params, searchParams }: { params: Promis
       <ul>
         {premiumDefs.map((def) => (
           <li key={def.id}>
-            <TemplateThumb data={{ ...event, template: def.id }} today={today} />
+            <TemplateThumb data={{ ...event, template: def.id }} palette={def.id === event.template ? event.palette : undefined} today={today} />
             <span>{def.name}</span>
           </li>
         ))}

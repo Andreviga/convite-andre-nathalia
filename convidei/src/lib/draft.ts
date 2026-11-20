@@ -2,6 +2,11 @@ import { cookies } from "next/headers";
 
 export const DRAFT_COOKIE = "convidei_rascunho";
 /** O rascunho da galeria vale pouco tempo: é só a ponte entre "Usar este modelo" e o editor. */
+/**
+ * Marca na URL de quem acabou de sair da galeria ("Usar este modelo"). O editor só usa o rascunho quando ela está presente:
+ * um "Novo convite" aberto pelo painel começa sempre em branco, mesmo com o cookie ainda válido.
+ */
+export const DRAFT_PARAM = "rascunho";
 export const DRAFT_MAX_AGE = 60 * 60; // segundos
 
 const FIELDS = ["template", "palette", "type", "title", "event_date"] as const;

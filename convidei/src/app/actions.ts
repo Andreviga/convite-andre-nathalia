@@ -4,12 +4,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { checkLogin, createUser, currentUser, endSession, requireUser, startSession } from "@/lib/auth";
-import { DRAFT_COOKIE, draftCookie, draftCookieOptions, takeDraft } from "@/lib/draft";
+import { DRAFT_COOKIE, DRAFT_PARAM, draftCookie, draftCookieOptions, takeDraft } from "@/lib/draft";
 import { EVENT_TYPES } from "@/lib/catalog";
 import { paletteOf, TEMPLATE_DEFS, templateDef } from "@/templates";
 import { one, q } from "@/lib/db";
 import { eventBySlug, eventForUser, guestByToken, guestCount, rsvpClosed, type GiftLink, type GuestRow } from "@/lib/events";
-import { OPEN_MAX_PEOPLE, rsvpCookie } from "@/lib/remember";
+import { OPEN_MAX_PEOPLE, rememberedTokens, rememberToken, rsvpCookie, sameName } from "@/lib/remember";
 import { createCheckout, mercadoPagoEnabled } from "@/lib/mercadopago";
 import { baseUrl } from "@/lib/url";
 import { isDate, isTime, onlyDigits, safeUrl, todayBR } from "@/lib/format";
@@ -45,8 +45,8 @@ export async function signUp(_prev: FormState, form: FormData): Promise<FormStat
   const user = await createUser(name, email, password);
   if (!user) return { error: "Já existe uma conta com esse e-mail. Tente entrar.", values };
   await startSession(user.id);
-  await takeDraft(); // conta nova sempre começa no editor; o rascunho da galeria (se houver) fica marcado como usado
-  redirect("/painel/novo");
+  // Conta nova sempre começa no editor; o rascunho da galeria (se houver) preenche o formulário essa única vez.
+  redirect((await takeDraft()) ? `/painel/novo?${DRAFT_PARAM}=1` : "/painel/novo");
 }
 
 export async function signIn(_prev: FormState, form: FormData): Promise<FormState> {
@@ -55,8 +55,11 @@ export async function signIn(_prev: FormState, form: FormData): Promise<FormStat
   const user = await checkLogin(email, password);
   if (!user) return { error: "E-mail ou senha incorretos.", values: snapshot(form) };
   await startSession(user.id);
-  // Só um rascunho recém-escolhido na galeria leva ao editor, e uma vez só: depois disso o login volta a cair no painel.
-  redirect((await takeDraft()) ? "/painel/novo" : "/painel");
+  // Só quem veio de "Usar este modelo" (o formulário traz a marca) continua no editor com o que escolheu, e uma vez só.
+  // Login comum cai no painel, e um rascunho esquecido neste aparelho é descartado em vez de aparecer num convite novo.
+  if (form.get(DRAFT_PARAM) === "1" && (await takeDraft())) redirect(`/painel/novo?${DRAFT_PARAM}=1`);
+  (await cookies()).delete(DRAFT_COOKIE);
+  redirect("/painel");
 }
 
 export async function signOut() {
@@ -82,7 +85,7 @@ export async function chooseTemplate(form: FormData) {
   const user = await currentUser();
   // Quem já está logado vai direto ao editor: o rascunho nasce "usado" e não desvia os próximos logins.
   (await cookies()).set(DRAFT_COOKIE, draftCookie(draft, Date.now(), Boolean(user)), draftCookieOptions);
-  redirect(user ? "/painel/novo" : "/criar-conta");
+  redirect(`${user ? "/painel/novo" : "/criar-conta"}?${DRAFT_PARAM}=1`);
 }
 
 /* ───────── Evento ───────── */
@@ -383,13 +386,21 @@ export async function submitRsvp(_prev: RsvpState, form: FormData): Promise<Rsvp
   if (status !== "yes" && status !== "no") return { error: "Escolha se você vai ou não." };
   if (status === "yes" && !informed) return { error: "Toque em quantas pessoas vêm, contando com você." };
 
-  // Mesmo aparelho, mesmo nome: atualiza a resposta que já existe em vez de criar outro convidado na lista.
+  // Mesmo aparelho, mesmo nome: atualiza a resposta que já existe em vez de criar outro convidado na lista. O aparelho lembra
+  // todos os que responderam nele (celular compartilhado). Só vale para registros criados pelo link geral e lembrados no cookie
+  // deste aparelho: digitar o nome de um convidado da lista do anfitrião nunca altera a resposta dele.
   const jar = await cookies();
   const remembered = jar.get(rsvpCookie(event.slug))?.value;
-  const previous = remembered ? await guestByToken(event.id, remembered.slice(0, 16)) : null;
-  const same = (a: string, b: string) => a.trim().toLocaleLowerCase("pt-BR") === b.trim().toLocaleLowerCase("pt-BR");
+  let previous: GuestRow | null = null;
+  for (const known of rememberedTokens(remembered)) {
+    const candidate = await guestByToken(event.id, known);
+    if (candidate && candidate.source === "open" && sameName(candidate.name, name)) {
+      previous = candidate;
+      break;
+    }
+  }
   let guestToken: string;
-  if (previous && previous.source === "open" && same(previous.name, name)) {
+  if (previous) {
     await saveAnswer(previous, status, informed);
     if (hasNote) await q("update guests set note=$1 where id=$2", [note, previous.id]);
     guestToken = previous.token;
@@ -407,7 +418,7 @@ export async function submitRsvp(_prev: RsvpState, form: FormData): Promise<Rsvp
     );
   }
   // Lembra a resposta neste aparelho: ao reabrir o link geral, a pessoa cai no próprio convite.
-  jar.set(rsvpCookie(event.slug), guestToken, { path: `/c/${event.slug}`, maxAge: 60 * 60 * 24 * 365, sameSite: "lax", httpOnly: true });
+  jar.set(rsvpCookie(event.slug), rememberToken(remembered, guestToken), { path: `/c/${event.slug}`, maxAge: 60 * 60 * 24 * 365, sameSite: "lax", httpOnly: true });
   revalidatePath(`/painel/${event.id}`);
   redirect(`/c/${event.slug}/${guestToken}?confirmado=${status}#confirmar`);
 }

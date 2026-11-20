@@ -59,9 +59,13 @@
 .inv[data-template="moderno"] .inv-date-side,
 .inv[data-template="moderno"] .inv-date-month { grid-column: 2; font: 500 14px/1.6 var(--font-label); letter-spacing: 0.16em; color: var(--ink); border: 0; border-left: 1px solid var(--ink); padding: 0 0 0 clamp(16px, 5cqw, 22px); }
 .inv[data-template="moderno"] .inv-date-side:first-child { grid-row: 1; padding-top: 3px; }
-.inv[data-template="moderno"] .inv-date-month { grid-row: 2; color: var(--soft); font-size: clamp(12px, 4.1cqw, 14px); letter-spacing: 0.12em; } /* "setembro · 2027" cabe ao lado do numeral em 320px */
+.inv[data-template="moderno"] .inv-date-month { grid-row: 2; color: var(--soft); font-size: 14px; letter-spacing: 0.12em; } /* "setembro · 2027" cabe ao lado do numeral em 320px */
 /* A hora é informação essencial: maior e mais pesada que o dia da semana e o mês. */
 .inv[data-template="moderno"] .inv-date-side:last-child { grid-row: 3; padding-bottom: 3px; font-size: 18px; font-weight: 600; letter-spacing: 0.1em; line-height: 1.45; }
+/* evento sem horário: o ano continua na linha do mês e a lateral do ano não aparece */
+.inv[data-template="moderno"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="moderno"] .inv-date[data-time="false"] .inv-date-month { padding-bottom: 3px; }
+.inv[data-template="moderno"] .inv-date .inv-date-alt { display: none; }
 
 .inv[data-template="moderno"] .inv-place { font: 400 18.5px/1.35 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; color: var(--ink); margin-top: var(--m-s1) !important; text-wrap: pretty; }
 .inv[data-template="moderno"] .inv-countdown { display: block; background: none; padding: 0; border-radius: 0; margin-top: calc(var(--m-s1) + 6px) !important; font: 500 11.5px/1.3 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
@@ -95,3 +99,13 @@
 .inv[data-template="moderno"] .env-flap-face { background: color-mix(in srgb, var(--paper) 86%, var(--ink)); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 89%, var(--ink)), color-mix(in srgb, var(--paper) 85%, var(--ink))); }
 .inv[data-template="moderno"] .env-back { background: color-mix(in srgb, var(--paper) 76%, var(--ink)); }
 .inv[data-template="moderno"] .env-card { box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent), 0 1px 3px rgba(0, 0, 0, 0.14); }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="moderno"] { --thumb-h: 595px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 586px; }

@@ -189,8 +189,15 @@ export default async function EventPanel({ params, searchParams }: { params: Pro
                   <div>
                     <p className="guest-name">{guest.name}</p>
                     <p className="guest-sub">
-                      {guest.status === "yes" ? `${guest.people_count} de ${guest.max_people}` : `até ${guest.max_people}`} {guest.max_people === 1 ? "pessoa" : "pessoas"}
-                      {guest.source === "open" ? " · confirmou pelo link geral" : ""}
+                      {guest.source === "open" && guest.status !== "yes" ? (
+                        /* Recusou (ou ainda não disse) pelo link geral: "até N pessoas" é o teto do link, não um convite para N. */
+                        "Respondeu pelo link geral"
+                      ) : (
+                        <>
+                          {guest.status === "yes" ? `${guest.people_count} de ${guest.max_people}` : `até ${guest.max_people}`} {guest.max_people === 1 ? "pessoa" : "pessoas"}
+                          {guest.source === "open" ? " · confirmou pelo link geral" : ""}
+                        </>
+                      )}
                     </p>
                     {guest.note ? <p className="guest-note">“{guest.note}”</p> : null}
                   </div>

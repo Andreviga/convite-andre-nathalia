@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState, useTransition, type FormEvent, type MouseEvent } from "react";
 import { quickRsvp, saveRsvpDetails, submitRsvp, type RsvpState } from "@/app/actions";
-import { answerText, peopleText as plural, type RsvpStatus } from "@/lib/rsvp-text";
+import { answerText, isGroup, peopleText as plural, type RsvpStatus } from "@/lib/rsvp-text";
 
 type Status = RsvpStatus;
 type Props = {
@@ -17,25 +17,45 @@ type Props = {
   justAnswered?: boolean;
   /** Abre já no modo "mudar minha resposta" (caminho sem JavaScript: ?mudar=1). */
   startEditing?: boolean;
+  /** A pessoa respondeu pelo link geral (o teto de pessoas é do link, não de um convite para a família). */
+  viaOpenLink?: boolean;
 };
 
 /** Recado opcional. Componente à parte (com `key` na resposta) para o aviso de "enviado" não sobreviver à troca de resposta. */
 function NoteForm({ slug, token, status, initialNote, onType }: { slug: string; token: string; status: Status; initialNote: string; onType: (text: string) => void }) {
   const [state, save, saving] = useActionState<RsvpState, FormData>(saveRsvpDetails, {});
+  // Campo controlado: o texto continua no lugar depois do envio (o React limpa formulários não controlados ao terminar a ação).
+  const [text, setText] = useState(initialNote);
   return (
-    <form action={save} className="rsvp-details">
+    <form
+      action={save}
+      className="rsvp-details"
+      onSubmit={(event) => {
+        if (saving) event.preventDefault(); // toque repetido enquanto envia
+      }}
+    >
       <input type="hidden" name="slug" value={slug} />
       <input type="hidden" name="token" value={token} />
       <label className="inv-field">
         {status === "yes" ? "Restrição alimentar ou recado (opcional)" : "Deixe um recado (opcional)"}
-        <textarea name="note" rows={2} maxLength={300} defaultValue={initialNote} onChange={(event) => onType(event.target.value)} />
+        <textarea
+          name="note"
+          rows={2}
+          maxLength={300}
+          value={text}
+          onChange={(event) => {
+            setText(event.target.value);
+            onType(event.target.value);
+          }}
+        />
       </label>
       {state.error ? (
         <p className="inv-error" role="alert">
           {state.error}
         </p>
       ) : null}
-      <button type="submit" className="inv-btn inv-btn-quiet" disabled={saving}>
+      {/* aria-disabled em vez de disabled: o botão não perde o foco durante o envio (com disabled o foco caía no <body>). */}
+      <button type="submit" className="inv-btn inv-btn-quiet" aria-disabled={saving || undefined}>
         {saving ? "Enviando…" : "Enviar recado"}
       </button>
       <p className="inv-saved" role="status">
@@ -50,7 +70,7 @@ function NoteForm({ slug, token, status, initialNote, onType }: { slug: string; 
  * o próprio botão de confirmar é o número de pessoas (nunca gravamos "1" calado para uma família).
  * É um formulário de verdade: sem JavaScript, os mesmos botões enviam para o servidor.
  */
-function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, initialNote, calendarUrl, justAnswered, startEditing }: Props & { token: string }) {
+function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, initialNote, calendarUrl, justAnswered, startEditing, viaOpenLink }: Props & { token: string }) {
   const [status, setStatus] = useState<Status>(initialStatus);
   const [people, setPeople] = useState(initialPeople);
   const [editing, setEditing] = useState(initialStatus === "pending" || Boolean(startEditing));
@@ -63,6 +83,7 @@ function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, in
   const note = useRef(initialNote); // o recado digitado não se perde quando a pessoa muda a resposta
   const focusOn = useRef<"state" | "form" | null>(justAnswered && initialStatus !== "pending" ? "state" : null);
   const many = maxPeople > 1;
+  const group = isGroup(people, maxPeople, viaOpenLink); // "não poderemos" / "não poderei"
   const self = `/c/${slug}/${token}`;
 
   // Depois de responder (ou de pedir para mudar), o foco vai para o que acabou de aparecer: leitor de tela e teclado não perdem o lugar.
@@ -82,7 +103,7 @@ function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, in
         return;
       }
       const saved = result.people ?? count ?? people;
-      const text = answerText(next, saved, maxPeople);
+      const text = answerText(next, saved, maxPeople, viaOpenLink);
       setPeople(saved);
       setStatus(next);
       setEditing(false);
@@ -109,7 +130,7 @@ function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, in
     setEditing(next);
   }
 
-  const current = status === "pending" ? null : answerText(status, people, maxPeople);
+  const current = status === "pending" ? null : answerText(status, people, maxPeople, viaOpenLink);
   const shownError = error || posted.error;
 
   return (
@@ -125,7 +146,7 @@ function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, in
           <input type="hidden" name="token" value={token} />
           {current ? (
             <p className="rsvp-current">
-              Sua resposta atual: <strong>{status === "yes" ? (many ? `vou, ${plural(Math.max(people, 1))}` : "vou comparecer") : many ? "não poderemos ir" : "não poderei ir"}</strong>
+              Sua resposta atual: <strong>{status === "yes" ? (many ? `vou, ${plural(Math.max(people, 1))}` : "vou comparecer") : group ? "não poderemos ir" : "não poderei ir"}</strong>
             </p>
           ) : null}
           {many ? (
@@ -135,9 +156,9 @@ function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, in
               </legend>
               <div className="rsvp-count-grid" data-n={maxPeople}>
                 {Array.from({ length: maxPeople }, (_, i) => i + 1).map((n) => (
-                  <button key={n} type="submit" name="people" value={n} className="inv-btn inv-btn-main rsvp-n" disabled={sending} aria-pressed={status === "yes" && people === n}>
-                    <span className="rsvp-n-num">{n}</span>
-                    <span className="rsvp-n-word">{n === 1 ? "pessoa" : "pessoas"}</span>
+                  // Só o número, grande: a legenda acima já diz "quantas pessoas". O leitor de tela ouve "3 pessoas".
+                  <button key={n} type="submit" name="people" value={n} className="inv-btn inv-btn-main rsvp-n" disabled={sending} aria-pressed={status === "yes" && people === n} aria-label={plural(n)}>
+                    {n}
                   </button>
                 ))}
               </div>
@@ -148,7 +169,7 @@ function PersonalRsvp({ slug, token, maxPeople, initialStatus, initialPeople, in
             </button>
           )}
           <button type="submit" name="status" value="no" className="inv-btn rsvp-no" disabled={sending} aria-pressed={current ? status === "no" : undefined}>
-            {many ? "Não poderemos ir" : "Não poderei ir"}
+            {group ? "Não poderemos ir" : "Não poderei ir"}
           </button>
           {shownError ? (
             <p className="inv-error" role="alert">

@@ -40,10 +40,15 @@
 /* título único: a primeira linha em itálico faz o contraste de capa de revista */
 .inv[data-template="festa"] .inv-names[data-count="1"]::first-line { font-style: italic; font-weight: 500; }
 /* par de nomes: primeiro nome em itálico, "&" fino no tom secundário da paleta; o texto corre e quebra como um título */
-.inv[data-template="festa"] .inv-names[data-count="2"] { display: block; font-size: calc(var(--names-size) * 0.86); text-wrap: wrap; } /* quebra simples: o "&" fica com o primeiro nome sempre que cabe, nunca sozinho numa linha por equilíbrio */
+.inv[data-template="festa"] .inv-names[data-count="2"] { display: block; font-size: calc(var(--names-size) * 0.86); --names-em: 0.68; text-wrap: wrap; } /* quebra simples; o "&" vai colado ao segundo nome (ver abaixo), então --names-em conta as duas letras a mais de "& Nome" */
 .inv[data-template="festa"] .inv-names[data-count="2"] .inv-name:first-child { font-style: italic; font-weight: 500; }
-.inv[data-template="festa"] .inv-amp::before, .inv[data-template="festa"] .inv-amp::after { content: " "; }
+/* Regra única do "&": quando o casal não cabe numa linha, ele abre a linha do segundo nome ("João / & Conceição"), nunca fica
+   pendurado no fim da primeira. O espaço depois dele é não separável; o de antes é onde a linha quebra. */
+.inv[data-template="festa"] .inv-amp::before { content: " "; }
+.inv[data-template="festa"] .inv-amp::after { content: "\00a0"; }
 .inv[data-template="festa"] .inv-names[data-long="true"] { font-size: calc(var(--names-size) * 0.74); }
+/* frase de seis palavras ou mais ("Bodas de Ouro — Vó Conceição e Vô Sebastião"): corpo menor, para não passar de quatro linhas num celular estreito */
+.inv[data-template="festa"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.6); }
 /* casal com nome comprido: reduz até um nome composto ("Maria Eduarda") caber numa linha só */
 .inv[data-template="festa"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.68); }
 .inv[data-template="festa"] .inv-amp { font-family: var(--font-names); font-style: italic; font-weight: 400; line-height: inherit; letter-spacing: inherit; color: var(--soft); }
@@ -54,11 +59,14 @@
 .inv[data-template="festa"] .inv-date { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto; column-gap: 16px; row-gap: 3px; align-content: center; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 2px solid var(--ink); }
 .inv[data-template="festa"] .inv-date-main { display: contents; }
 .inv[data-template="festa"] .inv-date-day { grid-column: 1; grid-row: 1 / span 3; font: 600 68px/0.8 var(--font-names); letter-spacing: -0.03em; padding-bottom: 0.06em; }
-.inv[data-template="festa"] .inv-date-month { grid-column: 2; grid-row: 1; font: 600 clamp(12.5px, 4.3cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.12em; color: var(--ink); padding-left: 0; }
+.inv[data-template="festa"] .inv-date-month { grid-column: 2; grid-row: 1; font: 600 clamp(14px, 4.3cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.12em; color: var(--ink); padding-left: 0; }
 .inv[data-template="festa"] .inv-date-side { grid-column: 2; border: 0; padding: 0; font: 400 18px/1.3 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); }
 .inv[data-template="festa"] .inv-date-side:first-child { grid-row: 2; }
 .inv[data-template="festa"] .inv-date-side:first-child::first-letter { text-transform: uppercase; }
 .inv[data-template="festa"] .inv-date-side:last-child { grid-row: 3; font: 600 22px/1.15 var(--font-text); } /* a hora pesa tanto quanto o dia */
+/* evento sem horário: o ano continua na linha do mês e a lateral do ano não aparece */
+.inv[data-template="festa"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="festa"] .inv-date .inv-date-alt { display: none; }
 /* a frase completa da data continua disponível para leitores de tela */
 .inv[data-template="festa"] .inv-dateline { display: block; position: absolute; width: 1px; height: 1px; margin: 0 !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -99,3 +107,12 @@
 .inv[data-template="festa"] .festa-liner-sun { fill: var(--ink); }
 /* lacre na mesma família do título (a base já usa --font-names) */
 .inv[data-template="festa"] .env-seal { --seal-weight: 500; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="festa"] { --thumb-h: 669px; }
+.inv[data-template="festa"]:has(.inv-cover[data-type="casamento"]) { --thumb-h: 642px; }
+.inv[data-template="festa"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 573px; }
+.inv[data-template="festa"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 631px; }
+.inv[data-template="festa"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 581px; }

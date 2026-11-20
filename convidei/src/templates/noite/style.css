@@ -64,6 +64,8 @@
 .inv[data-template="noite"] .inv-hello { font: 400 15.5px/1.4 var(--font-text); letter-spacing: 0.02em; margin-bottom: var(--s1) !important; }
 .inv[data-template="noite"] .inv-hello strong { font-weight: 500; }
 .inv[data-template="noite"] .inv-headline { font-size: 13px; font-weight: 400; line-height: 1.75; letter-spacing: 0.26em; padding-left: 0.26em; margin-bottom: var(--s1) !important; }
+/* cartão estreito: menos espaçamento, para a frase de abertura caber em duas linhas em vez de três */
+@container (max-width: 300px) { .inv[data-template="noite"] .inv-headline { letter-spacing: 0.13em; padding-left: 0.13em; } }
 
 .inv[data-template="noite"] .inv-names { padding: 0; }
 .inv[data-template="noite"] .inv-name {
@@ -80,6 +82,10 @@
 .inv[data-template="noite"] .inv-amp::before, .inv[data-template="noite"] .inv-amp::after { content: ""; width: 1.6em; height: 1px; background: var(--gold-line); }
 .inv[data-template="noite"] .inv-names[data-count="1"] { font-size: clamp(40px, 14cqw, 60px); }
 .inv[data-template="noite"] .inv-names[data-count="1"][data-long="true"] { font-size: clamp(25px, 8.2cqw, 36px); line-height: 1.24; }
+/* frase de seis palavras ou mais: um pouco menor e menos espaçada, para "Vó Conceição" e "de Ouro —" ficarem cada um na sua linha */
+.inv[data-template="noite"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { --names-tracking: 0.03em; --names-em: 0.7; font-size: clamp(22.5px, 7.6cqw, 33px); }
+/* palavra ou trecho inseparável de 15 a 20 letras ("Confraternização", "de Confraternização"): menos espaçamento entre letras, para a fonte encolher menos */
+.inv[data-template="noite"] .inv-names[data-count="1"]:is([data-longest="15"], [data-longest="16"], [data-longest="17"], [data-longest="18"], [data-longest="19"], [data-longest="20"]) { --names-tracking: 0.02em; --names-em: 0.67; }
 /* casal com nome composto: espaçamento menor para cada nome caber em uma linha (nome / & / nome) */
 .inv[data-template="noite"] .inv-names[data-count="2"][data-long="true"] { --names-tracking: 0.03em; font-size: clamp(24px, 9.6cqw, 36px); }
 
@@ -88,10 +94,15 @@
 /* data: dia da semana | dia | hora, e o mês numa linha própria (assim as laterais têm sempre a mesma largura) */
 .inv[data-template="noite"] .inv-date { margin-top: var(--s2); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "a day b" "month month month"; column-gap: clamp(8px, 3.6cqw, 14px); row-gap: 12px; }
 .inv[data-template="noite"] .inv-date-main { display: contents; }
-.inv[data-template="noite"] .inv-date-side { grid-area: a; font: 500 clamp(12.5px, 4.4cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.09em; padding: 10px 0 10px 0.09em; color: var(--ink); border-color: var(--gold-line); }
+.inv[data-template="noite"] .inv-date-side { grid-area: a; font: 500 clamp(14px, 4.4cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.09em; padding: 10px 0 10px 0.09em; color: var(--ink); border-color: var(--gold-line); }
 .inv[data-template="noite"] .inv-date-side:last-child { grid-area: b; }
 .inv[data-template="noite"] .inv-date-day { grid-area: day; justify-self: center; font: 300 clamp(52px, 18.6cqw, 62px)/0.9 var(--font-text); letter-spacing: 0.02em; color: var(--ink); }
-.inv[data-template="noite"] .inv-date-month { grid-area: month; justify-self: center; font: 500 clamp(13.5px, 4.4cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.2em; padding-left: 0.2em; color: var(--ink); }
+.inv[data-template="noite"] .inv-date-month { grid-area: month; justify-self: center; font: 500 clamp(14px, 4.4cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.2em; padding-left: 0.2em; color: var(--ink); }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="noite"] .inv-date { column-gap: 6px; }
+  .inv[data-template="noite"] .inv-date-side { letter-spacing: 0.03em; padding-left: 0.03em; }
+}
 .inv[data-template="noite"] .inv-place { font: 400 17px/1.45 var(--font-text); color: var(--ink); margin-top: var(--s2) !important; }
 .inv[data-template="noite"] .inv-countdown { background: none; border-radius: 0; padding: 0 0 0 0.26em; margin-top: var(--s1) !important; font: 400 13px/1.4 var(--font-label); letter-spacing: 0.26em; text-transform: uppercase; color: var(--soft); }
 .inv[data-template="noite"] .inv-more { font-weight: 400; letter-spacing: 0.3em; padding-left: calc(16px + 0.3em); }
@@ -123,6 +134,13 @@
 .inv[data-template="noite"] .inv-kicker { display: flex; align-items: center; justify-content: center; gap: clamp(8px, 3cqw, 12px); font-size: 12.5px; font-weight: 400; letter-spacing: clamp(2.4px, 1cqw, 3.6px); padding-left: clamp(2.4px, 1cqw, 3.6px); white-space: nowrap; color: var(--accent); margin-bottom: 12px !important; }
 .inv[data-template="noite"] .inv-kicker::before, .inv[data-template="noite"] .inv-kicker::after { content: ""; width: 22px; height: 1px; background: var(--gold-line); flex: none; }
 .inv[data-template="noite"] .inv-kicker::after { margin-left: calc(-1 * clamp(2.4px, 1cqw, 3.6px)); }
+/* Coluna muito estreita (zoom de 200%): sem os fios laterais e com quebra de linha, o rótulo cabe inteiro no cartão. */
+@container (max-width: 270px) {
+  .inv[data-template="noite"] .inv-kicker { display: block; white-space: normal; }
+  .inv[data-template="noite"] .inv-section .inv-section-title { font-size: clamp(17px, 12cqw, 24px); letter-spacing: 0.02em; }
+  .inv[data-template="noite"] .inv-sheet .inv-section .rsvp-state-title { font-size: clamp(13px, 8.6cqw, 20px); }
+  .inv[data-template="noite"] .inv-kicker::before, .inv[data-template="noite"] .inv-kicker::after { content: none; }
+}
 .inv[data-template="noite"] .inv-section-title {
   font: 400 clamp(29px, 9.6cqw, 34px)/1.2 var(--font-names);
   letter-spacing: 0.1em;
@@ -193,3 +211,13 @@
 .inv[data-template="noite"][data-still="true"] .inv-paper { padding-block: 40px 38px; }
 .inv[data-template="noite"][data-still="true"] .noite-fan { width: 38cqw; }
 .inv[data-template="noite"][data-still="true"] .inv-countdown, .inv[data-template="noite"][data-still="true"] .inv-sheet::after { display: none; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="noite"] { --thumb-h: 671px; }
+.inv[data-template="noite"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 665px; }
+.inv[data-template="noite"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 608px; }
+.inv[data-template="noite"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 646px; }
+.inv[data-template="noite"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 665px; }
+.inv[data-template="noite"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 571px; }

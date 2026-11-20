@@ -40,7 +40,8 @@
 .inv[data-template="editorial"] .inv-names { padding: 0.04em 0 0; text-wrap: wrap; hyphens: manual; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="editorial"] .inv-names[data-count="2"] { align-items: stretch; }
 .inv[data-template="editorial"] .inv-names[data-count="2"] .inv-name:last-child { text-align: right; }
-.inv[data-template="editorial"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 0.82; text-align: center; margin: -0.02em 0 0.06em; }
+/* folga em cima e embaixo do conector: com nome largo ("ÂNGELA") ele fica sob o fim do nome e não pode tocar o pé das letras */
+.inv[data-template="editorial"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 0.9; text-align: center; margin: 0.12em 0 0.1em; }
 .inv[data-template="editorial"] .inv-names[data-count="1"] { text-wrap: balance; }
 /* título único não tem "&": o ponto de cor é um filete curto de destaque sob o título, como em abertura de matéria */
 .inv[data-template="editorial"] .inv-names[data-count="1"]::after { content: ""; display: block; width: var(--ed-col); height: 3px; margin-top: 0.34em; background: var(--accent); }
@@ -61,6 +62,9 @@
 .inv[data-template="editorial"] .inv-date-side { border: 0; padding: 0; font: italic 400 21px/1.15 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 .inv[data-template="editorial"] .inv-date-side:first-child { grid-area: 2 / 2 / 3 / 3; padding-right: 0.3em; }
 .inv[data-template="editorial"] .inv-date-side:last-child { grid-area: 2 / 3 / 3 / 4; }
+/* evento sem horário: o ano continua na linha do mês e a lateral do ano não aparece */
+.inv[data-template="editorial"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="editorial"] .inv-date .inv-date-alt { display: none; }
 
 .inv[data-template="editorial"] .inv-place { display: grid; grid-template-columns: var(--ed-col) minmax(0, 1fr); align-items: baseline; font: 400 17px/1.35 var(--font-ui); color: var(--ink); margin-top: var(--ed-s) !important; text-wrap: pretty; }
 .inv[data-template="editorial"] .inv-place::before { content: "Local"; font: 500 12px/1.2 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
@@ -113,3 +117,8 @@
 /* Playfair traz algarismos de texto (antigos) por padrão, e a abreviação "font:" zera font-variant e font-feature-settings.
    O modelo usa só algarismos alinhados, em qualquer elemento: por isso a regra é geral e com prioridade. */
 .inv[data-template="editorial"] *, .inv[data-template="editorial"] *::before, .inv[data-template="editorial"] *::after { font-variant-numeric: lining-nums !important; font-feature-settings: "lnum" 1 !important; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="editorial"] { --thumb-h: 660px; }

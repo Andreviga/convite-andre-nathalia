@@ -50,6 +50,8 @@
 .inv[data-template="azulejo"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 1.5; color: var(--az-accent-ink); }
 .inv[data-template="azulejo"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.3); }
 .inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.9); line-height: 1.16; }
+/* frase de seis palavras ou mais: um pouco menor, para caber em três linhas num celular estreito */
+.inv[data-template="azulejo"] .inv-names[data-count="1"][data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.78); }
 /* título comprido: o dia encolhe um pouco para não passar por cima do título */
 .inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] ~ .inv-date { --az-day: clamp(42px, 13cqw, 50px); }
 
@@ -61,7 +63,12 @@
 .inv[data-template="azulejo"] .inv-date-day { font-size: var(--az-day); font-weight: 400; line-height: 0.9; transform: translateY(-0.055em); }
 .inv[data-template="azulejo"] .inv-date-month { font-size: clamp(14.5px, 4.2cqw, 16px); letter-spacing: 0.16em; padding-left: 0.16em; color: var(--ink); }
 /* os fios das laterais coincidem com o topo e a base do algarismo */
-.inv[data-template="azulejo"] .inv-date-side { display: grid; place-items: center; height: calc(var(--az-day) * 0.73); padding-block: 0; font-size: clamp(12.5px, 4.4cqw, 16px); font-weight: 500; letter-spacing: 0.1em; padding-left: 0.1em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
+.inv[data-template="azulejo"] .inv-date-side { display: grid; place-items: center; height: calc(var(--az-day) * 0.73); padding-block: 0; font-size: clamp(14px, 4.4cqw, 16px); font-weight: 500; letter-spacing: 0.1em; padding-left: 0.1em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="azulejo"] .inv-date { column-gap: 8px; }
+  .inv[data-template="azulejo"] .inv-date-side { letter-spacing: 0.04em; padding-left: 0.04em; }
+}
 .inv[data-template="azulejo"] .inv-place { font: 400 19px/1.4 var(--font-text); color: var(--ink); margin-top: var(--az-s) !important; }
 .inv[data-template="azulejo"] .inv-countdown { background: none; padding: 0; font: 500 12px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); margin-top: var(--az-s) !important; }
 
@@ -124,3 +131,13 @@
   .inv[data-template="azulejo"] { --az-s: clamp(9px, 3.4cqw, 14px); --az-l: clamp(15px, 5.4cqw, 22px); }
   .inv[data-template="azulejo"] .inv-cover { padding-top: 12px; gap: 6px; }
 }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="azulejo"] { --thumb-h: 691px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 688px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 601px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 662px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 688px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 594px; }

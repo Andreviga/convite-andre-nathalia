@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { dateBits, daysUntil, isDate, prettyTime } from "@/lib/format";
-import { glueTitle, splitTitle, titleRuns, titleShape } from "@/lib/names";
+import { glueText, glueTitle, NBSP, splitTitle, titleRuns, titleShape } from "@/lib/names";
 import { templateDef } from "@/templates";
 import { Monogram } from "./Monogram";
 
@@ -49,16 +49,17 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
   const Art = def.Art;
 
   return (
-    <header className="inv-cover">
+    <header className="inv-cover" data-type={data.type || undefined}>
       <div className="inv-paper">
         <div className="inv-art inv-art-top"><Art slot="top" initials={initials} eventType={data.type} /></div>
         <div className="inv-monogram"><Monogram initials={initials} /></div>
         {guestName ? (
           <p className="inv-hello">
-            Olá, <strong>{guestName}</strong>
+            Olá,{NBSP}<strong>{glueText(guestName)}</strong>
           </p>
         ) : null}
-        {data.headline ? <p className="inv-headline">{data.headline}</p> : null}
+        {/* Frase de abertura, recado e saudação passam por glueText: "e", "de", "da", "do" nunca fecham linha. */}
+        {data.headline ? <p className="inv-headline">{glueText(data.headline)}</p> : null}
         {/* Os atributos descrevem o título para o CSS (ver README dos modelos); --longest dimensiona a fonte para a maior palavra caber. */}
         <h1
           className="inv-names"
@@ -68,7 +69,7 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
           data-longest={shape.longest}
           data-short={shape.short || undefined}
           data-phrase={shape.phrase || undefined}
-          style={{ "--longest": shape.longest } as CSSProperties}
+          style={{ "--longest": shape.longest, "--line": shape.line } as CSSProperties}
         >
           {names.length === 2 ? (
             <>
@@ -80,24 +81,28 @@ export function InviteCover({ data, guestName, today, more = true }: { data: Cov
             <span className="inv-name"><TitleText text={title} /></span>
           )}
         </h1>
-        {data.message ? <p className="inv-message">{data.message}</p> : null}
+        {data.message ? <p className="inv-message">{glueText(data.message)}</p> : null}
         <div className="inv-art inv-art-divider"><Art slot="divider" initials={initials} eventType={data.type} /></div>
         {bits ? (
           <>
-            <div className="inv-date" aria-hidden="true">
+            {/* Sem horário (data-time="false") a lateral direita leva o ano e o mês fica sozinho embaixo: nunca dois fios vazios.
+                O modelo que não ladeia o numeral (festa, moderno, editorial, monograma) esconde .inv-date-alt e mantém "mês · ano". */}
+            <div className="inv-date" aria-hidden="true" data-time={time ? "true" : "false"}>
               <span className="inv-date-side">{bits.weekday.replace("-feira", "")}</span>
               <span className="inv-date-main">
                 <span className="inv-date-day">{bits.day}</span>
                 <span className="inv-date-month">
-                  {bits.month} · {bits.year}
+                  {bits.month}
+                  <span className="inv-date-year">{`${NBSP}·${NBSP}${bits.year}`}</span>
                 </span>
               </span>
-              <span className="inv-date-side">{time ? `às ${time}` : " "}</span>
+              {time ? <span className="inv-date-side">{`às${NBSP}${time}`}</span> : <span className="inv-date-side inv-date-alt">{bits.year}</span>}
             </div>
+            {/* "12 de maio", "de 2027" e "às 16h30" vão colados: "de" e "às" nunca fecham a linha. */}
             <p className="inv-dateline">
               <span className="sr-only">Data: </span>
-              {bits.weekday}, {Number(bits.day)} de {bits.month} de {bits.year}
-              {time ? `, às ${time}` : ""}
+              {bits.weekday}, {`${Number(bits.day)}${NBSP}de${NBSP}${bits.month} de${NBSP}${bits.year}`}
+              {time ? `, às${NBSP}${time}` : ""}
             </p>
           </>
         ) : null}

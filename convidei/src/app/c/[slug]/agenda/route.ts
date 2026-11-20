@@ -1,5 +1,5 @@
 import { eventBySlug } from "@/lib/events";
-import { eventCalendarTitle, icsFile } from "@/lib/format";
+import { calendarMessage, eventCalendarTitle, icsFile } from "@/lib/format";
 import { baseUrl } from "@/lib/url";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
@@ -12,7 +12,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     date: event.event_date,
     time: event.event_time,
     location: [event.venue_name, event.address].filter(Boolean).join(", "),
-    details: event.message,
+    details: calendarMessage(event.title, event.message),
     url: `${await baseUrl()}/c/${event.slug}`,
   });
   return new Response(body, {

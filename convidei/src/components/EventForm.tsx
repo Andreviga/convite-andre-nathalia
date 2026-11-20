@@ -409,7 +409,7 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
             {TEMPLATE_DEFS.map((t) => (
               <label key={t.id} className="tpl-pick">
                 <input type="radio" name="template_pick" value={t.id} checked={tpl === t.id} onChange={() => { setTpl(t.id); setPalette(""); }} />
-                <TemplateThumb data={{ ...data, template: t.id }} today={today} />
+                <TemplateThumb data={{ ...data, template: t.id }} palette={t.id === tpl ? activePalette.id : undefined} today={today} />
                 <span className="tpl-pick-name">
                   {t.name}
                   {t.premium ? <span className="tag tag-premium">Premium</span> : null}
@@ -509,6 +509,10 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
         </section>
 
         <div className="sticky-save">
+          {/* Fica preso ao topo desta barra: quando ela cresce com a mensagem de erro, o botão sobe junto e não cobre o texto. */}
+          <button type="button" className="btn preview-fab" onClick={openPreview}>
+            Ver prévia
+          </button>
           {state.error ? (
             <p className="alert alert-error" role="alert" style={{ marginBottom: 12 }}>
               {state.error}
@@ -535,9 +539,6 @@ export function EventForm({ initial, eventId, premium, today }: Props) {
         </button>
       </aside>
 
-      <button type="button" className="btn preview-fab" onClick={openPreview}>
-        Ver prévia
-      </button>
       {showPreview && extra ? (
         <div className="preview-modal" role="dialog" aria-modal="true" aria-label="Prévia do convite inteiro">
           <div className="preview-top">

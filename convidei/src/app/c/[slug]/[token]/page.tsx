@@ -4,7 +4,7 @@ import { OpenBeacon } from "@/components/OpenBeacon";
 import { eventBySlug, guestByToken, rsvpClosed } from "@/lib/events";
 import { todayBR } from "@/lib/format";
 
-type Props = { params: Promise<{ slug: string; token: string }>; searchParams: Promise<{ confirmado?: string; mudar?: string }> };
+type Props = { params: Promise<{ slug: string; token: string }>; searchParams: Promise<{ confirmado?: string; mudar?: string; geral?: string }> };
 
 export default async function PersonalInvite({ params, searchParams }: Props) {
   const { slug, token } = await params;
@@ -16,10 +16,12 @@ export default async function PersonalInvite({ params, searchParams }: Props) {
   // Acabou de responder (link geral ou formulário sem JavaScript): nada de envelope fechado de novo, direto na confirmação.
   const justAnswered = search.confirmado === "yes" || search.confirmado === "no";
   const changing = search.mudar === "1";
+  // Veio do link geral, reconhecido pelo aparelho: o envelope já foi aberto lá, não fecha de novo com outro nome na frente.
+  const fromOpenLink = search.geral === "1" && guest.source === "open";
   return (
     <>
       <OpenBeacon slug={event.slug} token={guest.token} />
-      <Invite event={event} guest={guest} envelope={!justAnswered && !changing} justAnswered={justAnswered} changing={changing} />
+      <Invite event={event} guest={guest} envelope={!justAnswered && !changing && !fromOpenLink} justAnswered={justAnswered} changing={changing} />
     </>
   );
 }
