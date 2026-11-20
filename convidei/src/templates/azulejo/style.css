@@ -1,0 +1,143 @@
+/* Modelo Azulejo. Todas as regras ficam sob .inv[data-template="azulejo"]. */
+.inv[data-template="azulejo"] {
+  --font-names: var(--f-playfair), "Playfair Display", Georgia, serif;
+  --font-text: var(--f-playfair), "Playfair Display", Georgia, serif;
+  --font-label: var(--f-jost), "Jost", system-ui, sans-serif;
+  --font-ui: var(--f-jost), "Jost", system-ui, sans-serif;
+  --names-size: clamp(36px, 12cqw, 54px);
+  --names-weight: 400;
+  --names-leading: 1.1;
+  --names-em: 0.52;
+  --amp-scale: 0.56;
+  --label-tracking: 0.22em;
+  --radius: 2px;
+  --btn-radius: 2px;
+  --paper-pad: clamp(24px, 8.5cqw, 40px);
+  --paper-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 16%, transparent), 0 14px 34px color-mix(in srgb, var(--ink) 13%, transparent);
+  /* dois passos de ritmo vertical */
+  --az-s: clamp(11px, 4.4cqw, 20px);
+  --az-l: clamp(19px, 7.6cqw, 34px);
+  --az-day: clamp(50px, 16cqw, 62px); /* corpo do dia; as caixas laterais têm a altura do algarismo */
+  /* destaque um pouco mais escuro, para traço fino e letra sobre o papel (na paleta siciliana o amarelo puro some) */
+  --az-accent-ink: color-mix(in srgb, var(--accent) 72%, var(--ink));
+  /* o azulejo em duas máscaras (traços na cor da tinta, flores na cor de destaque), para a barra do envelope */
+  --az-tile-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' fill='none'%3E%3Cg stroke='%23000'%3E%3Cg stroke-width='2.4'%3E%3Ccircle cx='0' cy='0' r='12.6'/%3E%3Ccircle cx='48' cy='0' r='12.6'/%3E%3Ccircle cx='0' cy='48' r='12.6'/%3E%3Ccircle cx='48' cy='48' r='12.6'/%3E%3C/g%3E%3Cg stroke-width='1.3'%3E%3Cg transform='rotate(0 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3Cg transform='rotate(90 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3Cg transform='rotate(180 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3Cg transform='rotate(270 24 24)'%3E%3Cpath d='M24 19.5C21.2 14.6 21.2 8.6 24 3.4 26.8 8.6 26.8 14.6 24 19.5Z'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='4.3' stroke-width='1.1'/%3E%3C/g%3E%3C/svg%3E");
+  --az-tile-accent: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' fill='none'%3E%3Cmask id='m'%3E%3Crect width='48' height='48' fill='%23fff'/%3E%3Ccircle cx='24' cy='24' r='4.85' fill='%23000'/%3E%3C/mask%3E%3Ccircle cx='0' cy='0' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='0' cy='0' r='3.4' fill='%23000'/%3E%3Ccircle cx='48' cy='0' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='48' cy='0' r='3.4' fill='%23000'/%3E%3Ccircle cx='0' cy='48' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='0' cy='48' r='3.4' fill='%23000'/%3E%3Ccircle cx='48' cy='48' r='7.8' stroke='%23000' stroke-width='1.3'/%3E%3Ccircle cx='48' cy='48' r='3.4' fill='%23000'/%3E%3Cg mask='url(%23m)' fill='%23000'%3E%3Cg transform='rotate(0 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3Cg transform='rotate(90 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3Cg transform='rotate(180 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3Cg transform='rotate(270 24 24)'%3E%3Cpath d='M24 24C24.6 17.4 29.6 12.4 36.4 11.6 35.6 18.4 30.6 23.4 24 24Z'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='1.6' fill='%23000'/%3E%3C/svg%3E");
+  /* cercadura das seções: fiada de losangos, pintada com a cor de destaque por máscara */
+  --az-chain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='9'%3E%3Cpath d='M8 .8l4.6 3.7L8 8.2 3.4 4.5z'/%3E%3Ccircle cx='0' cy='4.5' r='1.3'/%3E%3Ccircle cx='16' cy='4.5' r='1.3'/%3E%3C/svg%3E");
+}
+/* A Playfair traz algarismos de texto por padrão: "11" lê-se como "II". Algarismos alinhados em tudo o que usa a serifa
+   (declarado em cada elemento, porque o atalho `font` da base zera a herança). */
+.inv[data-template="azulejo"] :is(.inv-names, .inv-place, .inv-dateline, .inv-section-title, .inv-big, .rsvp-state-title, .env-to strong) {
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+}
+
+/* ───────── Capa ───────── */
+/* O friso sangra até as bordas do cartão, no topo e na base; o texto fica todo na área limpa do meio. */
+.inv[data-template="azulejo"] .inv-paper { padding-block: 0; overflow: hidden; }
+.inv[data-template="azulejo"] .inv-paper::before { display: none; }
+.inv[data-template="azulejo"] .inv-art-top, .inv[data-template="azulejo"] .inv-art-bottom { display: block; margin-inline: calc(var(--paper-pad) * -1); }
+.inv[data-template="azulejo"] .inv-art-top { margin-bottom: var(--az-l); }
+.inv[data-template="azulejo"] .inv-art-bottom { margin-top: var(--az-l); }
+.inv[data-template="azulejo"] .inv-art-top svg, .inv[data-template="azulejo"] .inv-art-bottom svg { width: 100%; height: auto; }
+
+.inv[data-template="azulejo"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="azulejo"] .inv-hello { font-size: 16px; margin-bottom: var(--az-s) !important; }
+.inv[data-template="azulejo"] .inv-headline { font-size: 12px; font-weight: 500; line-height: 1.75; margin-bottom: var(--az-s) !important; }
+
+.inv[data-template="azulejo"] .inv-names { font-style: italic; padding: 0; letter-spacing: -0.005em; }
+.inv[data-template="azulejo"] .inv-amp { font-family: var(--font-names); font-style: italic; line-height: 1.5; color: var(--az-accent-ink); }
+.inv[data-template="azulejo"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.3); }
+.inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.9); line-height: 1.16; }
+/* frase de seis palavras ou mais: um pouco menor, para caber em três linhas num celular estreito */
+.inv[data-template="azulejo"] .inv-names[data-count="1"][data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.78); }
+/* título comprido: o dia encolhe um pouco para não passar por cima do título */
+.inv[data-template="azulejo"] .inv-names[data-count="1"][data-long="true"] ~ .inv-date { --az-day: clamp(42px, 13cqw, 50px); }
+
+.inv[data-template="azulejo"] .inv-message { font: 400 17px/1.5 var(--font-ui); max-width: 30ch; margin-top: var(--az-s) !important; }
+.inv[data-template="azulejo"] .inv-art-divider { margin: var(--az-l) 0 0; }
+
+/* Data: dia ao centro entre dia da semana e hora; o mês ocupa a linha de baixo inteira, para as laterais nunca apertarem. */
+.inv[data-template="azulejo"] .inv-date { margin-top: var(--az-l); column-gap: clamp(9px, 5cqw, 22px); row-gap: 8px; }
+.inv[data-template="azulejo"] .inv-date-day { font-size: var(--az-day); font-weight: 400; line-height: 0.9; transform: translateY(-0.055em); }
+.inv[data-template="azulejo"] .inv-date-month { font-size: clamp(14.5px, 4.2cqw, 16px); letter-spacing: 0.16em; padding-left: 0.16em; color: var(--ink); }
+/* os fios das laterais coincidem com o topo e a base do algarismo */
+.inv[data-template="azulejo"] .inv-date-side { display: grid; place-items: center; height: calc(var(--az-day) * 0.73); padding-block: 0; font-size: clamp(14px, 4.4cqw, 16px); font-weight: 500; letter-spacing: 0.1em; padding-left: 0.1em; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 60%, var(--paper)); }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="azulejo"] .inv-date { column-gap: 8px; }
+  .inv[data-template="azulejo"] .inv-date-side { letter-spacing: 0.04em; padding-left: 0.04em; }
+}
+.inv[data-template="azulejo"] .inv-place { font: 400 19px/1.4 var(--font-text); color: var(--ink); margin-top: var(--az-s) !important; }
+.inv[data-template="azulejo"] .inv-countdown { background: none; padding: 0; font: 500 12px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); margin-top: var(--az-s) !important; }
+
+/* ───────── Seções ───────── */
+.inv[data-template="azulejo"] .inv-section { padding-top: 46px; box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent), 0 6px 18px color-mix(in srgb, var(--ink) 8%, transparent); }
+.inv[data-template="azulejo"] .inv-section::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 106px;
+  height: 9px;
+  transform: translateX(-50%);
+  background: var(--az-accent-ink);
+  -webkit-mask: var(--az-chain) center / 16px 9px repeat-x;
+  mask: var(--az-chain) center / 16px 9px repeat-x;
+  pointer-events: none;
+}
+.inv[data-template="azulejo"] .inv-kicker { font-size: 12px; }
+.inv[data-template="azulejo"] .inv-section-title { font-style: italic; font-weight: 400; font-size: 30px; }
+.inv[data-template="azulejo"] .inv-big { font-weight: 400; font-size: 23px; }
+.inv[data-template="azulejo"] .rsvp-state-title { font-style: italic; font-weight: 400; }
+.inv[data-template="azulejo"] .inv-btn { font-weight: 500; letter-spacing: 0.02em; }
+.inv[data-template="azulejo"] .inv-btn-main { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 55%, transparent); }
+.inv[data-template="azulejo"] .rsvp-state, .inv[data-template="azulejo"] .inv-field input, .inv[data-template="azulejo"] .inv-field select, .inv[data-template="azulejo"] .inv-field textarea { border-radius: 2px; }
+.inv[data-template="azulejo"] .inv-more { font-size: 12px; }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="azulejo"] .env-liner { color: var(--accent); }
+.inv[data-template="azulejo"] .env-to { font-size: 16px; }
+.inv[data-template="azulejo"] .env-to strong { font-style: italic; font-weight: 400; font-size: 32px; }
+.inv[data-template="azulejo"] .env-cta { border-radius: 2px; font-weight: 500; letter-spacing: 0.12em; }
+/* Barra de azulejos na base do envelope fechado (a mesma fiada do cartão, com a cercadura): duas camadas por máscara,
+   acima da frente e abaixo da aba e do lacre. */
+.inv[data-template="azulejo"] .env-body::before, .inv[data-template="azulejo"] .env-body::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: auto 0 0;
+  box-sizing: content-box;
+  aspect-ratio: 12 / 1;
+  padding-top: 6px;
+  border-radius: 0 0 4px 4px;
+  pointer-events: none;
+}
+.inv[data-template="azulejo"] .env-body::before {
+  background: var(--ink);
+  -webkit-mask: linear-gradient(#000, #000) top / 100% 1px no-repeat, linear-gradient(#000, #000) 0 3px / 100% 2px no-repeat, var(--az-tile-ink) 0 0 / calc(100% / 12) auto repeat-x content-box;
+  mask: linear-gradient(#000, #000) top / 100% 1px no-repeat, linear-gradient(#000, #000) 0 3px / 100% 2px no-repeat, var(--az-tile-ink) 0 0 / calc(100% / 12) auto repeat-x content-box;
+}
+.inv[data-template="azulejo"] .env-body::after {
+  background: var(--accent);
+  -webkit-mask: var(--az-tile-accent) 0 0 / calc(100% / 12) auto repeat-x content-box;
+  mask: var(--az-tile-accent) 0 0 / calc(100% / 12) auto repeat-x content-box;
+}
+.inv[data-template="azulejo"] .env-card { inset: 9% 10% 10%; }
+
+/* Telas curtas (celular pequeno): ritmo mais justo para o cartão inteiro caber na primeira tela. */
+@media (max-height: 680px) {
+  .inv[data-template="azulejo"] { --az-s: clamp(9px, 3.4cqw, 14px); --az-l: clamp(15px, 5.4cqw, 22px); }
+  .inv[data-template="azulejo"] .inv-cover { padding-top: 12px; gap: 6px; }
+}
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="azulejo"] { --thumb-h: 691px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 688px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 601px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 662px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 688px; }
+.inv[data-template="azulejo"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 594px; }

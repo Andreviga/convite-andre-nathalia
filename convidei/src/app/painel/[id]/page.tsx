@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 import { deleteGuest } from "@/app/actions";
 import { ConfirmButton } from "@/components/ConfirmButton";
 import { CopyButton } from "@/components/CopyButton";
-import { AddGuestForm, BulkGuestForm, WhatsAppLink } from "@/components/GuestForms";
+import { AddGuestForm, BulkGuestForm, EditGuestForm, WhatsAppLink } from "@/components/GuestForms";
 import { requireUser } from "@/lib/auth";
 import { eventType } from "@/lib/catalog";
 import { eventForUser, guestsOf, statsOf, type GuestRow } from "@/lib/events";
-import { longDate, prettyTime, whatsappNumber } from "@/lib/format";
+import { longDate, prettyTime, todayBR, whatsappNumber } from "@/lib/format";
 import { guestLimit, isPremium } from "@/lib/plans";
 import { baseUrl } from "@/lib/url";
+import { templateDef } from "@/templates";
 
 const STATUS: Record<GuestRow["status"], { label: string; className: string }> = {
   yes: { label: "Confirmou", className: "tag tag-yes" },
@@ -63,6 +64,30 @@ export default async function EventPanel({ params, searchParams }: { params: Pro
         </p>
       ) : null}
 
+      {event.event_date < todayBR() ? (
+        <p className="alert alert-info" style={{ marginBottom: 16 }}>
+          A data deste convite ({longDate(event.event_date)}) já passou. Se foi engano no dia ou no ano,{" "}
+          <Link href={`/painel/${event.id}/editar`} className="link">
+            corrija a data
+          </Link>
+          : com a data vencida o convite não mostra a contagem regressiva e deixa de aceitar confirmações.
+        </p>
+      ) : null}
+
+      {templateDef(event.template).premium && !isPremium(event.plan) ? (
+        <p className="alert alert-info" style={{ marginBottom: 16 }}>
+          Este convite usa o modelo Premium {templateDef(event.template).name}. No plano grátis, os convidados veem uma faixa de “prévia” no topo.{" "}
+          <Link href={`/painel/${event.id}/premium`} className="link">
+            Fazer o upgrade
+          </Link>{" "}
+          ou{" "}
+          <Link href={`/painel/${event.id}/editar`} className="link">
+            escolher um modelo grátis
+          </Link>
+          .
+        </p>
+      ) : null}
+
       <div className="stats">
         <div className="stat stat-main">
           <strong>{stats.people}</strong>
@@ -96,6 +121,7 @@ export default async function EventPanel({ params, searchParams }: { params: Pro
           {event.open_rsvp
             ? "Bom para postar em grupos: quem abrir digita o nome e confirma. Para saber quem abriu, use o link individual de cada convidado, na lista abaixo."
             : "Mostra o convite, mas só confirma presença quem abrir pelo link individual da lista abaixo."}
+          {event.open_rsvp && limit !== null ? ` Cada pessoa que confirma por este link entra na lista e conta como um dos ${limit} convites do plano grátis.` : ""}
         </p>
         <div className="share">
           <div className="share-url">{publicUrl}</div>
@@ -113,6 +139,19 @@ export default async function EventPanel({ params, searchParams }: { params: Pro
         <p className="panel-lead">Cada convite pode ser para uma pessoa ou para uma família. “Pessoas” é quantos lugares esse convite dá direito.</p>
         <AddGuestForm eventId={event.id} />
         <BulkGuestForm eventId={event.id} />
+        {limit !== null && stats.invites >= limit ? (
+          <p className="alert alert-info" style={{ marginTop: 14 }}>
+            Os {limit} convites do plano grátis já foram usados{event.open_rsvp ? " (as confirmações pelo link geral também contam)" : ""}. Para convidar mais gente,{" "}
+            <Link href={`/painel/${event.id}/premium`} className="link">
+              libere os convites ilimitados
+            </Link>
+            .
+          </p>
+        ) : limit !== null && stats.invites >= limit - 5 ? (
+          <p className="alert alert-info" style={{ marginTop: 14 }}>
+            {limit - stats.invites === 1 ? "Falta 1 convite" : `Faltam ${limit - stats.invites} convites`} para o limite do plano grátis.
+          </p>
+        ) : null}
         {limit !== null ? (
           <div className="quota">
             <div className="quota-bar" role="img" aria-label={`${stats.invites} de ${limit} convites usados`}>
@@ -150,8 +189,15 @@ export default async function EventPanel({ params, searchParams }: { params: Pro
                   <div>
                     <p className="guest-name">{guest.name}</p>
                     <p className="guest-sub">
-                      {guest.status === "yes" ? `${guest.people_count} de ${guest.max_people}` : `até ${guest.max_people}`} {guest.max_people === 1 ? "pessoa" : "pessoas"}
-                      {guest.source === "open" ? " · confirmou pelo link geral" : ""}
+                      {guest.source === "open" && guest.status !== "yes" ? (
+                        /* Recusou (ou ainda não disse) pelo link geral: "até N pessoas" é o teto do link, não um convite para N. */
+                        "Respondeu pelo link geral"
+                      ) : (
+                        <>
+                          {guest.status === "yes" ? `${guest.people_count} de ${guest.max_people}` : `até ${guest.max_people}`} {guest.max_people === 1 ? "pessoa" : "pessoas"}
+                          {guest.source === "open" ? " · confirmou pelo link geral" : ""}
+                        </>
+                      )}
                     </p>
                     {guest.note ? <p className="guest-note">“{guest.note}”</p> : null}
                   </div>
@@ -162,6 +208,7 @@ export default async function EventPanel({ params, searchParams }: { params: Pro
                   <div className="guest-actions">
                     <WhatsAppLink eventId={event.id} guestId={guest.id} sent={Boolean(guest.sent_at)} href={`https://wa.me/${number}?text=${encodeURIComponent(message)}`} />
                     <CopyButton className="btn btn-sm" value={link} label="Copiar link" done="Copiado!" />
+                    <EditGuestForm key={`${guest.id}:${guest.name}:${guest.phone}:${guest.max_people}`} eventId={event.id} guest={{ id: guest.id, name: guest.name, phone: guest.phone, max_people: guest.max_people }} />
                     <form action={deleteGuest}>
                       <input type="hidden" name="event_id" value={event.id} />
                       <input type="hidden" name="guest_id" value={guest.id} />

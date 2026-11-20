@@ -1,0 +1,123 @@
+import type { CSSProperties } from "react";
+import { dateBits, daysUntil, isDate, prettyTime } from "@/lib/format";
+import { glueText, glueTitle, NBSP, splitTitle, titleRuns, titleShape } from "@/lib/names";
+import { templateDef } from "@/templates";
+import { Monogram } from "./Monogram";
+
+export type CoverData = {
+  template: string;
+  /** Tipo de evento (id de EVENT_TYPES), para ornamentos que só fazem sentido em um tipo. */
+  type?: string;
+  title: string;
+  headline: string;
+  message: string;
+  event_date: string;
+  event_time: string;
+  venue_name: string;
+  address: string;
+};
+
+function countdown(days: number): string | null {
+  if (days > 1) return `Faltam ${days} dias`;
+  if (days === 1) return "É amanhã";
+  if (days === 0) return "É hoje";
+  return null;
+}
+
+/**
+ * Texto de um título ou nome, pronto para quebrar bem: partículas e travessão colados por espaço não separável (glueTitle)
+ * e algarismos e travessões em <span class="inv-num">, que os modelos de fonte caligráfica compõem na serifa.
+ */
+export function TitleText({ text }: { text: string }) {
+  return titleRuns(glueTitle(text)).map((run, i) => (run.num ? <span key={i} className="inv-num">{run.text}</span> : run.text));
+}
+
+/**
+ * A capa do convite (o "cartão"). Componente puro: serve no servidor, na prévia ao vivo do editor e nas miniaturas.
+ * A estrutura é a mesma para todos os modelos; cada um muda fontes, cores e ornamentos pelo CSS e pelo Art.
+ */
+export function InviteCover({ data, guestName, today, more = true }: { data: CoverData; guestName?: string; today: string; more?: boolean }) {
+  const def = templateDef(data.template);
+  const title = data.title.trim() || "Seu nome aqui";
+  const { names, connector, initials } = splitTitle(title);
+  const shape = titleShape(title);
+  const hasDate = isDate(data.event_date);
+  const bits = hasDate ? dateBits(data.event_date) : null;
+  const time = prettyTime(data.event_time);
+  const left = hasDate ? countdown(daysUntil(data.event_date, today)) : null;
+  const place = data.venue_name || data.address;
+  const Art = def.Art;
+
+  return (
+    <header className="inv-cover" data-type={data.type || undefined}>
+      <div className="inv-paper">
+        <div className="inv-art inv-art-top"><Art slot="top" initials={initials} eventType={data.type} /></div>
+        <div className="inv-monogram"><Monogram initials={initials} /></div>
+        {guestName ? (
+          <p className="inv-hello">
+            Olá,{NBSP}<strong>{glueText(guestName)}</strong>
+          </p>
+        ) : null}
+        {/* Frase de abertura, recado e saudação passam por glueText: "e", "de", "da", "do" nunca fecham linha. */}
+        {data.headline ? <p className="inv-headline">{glueText(data.headline)}</p> : null}
+        {/* Os atributos descrevem o título para o CSS (ver README dos modelos); --longest dimensiona a fonte para a maior palavra caber. */}
+        <h1
+          className="inv-names"
+          data-count={shape.count}
+          data-long={shape.long}
+          data-words={shape.words}
+          data-longest={shape.longest}
+          data-short={shape.short || undefined}
+          data-phrase={shape.phrase || undefined}
+          style={{ "--longest": shape.longest, "--line": shape.line } as CSSProperties}
+        >
+          {names.length === 2 ? (
+            <>
+              <span className="inv-name"><TitleText text={names[0]} /></span>
+              <span className="inv-amp">{connector}</span>
+              <span className="inv-name"><TitleText text={names[1]} /></span>
+            </>
+          ) : (
+            <span className="inv-name"><TitleText text={title} /></span>
+          )}
+        </h1>
+        {data.message ? <p className="inv-message">{glueText(data.message)}</p> : null}
+        <div className="inv-art inv-art-divider"><Art slot="divider" initials={initials} eventType={data.type} /></div>
+        {bits ? (
+          <>
+            {/* Sem horário (data-time="false") a lateral direita leva o ano e o mês fica sozinho embaixo: nunca dois fios vazios.
+                O modelo que não ladeia o numeral (festa, moderno, editorial, monograma) esconde .inv-date-alt e mantém "mês · ano". */}
+            <div className="inv-date" aria-hidden="true" data-time={time ? "true" : "false"}>
+              <span className="inv-date-side">{bits.weekday.replace("-feira", "")}</span>
+              <span className="inv-date-main">
+                <span className="inv-date-day">{bits.day}</span>
+                <span className="inv-date-month">
+                  {bits.month}
+                  <span className="inv-date-year">{`${NBSP}·${NBSP}${bits.year}`}</span>
+                </span>
+              </span>
+              {time ? <span className="inv-date-side">{`às${NBSP}${time}`}</span> : <span className="inv-date-side inv-date-alt">{bits.year}</span>}
+            </div>
+            {/* "12 de maio", "de 2027" e "às 16h30" vão colados: "de" e "às" nunca fecham a linha. */}
+            <p className="inv-dateline">
+              <span className="sr-only">Data: </span>
+              {bits.weekday}, {`${Number(bits.day)}${NBSP}de${NBSP}${bits.month} de${NBSP}${bits.year}`}
+              {time ? `, às${NBSP}${time}` : ""}
+            </p>
+          </>
+        ) : null}
+        {place ? <p className="inv-place">{place}</p> : null}
+        {left ? <p className="inv-countdown">{left}</p> : null}
+        <div className="inv-art inv-art-bottom"><Art slot="bottom" initials={initials} eventType={data.type} /></div>
+      </div>
+      {more ? (
+        <a className="inv-more" href="#detalhes">
+          Detalhes
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
+            <path d="M2 5l5 5 5-5" />
+          </svg>
+        </a>
+      ) : null}
+    </header>
+  );
+}

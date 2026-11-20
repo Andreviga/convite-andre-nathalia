@@ -1,0 +1,111 @@
+/* Modelo Moderno. Todas as regras ficam sob .inv[data-template="moderno"].
+   Minimalista tipográfico: composição à esquerda, serifa leve e grande nos nomes, sem serifa em caixa alta espaçada no apoio.
+   Dois passos de espaço vertical (--m-s1, --m-s2) e um único elemento gráfico: o fio. */
+.inv[data-template="moderno"] {
+  /* Fraunces leve: o circunflexo minúsculo do Cormorant (ê, ô, â) sai como uma cunha solta, e em português isso aparece em todo convite. */
+  --font-names: var(--f-fraunces), "Fraunces", Georgia, serif;
+  --font-text: var(--f-fraunces), "Fraunces", Georgia, serif;
+  --font-label: var(--f-jost), "Jost", system-ui, sans-serif;
+  --font-ui: var(--f-jost), "Jost", system-ui, sans-serif;
+  --names-size: clamp(40px, 16cqw, 74px);
+  --names-weight: 300;
+  --names-leading: 1;
+  --names-tracking: -0.025em;
+  --names-em: 0.54;
+  --amp-scale: 0.52;
+  --label-tracking: 0.24em;
+  --radius: 0px;
+  --btn-radius: 0px;
+  --paper-pad: clamp(28px, 8.4cqw, 40px);
+  --paper-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 16px 36px rgba(0, 0, 0, 0.07);
+  --m-s1: clamp(14px, 4.2cqw, 18px);
+  --m-s2: clamp(28px, 8.8cqw, 40px);
+}
+
+/* ───────── Capa ───────── */
+/* Cartão com proporção de convite impresso: altura mínima, texto no alto e o bloco da data ancorado embaixo. */
+.inv[data-template="moderno"] .inv-paper { text-align: left; padding-block: var(--paper-pad); display: flex; flex-direction: column; min-height: 156cqw; }
+.inv[data-template="moderno"] .inv-art-divider { display: block; flex: 1 0 var(--m-s2); margin: 0; } /* vazio: é só a mola entre o texto e a data */
+.inv[data-template="moderno"] .inv-paper::before { display: none; } /* sem moldura: a margem é o ornamento */
+.inv[data-template="moderno"] .inv-hello { font: 400 15px/1.4 var(--font-ui); margin-bottom: var(--m-s1) !important; }
+.inv[data-template="moderno"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="moderno"] .inv-headline { font-weight: 500; padding-left: 0; margin-bottom: var(--m-s2) !important; text-wrap: pretty; }
+
+.inv[data-template="moderno"] .inv-names { padding: 0; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; overflow-wrap: break-word; margin-left: -0.03em; }
+/* Casal: sempre três linhas (nome, conector, nome), com o "&" pequeno na cor de acento como pausa deliberada. */
+.inv[data-template="moderno"] .inv-names[data-count="2"] { align-items: flex-start; }
+.inv[data-template="moderno"] .inv-names[data-count="2"] .inv-name { text-wrap: balance; }
+.inv[data-template="moderno"] .inv-amp { font-weight: 400; line-height: 1; margin: 0.22em 0 0.1em 0.08em; color: var(--accent); }
+.inv[data-template="moderno"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.73); }
+.inv[data-template="moderno"] .inv-names[data-count="1"] { text-wrap: balance; }
+.inv[data-template="moderno"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.68); line-height: 1.06; }
+
+.inv[data-template="moderno"] .inv-message { font: 300 17.5px/1.45 var(--font-text); margin-top: calc(var(--m-s2) - 6px) !important; margin-inline: 0 !important; max-width: 30ch; text-wrap: pretty; }
+
+/* Data: o numeral do dia grande, um fio vertical e três linhas de apoio. */
+.inv[data-template="moderno"] .inv-date {
+  grid-template-columns: auto 1fr;
+  grid-template-rows: repeat(3, auto);
+  align-content: center;
+  align-items: center;
+  column-gap: 0;
+  row-gap: 0;
+  margin-top: 0;
+  padding-top: var(--m-s1);
+  border-top: 1px solid var(--ink);
+}
+.inv[data-template="moderno"] .inv-date-main { display: contents; }
+.inv[data-template="moderno"] .inv-date-day { grid-column: 1; grid-row: 1 / 4; font: 300 clamp(54px, 17cqw, 74px)/0.82 var(--font-text); letter-spacing: -0.03em; padding-right: clamp(16px, 5cqw, 22px); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="moderno"] .inv-date-side,
+.inv[data-template="moderno"] .inv-date-month { grid-column: 2; font: 500 14px/1.6 var(--font-label); letter-spacing: 0.16em; color: var(--ink); border: 0; border-left: 1px solid var(--ink); padding: 0 0 0 clamp(16px, 5cqw, 22px); }
+.inv[data-template="moderno"] .inv-date-side:first-child { grid-row: 1; padding-top: 3px; }
+.inv[data-template="moderno"] .inv-date-month { grid-row: 2; color: var(--soft); font-size: 14px; letter-spacing: 0.12em; } /* "setembro · 2027" cabe ao lado do numeral em 320px */
+/* A hora é informação essencial: maior e mais pesada que o dia da semana e o mês. */
+.inv[data-template="moderno"] .inv-date-side:last-child { grid-row: 3; padding-bottom: 3px; font-size: 18px; font-weight: 600; letter-spacing: 0.1em; line-height: 1.45; }
+/* evento sem horário: o ano continua na linha do mês e a lateral do ano não aparece */
+.inv[data-template="moderno"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="moderno"] .inv-date[data-time="false"] .inv-date-month { padding-bottom: 3px; }
+.inv[data-template="moderno"] .inv-date .inv-date-alt { display: none; }
+
+.inv[data-template="moderno"] .inv-place { font: 400 18.5px/1.35 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; color: var(--ink); margin-top: var(--m-s1) !important; text-wrap: pretty; }
+.inv[data-template="moderno"] .inv-countdown { display: block; background: none; padding: 0; border-radius: 0; margin-top: calc(var(--m-s1) + 6px) !important; font: 500 11.5px/1.3 var(--font-label); letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--soft); }
+.inv[data-template="moderno"] .inv-more { font-family: var(--font-label); font-weight: 500; letter-spacing: 0.26em; }
+
+/* ───────── Seções ───────── */
+.inv[data-template="moderno"] .inv-section { text-align: left; padding: 30px var(--paper-pad) 32px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 22px rgba(0, 0, 0, 0.05); border-top: 1px solid var(--ink); }
+.inv[data-template="moderno"] .inv-kicker { font-weight: 500; letter-spacing: var(--label-tracking); padding-left: 0; margin-bottom: 10px !important; }
+.inv[data-template="moderno"] .inv-section-title { font: 300 34px/1.08 var(--font-text); letter-spacing: -0.02em; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-bottom: 10px !important; }
+.inv[data-template="moderno"] .inv-big { font: 400 22.5px/1.25 var(--font-text); letter-spacing: -0.01em; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; text-wrap: pretty; }
+/* "às 16h30" logo abaixo da data: mesmo corpo e mesma serifa da data, não um detalhe em letra miúda. */
+.inv[data-template="moderno"] #detalhes > .inv-kicker:first-child + .inv-big + .inv-text { font: 400 22.5px/1.25 var(--font-text); letter-spacing: -0.01em; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-top: 2px; }
+.inv[data-template="moderno"] .inv-text { text-wrap: pretty; }
+.inv[data-template="moderno"] .inv-rule { margin: 26px 0 20px; }
+.inv[data-template="moderno"] .inv-btn { font: 500 16px/1.2 var(--font-ui); letter-spacing: 0.03em; padding-inline: 10px; }
+.inv[data-template="moderno"] .inv-btn-quiet { font-size: 14.5px; font-weight: 400; letter-spacing: 0.01em; padding-inline: 6px; border-color: color-mix(in srgb, var(--ink) 32%, var(--paper)); }
+.inv[data-template="moderno"] .rsvp-yes, .inv[data-template="moderno"] .rsvp-no { font-size: 17.5px; }
+.inv[data-template="moderno"] .rsvp-state { border-radius: 0; text-align: left; }
+.inv[data-template="moderno"] .rsvp-state-title { font-weight: 300; font-size: 29px; letter-spacing: -0.02em; }
+.inv[data-template="moderno"] .inv-field input, .inv[data-template="moderno"] .inv-field select, .inv[data-template="moderno"] .inv-field textarea { border-radius: 0; background: color-mix(in srgb, var(--paper) 94%, var(--ink)); }
+.inv[data-template="moderno"] .inv-pix { justify-items: start; }
+.inv[data-template="moderno"] .inv-qr { border-radius: 0; }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="moderno"] .env-to { font: 500 14px/1.5 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; padding-left: 0.16em; }
+.inv[data-template="moderno"] .env-to strong { font: 300 33px/1.1 var(--font-text); letter-spacing: -0.02em; text-transform: none; margin-top: 8px; padding-right: 0.16em; }
+.inv[data-template="moderno"] .env-cta { border-radius: 0; font: 500 16px/1.1 var(--font-label); letter-spacing: 0.14em; }
+.inv[data-template="moderno"] .env-back, .inv[data-template="moderno"] .env-front { border-radius: 1px; }
+/* Envelope um tom mais próximo da tinta que o cartão: na paleta escura o cartão (--paper) subia invisível sobre um envelope da mesma cor. */
+.inv[data-template="moderno"] .env-front { background: color-mix(in srgb, var(--paper) 88%, var(--ink)); background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 84%, var(--ink)), color-mix(in srgb, var(--paper) 89%, var(--ink)) 60%); }
+.inv[data-template="moderno"] .env-flap-face { background: color-mix(in srgb, var(--paper) 86%, var(--ink)); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 89%, var(--ink)), color-mix(in srgb, var(--paper) 85%, var(--ink))); }
+.inv[data-template="moderno"] .env-back { background: color-mix(in srgb, var(--paper) 76%, var(--ink)); }
+.inv[data-template="moderno"] .env-card { box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent), 0 1px 3px rgba(0, 0, 0, 0.14); }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="moderno"] { --thumb-h: 595px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 586px; }
+.inv[data-template="moderno"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 586px; }

@@ -74,4 +74,5 @@ export const MIGRATIONS: string[][] = [
       unique (provider, provider_payment_id)
     )`,
   ],
+  [`alter table events add column palette text not null default ''`],
 ];

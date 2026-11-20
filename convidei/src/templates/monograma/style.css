@@ -1,0 +1,130 @@
+/* Modelo Monograma. Todas as regras ficam sob .inv[data-template="monograma"]. */
+.inv[data-template="monograma"] {
+  --font-names: var(--f-serif), "Cormorant Garamond", Georgia, serif;
+  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
+  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
+  --names-size: clamp(38px, 12.4cqw, 56px);
+  --names-weight: 500;
+  --names-leading: 1.06;
+  --amp-scale: 0.6;
+  --label-tracking: 0.26em;
+  --radius: 2px;
+  --btn-radius: 2px;
+  --frame-inset: 11px;
+  --paper-pad: clamp(28px, 9.5cqw, 44px);
+  /* dois passos de respiro, repetidos em toda a capa */
+  --mg-step: 14px;
+  --mg-gap: clamp(26px, 8.4cqw, 36px);
+  /* par de folhas (o mesmo do divisor), usado como máscara nas seções */
+  --mg-sprig: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16'%3E%3Cpath d='M25 8C21.4 2.6 12 2.4 5 8.6c6 3 15.6 3 20-.6zM35 8c3.6-5.4 13-5.6 20 .6-6 3-15.6 3-20-.6z'/%3E%3Ccircle cx='30' cy='8' r='1.6'/%3E%3C/svg%3E");
+}
+
+/* ───────── Capa ───────── */
+/* O cartão vira coluna flex para a data curta subir e ficar logo abaixo do brasão, como em papelaria gravada. */
+.inv[data-template="monograma"] .inv-paper { display: flex; flex-direction: column; padding-block: calc(var(--paper-pad) + 12px) calc(var(--paper-pad) + 14px); }
+.inv[data-template="monograma"] .inv-paper > * { order: 2; }
+.inv[data-template="monograma"] .inv-paper > .inv-art-top { order: 0; margin-bottom: 0; }
+.inv[data-template="monograma"] .inv-paper > .inv-date { order: 1; }
+/* moldura: fio duplo, ecoando o medalhão */
+.inv[data-template="monograma"] .inv-paper::before { border-color: color-mix(in srgb, var(--accent) 62%, transparent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.5px color-mix(in srgb, var(--accent) 42%, transparent); }
+
+/* brasão */
+.inv[data-template="monograma"] .mg-crest { width: clamp(150px, 50cqw, 216px); height: auto; overflow: visible; }
+.inv[data-template="monograma"] .mg-crest-leaf { color: var(--accent); }
+.inv[data-template="monograma"] .mg-crest-ink { color: var(--ink); }
+.inv[data-template="monograma"] .mg-rib { stroke: var(--paper); }
+
+/* data curta sob o brasão: "14 · MARÇO · 2027" */
+.inv[data-template="monograma"] .inv-date { display: flex; justify-content: center; margin-top: var(--mg-step); margin-bottom: var(--mg-gap); }
+.inv[data-template="monograma"] .inv-date-side { display: none; }
+.inv[data-template="monograma"] .inv-date-main { display: flex; align-items: baseline; justify-content: center; gap: 0; padding-left: 0.28em; }
+.inv[data-template="monograma"] .inv-date-day, .inv[data-template="monograma"] .inv-date-month { font: 600 14px/1.2 var(--font-label); letter-spacing: 0.24em; text-transform: uppercase; color: var(--soft); padding: 0; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-date-day::after { content: "\00a0·\00a0"; }
+/* evento sem horário: o ano continua na linha do mês e a lateral do ano não aparece */
+.inv[data-template="monograma"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="monograma"] .inv-date .inv-date-alt { display: none; }
+/* sem data, o brasão guarda o mesmo respiro */
+.inv[data-template="monograma"] .inv-paper > .inv-art-top:not(:has(~ .inv-date)) { margin-bottom: var(--mg-gap); }
+
+.inv[data-template="monograma"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); margin-bottom: var(--mg-step) !important; }
+.inv[data-template="monograma"] .inv-hello strong { font-weight: 600; }
+.inv[data-template="monograma"] .inv-headline { font-size: 13px; font-weight: 600; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-bottom: var(--mg-step) !important; }
+
+/* nomes: Cormorant itálico, sem script */
+.inv[data-template="monograma"] .inv-names { font-style: italic; padding: 0.04em 0 0.1em; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-amp { font-size: calc(1em * var(--amp-scale)); line-height: 1.1; margin: 0.24em 0 0.1em; color: var(--accent); } /* folga para descendentes (g, j, ç) em cima e acentos de maiúscula (É, Â) embaixo */
+.inv[data-template="monograma"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.16); line-height: 1.1; }
+.inv[data-template="monograma"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.14; }
+
+.inv[data-template="monograma"] .inv-message { font-size: 19px; line-height: 1.42; margin-top: var(--mg-step) !important; max-width: 28ch; text-wrap: balance; }
+.inv[data-template="monograma"] .inv-art-divider { margin: var(--mg-gap) 0 0; }
+.inv[data-template="monograma"] .mg-divider { width: clamp(108px, 35cqw, 136px); height: auto; }
+
+/* data por extenso: a informação principal depois dos nomes */
+.inv[data-template="monograma"] .inv-dateline { display: block; font: 500 21px/1.34 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; margin-top: var(--mg-gap) !important; max-width: 17em; margin-inline: auto !important; }
+.inv[data-template="monograma"] .inv-dateline::first-letter { text-transform: uppercase; }
+/* cartão estreito: corpo um pouco menor, para a data por extenso caber em duas linhas */
+@container (max-width: 300px) { .inv[data-template="monograma"] .inv-dateline { font-size: 19px; } }
+.inv[data-template="monograma"] .inv-place { font: 500 18px/1.4 var(--font-text); margin-top: 8px !important; }
+.inv[data-template="monograma"] .inv-countdown { align-self: center; background: none; border-radius: 0; padding: 0 0 0 0.22em; margin-top: var(--mg-gap) !important; font: 600 12.5px/1.2 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--soft); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-more { font: 600 12.5px/1 var(--font-label); letter-spacing: 0.24em; padding-left: calc(16px + 0.24em); }
+
+/* ───────── Seções ───────── */
+.inv[data-template="monograma"] .inv-section { padding: 30px 24px 32px; box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px color-mix(in srgb, var(--line) 70%, transparent); }
+/* cada seção abre com o par de folhas do brasão */
+.inv[data-template="monograma"] .inv-section::before { content: ""; display: block; width: 60px; height: 16px; margin: 0 auto 14px; background: var(--accent); -webkit-mask: var(--mg-sprig) center / contain no-repeat; mask: var(--mg-sprig) center / contain no-repeat; }
+.inv[data-template="monograma"] .inv-kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.24em; padding-left: 0.24em; }
+.inv[data-template="monograma"] .inv-section-title { font: italic 500 33px/1.12 var(--font-text); margin-bottom: 8px !important; }
+.inv[data-template="monograma"] .inv-big { font: 600 23px/1.28 var(--font-text); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="monograma"] .inv-big::first-letter { text-transform: uppercase; }
+/* corpo, avisos e botões na mesma serifa do cartão: a informação prática fala com a voz da papelaria */
+.inv[data-template="monograma"] .inv-text { font: 500 20px/1.42 var(--font-text); }
+.inv[data-template="monograma"] .inv-hint, .inv[data-template="monograma"] .inv-saved { font: italic 500 18px/1.4 var(--font-text); }
+.inv[data-template="monograma"] .inv-btn { font: 600 19px/1.15 var(--font-text); }
+.inv[data-template="monograma"] .inv-btn-quiet { font-size: 18px; }
+.inv[data-template="monograma"] .rsvp-yes, .inv[data-template="monograma"] .rsvp-no { font-size: 21px; }
+.inv[data-template="monograma"] .inv-link { font: 600 18px/1.3 var(--font-text); }
+.inv[data-template="monograma"] .inv-field { font: 600 18px/1.3 var(--font-text); }
+.inv[data-template="monograma"] .inv-field input, .inv[data-template="monograma"] .inv-field select, .inv[data-template="monograma"] .inv-field textarea { font: 500 19px/1.4 var(--font-text); font-variant-numeric: lining-nums; }
+.inv[data-template="monograma"] .rsvp-state p { font-family: var(--font-text); font-size: 19px; font-weight: 500; }
+.inv[data-template="monograma"] .inv-rule { width: 56px; margin: 26px auto; background: color-mix(in srgb, var(--accent) 55%, transparent); }
+.inv[data-template="monograma"] .inv-btn { letter-spacing: 0.01em; }
+.inv[data-template="monograma"] .inv-btn-quiet { border-color: color-mix(in srgb, var(--ink) 34%, var(--paper)); }
+.inv[data-template="monograma"] .rsvp-state { border-radius: 2px; }
+.inv[data-template="monograma"] .rsvp-state-title { font-style: italic; }
+.inv[data-template="monograma"] .inv-field input, .inv[data-template="monograma"] .inv-field select, .inv[data-template="monograma"] .inv-field textarea, .inv[data-template="monograma"] .inv-qr { border-radius: 2px; }
+
+/* assinatura: o monograma pequeno fechando a página */
+.inv[data-template="monograma"] .inv-sheet { padding-bottom: 148px; }
+.inv[data-template="monograma"] .mg-sign { position: absolute; left: 50%; bottom: 32px; width: 84px; height: auto; margin-left: -42px; color: var(--accent); opacity: 0.85; }
+/* na demonstração a página ganha um respiro extra para a barra fixa: a assinatura sobe junto, para não ficar atrás dela */
+body:has(.demo-bar) .inv[data-template="monograma"] .mg-sign { bottom: 222px; }
+.thumb > .inv[data-template="monograma"] .mg-sign { display: none; }
+.thumb > .inv[data-template="monograma"] .inv-sheet { padding-bottom: 0; } /* a miniatura só tem a capa: sem assinatura nem o respiro dela */
+
+/* ───────── Envelope ───────── */
+/* forro escuro estampado com o monograma */
+.inv[data-template="monograma"] .env-liner { color: color-mix(in srgb, var(--liner) 72%, var(--paper)); }
+/* A base mostra o forro girado em 180° na aba aberta: a estampa gira de volta para as iniciais saírem de pé. */
+.inv[data-template="monograma"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="monograma"] .env-to { font: italic 400 18px/1.4 var(--font-text); }
+.inv[data-template="monograma"] .env-to strong { font: italic 500 34px/1.12 var(--font-text); margin-top: 4px; }
+.inv[data-template="monograma"] .env-cta { border-radius: 2px; font: 600 16px/1.1 var(--font-label); letter-spacing: 0.14em; }
+.inv[data-template="monograma"] .env-card { color: var(--accent); }
+/* sem data nem local, o divisor não fica sobrando no fim do cartão */
+.inv[data-template="monograma"] .inv-art-divider:not(:has(~ .inv-dateline, ~ .inv-place)) { display: none; }
+
+/* ───────── Algarismos ───────── */
+/* Alinhados em tudo: no itálico da Cormorant o "0" antigo lê-se como "o" ("Helena faz 3o"). Fica no fim e vale para
+   cada elemento, porque o atalho `font` zera font-variant-numeric em toda regra que o usa. */
+.inv[data-template="monograma"] :is(.inv-sheet, .env) * { font-variant-numeric: lining-nums; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="monograma"] { --thumb-h: 828px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 759px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 759px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 789px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 816px; }
+.inv[data-template="monograma"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 684px; }

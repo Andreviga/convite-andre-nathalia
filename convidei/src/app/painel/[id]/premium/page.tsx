@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { startUpgrade } from "@/app/actions";
+import { TemplateThumb } from "@/components/TemplateThumb";
 import { requireUser } from "@/lib/auth";
 import { BRAND } from "@/lib/brand";
 import { eventForUser } from "@/lib/events";
 import { mercadoPagoEnabled } from "@/lib/mercadopago";
 import { syncPayment } from "@/lib/payments";
+import { todayBR } from "@/lib/format";
 import { FREE_GUEST_LIMIT, isPremium, PREMIUM_PRICE, PREMIUM_PRICE_NOTE } from "@/lib/plans";
+import { TEMPLATE_DEFS } from "@/templates";
 
 export const metadata: Metadata = { title: "Premium" };
 
@@ -34,6 +37,22 @@ export default async function Premium({ params, searchParams }: { params: Promis
   }
 
   const online = mercadoPagoEnabled();
+  const premiumDefs = TEMPLATE_DEFS.filter((t) => t.premium);
+  const today = todayBR();
+  // Miniaturas com os dados do próprio evento: a pessoa vê o convite dela em cada modelo Premium.
+  const premiumGallery = (
+    <section className="premium-models" aria-label="Modelos Premium">
+      <h2>Os {premiumDefs.length} modelos Premium, com o seu convite</h2>
+      <ul>
+        {premiumDefs.map((def) => (
+          <li key={def.id}>
+            <TemplateThumb data={{ ...event, template: def.id }} palette={def.id === event.template ? event.palette : undefined} today={today} />
+            <span>{def.name}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
   const returned = Boolean(paymentId || search.status);
 
   return (
@@ -67,7 +86,9 @@ export default async function Premium({ params, searchParams }: { params: Promis
           </p>
           <ul>
             <li>Convites ilimitados (o plano grátis vai até {FREE_GUEST_LIMIT})</li>
-            <li>Modelos exclusivos: Noite e Terracota</li>
+            <li>
+              {premiumDefs.length} modelos exclusivos, sem a faixa de “prévia”: {new Intl.ListFormat("pt-BR", { style: "long", type: "conjunction" }).format(premiumDefs.map((t) => t.name))}
+            </li>
             <li>Convite sem o selo “feito com {BRAND}”</li>
             <li>Vale para este evento, sem mensalidade</li>
           </ul>
@@ -114,6 +135,7 @@ export default async function Premium({ params, searchParams }: { params: Promis
           )}
         </div>
       )}
+      {premiumGallery}
     </div>
   );
 }

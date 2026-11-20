@@ -4,11 +4,14 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { signIn, signUp, type FormState } from "@/app/actions";
 
-export function AuthForm({ mode }: { mode: "entrar" | "criar" }) {
+/** `fromGallery`: a pessoa chegou por "Usar este modelo"; a marca segue no formulário e nos links para o rascunho valer só nesse caminho. */
+export function AuthForm({ mode, fromGallery = false }: { mode: "entrar" | "criar"; fromGallery?: boolean }) {
   const [state, action, pending] = useActionState<FormState, FormData>(mode === "criar" ? signUp : signIn, {});
   const v = state.values ?? {};
+  const mark = fromGallery ? "?rascunho=1" : "";
   return (
     <form action={action} className="panel stack">
+      {fromGallery ? <input type="hidden" name="rascunho" value="1" /> : null}
       {mode === "criar" ? (
         <label className="field">
           <span>Seu nome</span>
@@ -34,11 +37,11 @@ export function AuthForm({ mode }: { mode: "entrar" | "criar" }) {
       <p className="auth-alt">
         {mode === "criar" ? (
           <>
-            Já tem conta? <Link href="/entrar" className="link">Entrar</Link>
+            Já tem conta? <Link href={`/entrar${mark}`} className="link">Entrar</Link>
           </>
         ) : (
           <>
-            Ainda não tem conta? <Link href="/criar-conta" className="link">Criar grátis</Link>
+            Ainda não tem conta? <Link href={`/criar-conta${mark}`} className="link">Criar grátis</Link>
           </>
         )}
       </p>

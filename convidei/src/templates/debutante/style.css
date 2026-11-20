@@ -1,0 +1,198 @@
+/* Modelo Debutante. Todas as regras ficam sob .inv[data-template="debutante"]. */
+.inv[data-template="debutante"] {
+  --font-names: var(--f-greatvibes), "Great Vibes", cursive;
+  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
+  --font-label: var(--f-serif), "Cormorant Garamond", Georgia, serif; /* caixa alta espaçada da mesma serifa: algarismos alinhados */
+  --names-size: clamp(54px, 18cqw, 84px);
+  --names-weight: 400;
+  --names-leading: 1.08;
+  --names-em: 0.45;
+  --amp-scale: 0.4;
+  --label-tracking: 0.26em;
+  --radius: 3px;
+  --btn-radius: 2px;
+  --paper-pad: clamp(24px, 8.4cqw, 40px);
+  --frame-inset: 11px;
+  --paper-shadow: 0 1px 2px rgba(0, 0, 0, 0.22), 0 14px 34px rgba(0, 0, 0, 0.17);
+
+  /* Foil: sai da paleta. O brilho puxa para a tinta e a sombra para o papel, então vale em papel escuro e claro. */
+  --deb-hi: color-mix(in srgb, var(--accent) 40%, var(--ink));
+  --deb-lo: color-mix(in srgb, var(--accent) 74%, var(--paper));
+  --deb-foil: linear-gradient(112deg, var(--deb-lo) 0%, var(--accent) 22%, var(--deb-hi) 44%, var(--accent) 60%, var(--deb-hi) 80%, var(--deb-lo) 100%);
+  --deb-hair: color-mix(in srgb, var(--accent) 62%, transparent);
+  --deb-faint: color-mix(in srgb, var(--accent) 30%, transparent);
+  /* dois passos de respiro vertical */
+  --deb-s1: 14px;
+  --deb-s2: 26px;
+
+  /* sombra do envelope: preta nas paletas escuras; na clara, um tom escuro do próprio fundo (não suja de cinza) */
+  --deb-shade: rgba(0, 0, 0, 0.4);
+
+  background: radial-gradient(120% 620px at 50% 0, color-mix(in srgb, var(--accent) 9%, var(--bg)), var(--bg) 70%);
+}
+@supports (color: hsl(from red h s l)) {
+  .inv[data-template="debutante"] { --deb-shade: hsl(from var(--bg) h s calc(l * 0.34) / 0.4); }
+}
+/* Algarismos alinhados em tudo que é serifa (o atalho "font" zera essa opção, por isso vai elemento a elemento). */
+.inv[data-template="debutante"] :is(.inv-headline, .inv-hello, .inv-names, .inv-message, .inv-date-side, .inv-date-month, .inv-dateline, .inv-place, .inv-countdown, .inv-kicker, .inv-section-title, .inv-big, .rsvp-state-title, .env-to strong) { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.inv[data-template="debutante"] .inv-art-backdrop { color: color-mix(in srgb, var(--accent) 46%, var(--bg)); }
+/* a faixa do meio da página fica sem brilhos: nenhum cai atrás de texto solto ("Detalhes", rodapé) */
+.inv[data-template="debutante"] .deb-sky {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(50% - 132px), transparent calc(50% - 84px), transparent calc(50% + 84px), #000 calc(50% + 132px));
+  mask-image: linear-gradient(to right, #000 calc(50% - 132px), transparent calc(50% - 84px), transparent calc(50% + 84px), #000 calc(50% + 132px));
+}
+
+/* ───────── Capa ───────── */
+.inv[data-template="debutante"] .inv-paper {
+  padding-block: calc(var(--paper-pad) + 10px) calc(var(--paper-pad) + 6px);
+  background-image: radial-gradient(90% 300px at 50% 0, color-mix(in srgb, var(--accent) 8%, var(--paper)), var(--paper) 78%);
+}
+/* moldura: fio de foil e, por dentro, um fio mais fraco */
+.inv[data-template="debutante"] .inv-paper::before {
+  border-color: var(--deb-hair);
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px var(--deb-faint);
+}
+.inv[data-template="debutante"] .inv-art-top { margin-bottom: var(--deb-s1); }
+.inv[data-template="debutante"] .deb-tiara { width: clamp(150px, 48cqw, 190px); height: auto; }
+.inv[data-template="debutante"] .deb-sparkle { width: clamp(120px, 38cqw, 152px); height: auto; }
+
+.inv[data-template="debutante"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); color: var(--soft); margin-bottom: var(--deb-s1) !important; }
+.inv[data-template="debutante"] .inv-hello strong { font-weight: 500; color: var(--ink); }
+/* respiro entre a frase de abertura e o nome, como nos outros modelos de caligrafia: laço do M, topo do J e acento do Â não encostam na linha de cima */
+.inv[data-template="debutante"] .inv-headline { font-size: 13.5px; font-weight: 600; color: var(--soft); margin-bottom: 20px !important; }
+
+/* Nomes em foil: gradiente recortado no texto. O respiro em volta evita cortar os floreios da caligrafia. */
+.inv[data-template="debutante"] .inv-names { color: var(--accent); padding: 0; }
+.inv[data-template="debutante"] .inv-name {
+  display: block;
+  padding: 0.2em 0.14em 0.16em;
+  margin: -0.06em -0.14em -0.04em;
+  background: var(--deb-foil);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--bg) 35%, transparent));
+}
+.inv[data-template="debutante"] .inv-names[data-count="2"] { font-size: calc(var(--names-size) * 0.76); }
+.inv[data-template="debutante"] .inv-amp { font-size: 0.5em; margin: 0.06em 0 0.14em; color: var(--accent); } /* folga embaixo: acento de maiúscula (É, Â) não encosta no conector */
+/* algarismos do título na serifa do modelo (os da caligrafia ficam ruins), ainda em foil */
+.inv[data-template="debutante"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.8em; font-weight: 500; }
+/* título curto ("Helena faz 30", "Chá do Miguel") cabe inteiro numa linha: a medida passa a ser o título todo (--line), para "faz 30" não cair sozinho embaixo */
+.inv[data-template="debutante"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
+
+/* Frase (travessão ou quatro palavras ou mais) não é nome: sai da caligrafia e vai para a serifa em itálico, ainda em foil.
+   Nome comprido continua na caligrafia, só menor (regra data-long da base). */
+.inv[data-template="debutante"] .inv-names[data-phrase="true"] {
+  --names-em: 0.5;
+  font-family: var(--font-text);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(31px, 10.4cqw, 46px);
+  line-height: 1.12;
+}
+.inv[data-template="debutante"] .inv-names[data-long="true"] .inv-name { padding-block: 0.12em; }
+
+.inv[data-template="debutante"] .inv-message { font-size: 19px; line-height: 1.42; color: var(--soft); margin-top: var(--deb-s1) !important; max-width: 25ch; }
+.inv[data-template="debutante"] .inv-art-divider { margin: var(--deb-s2) 0 0; }
+.inv[data-template="debutante"] .deb-fifteen { width: min(100%, 220px); height: auto; }
+
+/* Data: dia grande no centro, dia da semana e hora dos lados; o mês ocupa a linha de baixo inteira, para os lados terem folga. */
+.inv[data-template="debutante"] .inv-date { margin-top: var(--deb-s2); column-gap: clamp(8px, 3.4cqw, 12px); row-gap: 6px; }
+.inv[data-template="debutante"] .inv-date-side { font-size: clamp(14px, 4.6cqw, 16px); font-weight: 600; letter-spacing: 0.06em; padding: 10px 0 10px 0.06em; color: var(--ink); border-color: var(--deb-hair); }
+.inv[data-template="debutante"] .inv-date-day { font-weight: 500; font-size: 62px; color: var(--ink); }
+.inv[data-template="debutante"] .inv-date-month { font-size: clamp(14px, 4.6cqw, 16px); letter-spacing: 0.14em; padding-left: 0.14em; font-weight: 600; color: var(--ink); }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="debutante"] .inv-date { column-gap: 6px; }
+  .inv[data-template="debutante"] .inv-date-side { letter-spacing: 0.03em; padding-left: 0.03em; }
+}
+.inv[data-template="debutante"] .inv-place { font: 500 19px/1.35 var(--font-text); color: var(--ink); margin-top: var(--deb-s2) !important; }
+.inv[data-template="debutante"] .inv-countdown { background: none; padding: 0; margin-top: var(--deb-s1) !important; font: 600 13px/1 var(--font-label); letter-spacing: 0.2em; padding-left: 0.2em; text-transform: uppercase; color: var(--soft); }
+.inv[data-template="debutante"] .inv-more { color: var(--soft); }
+
+/* ───────── Seções ───────── */
+.inv[data-template="debutante"] .inv-section { padding: 32px 24px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.26), 0 8px 22px rgba(0, 0, 0, 0.18), inset 0 0 0 1px var(--deb-faint); }
+.inv[data-template="debutante"] .inv-kicker { font-size: 13.5px; font-weight: 600; letter-spacing: 0.24em; padding-left: 0.24em; color: var(--soft); }
+.inv[data-template="debutante"] .inv-section-title { font: italic 500 34px/1.15 var(--font-text); color: var(--ink); }
+.inv[data-template="debutante"] .inv-big { font-size: 23px; }
+.inv[data-template="debutante"] .inv-rule { height: 1px; margin: 24px auto; background: linear-gradient(to right, transparent, var(--deb-hair) 22%, var(--deb-hair) 78%, transparent); }
+.inv[data-template="debutante"] .inv-hint { color: var(--soft); }
+
+.inv[data-template="debutante"] .inv-btn { border-color: var(--deb-hair); color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+.inv[data-template="debutante"] .inv-btn:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.inv[data-template="debutante"] .inv-btn-main {
+  border-color: transparent;
+  color: var(--btn-ink);
+  font-weight: 600;
+  background: linear-gradient(112deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 86%, var(--ink)) 48%, var(--accent) 100%);
+}
+.inv[data-template="debutante"] .inv-btn-main:hover { background: color-mix(in srgb, var(--accent) 84%, var(--ink)); }
+.inv[data-template="debutante"] .inv-btn-quiet { border-color: color-mix(in srgb, var(--accent) 52%, transparent); color: var(--ink); }
+
+/* Formulário: campos do tom do papel, um degrau mais claros (ou mais escuros, no papel claro). */
+.inv[data-template="debutante"] .inv-field input,
+.inv[data-template="debutante"] .inv-field select,
+.inv[data-template="debutante"] .inv-field textarea { background: color-mix(in srgb, var(--paper) 90%, var(--ink)); border-color: color-mix(in srgb, var(--ink) 55%, var(--paper)); border-radius: 3px; color: var(--ink); }
+.inv[data-template="debutante"] .inv-field ::placeholder { color: var(--soft); opacity: 1; }
+.inv[data-template="debutante"] .inv-field select option { background: var(--paper); color: var(--ink); }
+.inv[data-template="debutante"] .rsvp-state { border-radius: 3px; box-shadow: inset 0 0 0 1px var(--deb-faint); }
+.inv[data-template="debutante"] .inv-error { border-radius: 3px; border: 1px solid #c9685a; }
+.inv[data-template="debutante"] .inv-qr { border-radius: 3px; border-color: var(--deb-hair); box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px var(--deb-faint); }
+.inv[data-template="debutante"] .inv-sticky { border-top-color: var(--deb-faint); }
+
+/* Fecho da página: três brilhos entre dois fios, depois da última seção (antes do rodapé, quando há). */
+.inv[data-template="debutante"] .inv-sheet:not(:has(.inv-footer))::after,
+.inv[data-template="debutante"] .inv-footer::before {
+  content: "";
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: 26px;
+  margin: 30px auto 0;
+  background: var(--deb-foil);
+  --deb-end: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 26'%3E%3Cdefs%3E%3ClinearGradient id='l' gradientUnits='userSpaceOnUse' x1='8' x2='72'%3E%3Cstop stop-opacity='0'/%3E%3Cstop offset='1' stop-opacity='.85'/%3E%3C/linearGradient%3E%3ClinearGradient id='r' gradientUnits='userSpaceOnUse' x1='148' x2='212'%3E%3Cstop stop-opacity='.85'/%3E%3Cstop offset='1' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='8' y='12.5' width='64' height='1' fill='url(%23l)'/%3E%3Crect x='148' y='12.5' width='64' height='1' fill='url(%23r)'/%3E%3Cpath d='M82 8.8Q82.67 12.33 86.2 13Q82.67 13.67 82 17.2Q81.33 13.67 77.8 13Q81.33 12.33 82 8.8ZM138 8.8Q138.67 12.33 142.2 13Q138.67 13.67 138 17.2Q137.33 13.67 133.8 13Q137.33 12.33 138 8.8ZM110 4Q111.44 11.56 119 13Q111.44 14.44 110 22Q108.56 14.44 101 13Q108.56 11.56 110 4Z'/%3E%3C/svg%3E");
+  -webkit-mask: var(--deb-end) center / contain no-repeat;
+  mask: var(--deb-end) center / contain no-repeat;
+}
+.inv[data-template="debutante"] .inv-footer::before { margin: 0 auto 14px; }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="debutante"] .env { background: radial-gradient(120% 70% at 50% 38%, color-mix(in srgb, var(--accent) 11%, var(--bg)), var(--bg) 72%); }
+.inv[data-template="debutante"] .env-body { filter: drop-shadow(0 18px 30px var(--deb-shade)); }
+.inv[data-template="debutante"] .env-back { background: color-mix(in srgb, var(--paper) 55%, var(--bg)); box-shadow: inset 0 10px 22px var(--deb-shade); } /* o bolso é mais fundo que o cartão que sai dele */
+.inv[data-template="debutante"] .env-front { background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 93%, var(--ink)), color-mix(in srgb, var(--paper) 97%, var(--ink)) 60%); }
+/* fio de foil na borda da aba e no decote da frente */
+.inv[data-template="debutante"] .env-front::before,
+.inv[data-template="debutante"] .env-flap-face::after { content: ""; position: absolute; inset: 0; background: var(--deb-foil); opacity: 0.9; }
+.inv[data-template="debutante"] .env-front::before { clip-path: polygon(0.6% 0.65%, 50% 54%, 99.4% 0.65%, 99.4% 1.35%, 50% 54.7%, 0.6% 1.35%); } /* começa por dentro do canto arredondado */
+.inv[data-template="debutante"] .env-flap-face::after { clip-path: polygon(0 1.6%, 50% 58%, 100% 1.6%, 99% 1.6%, 50% 56.9%, 1% 1.6%); }
+/* cantos de cima chanfrados no raio do envelope: a aba e o fio não passam do canto arredondado */
+.inv[data-template="debutante"] .env-flap-face { clip-path: polygon(1.2% 0, 98.8% 0, 100% 1.6%, 50% 58%, 0 1.6%); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 96%, var(--ink)), color-mix(in srgb, var(--paper) 89%, var(--ink))); }
+/* contorno fino: separa o envelope escuro do fundo escuro */
+.inv[data-template="debutante"] .env-body::after { content: ""; position: absolute; inset: 0; z-index: 5; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--deb-faint); pointer-events: none; }
+/* aberto: o contorno perde o fio de cima, para não riscar o cartão que sobe */
+.inv[data-template="debutante"] .env[data-state="opening"] .env-body::after { border-radius: 0 0 4px 4px; box-shadow: inset 1px 0 0 var(--deb-faint), inset -1px 0 0 var(--deb-faint), inset 0 -1px 0 var(--deb-faint); }
+.inv[data-template="debutante"] .env-liner { color: color-mix(in srgb, var(--accent) 70%, var(--liner)); }
+/* cartão que sobe: um degrau mais claro que o bolso, com a moldura de foil da capa, para se ler em paleta escura */
+.inv[data-template="debutante"] .env-card {
+  --deb-card: color-mix(in srgb, var(--paper) 84%, var(--accent));
+  background: radial-gradient(90% 70% at 50% 0, color-mix(in srgb, var(--deb-card) 88%, var(--deb-hi)), var(--deb-card) 75%);
+  box-shadow: inset 0 0 0 5px var(--deb-card), inset 0 0 0 6px var(--deb-hair), 0 0 0 1px var(--deb-hair), 0 6px 18px var(--deb-shade);
+  padding-top: 11%;
+}
+.inv[data-template="debutante"] .env-card-line { opacity: 0.9; }
+.inv[data-template="debutante"] .env-to { color: var(--soft); font-size: 16px; }
+.inv[data-template="debutante"] .env-to strong { font: italic 500 33px/1.15 var(--font-text); color: var(--ink); margin-top: 4px; }
+.inv[data-template="debutante"] .env-cta { border-radius: 2px; box-shadow: 0 6px 18px var(--deb-shade); }
+/* Great Vibes é larga: iniciais um pouco menores para caberem no anel do lacre */
+.inv[data-template="debutante"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; } /* lacre gravado em capitais romanas: a caligráfica dos nomes não cabe na cera */
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="debutante"] { --thumb-h: 704px; }
+.inv[data-template="debutante"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 637px; }
+.inv[data-template="debutante"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 660px; }
+.inv[data-template="debutante"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 583px; }
+.inv[data-template="debutante"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 610px; }
+.inv[data-template="debutante"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 577px; }

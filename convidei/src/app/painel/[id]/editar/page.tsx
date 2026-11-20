@@ -6,6 +6,7 @@ import { ConfirmButton } from "@/components/ConfirmButton";
 import { EventForm } from "@/components/EventForm";
 import { requireUser } from "@/lib/auth";
 import { eventForUser } from "@/lib/events";
+import { todayBR } from "@/lib/format";
 import { isPremium } from "@/lib/plans";
 
 export const metadata: Metadata = { title: "Editar convite" };
@@ -18,6 +19,7 @@ export default async function EditEvent({ params }: { params: Promise<{ id: stri
   const initial: Record<string, string> = {
     type: event.type,
     template: event.template,
+    palette: event.palette,
     title: event.title,
     headline: event.headline,
     message: event.message,
@@ -41,16 +43,16 @@ export default async function EditEvent({ params }: { params: Promise<{ id: stri
   });
 
   return (
-    <div className="narrow">
+    <div className="wide">
       <Link href={`/painel/${event.id}`} className="crumb">
         ← {event.title}
       </Link>
       <div className="dash-head">
         <h1 className="page-title">Editar convite</h1>
       </div>
-      <EventForm initial={initial} eventId={event.id} premium={isPremium(event.plan)} />
+      <EventForm initial={initial} eventId={event.id} premium={isPremium(event.plan)} today={todayBR()} />
 
-      <section className="panel" style={{ marginTop: 24 }}>
+      <section className="panel narrow" style={{ marginTop: 24 }}>
         <h2>Excluir este convite</h2>
         <p className="panel-lead">Apaga o convite, a lista de convidados e todas as respostas. Os links param de funcionar. Não dá para desfazer.</p>
         <form action={deleteEvent}>

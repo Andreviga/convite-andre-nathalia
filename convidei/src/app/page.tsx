@@ -1,14 +1,20 @@
 import Link from "next/link";
-import { Ornament } from "@/components/Ornament";
+import { TemplateThumb } from "@/components/TemplateThumb";
 import { currentUser } from "@/lib/auth";
 import { BRAND } from "@/lib/brand";
 import { EVENT_TYPES } from "@/lib/catalog";
+import { todayBR } from "@/lib/format";
 import { FREE_GUEST_LIMIT, PREMIUM_PRICE, PREMIUM_PRICE_NOTE } from "@/lib/plans";
+import { sampleEvent } from "@/lib/sample";
+import { TEMPLATE_DEFS } from "@/templates";
 import "./invite.css";
 
 export default async function Home() {
   const user = await currentUser();
-  const start = user ? "/painel" : "/criar-conta";
+  const start = "/modelos";
+  const today = todayBR();
+  const freeCount = TEMPLATE_DEFS.filter((t) => !t.premium).length;
+  const showcase = TEMPLATE_DEFS.slice(0, 6);
 
   return (
     <>
@@ -27,7 +33,7 @@ export default async function Home() {
               <Link href="/entrar" className="btn btn-sm btn-ghost">
                 Entrar
               </Link>
-              <Link href="/criar-conta" className="btn btn-sm btn-primary">
+              <Link href={start} className="btn btn-sm btn-primary">
                 Criar convite
               </Link>
             </>
@@ -39,7 +45,7 @@ export default async function Home() {
         <section className="wrap hero">
           <div>
             <p className="eyebrow">Convite digital com confirmação de presença</p>
-            <h1>
+            <h1 className="hero-title">
               Chega de convite em PDF que <em>ninguém consegue abrir.</em>
             </h1>
             <p className="hero-lead">
@@ -48,7 +54,7 @@ export default async function Home() {
             </p>
             <div className="hero-cta">
               <Link href={start} className="btn btn-primary btn-lg">
-                Criar meu convite grátis
+                Escolher um modelo
               </Link>
               <a href="#como-funciona" className="btn btn-lg btn-ghost">
                 Como funciona
@@ -58,38 +64,7 @@ export default async function Home() {
           </div>
 
           <div className="phone" aria-hidden="true">
-            <div className="phone-screen">
-              <div className="inv" data-template="botanico">
-                <div className="inv-sheet">
-                  <div className="inv-hero">
-                    <Ornament template="botanico" position="top" />
-                    <p className="inv-hello">Olá, Família Oliveira</p>
-                    <p className="inv-headline">Com a bênção de nossas famílias</p>
-                    <p className="inv-title">Marina &amp; Rafael</p>
-                    <p className="inv-message">convidam para a celebração de seu casamento</p>
-                    <div className="inv-date">
-                      <span className="inv-date-side">sábado</span>
-                      <span className="inv-date-main">
-                        <span className="inv-date-day">11</span>
-                        <span className="inv-date-month">setembro · 2027</span>
-                      </span>
-                      <span className="inv-date-side">às 16h</span>
-                    </div>
-                  </div>
-                  <div className="inv-card">
-                    <p className="inv-section-title">Confirme sua presença</p>
-                    <p className="inv-hint">Este convite vale para até 4 pessoas.</p>
-                    <div className="rsvp-form">
-                      <div className="rsvp-choice">
-                        <label className="is-on">Vou sim</label>
-                        <label>Não poderei ir</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="phone-fade" />
-            </div>
+            <TemplateThumb data={sampleEvent("classico", { type: "casamento" })} today={today} />
           </div>
         </section>
 
@@ -127,8 +102,8 @@ export default async function Home() {
             <div className="features">
               <div>
                 <span className="num">1</span>
-                <h3>Escolha o evento e o modelo</h3>
-                <p>Preencha nomes, data, local e traje. O convite fica pronto com o visual que você escolher.</p>
+                <h3>Escolha um modelo</h3>
+                <p>Veja o convite pronto com os seus nomes antes mesmo de criar a conta. Depois complete data, local e traje.</p>
               </div>
               <div>
                 <span className="num">2</span>
@@ -155,6 +130,26 @@ export default async function Home() {
                 <h3>Ninguém se perde</h3>
                 <p>Botões de como chegar e de salvar na agenda, para o convidado não esquecer a data nem o caminho.</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section" id="modelos">
+          <div className="wrap">
+            <h2>Modelos com cara de papelaria fina</h2>
+            <p className="section-lead">Tipografia de convite impresso, papel com textura, monograma e envelope com lacre que abre na tela do convidado. Você só troca os nomes.</p>
+            <div className="showcase">
+              {showcase.map((def) => (
+                <Link key={def.id} href={`/modelos/${def.id}`} className="gallery-card">
+                  <TemplateThumb data={sampleEvent(def.id)} today={today} />
+                  <span className="gallery-name">{def.name}</span>
+                </Link>
+              ))}
+            </div>
+            <div className="hero-cta">
+              <Link href="/modelos" className="btn btn-lg">
+                Ver os {TEMPLATE_DEFS.length} modelos
+              </Link>
             </div>
           </div>
         </section>
@@ -186,7 +181,7 @@ export default async function Home() {
                   <li>Até {FREE_GUEST_LIMIT} convites por evento</li>
                   <li>Confirmação de presença e painel</li>
                   <li>Links de presentes e Pix</li>
-                  <li>5 modelos</li>
+                  <li>{freeCount} modelos, com envelope e lacre</li>
                   <li>Selo “feito com {BRAND}” no rodapé</li>
                 </ul>
                 <Link href={start} className="btn">
@@ -206,7 +201,7 @@ export default async function Home() {
                   <li>Tudo do plano grátis</li>
                 </ul>
                 <Link href={start} className="btn btn-primary">
-                  Criar meu convite
+                  Escolher um modelo
                 </Link>
               </div>
             </div>
@@ -217,7 +212,7 @@ export default async function Home() {
           <h2 className="page-title">Seu convite pode estar pronto ainda hoje.</h2>
           <div className="hero-cta">
             <Link href={start} className="btn btn-primary btn-lg">
-              Criar meu convite grátis
+              Escolher um modelo
             </Link>
           </div>
         </section>

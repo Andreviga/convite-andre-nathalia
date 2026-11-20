@@ -4,10 +4,11 @@ import { redirect } from "next/navigation";
 import { AuthForm } from "@/components/AuthForm";
 import { currentUser } from "@/lib/auth";
 import { BRAND } from "@/lib/brand";
+import { DRAFT_PARAM } from "@/lib/draft";
 
 export const metadata: Metadata = { title: "Criar conta" };
 
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   if (await currentUser()) redirect("/painel");
   return (
     <main className="auth">
@@ -20,7 +21,7 @@ export default async function Page() {
         <p className="muted" style={{ marginBottom: 16 }}>
           Leva menos de um minuto. Depois é só montar o convite.
         </p>
-        <AuthForm mode="criar" />
+        <AuthForm mode="criar" fromGallery={(await searchParams)[DRAFT_PARAM] === "1"} />
       </div>
     </main>
   );

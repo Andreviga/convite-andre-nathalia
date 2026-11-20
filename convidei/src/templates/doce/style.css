@@ -1,0 +1,108 @@
+/* Modelo Doce. Todas as regras ficam sob .inv[data-template="doce"].
+   Cartão em arco, Fraunces (nomes e texto) + Jost (rótulos e botões). Ritmo vertical em dois passos: 14px e 28px. */
+.inv[data-template="doce"] {
+  --font-names: var(--f-fraunces), "Fraunces", Georgia, serif;
+  --font-text: var(--f-fraunces), "Fraunces", Georgia, serif;
+  --font-label: var(--f-jost), "Jost", system-ui, sans-serif;
+  --font-ui: var(--f-jost), "Jost", system-ui, sans-serif;
+  --names-size: clamp(34px, 13.6cqw, 60px);
+  --names-weight: 400;
+  --names-leading: 1.04;
+  --names-em: 0.54;
+  --names-tracking: -0.012em;
+  --amp-scale: 0.5;
+  --label-tracking: 0.24em;
+  --radius: 30px;
+  --btn-radius: 999px;
+  --paper-pad: clamp(22px, 9cqw, 42px);
+  --frame-inset: 11px;
+  --paper-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent), 0 16px 36px color-mix(in srgb, var(--ink) 11%, transparent);
+  /* segunda tinta dos ornamentos e o meio-termo entre as duas */
+  --doce-a: var(--accent);
+  --doce-b: color-mix(in srgb, var(--liner) 68%, var(--ink));
+  --doce-mid: color-mix(in srgb, var(--doce-a) 50%, var(--doce-b));
+  --doce-wash-a: color-mix(in srgb, var(--accent) 30%, var(--paper));
+  --doce-wash-b: color-mix(in srgb, var(--liner) 58%, var(--paper));
+  --doce-arch: 50cqw;
+  background: linear-gradient(98deg, color-mix(in srgb, var(--accent) 22%, var(--bg)) 0%, var(--bg) 50%, color-mix(in srgb, var(--liner) 52%, var(--bg)) 100%);
+}
+/* onde houver cor relativa, a segunda tinta sai do forro com o mesmo peso da primeira */
+@supports (color: oklch(from red l c h)) {
+  .inv[data-template="doce"] { --doce-b: oklch(from var(--liner) calc(l - 0.17) calc(c * 1.7) h); }
+}
+
+/* ───────── Capa ───────── */
+.inv[data-template="doce"] .inv-paper {
+  border-radius: var(--doce-arch) var(--doce-arch) var(--radius) var(--radius);
+  padding: var(--frame-inset) var(--paper-pad) calc(var(--paper-pad) + 10px);
+}
+.inv[data-template="doce"] .inv-paper::before {
+  border-color: color-mix(in srgb, var(--doce-mid) 55%, var(--paper));
+  border-radius: calc(var(--doce-arch) - var(--frame-inset)) calc(var(--doce-arch) - var(--frame-inset)) calc(var(--radius) - 8px) calc(var(--radius) - 8px);
+}
+/* o móbile pende do alto da moldura */
+.inv[data-template="doce"] .inv-art-top { margin-bottom: 28px; }
+.inv[data-template="doce"] .doce-mobile { width: clamp(200px, 68cqw, 280px); height: auto; }
+.inv[data-template="doce"] .inv-hello { font: 400 15px/1.4 var(--font-ui); letter-spacing: 0.02em; margin-bottom: 14px !important; }
+.inv[data-template="doce"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="doce"] .inv-headline { font-size: 12px; font-weight: 500; margin-bottom: 14px !important; }
+.inv[data-template="doce"] .inv-names { font-style: italic; font-optical-sizing: auto; padding: 0.04em 0 0.1em; }
+.inv[data-template="doce"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.76); line-height: 1.1; }
+.inv[data-template="doce"] .inv-amp { font-family: var(--font-names); font-weight: 300; line-height: 1.5; color: color-mix(in srgb, var(--doce-mid) 62%, var(--ink)); }
+.inv[data-template="doce"] .inv-message { font: 400 17.5px/1.5 var(--font-text); font-style: normal; margin-top: 14px !important; max-width: 27ch; }
+.inv[data-template="doce"] .inv-art-divider { margin: 28px 0; }
+
+/* Data: o dia dentro de uma lua cheia; dia da semana e hora ao lado, na altura do disco. */
+.inv[data-template="doce"] .inv-date { --disc: clamp(68px, 23cqw, 82px); align-items: start; gap: 8px; margin-top: 0; }
+.inv[data-template="doce"] .inv-date-side { display: grid; place-items: center; height: var(--disc); border: 0; padding: 0 0 0 0.08em; font: 500 clamp(14px, 4.4cqw, 15.5px)/1.3 var(--font-label); letter-spacing: 0.08em; color: var(--ink); }
+.inv[data-template="doce"] .inv-date-main { display: flex; flex-direction: column; align-items: center; width: var(--disc); gap: 12px; }
+.inv[data-template="doce"] .inv-date-day { display: grid; place-items: center; width: var(--disc); height: var(--disc); border-radius: 50%; background: linear-gradient(98deg, var(--doce-wash-a) 30%, var(--doce-wash-b) 70%); font: 400 calc(var(--disc) * 0.51)/1 var(--font-text); letter-spacing: -0.01em; padding-bottom: 0.06em; }
+.inv[data-template="doce"] .inv-date-month { justify-self: center; font: 500 clamp(14px, 4.2cqw, 15px)/1.3 var(--font-label); letter-spacing: 0.14em; padding-left: 0.14em; color: var(--ink); }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="doce"] .inv-date { column-gap: 6px; }
+  .inv[data-template="doce"] .inv-date-side { letter-spacing: 0.03em; padding-left: 0.03em; }
+}
+.inv[data-template="doce"] .inv-place { font: 400 17px/1.45 var(--font-text); margin-top: 14px !important; }
+.inv[data-template="doce"] .inv-countdown { margin-top: 28px !important; font: 500 12px/1 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; padding: 9px 16px 9px calc(16px + 0.16em); background: linear-gradient(98deg, var(--doce-wash-a), var(--doce-wash-b)); }
+.inv[data-template="doce"] .inv-more { letter-spacing: 0.22em; }
+
+/* Miniatura (390x660): sem a contagem e com o divisor mais justo, o cartão cabe inteiro, do arco ao pé. */
+.inv[data-template="doce"][data-still="true"] .inv-countdown { display: none; }
+.inv[data-template="doce"][data-still="true"] .inv-art-divider { margin: 20px 0; }
+
+/* ───────── Seções ───────── */
+.inv[data-template="doce"] .inv-section { border-radius: var(--radius); padding: 34px 24px; box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 9%, transparent), 0 8px 22px color-mix(in srgb, var(--ink) 7%, transparent); }
+.inv[data-template="doce"] .inv-kicker { font-size: 12px; letter-spacing: 0.24em; padding-left: 0.24em; }
+.inv[data-template="doce"] .inv-section-title { font: italic 400 32px/1.15 var(--font-text); letter-spacing: -0.01em; margin-bottom: 8px !important; }
+.inv[data-template="doce"] .inv-big { font: 400 21px/1.35 var(--font-text); }
+.inv[data-template="doce"] .inv-rule { width: 40px; height: 3px; margin: 26px auto; background: radial-gradient(circle, color-mix(in srgb, var(--doce-mid) 80%, var(--paper)) 1.5px, transparent 1.7px) 0 0 / 10px 3px repeat-x; }
+.inv[data-template="doce"] .inv-btn { font-weight: 500; letter-spacing: 0.01em; border-color: color-mix(in srgb, var(--ink) 55%, var(--paper)); }
+.inv[data-template="doce"] .inv-grid-2 .inv-btn { font-size: 15.5px; padding-inline: 8px; }
+/* telas estreitas: "Google Agenda" e "Outras agendas" ficam em uma linha */
+@container (max-width: 340px) {
+  .inv[data-template="doce"] .inv-grid-2 .inv-btn { font-size: 14.5px; padding-inline: 4px; letter-spacing: 0; white-space: nowrap; }
+}
+.inv[data-template="doce"] .inv-btn-main { border-color: var(--ink); }
+.inv[data-template="doce"] .inv-btn-quiet { min-height: 54px; border-color: color-mix(in srgb, var(--doce-mid) 50%, var(--paper)); background: linear-gradient(98deg, var(--doce-wash-a), var(--doce-wash-b)); }
+.inv[data-template="doce"] .rsvp-state { border-radius: 22px; }
+.inv[data-template="doce"] .rsvp-state-title { font-style: italic; font-weight: 400; }
+.inv[data-template="doce"] .inv-field input, .inv[data-template="doce"] .inv-field select, .inv[data-template="doce"] .inv-field textarea { border-radius: 16px; }
+.inv[data-template="doce"] .inv-qr { border-radius: 20px; }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="doce"] .env { background: linear-gradient(98deg, color-mix(in srgb, var(--accent) 22%, var(--bg)) 0%, var(--bg) 50%, color-mix(in srgb, var(--liner) 52%, var(--bg)) 100%); }
+.inv[data-template="doce"] .env-back, .inv[data-template="doce"] .env-front { border-radius: 3px 3px 16px 16px; }
+.inv[data-template="doce"] .env-to { font: 500 14px/1.5 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; }
+.inv[data-template="doce"] .env-to strong { font: italic 400 33px/1.15 var(--font-text); letter-spacing: -0.01em; text-transform: none; margin-top: 8px; }
+.inv[data-template="doce"] .env-cta { font-weight: 500; letter-spacing: 0.12em; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="doce"] { --thumb-h: 643px; }
+.inv[data-template="doce"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 594px; }
+.inv[data-template="doce"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 563px; }
+.inv[data-template="doce"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 618px; }
+.inv[data-template="doce"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 614px; }
+.inv[data-template="doce"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 540px; }
