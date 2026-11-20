@@ -1,0 +1,238 @@
+/* Modelo Retrô (anos 70). Todas as regras ficam sob .inv[data-template="retro"]. */
+/* O espaço não separável (U+00A0) da Shrikhand tem 0,6em, o triplo do espaço comum (0,2em): "de Direito" e "da Ana", que vêm
+   colados por ele, abriam um buraco. Esta face só responde por esse caractere: é uma fonte mínima embutida (304 bytes, um
+   glifo vazio com 0,2em de avanço), então não depende de nenhuma fonte instalada no aparelho. @font-face não aceita seletor;
+   o nome é exclusivo do modelo e a face só entra na pilha de --font-names daqui. */
+@font-face { font-family: "Retro Nbsp"; src: url("data:font/woff2;base64,d09GMgABAAAAAAEwAAoAAAAAAoAAAADpAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAANAoYOAE2AiQDCAsIAAQgBWkHMBvmAWAeB7kZ65LixmKkk+CBqkVUv/z1vN0fErl8tiFaCmHAGKRGn0W5U46pc8sAfcC/0YQSJCKdR9znP/7igdTJ8YkO5DeJApBAi7AtCu82NtUhuOw1TpCjMqeFRg7gYw0mYqIBNqlLYgYAXIKBwoUSXGiXaC2YMPZpHCEBFFgiaCwADQK9o2XKQAkCgvB3ft/7ul8I/cH/3X5g9oxfEqEMEFZ4ZcaPBAkAiBkQlBYwAADQ3gXEFgHDylZJi0RcOC0xHLn7+D/1wIrm4WxUi/CkFpMe8CUyG4YWuVUjNKFEpSIUv3YlhJ8QAA==") format("woff2"); unicode-range: U+00A0; }
+.inv[data-template="retro"] {
+  --font-names: "Retro Nbsp", var(--f-shrikhand), "Shrikhand", "Cooper Black", Georgia, serif;
+  --font-text: var(--f-outfit), "Outfit", system-ui, sans-serif;
+  --font-label: var(--f-outfit), "Outfit", system-ui, sans-serif;
+  --names-size: clamp(40px, 13.6cqw, 58px);
+  --names-weight: 400;
+  --names-leading: 1.04;
+  --names-em: 0.67; /* Shrikhand: letra gorda e larga (medido com "Wilhelmina", "Maximiliano" e "Confraternização") */
+  --names-tracking: 0;
+  --amp-scale: 0.62;
+  --label-tracking: 0.12em;
+  --radius: 30px;
+  --btn-radius: 999px;
+  --paper-pad: clamp(20px, 6.8cqw, 30px);
+  --frame-inset: 0px;
+  --paper-shadow: 0 2px 0 color-mix(in srgb, var(--ink) 80%, var(--bg)), 0 16px 30px rgb(40 20 8 / 0.2);
+  /* As quatro faixas do arco-íris, da de fora para a de dentro, tiradas da paleta. */
+  --rt-1: var(--accent);
+  --rt-2: var(--seal);
+  --rt-3: color-mix(in srgb, var(--seal) 48%, var(--liner));
+  --rt-4: var(--liner);
+  --rt-deep: color-mix(in srgb, var(--accent) 64%, var(--paper));
+  --rt-petal: color-mix(in srgb, var(--liner) 30%, #fff);
+  --rt-border: 3px;
+  /* sombra chapada do selo: a tinta nas paletas claras; na escura (tinta clara) um tom bem fundo dela, para não virar halo */
+  --rt-shadow: var(--ink);
+  /* fio ondulado (máscara): a cor vem de quem usa */
+  --rt-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 112 12'%3E%3Cpath d='M3 6q6.625-8 13.25 0t13.25 0 13.25 0 13.25 0 13.25 0 13.25 0 13.25 0 13.25 0' fill='none' stroke='%23000' stroke-width='3.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  --s1: 12px;
+  --s2: clamp(20px, 6.4cqw, 26px);
+}
+@supports (color: oklch(from red calc(l * 0.5) c h)) {
+  .inv[data-template="retro"] { --rt-shadow: oklch(from var(--ink) calc(l * clamp(0.16, (0.6 - l) * 100, 1)) c h); }
+}
+
+/* ───────── Capa: tudo alinhado à esquerda, sob o arco-íris do canto ───────── */
+.inv[data-template="retro"] .inv-paper {
+  border: var(--rt-border) solid var(--ink);
+  overflow: hidden;
+  text-align: left;
+  padding: calc(34cqw + 8px) var(--paper-pad) calc(18.3cqw + 22px);
+}
+.inv[data-template="retro"] .inv-paper::before { display: none; }
+.inv[data-template="retro"] .inv-art-top,
+.inv[data-template="retro"] .inv-art-bottom { position: absolute; left: 0; right: 0; z-index: 0; margin: 0; display: block; animation-name: retro-fade; }
+@keyframes retro-fade { from { opacity: 0; } to { opacity: 1; } }
+.inv[data-template="retro"] .inv-art-top { top: 0; }
+.inv[data-template="retro"] .inv-art-bottom { bottom: 0; }
+.inv[data-template="retro"] .retro-top,
+.inv[data-template="retro"] .retro-bottom { width: 100%; height: auto; }
+.inv[data-template="retro"] .retro-shout { font-family: var(--font-names); font-weight: 400; }
+
+.inv[data-template="retro"] .inv-hello { font: 400 16px/1.4 var(--font-text); color: var(--soft); margin-bottom: var(--s1) !important; }
+.inv[data-template="retro"] .inv-hello strong { font-weight: 700; }
+.inv[data-template="retro"] .inv-headline { font: 700 14px/1.5 var(--font-label); letter-spacing: 0.12em; padding-left: 0; color: var(--accent); text-wrap: pretty; margin-bottom: var(--s1) !important; max-width: 26ch; }
+
+.inv[data-template="retro"] .inv-names { padding: 0.06em 0 0.1em; text-wrap: balance; color: var(--ink); text-shadow: 0.045em 0.05em 0 var(--rt-2); }
+.inv[data-template="retro"] .inv-names[data-count="2"] { align-items: flex-start; }
+.inv[data-template="retro"] .inv-amp { font-family: var(--font-names); font-style: normal; font-weight: 400; line-height: 1; color: var(--accent); text-shadow: none; margin: 0.16em 0 0.2em 0.04em; }
+.inv[data-template="retro"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); }
+.inv[data-template="retro"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.06); }
+.inv[data-template="retro"] .inv-names[data-short="true"] { font-size: clamp(54px, 19cqw, 80px); }
+.inv[data-template="retro"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.72); line-height: 1.1; }
+.inv[data-template="retro"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: clamp(27px, 9.2cqw, 40px); line-height: 1.12; }
+/* casal de nomes curtos (até 8 letras): corpo maior, para o miolo pesar tanto quanto o arco e o pé */
+.inv[data-template="retro"] .inv-names[data-count="2"]:is([data-longest="1"], [data-longest="2"], [data-longest="3"], [data-longest="4"], [data-longest="5"], [data-longest="6"], [data-longest="7"], [data-longest="8"]) { font-size: clamp(44px, 16cqw, 62px); }
+/* Trecho colado comprido ("de Confraternização", 15 letras ou mais): a largura média por letra cai (medido: 0,54 a 0,59em,
+   contra 0,62 a 0,70 das palavras curtas e largas), então o corpo pode ser maior sem partir palavra; de 17 em diante aperta
+   um fio o espaço entre letras. Conferido com "Otorrinolaringologia" e "Inconstitucionalissimamente". */
+.inv[data-template="retro"] .inv-names:is([data-longest="15"], [data-longest="16"]) { --names-em: 0.64; }
+.inv[data-template="retro"] .inv-names:is([data-longest="17"], [data-longest="18"], [data-longest="19"], [data-longest="20"], [data-longest="21"], [data-longest="22"], [data-longest="23"], [data-longest="24"]) { --names-em: 0.58; letter-spacing: -0.02em; }
+
+.inv[data-template="retro"] .inv-message { font: 400 18px/1.5 var(--font-text); font-style: normal; color: var(--ink); margin: var(--s2) 0 0 !important; max-width: 27ch; text-wrap: pretty; }
+.inv[data-template="retro"] .inv-art-divider { justify-content: flex-start; margin: var(--s2) 0 0; }
+.inv[data-template="retro"] .inv-art-divider:not(:has(+ .inv-date)) { display: none; }
+.inv[data-template="retro"] .retro-divider { width: 118px; height: auto; margin-left: -2px; }
+
+/* Data: o dia dentro de um sol (disco e raios em CSS) e, ao lado, dia da semana, mês e hora empilhados. */
+.inv[data-template="retro"] .inv-date {
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "day week" "day month" "day time";
+  grid-template-rows: auto auto auto;
+  justify-items: start;
+  align-content: center;
+  align-items: center;
+  gap: 5px clamp(22px, 7.6cqw, 30px);
+  margin-top: calc(var(--s2) + 12px);
+  padding-left: 19px;
+}
+.inv[data-template="retro"] .inv-art-divider + .inv-date { margin-top: calc(var(--s2) - 2px); }
+.inv[data-template="retro"] .inv-date-day {
+  grid-area: day;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: clamp(78px, 25cqw, 94px);
+  aspect-ratio: 1;
+  color: var(--seal-ink);
+  font: 400 clamp(38px, 12.4cqw, 46px)/1 var(--font-names);
+  padding-right: 0.06em;
+  margin: 12px 0;
+}
+/* raios (cunhas largas, alternando comprida e curta) e, por cima deles, o disco com um anel de papel em volta */
+.inv[data-template="retro"] .inv-date-day::before,
+.inv[data-template="retro"] .inv-date-day::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; }
+.inv[data-template="retro"] .inv-date-day::before { inset: -19px; background: repeating-conic-gradient(from -6deg, var(--accent) 0 12deg, transparent 12deg 45deg); }
+.inv[data-template="retro"] .inv-date-day::after { inset: -12px; background: radial-gradient(closest-side, var(--seal) 0 calc(100% - 12.5px), transparent calc(100% - 12px)), repeating-conic-gradient(from 17.5deg, var(--rt-deep) 0 10deg, transparent 10deg 45deg); }
+.inv[data-template="retro"] .inv-date-side { grid-row: auto; grid-column: auto; border: 0; padding: 0; color: var(--ink); text-wrap: nowrap; }
+.inv[data-template="retro"] .inv-date-side:first-child { grid-area: week; align-self: end; font: 800 15px/1.2 var(--font-label); letter-spacing: 0.14em; color: var(--accent); }
+.inv[data-template="retro"] .inv-date-month { grid-area: month; justify-self: start; font: 600 clamp(17px, 5.4cqw, 19px)/1.25 var(--font-text); letter-spacing: 0; padding: 0; text-transform: none; color: var(--ink); }
+.inv[data-template="retro"] .inv-date-month::first-letter { text-transform: uppercase; }
+.inv[data-template="retro"] .inv-date-side:last-child { grid-area: time; align-self: start; margin-top: 3px; font: 700 15px/1 var(--font-label); letter-spacing: 0.02em; text-transform: none; padding: 7px 13px; border-radius: 999px; background: var(--ink); color: var(--btn-ink); }
+/* sem horário: o ano fica na linha do mês e a pílula some */
+.inv[data-template="retro"] .inv-date[data-time="false"] { grid-template-areas: "day week" "day month"; grid-template-rows: auto auto; }
+.inv[data-template="retro"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="retro"] .inv-date .inv-date-alt { display: none; }
+.inv[data-template="retro"] .inv-date[data-time="false"] .inv-date-month { align-self: start; }
+/* cartão estreito (celular de 320px): cede o vão entre o sol e o texto, não o corpo da letra */
+@container (max-width: 300px) {
+  .inv[data-template="retro"] .inv-date { column-gap: 24px; padding-left: 17px; }
+  .inv[data-template="retro"] .inv-date-day::before { inset: -17px; }
+  .inv[data-template="retro"] .inv-date-month { font-size: 16px; }
+}
+
+.inv[data-template="retro"] .inv-place { font: 500 17px/1.4 var(--font-text); color: var(--ink); margin-top: var(--s2) !important; text-wrap: pretty; }
+.inv[data-template="retro"] .inv-countdown { margin-top: var(--s1) !important; font: 700 14px/1 var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; background: var(--seal); color: var(--seal-ink); }
+.inv[data-template="retro"] .inv-more { font: 700 14px/1 var(--font-label); letter-spacing: 0.14em; color: var(--ink); }
+
+/* fundo: o arco gigante, tom sobre tom */
+.inv[data-template="retro"] .retro-bg { position: absolute; width: min(118%, 620px); height: auto; }
+.inv[data-template="retro"] .retro-bg-a { top: 0; left: 0; }
+.inv[data-template="retro"] .retro-bg-b { bottom: 0; right: 0; transform: rotate(180deg); }
+.inv[data-template="retro"] .retro-bg-on { fill: color-mix(in srgb, var(--paper) 17%, var(--bg)); }
+.inv[data-template="retro"] .retro-bg-off { fill: var(--bg); }
+
+/* ───────── Seções: cartões de borda grossa, um quarto de arco num canto ───────── */
+.inv[data-template="retro"] .inv-section { border: var(--rt-border) solid var(--ink); border-radius: 26px; padding: 34px clamp(14px, 7cqw, 26px) 32px; box-shadow: 0 2px 0 color-mix(in srgb, var(--ink) 80%, var(--bg)), 0 10px 22px rgb(40 20 8 / 0.14); }
+.inv[data-template="retro"] .inv-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 66px;
+  height: 66px;
+  border-top-right-radius: 22px;
+  pointer-events: none;
+  background: radial-gradient(circle 66px at 100% 0, var(--rt-2) 0 17%, var(--rt-1) 17.5% 34%, var(--paper) 34.5% 38%, var(--rt-4) 38.5% 52%, var(--rt-3) 52.5% 68%, var(--rt-2) 68.5% 83%, var(--rt-1) 83.5% 97%, var(--ink) 97.5% 100%, transparent 100.5%);
+}
+.inv[data-template="retro"] .inv-section:nth-of-type(even)::before { right: auto; left: 0; transform: scaleX(-1); }
+.inv[data-template="retro"] .inv-end .inv-section::before { display: none; }
+.inv[data-template="retro"] .inv-kicker { width: fit-content; max-width: 100%; margin: 0 auto 12px !important; padding: 6px 14px 6px 15.5px; border-radius: 999px; background: var(--seal); color: var(--seal-ink); font: 700 14px/1.3 var(--font-label); letter-spacing: 0.11em; }
+.inv[data-template="retro"] .inv-section-title { font: 400 clamp(27px, 9.4cqw, 34px)/1.15 var(--font-names); color: var(--ink); text-shadow: 0.05em 0.055em 0 var(--rt-2); margin-bottom: 10px !important; }
+.inv[data-template="retro"] .inv-big { font: 700 21px/1.3 var(--font-text); }
+.inv[data-template="retro"] .inv-text { font: 400 17.5px/1.5 var(--font-text); }
+.inv[data-template="retro"] .inv-hint { font: 400 16.5px/1.5 var(--font-text); }
+.inv[data-template="retro"] .inv-rule { width: 112px; height: 12px; margin: 22px auto; background: var(--accent); -webkit-mask: var(--rt-wave) center / 112px 12px no-repeat; mask: var(--rt-wave) center / 112px 12px no-repeat; }
+
+.inv[data-template="retro"] .inv-stack { gap: 14px; }
+.inv[data-template="retro"] .inv-grid-2 { gap: 12px; }
+.inv[data-template="retro"] .inv-btn { border: 2.5px solid var(--ink); font: 700 16.5px/1.2 var(--font-label); letter-spacing: 0.01em; box-shadow: 0 4px 0 var(--ink); background: var(--paper); margin-bottom: 4px; }
+.inv[data-template="retro"] .inv-btn:hover { background: color-mix(in srgb, var(--seal) 26%, var(--paper)); }
+.inv[data-template="retro"] .inv-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.inv[data-template="retro"] .inv-btn-main { background: var(--ink); color: var(--btn-ink); box-shadow: 0 4px 0 var(--accent); }
+.inv[data-template="retro"] .inv-btn-main:hover { background: color-mix(in srgb, var(--ink) 88%, var(--accent)); }
+.inv[data-template="retro"] .inv-btn-main:active { box-shadow: 0 1px 0 var(--accent); }
+.inv[data-template="retro"] .inv-btn-quiet { border-width: 2px; border-color: color-mix(in srgb, var(--ink) 72%, var(--paper)); box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 72%, var(--paper)); font-weight: 600; font-size: 16px; }
+.inv[data-template="retro"] .inv-grid-2 .inv-btn { font-size: clamp(15px, 4.7cqw, 16px); }
+.inv[data-template="retro"] .inv-btn[aria-pressed="true"] { background: var(--ink); color: var(--btn-ink); box-shadow: 0 0 0 2px var(--paper), 0 0 0 4.5px var(--ink); }
+.inv[data-template="retro"] .rsvp-n { border-radius: 20px; }
+.inv[data-template="retro"] .rsvp-radio span { border-radius: 18px; border: 2.5px solid var(--ink); background: var(--paper); }
+.inv[data-template="retro"] .rsvp-radio input:checked + span { background: var(--ink); color: var(--btn-ink); box-shadow: 0 0 0 2px var(--paper), 0 0 0 4.5px var(--ink); }
+.inv[data-template="retro"] .rsvp-count legend, .inv[data-template="retro"] .rsvp-current, .inv[data-template="retro"] .inv-saved, .inv[data-template="retro"] .inv-field { font-family: var(--font-text); }
+.inv[data-template="retro"] .rsvp-current { border-radius: 18px; background: color-mix(in srgb, var(--seal) 20%, var(--paper)); }
+.inv[data-template="retro"] .rsvp-state { border-radius: 22px; border: 2.5px solid var(--ink); background: color-mix(in srgb, var(--seal) 22%, var(--paper)); padding: 22px 16px; }
+.inv[data-template="retro"] .rsvp-state[data-status="no"] { background: color-mix(in srgb, var(--ink) 7%, var(--paper)); }
+.inv[data-template="retro"] .rsvp-state-title { font: 400 clamp(23px, 7.8cqw, 28px)/1.2 var(--font-names); }
+.inv[data-template="retro"] .rsvp-state p + p { font: 400 17.5px/1.45 var(--font-text); margin-top: 6px; }
+.inv[data-template="retro"] .inv-field input, .inv[data-template="retro"] .inv-field select, .inv[data-template="retro"] .inv-field textarea { border: 2px solid color-mix(in srgb, var(--ink) 62%, var(--paper)); border-radius: 16px; background: color-mix(in srgb, var(--paper) 86%, var(--rt-petal)); }
+.inv[data-template="retro"] .inv-link { font-family: var(--font-text); font-weight: 600; }
+.inv[data-template="retro"] .inv-qr { border-radius: 20px; border: 2.5px solid var(--ink); }
+.inv[data-template="retro"] .inv-sticky { border-top: var(--rt-border) solid var(--ink); }
+
+/* assinatura e fecho */
+.inv[data-template="retro"] .inv-sign-art .retro-divider { width: 148px; margin: 0; }
+.inv[data-template="retro"] .inv-sign-names { text-shadow: 0.05em 0.055em 0 var(--rt-2); line-height: 1.12; }
+.inv[data-template="retro"] .inv-sign-date { font: 600 17px/1.4 var(--font-text); color: var(--ink); margin-top: 10px !important; }
+.inv[data-template="retro"] .inv-footer a { color: var(--ink); }
+/* fecho da página: três fios ondulados que vão afinando */
+.inv[data-template="retro"] .inv-sheet::after {
+  content: "";
+  display: block;
+  width: 112px;
+  height: 40px;
+  margin: 26px auto 0;
+  background: var(--ink);
+  -webkit-mask: var(--rt-wave) center 0 / 112px 12px no-repeat, var(--rt-wave) center 15px / 84px 9px no-repeat, var(--rt-wave) center 28px / 56px 6px no-repeat;
+  mask: var(--rt-wave) center 0 / 112px 12px no-repeat, var(--rt-wave) center 15px / 84px 9px no-repeat, var(--rt-wave) center 28px / 56px 6px no-repeat;
+}
+.thumb > .inv[data-template="retro"] .inv-sheet::after { display: none; }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="retro"] .env-body { filter: drop-shadow(0 5px 0 color-mix(in srgb, var(--ink) 80%, var(--bg))) drop-shadow(0 16px 22px rgb(40 20 8 / 0.24)); }
+.inv[data-template="retro"] .env-back { background: color-mix(in srgb, var(--paper) 78%, var(--ink)); border-radius: 14px; }
+.inv[data-template="retro"] .env-front { border-radius: 14px; background-color: var(--paper); background-image:
+    radial-gradient(ellipse 35% 49% at 100% 100%, var(--rt-2) 0 20%, var(--rt-1) 20.5% 36%, var(--paper) 36.5% 41%, var(--rt-4) 41.5% 55%, var(--rt-3) 55.5% 70%, var(--rt-2) 70.5% 84%, var(--rt-1) 84.5% 97%, var(--ink) 97.5% 100%, transparent 100.4%),
+    linear-gradient(to top, color-mix(in srgb, var(--paper) 93%, var(--ink)), var(--paper) 60%); }
+/* frente e aba: contorno grosso na cor da tinta (na aba, um triângulo por baixo e a face e o forro recuados: vale dos dois lados) */
+.inv[data-template="retro"] .env-front { box-shadow: inset 0 0 0 2.5px var(--ink); }
+.inv[data-template="retro"] .env-flap::before, .inv[data-template="retro"] .env-flap::after { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 2.5px)); background: var(--ink); border-radius: 14px 14px 0 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.inv[data-template="retro"] .env-flap-face { clip-path: polygon(6px 2.5px, calc(100% - 6px) 2.5px, 50% calc(58% - 1px)); }
+/* avesso: a base do triângulo recua o raio do canto do envelope (aba aberta não deixa "orelhas" para fora) e o forro fica 1px à frente do contorno */
+.inv[data-template="retro"] .env-flap::after { transform: rotateY(180deg); clip-path: polygon(12px 0, calc(100% - 12px) 0, 50% calc(58% + 2.5px)); border-radius: 0; }
+.inv[data-template="retro"] .env-liner { transform: rotateY(180deg) translateZ(1px); clip-path: polygon(18px 2.5px, calc(100% - 18px) 2.5px, 50% calc(58% - 1px)); }
+.inv[data-template="retro"] .env-flap-face { border-radius: 14px 14px 0 0; background: var(--paper); background-image: linear-gradient(to bottom, var(--paper), color-mix(in srgb, var(--paper) 90%, var(--ink))); }
+.inv[data-template="retro"] .env-liner { background: var(--rt-4); border-radius: 14px 14px 0 0; }
+.inv[data-template="retro"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="retro"] .env-card { border-radius: 12px; border: 2.5px solid var(--ink); box-shadow: none; overflow: hidden; background: var(--paper) radial-gradient(ellipse 30% 46% at 100% 0, var(--rt-2) 0 20%, var(--rt-1) 20.5% 36%, var(--paper) 36.5% 41%, var(--rt-4) 41.5% 55%, var(--rt-3) 55.5% 70%, var(--rt-2) 70.5% 84%, var(--rt-1) 84.5% 97%, var(--ink) 97.5% 100%, transparent 100.4%) no-repeat; place-items: start; padding: 22% 0 0 9%; }
+.inv[data-template="retro"] .env-card-line { width: 36%; height: 5px; border-radius: 3px; background: var(--ink); box-shadow: 0 12px 0 var(--accent); opacity: 1; }
+.inv[data-template="retro"] .env-to { font: 500 17px/1.4 var(--font-text); color: var(--ink); }
+.inv[data-template="retro"] .env-to strong { font: 400 clamp(27px, 9cqw, 33px)/1.15 var(--font-names); color: var(--ink); text-shadow: 0.05em 0.055em 0 color-mix(in srgb, var(--paper) 60%, var(--bg)); margin-top: 4px; }
+.inv[data-template="retro"] .env-cta { font: 700 16px/1.1 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.1em; border: 2.5px solid var(--ink); background: var(--ink); color: var(--btn-ink); box-shadow: 0 4px 0 var(--accent); }
+.inv[data-template="retro"] .env-seal { --seal-font: var(--font-names); --seal-weight: 400; --seal-size: 38px; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   Valores medidos; ao mexer nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). */
+.inv[data-template="retro"] { --thumb-h: 829px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 774px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 740px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 767px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 774px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 687px; }

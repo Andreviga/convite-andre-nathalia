@@ -24,7 +24,11 @@ Nunca escreva cor fixa no CSS para algo que deve mudar com a paleta; use as vari
 **Fontes disponíveis** (`src/lib/fonts.ts`): `--f-serif` (EB Garamond, pesos 400 a 800; não há 300), `--f-sc` (Cormorant SC,
 só para rótulos em versalete), `--f-sans` (DM Sans),
 `--f-pinyon`, `--f-parisienne`, `--f-italianno`, `--f-alex`, `--f-madi`, `--f-greatvibes`, `--f-playfair`, `--f-bodoni`,
-`--f-cinzel`, `--f-jost`, `--f-fraunces`, `--f-dmserif`, `--f-marcellus`, `--f-poiret`, `--f-montserrat`.
+`--f-cinzel`, `--f-jost`, `--f-fraunces`, `--f-dmserif`, `--f-marcellus`, `--f-poiret`, `--f-montserrat`, `--f-petit`, `--f-gilda`, `--f-forum`, `--f-tenor`, `--f-abril`,
+`--f-sacramento`, `--f-italiana`, `--f-prata`, `--f-tiltneon`, `--f-shrikhand`, `--f-fraktur`, `--f-allura`, `--f-spacemono`,
+`--f-oldstandard`, `--f-spectral`, `--f-outfit`, `--f-josefinslab`, `--f-raleway`, `--f-sora`, `--f-archivonarrow`,
+`--f-franklin`, `--f-fredoka`, `--f-baloo`, `--f-mulish`, `--f-lora`. Na Prata e na Josefin Slab o "1" é igual ao "l": não use
+nos algarismos. A Tenor Sans tem o 7 cortado.
 Não use Cormorant Garamond, Cormorant nem Cormorant Infant em texto com minúsculas: o circunflexo delas é uma cunha fina e
 alta ("Você", "bebê" e "avô" parecem ter sujeira sobre a letra). Foi por isso que `--f-serif` passou a ser a EB Garamond.
 

@@ -1,0 +1,201 @@
+/* Modelo Tropical. Todas as regras ficam sob .inv[data-template="tropical"]. */
+.inv[data-template="tropical"] {
+  --font-names: var(--f-abril), "Abril Fatface", "Playfair Display", Georgia, serif;
+  --font-text: var(--f-outfit), "Outfit", system-ui, sans-serif;
+  --font-label: var(--f-outfit), "Outfit", system-ui, sans-serif;
+  --names-size: clamp(40px, 15cqw, 60px);
+  --names-weight: 400;
+  --names-leading: 1.03;
+  --names-em: 0.55; /* Abril Fatface: medida com "Maximiliano", "Wilhelmina" e "Otorrinolaringologia" */
+  --names-tracking: -0.005em;
+  --amp-scale: 1;
+  --label-tracking: 0.14em;
+  --radius: 3px;
+  --btn-radius: 6px;
+  --paper-pad: clamp(22px, 8cqw, 32px);
+  --frame-inset: 0px;
+  --paper-shadow: 0 1px 2px color-mix(in srgb, var(--tp-ink) 16%, transparent), 0 18px 40px color-mix(in srgb, var(--tp-ink) 16%, transparent);
+  /* Tons da folhagem: três verdes tirados de --liner (médio), puxado para a tinta (fundo) e para o papel (claro e sombra).
+     A flor usa --accent. Nada aqui é cor fixa, fora o amarelo do pólen. */
+  --tp-ink: color-mix(in srgb, var(--ink) 86%, #000);
+  --tp-a: var(--liner);
+  --tp-b: color-mix(in srgb, var(--liner) 52%, var(--ink));
+  --tp-c: color-mix(in srgb, var(--liner) 46%, var(--paper));
+  --tp-d: color-mix(in srgb, var(--liner) 17%, var(--paper));
+  --tp-f: var(--accent);
+  --tp-f2: color-mix(in srgb, var(--accent) 80%, var(--ink));
+  --tp-f3: color-mix(in srgb, var(--accent) 48%, var(--ink));
+  --tp-pollen: color-mix(in srgb, #ffd65c 82%, var(--paper));
+  /* cor de destaque para texto grande ("&", fios): o acento escurecido até 3:1 sobre o papel */
+  --tp-mark: color-mix(in srgb, var(--accent) 74%, var(--ink));
+  /* sombra dura dos botões, como impressão fora de registro */
+  --tp-off: 4px 4px 0 var(--accent);
+  --tp-step: clamp(14px, 4.6cqw, 18px);
+  --tp-step-lg: clamp(20px, 6.6cqw, 28px);
+  /* tons dos enfeites das seções: claros o bastante para o texto passar por cima com 4,5:1 */
+  --tp-s1: color-mix(in srgb, var(--liner) 24%, var(--paper));
+  --tp-s2: color-mix(in srgb, var(--liner) 12%, var(--paper));
+  /* silhuetas (máscaras estáticas, com as nervuras vazadas) para os cantos das seções e a frente do envelope.
+     Geradas a partir da geometria do index.tsx: costela-de-adão, palmeira, bananeira e as duas camadas do envelope. */
+  --tp-mk-monstera: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-20 -52 146 102'%3E%3Cmask id='m0'%3E%3Crect x='-30' y='-60' width='170' height='120' fill='%23fff'/%3E%3Cpath d='M1.2 0L-10.2 -12.5L2.9 0ZM1.2 0L2.7 -37.5L2.9 0ZM1.2 0L26.8 -40.3L2.9 0ZM25.3 0L53.1 -34.6L27 0ZM55.3 0L75.8 -25.2L57 0ZM91.2 0L101.3 -11.8L92.9 0ZM1.2 0L-10.3 11.3L2.9 0ZM1.2 0L13.6 36.3L2.9 0ZM9.1 0L39.8 34.4L10.8 0ZM40.9 0L65.1 26.8L42.6 0ZM85.5 0L97.3 12.6L87.2 0ZM-1 -1.5L118 0L-1 1.5Z' fill='%23000'/%3E%3C/mask%3E%3Cg transform=''%3E%3Cg mask='url(%23m0)'%3E%3Cpath fill-rule='evenodd' d='M0 0.8L-0.1 0L-0.7 -0.4L-1.6 -0.8L-2.7 -1.3L-3.8 -1.8L-5 -2.5L-6.2 -3.3L-7.3 -4.2L-8.4 -5.2L-9.4 -6.4L-10.4 -7.7L-11.5 -9.2L-12.5 -10.7L-13.4 -12.4L-14.2 -14L-14.9 -15.7L-15.3 -17.3L-15.6 -19L-15.8 -20.7L-15.8 -22.4L-15.7 -24.2L-15.5 -25.9L-15.1 -27.6L-14.5 -29.2L-13.8 -30.7L-12.9 -32.1L-12.2 -32.9Q-9.5 -35.7 -8.5 -32.3L-2.8 -14.6Q-1.5 -12.8 -1.2 -15L-5.7 -35.2Q-6.5 -39.1 -3.2 -43L-3.1 -43L-1.3 -44.6L0.7 -45.9L2.8 -46.9L5.1 -47.6L7.3 -48.1L9.6 -48.2L9.8 -48.2Q14.4 -47.6 13 -42.3L5.6 -14.3Q5.8 -12.1 7.2 -13.8L17.5 -42.7Q19.5 -48.1 25.6 -49.9L27.3 -50.2L30.1 -50.5L32.9 -50.4L35.4 -50L37.6 -49.3L39 -48.7Q42.8 -46 39 -40.7L19 -12.9Q18.4 -10.8 20.4 -11.9L43.4 -39.4Q47.8 -44.6 53.8 -44.7L53.9 -44.7L56.4 -44.3L58.7 -43.7L60.7 -42.8L62.5 -41.6L64.1 -40.1L64.3 -39.9Q67.3 -36.4 64.5 -32.4L49.8 -11.6Q49.2 -9.5 51.1 -10.6L68.2 -30.6Q71.5 -34.4 76.4 -33.4L77.5 -33L79.5 -32.1L81.4 -31L83 -29.7L84.1 -28.7Q87.2 -25.3 85.5 -22.9L76.9 -9.9Q76.3 -7.8 78.3 -8.9L88.7 -20.4Q90.6 -22.5 94.5 -20.4L96.2 -19.5L98 -18.5L99.6 -17.4L101.2 -16.4L102.8 -15.3L104.3 -14.3L105.8 -13.2L107.3 -12.1L108.8 -11L110.2 -9.8L111.8 -8.6L113.5 -7.2L115.3 -5.8L117.1 -4.4L118.8 -3L120.4 -1.8L121.7 -0.8L122.6 0L122 0.2ZM8.2 -6.4A4.6 1.9 -52 1 0 13.8 -13.7A4.6 1.9 -52 1 0 8.2 -6.4ZM67.4 -2.9A3.4 1.4 -52 1 0 71.6 -8.3A3.4 1.4 -52 1 0 67.4 -2.9Z'/%3E%3Cpath fill-rule='evenodd' d='M0 -0.8L-0.1 0L-0.7 0.3L-1.6 0.7L-2.7 1.1L-3.8 1.6L-5 2.2L-6.2 2.9L-7.4 3.8L-8.4 4.7L-9.4 5.8L-10.5 7L-11.5 8.3L-12.5 9.7L-13.5 11.2L-14.3 12.7L-15 14.2L-15.4 15.7L-15.7 17.2L-15.9 18.8L-16 20.4L-15.9 22L-15.7 23.6L-15.3 25.2L-14.8 26.6L-14.1 28L-13.2 29.3L-12.1 30.6L-10.8 31.9L-9.4 33L-7.9 34.1L-6.3 35.2L-4.6 36.1L-3.9 36.5Q-0.1 38.1 0.1 34.1L1.1 13.2Q2 11.4 2.8 13.2L3.9 36.1Q4.1 40.4 8.9 43.2L9.6 43.5L12.1 44.4L14.5 45.1L17 45.4L19.5 45.5L22 45.3L24.1 44.8Q28.7 43.2 25.6 38.2L9.3 12.2Q9 10.2 10.8 11.4L30.2 37.8Q34 42.8 40.4 43.6L42.6 43.6L45.3 43.4L47.7 42.9L49.9 42.1L51.9 41.1L52.6 40.6Q55.9 37.7 52.5 33.5L34.8 11.3Q34.2 9.4 36.2 10.4L56.4 31.9Q60.2 36 65.4 35.4L66 35.3L68.2 34.6L70.3 33.8L72.1 32.9L73.8 31.7L75.3 30.5Q78.3 27.4 76.2 24.7L65.2 10.3Q64.7 8.4 66.6 9.3L79.4 22.5Q81.9 25 85.9 23.1L87.4 22.5L89.3 21.6L91.1 20.7L92.9 19.7L94.7 18.8L96.5 17.8L98.2 16.9L99.8 15.9L101.4 14.9L102.9 13.9L104.4 13L105.9 12L107.3 10.9L108.8 9.9L110.3 8.9L111.8 7.7L113.5 6.5L115.3 5.2L117.1 3.9L118.8 2.7L120.4 1.6L121.7 0.7L122.6 0L122 -0.2ZM53.7 3.2A4.1 1.7 49.1 1 0 58.8 9.1A4.1 1.7 49.1 1 0 53.7 3.2Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --tp-mk-palm: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -52 190 104'%3E%3Cg transform=''%3E%3Cpath d='M13.4 -3.2Q16.5 -16.6 20.7 -29.6Q22.3 -15.1 13.4 -3.2ZM18.3 -4.1Q25.6 6.7 33.6 16.6Q30.2 3.3 18.3 -4.1ZM23 -4.8Q28.2 -20.3 34.6 -34.6Q34.8 -17.7 23 -4.8ZM28 -5.5Q36.6 7.1 46 18.5Q41.9 3.2 28 -5.5ZM32.8 -6.1Q40.3 -22.7 49 -37.6Q47.2 -19.1 32.8 -6.1ZM37.9 -6.5Q47.6 7.7 58.1 20.1Q53.4 3.2 37.9 -6.5ZM42.7 -6.8Q52.6 -23.9 63.6 -38.6Q59.6 -19.3 42.7 -6.8ZM47.9 -7Q58.4 8.3 69.7 21.3Q64.6 3.5 47.9 -7ZM52.8 -7.1Q65 -23.9 77.9 -37.7Q71.7 -18.4 52.8 -7.1ZM58.1 -7Q69.1 9.1 81 22.3Q75.6 4.1 58.1 -7ZM63.1 -6.8Q77.1 -22.7 91.6 -34.9Q83.3 -16.4 63.1 -6.8ZM68.5 -6.5Q79.7 10 91.8 23.1Q86.2 4.8 68.5 -6.5ZM73.6 -6Q89 -20.3 104.4 -30.6Q94.4 -13.5 73.6 -6ZM79 -5.4Q90.1 10.9 102.1 23.6Q96.5 5.9 79 -5.4ZM84.2 -4.7Q100.3 -17 116 -25Q104.8 -10 84.2 -4.7ZM89.7 -3.8Q100.4 12 111.9 23.9Q106.5 7.1 89.7 -3.8ZM94.9 -2.8Q111.1 -12.7 126.3 -18.4Q114.5 -5.8 94.9 -2.8ZM100.5 -1.6Q110.4 13.2 121.3 24.1Q116.1 8.7 100.5 -1.6ZM105.7 -0.3Q121.1 -7.8 135.2 -11.2Q123.5 -1.3 105.7 -0.3ZM111.4 1.2Q120.3 14.6 130.1 24.1Q125.3 10.5 111.4 1.2ZM116.7 2.8Q130.4 -2.3 142.6 -3.8Q131.9 3.4 116.7 2.8ZM122.3 4.7Q130 16.1 138.4 24Q134.2 12.6 122.3 4.7ZM127.7 6.6Q138.9 3.6 148.5 3.5Q139.6 8.2 127.7 6.6ZM133.4 8.7Q139.4 17.8 146.1 23.8Q142.8 15 133.4 8.7ZM138.8 10.9Q146.5 9.7 152.8 10.4Q146.6 12.8 138.8 10.9ZM144.6 13.5Q148.6 19.6 153.1 23.5Q150.8 17.7 144.6 13.5ZM150 16Q152.8 15.8 155 16.3Q152.7 16.9 150 16ZM150 16Q151.5 18.2 153.2 19.5Q152.3 17.5 150 16ZM150 16Q158 22.5 168 24.6Q160.1 18.1 150 16Z'/%3E%3Cpath d='M0.6 2.2L7.9 0.2L15.3 -1.5L22.9 -2.9L30.7 -4L38.5 -4.8L46.5 -5.3L54.6 -5.5L62.8 -5.4L71.1 -5L79.6 -4.1L88.1 -3L96.7 -1.4L105.4 0.5L114.1 2.9L123 5.6L131.9 8.7L140.8 12.3L149.8 16.3L150.2 15.7L141.2 11.5L132.3 7.7L123.4 4.3L114.6 1.4L105.8 -1.2L97.1 -3.3L88.4 -5.1L79.9 -6.5L71.4 -7.5L62.9 -8.2L54.6 -8.6L46.4 -8.6L38.3 -8.3L30.2 -7.6L22.3 -6.7L14.6 -5.5L6.9 -4L-0.6 -2.2Z'/%3E%3C/g%3E%3C/svg%3E");
+  --tp-mk-banana: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-3 -19 106 38'%3E%3Cmask id='m1'%3E%3Crect x='-5' y='-22' width='112' height='44' fill='%23fff'/%3E%3Cpath d='M11.1 0L15.7 -10L17.5 -10L12.6 0ZM11.1 0L15.7 10L17.5 10L12.6 0ZM17.2 0L21.8 -11.4L23.6 -11.4L18.7 0ZM17.2 0L21.8 11.4L23.6 11.4L18.7 0ZM23.3 0L27.9 12.5L29.7 12.5L24.8 0ZM29.4 0L34 13.3L35.8 13.3L30.9 0ZM35.5 0L40.1 -13.7L41.9 -13.7L37 0ZM41.6 0L46.2 -13.8L48 -13.8L43.1 0ZM47.7 0L52.3 -13.7L54.1 -13.7L49.2 0ZM47.7 0L52.3 13.7L54.1 13.7L49.2 0ZM53.8 0L58.4 13.3L60.2 13.3L55.3 0ZM59.9 0L64.5 -12.6L66.3 -12.6L61.4 0ZM59.9 0L64.5 12.6L66.3 12.6L61.4 0ZM66 0L70.6 -11.6L72.4 -11.6L67.5 0ZM72.1 0L76.7 -10.5L78.5 -10.5L73.6 0ZM72.1 0L76.7 10.5L78.5 10.5L73.6 0ZM78.2 0L82.8 9L84.6 9L79.7 0ZM84.3 0L88.9 -7.3L90.7 -7.3L85.8 0ZM84.3 0L88.9 7.3L90.7 7.3L85.8 0ZM90.4 0L95 -5.1L96.8 -5.1L91.9 0ZM90.4 0L95 5.1L96.8 5.1L91.9 0ZM-2 -1.7L99 0L-2 1.7Z' fill='%23000'/%3E%3C/mask%3E%3Cg transform=''%3E%3Cg mask='url(%23m1)'%3E%3Cpath d='M0 -3.9L2.5 -5.6L5 -6.9L7.5 -8.1L10 -9.1L12.5 -10.1L15 -10.9L17.5 -11.6L20 -12.3L22.5 -12.9L25 -13.4L27.5 -13.9L28.4 -14L24.5 -5.1L31.9 -14.4L32.5 -14.6L35 -14.8L37.5 -15.1L40 -15.2L42.5 -15.3L45 -15.4L47.5 -15.4L50 -15.3L52.5 -15.2L55 -15L55.9 -15L52 -5.3L59.4 -14.5L60 -14.6L62.5 -14.2L65 -13.9L67.5 -13.5L70 -13L72.5 -12.5L75 -12L77.5 -11.4L78.4 -11.2L74.5 -3.9L81.9 -10.1L82.5 -10.1L85 -9.3L87.5 -8.5L90 -7.6L92.5 -6.7L95 -5.7L97.5 -4.5L100 -3.1L100 3.1L97.5 4.5L95 5.7L92.5 6.7L90 7.6L87.5 8.5L85 9.3L82.5 10.1L80 10.8L77.5 11.4L75 12L72.5 12.5L71.9 12.5L64.5 4.7L68.4 13.3L67.5 13.5L65 13.9L62.5 14.2L60 14.6L57.5 14.8L55 15L52.5 15.2L50 15.3L47.5 15.4L45 15.4L44.4 15.2L37 5.5L40.9 15.3L40 15.2L37.5 15.1L35 14.8L32.5 14.6L30 14.2L27.5 13.9L25 13.4L22.5 12.9L20 12.3L17.5 11.6L15 10.9L12.5 10.1L10 9.1L7.5 8.1L5 6.9L2.5 5.6L0 3.9Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --tp-mk-env-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 200'%3E%3Cmask id='m2'%3E%3Crect x='-30' y='-60' width='170' height='120' fill='%23fff'/%3E%3Cpath d='M1.2 0L-10.2 -12.6L2.9 0ZM1.2 0L10.8 -39.9L2.9 0ZM9.1 0L39.8 -38.2L10.8 0ZM44.9 0L68 -28.6L46.6 0ZM87.8 0L98.9 -13.1L89.5 0ZM1.2 0L-10.2 11.7L2.9 0ZM1.2 0L1.1 34.6L2.9 0ZM1.2 0L24.7 38.1L2.9 0ZM22.6 0L51 33.2L24.3 0ZM52.7 0L73.8 24.5L54.4 0ZM90.1 0L100.5 11.5L91.8 0ZM-1 -1.5L118 0L-1 1.5Z' fill='%23000'/%3E%3C/mask%3E%3Cg transform='translate(18 207) rotate(-53) scale(0.9 0.9)'%3E%3Cg mask='url(%23m2)'%3E%3Cpath fill-rule='evenodd' d='M0 0.8L-0.1 0L-0.7 -0.4L-1.6 -0.8L-2.7 -1.3L-3.8 -1.8L-5 -2.5L-6.2 -3.3L-7.4 -4.2L-8.4 -5.2L-9.4 -6.4L-10.4 -7.7L-11.5 -9.2L-12.5 -10.8L-13.5 -12.4L-14.3 -14.1L-14.9 -15.8L-15.4 -17.4L-15.7 -19.1L-15.9 -20.8L-15.9 -22.6L-15.9 -24.4L-15.6 -26.1L-15.3 -27.9L-14.7 -29.5L-14 -31L-13.1 -32.5L-12 -33.9L-10.7 -35.2L-9.3 -36.5L-7.8 -37.7L-7.1 -38.3Q-3.6 -40.4 -3 -36.2L-0.1 -14Q0.9 -12 1.6 -14.1L0.4 -38.5Q0.2 -43.2 4.6 -46.5L5 -46.7L7.3 -48L9.7 -49L12.1 -49.7L14.5 -50.1L16.9 -50.2L19.3 -50L21.5 -49.6Q26.2 -48 23.4 -42.5L8.6 -13.6Q8.4 -11.4 10.1 -12.7L28.1 -42.1Q31.5 -47.7 37.8 -48.6L40 -48.7L42.7 -48.6L45.3 -48.2L47.7 -47.7L50 -46.8L52 -45.8L53.8 -44.6L54.5 -44.1Q57.8 -41 54.5 -36.4L37.3 -12.3Q36.7 -10.2 38.6 -11.3L58.3 -34.6Q62.1 -39 67.2 -38.2L67.9 -38L70.1 -37.4L72.1 -36.5L74 -35.5L75.8 -34.3L77.5 -32.9L78.7 -31.7Q81.8 -28.4 80 -25.6L70.2 -11.2Q69.6 -9.1 71.5 -10.1L83.2 -23.2Q85.4 -25.7 89.4 -23.6L91 -22.8L92.8 -21.8L94.6 -20.7L96.4 -19.7L98.1 -18.6L99.8 -17.6L101.3 -16.5L102.9 -15.4L104.4 -14.4L105.9 -13.3L107.3 -12.1L108.8 -11L110.3 -9.8L111.8 -8.6L113.5 -7.2L115.3 -5.8L117.1 -4.4L118.8 -3L120.4 -1.8L121.7 -0.8L122.6 0L122 0.2ZM57.5 -3.4A4 1.7 -52 1 0 62.4 -9.7A4 1.7 -52 1 0 57.5 -3.4Z'/%3E%3Cpath fill-rule='evenodd' d='M0 -0.8L-0.1 0L-0.7 0.3L-1.6 0.7L-2.7 1.2L-3.8 1.7L-5 2.3L-6.2 3.1L-7.3 3.9L-8.4 4.9L-9.4 6L-10.4 7.2L-11.5 8.6L-12.5 10.1L-13.4 11.6L-14.2 13.2L-14.8 14.7L-15.3 16.2L-15.6 17.8L-15.7 19.4L-15.8 21L-15.7 22.7L-15.4 24.3L-15 25.9L-14.5 27.3L-13.8 28.7L-13.2 29.6Q-10.8 32.3 -9.6 29.2L-3.4 13.2Q-1.9 11.6 -1.7 13.7L-7 32.1Q-8.1 35.6 -4.9 39.3L-3.2 40.9L-1.3 42.2L0.7 43.2L2.8 44L5 44.5L7.3 44.7L7.6 44.7Q12.2 44.4 11 39.4L4.9 13.4Q5.2 11.3 6.5 13L15.5 40Q17.2 45.1 23.1 47L24.6 47.3L27.5 47.6L30.2 47.6L32.8 47.3L35.1 46.7L36.6 46.1Q40.5 43.7 36.6 38.7L16.4 12.3Q15.8 10.3 17.7 11.3L41.1 37.6Q45.6 42.6 51.7 42.7L54.3 42.4L56.6 41.9L58.7 41.1L60.5 40L62.2 38.7L62.5 38.4Q65.5 35.1 62.6 31.3L47.4 11.2Q46.8 9.2 48.7 10.2L66.3 29.5Q69.6 33.2 74.6 32.4L75.7 32.1L77.7 31.2L79.6 30.2L81.2 29L82.4 28Q85.4 24.8 83.7 22.4L74.7 9.7Q74.1 7.7 76 8.8L86.8 20Q88.9 22.2 92.9 20.2L94.5 19.3L96.3 18.4L98 17.4L99.7 16.4L101.3 15.5L102.8 14.5L104.3 13.4L105.8 12.4L107.3 11.4L108.8 10.3L110.2 9.2L111.8 8.1L113.5 6.8L115.3 5.4L117.1 4.1L118.8 2.8L120.4 1.7L121.7 0.7L122.6 0L122 -0.2ZM6.8 6.1A4.6 1.9 51.5 1 0 12.3 13A4.6 1.9 51.5 1 0 6.8 6.1ZM64.9 2.9A3.5 1.5 50.3 1 0 69.3 8.1A3.5 1.5 50.3 1 0 64.9 2.9Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --tp-mk-env-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 200'%3E%3Cmask id='m3'%3E%3Crect x='-5' y='-22' width='112' height='44' fill='%23fff'/%3E%3Cpath d='M11.1 0L15.7 -10L17.5 -10L12.6 0ZM11.1 0L15.7 10L17.5 10L12.6 0ZM17.2 0L21.8 -11.4L23.6 -11.4L18.7 0ZM17.2 0L21.8 11.4L23.6 11.4L18.7 0ZM23.3 0L27.9 -12.5L29.7 -12.5L24.8 0ZM29.4 0L34 -13.3L35.8 -13.3L30.9 0ZM29.4 0L34 13.3L35.8 13.3L30.9 0ZM35.5 0L40.1 -13.7L41.9 -13.7L37 0ZM35.5 0L40.1 13.7L41.9 13.7L37 0ZM41.6 0L46.2 13.8L48 13.8L43.1 0ZM47.7 0L52.3 -13.7L54.1 -13.7L49.2 0ZM53.8 0L58.4 -13.3L60.2 -13.3L55.3 0ZM59.9 0L64.5 -12.6L66.3 -12.6L61.4 0ZM59.9 0L64.5 12.6L66.3 12.6L61.4 0ZM66 0L70.6 11.6L72.4 11.6L67.5 0ZM72.1 0L76.7 10.5L78.5 10.5L73.6 0ZM78.2 0L82.8 -9L84.6 -9L79.7 0ZM84.3 0L88.9 -7.3L90.7 -7.3L85.8 0ZM84.3 0L88.9 7.3L90.7 7.3L85.8 0ZM90.4 0L95 -5.1L96.8 -5.1L91.9 0ZM90.4 0L95 5.1L96.8 5.1L91.9 0ZM-2 -1.7L99 0L-2 1.7Z' fill='%23000'/%3E%3C/mask%3E%3Cg transform='translate(10 216) rotate(-76) scale(1.2 1.2)'%3E%3Cg mask='url(%23m3)'%3E%3Cpath d='M0 -3.9L2.5 -5.6L5 -6.9L7.5 -8.1L10 -9.1L12.5 -10.1L15 -10.9L17.5 -11.6L20 -12.3L22.5 -12.9L25 -13.4L27.5 -13.9L30 -14.2L32.5 -14.6L35 -14.8L37.5 -15.1L40 -15.2L42.5 -15.3L43.4 -15.3L39.5 -5.5L46.9 -15.2L47.5 -15.4L50 -15.3L52.5 -15.2L55 -15L57.5 -14.8L60 -14.6L62.5 -14.2L65 -13.9L67.5 -13.5L70 -13L70.9 -12.9L67 -4.5L74.4 -12L75 -12L77.5 -11.4L80 -10.8L82.5 -10.1L85 -9.3L87.5 -8.5L90 -7.6L92.5 -6.7L95 -5.7L97.5 -4.5L100 -3.1L100 3.1L97.5 4.5L95 5.7L92.5 6.7L90 7.6L87.5 8.5L85 9.3L84.4 9.4L77 3.6L80.9 10.5L80 10.8L77.5 11.4L75 12L72.5 12.5L70 13L67.5 13.5L65 13.9L62.5 14.2L60 14.6L57.5 14.8L56.9 14.7L49.5 5.4L53.4 15.1L52.5 15.2L50 15.3L47.5 15.4L45 15.4L42.5 15.3L40 15.2L37.5 15.1L35 14.8L32.5 14.6L30 14.2L27.5 13.9L26.9 13.6L19.5 4.8L23.4 13.1L22.5 12.9L20 12.3L17.5 11.6L15 10.9L12.5 10.1L10 9.1L7.5 8.1L5 6.9L2.5 5.6L0 3.9Z'/%3E%3C/g%3E%3C/g%3E%3Cg transform=''%3E%3Cpath d='M5.4 192.5Q6.2 182.1 7.7 172.1Q10.6 182.6 5.4 192.5ZM11.7 190.3Q18.3 197.5 25.3 204Q21.3 194.5 11.7 190.3ZM17.9 188.4Q20.4 175.9 24 164.3Q25.7 177.3 17.9 188.4ZM24.3 186.6Q32.4 195.4 40.9 203Q36 191.7 24.3 186.6ZM30.6 185.1Q35.3 171.4 41.2 159.3Q41 173.7 30.6 185.1ZM37.2 183.7Q46.3 193.7 55.9 202Q50.4 189.6 37.2 183.7ZM43.6 182.6Q50.6 168.7 58.5 157Q56.2 172 43.6 182.6ZM50.3 181.6Q60.1 192.4 70.3 200.9Q64.4 188 50.3 181.6ZM56.8 180.9Q65.7 167.8 75.3 157.3Q70.9 171.8 56.8 180.9ZM63.6 180.5Q73.6 191.5 84 199.9Q77.9 187 63.6 180.5ZM70.2 180.2Q80.5 168.5 91.1 160Q84.9 173.1 70.2 180.2ZM77 180.1Q86.8 191 96.9 198.8Q90.9 186.6 77 180.1ZM83.7 180.3Q94.6 170.8 105.3 164.5Q98.1 175.5 83.7 180.3ZM90.5 180.7Q99.6 190.8 109 197.9Q103.4 186.8 90.5 180.7ZM97.3 181.3Q107.8 174.3 117.8 170.3Q110.2 178.8 97.3 181.3ZM104.1 182.2Q112.1 191.1 120.2 197Q115.3 187.5 104.1 182.2ZM110.9 183.3Q119.9 178.8 128.1 176.9Q121.3 182.6 110.9 183.3ZM117.7 184.6Q124 191.7 130.5 196.3Q126.6 188.9 117.7 184.6ZM124.5 186.2Q130.8 184 136.4 183.6Q131.4 186.6 124.5 186.2ZM131.3 188Q135.5 192.8 139.8 195.6Q137.2 190.9 131.3 188ZM138 190Q140.1 189.6 141.8 189.7Q140.1 190.4 138 190ZM138 190Q139.3 191.4 140.7 192.3Q139.8 190.8 138 190ZM138 190Q144.6 194 152.3 194.5Q145.7 190.5 138 190Z'/%3E%3Cpath d='M-7.1 200.1L0.2 196.8L7.6 193.9L15.2 191.2L22.9 188.8L30.7 186.8L38.6 185.1L46.6 183.7L54.7 182.6L62.8 181.8L71 181.4L79.3 181.3L87.6 181.5L96 182.1L104.4 183L112.8 184.3L121.1 185.9L129.5 188L137.9 190.3L138.1 189.7L129.8 187.1L121.4 184.9L113 183L104.6 181.5L96.2 180.3L87.8 179.5L79.4 179.1L71 179L62.7 179.2L54.4 179.8L46.2 180.7L38 181.9L29.9 183.4L21.9 185.3L14 187.5L6.3 190L-1.4 192.8L-8.9 195.9Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ───────── Capa: cartaz. Folhagem nos dois cantos, texto à esquerda ───────── */
+.inv[data-template="tropical"] .inv-paper { overflow: hidden; text-align: left; padding: 30cqw var(--paper-pad) 33cqw; }
+.inv[data-template="tropical"] .inv-paper::before { display: none; }
+.inv[data-template="tropical"] .inv-art-top,
+.inv[data-template="tropical"] .inv-art-bottom { position: absolute; left: 0; right: 0; z-index: 0; margin: 0; display: block; animation-name: tropical-fade; }
+@keyframes tropical-fade { from { opacity: 0; } to { opacity: 1; } }
+.inv[data-template="tropical"] .inv-art-top { top: 0; }
+.inv[data-template="tropical"] .inv-art-bottom { bottom: 0; }
+.inv[data-template="tropical"] .tp-top, .inv[data-template="tropical"] .tp-bottom { width: 100%; height: auto; }
+
+.inv[data-template="tropical"] .inv-hello { font: 400 17px/1.4 var(--font-text); color: var(--soft); max-width: 60%; margin-bottom: 10px !important; }
+.inv[data-template="tropical"] .inv-hello strong { font-weight: 600; }
+/* chamada: rótulo em caixa alta, com uma barra curta do acento em cima. Fica ao lado do maço de folhas, por isso estreita. */
+.inv[data-template="tropical"] .inv-headline { --label-size: 15px; font-size: 15px; font-weight: 600; line-height: 1.5; letter-spacing: 0.12em; padding-left: 0; color: var(--ink); max-width: 66%; margin-bottom: var(--tp-step) !important; text-wrap: balance; }
+.inv[data-template="tropical"] .inv-headline::before, .inv[data-template="tropical"] .inv-hello::before { content: ""; display: block; width: 34px; height: 4px; border-radius: 2px; background: var(--accent); margin-bottom: 12px; }
+.inv[data-template="tropical"] .inv-hello + .inv-headline::before { display: none; }
+@container (max-width: 300px) { .inv[data-template="tropical"] .inv-headline { letter-spacing: 0.08em; max-width: 64%; } }
+/* sem chamada nem saudação, o título desce para livrar as folhas */
+.inv[data-template="tropical"] .inv-monogram + .inv-names { margin-top: 20cqw; }
+
+.inv[data-template="tropical"] .inv-names { padding: 0; text-align: left; text-wrap: wrap; color: var(--ink); }
+/* casal: "André" numa linha, "& Nathália" na outra. O "&" é o da própria fonte, na cor de destaque. */
+.inv[data-template="tropical"] .inv-names[data-count="2"] { display: block; --names-em: calc(0.55 * (var(--longest) + 1.9) / var(--longest)); }
+.inv[data-template="tropical"] .inv-names[data-count="2"] .inv-name:first-child::after { content: "\A"; white-space: pre; }
+.inv[data-template="tropical"] .inv-amp { font-family: var(--font-names); font-style: normal; font-weight: 400; line-height: inherit; letter-spacing: inherit; color: var(--tp-mark); font-size: clamp(13px, calc((100cqw - 2 * var(--paper-pad)) / (var(--longest, 8) * var(--names-em))), 1em); }
+.inv[data-template="tropical"] .inv-amp::after { content: "\00a0"; }
+.inv[data-template="tropical"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); }
+.inv[data-template="tropical"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.06); }
+.inv[data-template="tropical"] .inv-names[data-short="true"] { font-size: calc(var(--names-size) * 1.42); line-height: 0.98; }
+.inv[data-template="tropical"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.08; }
+.inv[data-template="tropical"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.66); line-height: 1.1; }
+/* título curto ("Helena faz 30") cabe inteiro numa linha: a medida passa a ser o título todo */
+.inv[data-template="tropical"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
+.inv[data-template="tropical"] .inv-num { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+
+.inv[data-template="tropical"] .inv-message { font: 400 18px/1.5 var(--font-text); font-style: normal; color: var(--soft); max-width: 30ch; margin: var(--tp-step) 0 0 !important; text-wrap: pretty; }
+/* título muito comprido em tela estreita encolhe até perto do recado: o recado cede um ponto para manter a hierarquia */
+@container (max-width: 300px) { .inv[data-template="tropical"] .inv-names[data-count="1"][data-long="true"] ~ .inv-message { font-size: 17px; } }
+.inv[data-template="tropical"] .inv-art-divider { justify-content: flex-start; margin: var(--tp-step-lg) 0 var(--tp-step); }
+.inv[data-template="tropical"] .inv-art-divider:not(:has(+ .inv-date)) { display: none; }
+
+/* Data: o numeral grande à esquerda, uma barra do acento e, empilhados à direita, dia da semana, mês e ano, hora. */
+.inv[data-template="tropical"] .inv-date { grid-template-columns: auto 4px minmax(0, 1fr); grid-template-areas: "day bar wk" "day bar month" "day bar time"; justify-items: start; align-items: center; align-content: center; gap: 3px clamp(11px, 4cqw, 15px); margin-top: var(--tp-step-lg); text-align: left; }
+.inv[data-template="tropical"] .inv-art-divider + .inv-date { margin-top: 0; }
+.inv[data-template="tropical"] .inv-date::before { content: ""; grid-area: bar; align-self: stretch; width: 4px; border-radius: 2px; background: var(--accent); }
+.inv[data-template="tropical"] .inv-date-day { grid-area: day; font: 400 clamp(64px, 22cqw, 82px)/0.82 var(--font-names); letter-spacing: -0.01em; color: var(--ink); padding-top: 0.06em; }
+.inv[data-template="tropical"] .inv-date-side { border: 0; padding: 0; text-wrap: nowrap; }
+.inv[data-template="tropical"] .inv-date-side:first-child { grid-area: wk; font: 600 15px/1.25 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--tp-b); }
+.inv[data-template="tropical"] .inv-date-month { grid-area: month; font: 500 clamp(19px, 6cqw, 22px)/1.2 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); padding: 0; }
+.inv[data-template="tropical"] .inv-date-month::first-letter { text-transform: uppercase; }
+.inv[data-template="tropical"] .inv-date-side:last-child { grid-area: time; font: 600 18px/1.25 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); }
+/* sem horário: o ano fica na linha do mês e a lateral do ano some (o numeral não é ladeado) */
+.inv[data-template="tropical"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="tropical"] .inv-date .inv-date-alt { display: none; }
+
+.inv[data-template="tropical"] .inv-place { font: 500 18px/1.4 var(--font-text); color: var(--ink); margin-top: var(--tp-step) !important; max-width: 30ch; text-wrap: pretty; }
+.inv[data-template="tropical"] .inv-countdown { margin-top: 12px !important; padding: 7px 12px; border-radius: 4px; background: var(--ink); color: var(--btn-ink); font: 600 14px/1 var(--font-label); letter-spacing: 0.1em; text-transform: uppercase; }
+.inv[data-template="tropical"] .inv-more { font: 600 14px/1 var(--font-label); letter-spacing: 0.16em; color: var(--ink); }
+
+/* fundo: sombras de folha, tom sobre tom */
+.inv[data-template="tropical"] .inv-art-backdrop { color: color-mix(in srgb, var(--liner) 16%, var(--bg)); }
+.inv[data-template="tropical"] .tp-bg { position: absolute; }
+.inv[data-template="tropical"] .tp-bg-a { top: -30px; left: -70px; width: min(86%, 420px); }
+.inv[data-template="tropical"] .tp-bg-b { top: 470px; right: -50px; width: min(92%, 460px); }
+
+/* ───────── Seções: mesma folha de papel, texto à esquerda, uma costela-de-adão no canto ───────── */
+.inv[data-template="tropical"] .inv-section { text-align: left; padding: 30px clamp(16px, 7cqw, 26px) 28px; overflow: hidden; box-shadow: 0 1px 2px color-mix(in srgb, var(--tp-ink) 12%, transparent), 0 8px 22px color-mix(in srgb, var(--tp-ink) 10%, transparent); }
+.inv[data-template="tropical"] .inv-section { background-color: var(--paper); background-image: linear-gradient(color-mix(in srgb, var(--paper) 50%, transparent) 0 0), var(--grain); background-blend-mode: normal, multiply; }
+/* As duas camadas de cada seção: ::before é a folha de trás (tom mais claro), ::after a da frente. O grão do papel, que a
+   base põe no ::after, passou para o fundo da seção (regra acima). Três arranjos que se alternam de verdade. */
+.inv[data-template="tropical"] .inv-section::before, .inv[data-template="tropical"] .inv-section::after { content: ""; position: absolute; inset: auto; border-radius: 0; opacity: 1; mix-blend-mode: normal; background-image: none; pointer-events: none; -webkit-mask: var(--tp-mk-monstera) center / contain no-repeat; mask: var(--tp-mk-monstera) center / contain no-repeat; }
+.inv[data-template="tropical"] .inv-section::before { background-color: var(--tp-s2); }
+.inv[data-template="tropical"] .inv-section::after { background-color: var(--tp-s1); }
+/* 1: costela-de-adão com a ponta e a nervura à mostra, palmeira atrás */
+.inv[data-template="tropical"] .inv-section::after { top: -40px; right: -54px; width: 206px; height: 144px; transform: rotate(160deg); }
+.inv[data-template="tropical"] .inv-section::before { top: -14px; right: -46px; width: 232px; height: 127px; transform: rotate(196deg) scaleY(-1); -webkit-mask-image: var(--tp-mk-palm); mask-image: var(--tp-mk-palm); }
+/* 2: palmeira em arco, bananeira atrás */
+.inv[data-template="tropical"] .inv-section:nth-of-type(3n + 2)::after { top: -24px; right: -74px; width: 238px; height: 130px; transform: rotate(168deg); -webkit-mask-image: var(--tp-mk-palm); mask-image: var(--tp-mk-palm); }
+.inv[data-template="tropical"] .inv-section:nth-of-type(3n + 2)::before { top: 6px; right: -78px; width: 250px; height: 90px; transform: rotate(142deg); -webkit-mask-image: var(--tp-mk-banana); mask-image: var(--tp-mk-banana); }
+/* 3: bananeira, com uma costela pequena atrás */
+.inv[data-template="tropical"] .inv-section:nth-of-type(3n)::after { top: -8px; right: -92px; width: 262px; height: 94px; transform: rotate(158deg); -webkit-mask-image: var(--tp-mk-banana); mask-image: var(--tp-mk-banana); }
+.inv[data-template="tropical"] .inv-section:nth-of-type(3n)::before { top: -44px; right: -30px; width: 170px; height: 119px; transform: rotate(118deg) scaleY(-1); -webkit-mask-image: var(--tp-mk-monstera); mask-image: var(--tp-mk-monstera); }
+.inv[data-template="tropical"] .inv-kicker { display: flex; align-items: center; gap: 10px; font: 600 14px/1.4 var(--font-label); letter-spacing: 0.16em; padding-left: 0; color: var(--tp-b); margin-bottom: 8px !important; }
+.inv[data-template="tropical"] .inv-kicker::before { content: ""; flex: none; width: 22px; height: 4px; border-radius: 2px; background: var(--accent); }
+.inv[data-template="tropical"] .inv-section-title { font: 400 clamp(32px, 10.4cqw, 38px)/1.08 var(--font-names); letter-spacing: -0.005em; margin-bottom: 8px !important; text-wrap: balance; }
+.inv[data-template="tropical"] .inv-big { font: 600 22px/1.3 var(--font-text); text-wrap: pretty; }
+.inv[data-template="tropical"] .inv-text { font: 400 18px/1.5 var(--font-text); }
+.inv[data-template="tropical"] .inv-hint { font: 400 16.5px/1.5 var(--font-text); }
+.inv[data-template="tropical"] .inv-rule { height: 2px; margin: 24px 0 20px; background: linear-gradient(to right, var(--line), var(--line)) 0 0 / 100% 2px no-repeat; border-radius: 1px; }
+.inv[data-template="tropical"] .inv-link { font: 500 17px/1.3 var(--font-text); }
+
+.inv[data-template="tropical"] .inv-btn { font: 600 17px/1.2 var(--font-label); letter-spacing: 0.01em; border-width: 2px; }
+.inv[data-template="tropical"] .inv-btn-main { box-shadow: var(--tp-off); margin-bottom: 4px; width: calc(100% - 4px); }
+.inv[data-template="tropical"] .inv-btn-main:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--accent); }
+.inv[data-template="tropical"] .inv-btn-quiet { border-width: 1.5px; border-color: color-mix(in srgb, var(--ink) 64%, var(--paper)); background: transparent; font-weight: 500; }
+.inv[data-template="tropical"] .inv-grid-2 .inv-btn { font-size: clamp(15px, 4.8cqw, 16.5px); }
+.inv[data-template="tropical"] .inv-sticky .inv-btn-main { width: 100%; max-width: 436px; }
+/* quantas pessoas: o número escolhido inverte (papel, borda grossa, anel do acento) e ganha um selo de "certo" no canto */
+.inv[data-template="tropical"] .inv-section .rsvp-count-grid .rsvp-n[aria-pressed="true"] { position: relative; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 0 0 0 3px var(--paper), 0 0 0 6px var(--tp-mark); }
+.inv[data-template="tropical"] .inv-section .rsvp-count-grid .rsvp-n[aria-pressed="true"]::before, .inv[data-template="tropical"] .inv-section .rsvp-count-grid .rsvp-n[aria-pressed="true"]::after { content: ""; position: absolute; top: -12px; right: -10px; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 2px var(--paper); }
+.inv[data-template="tropical"] .inv-section .rsvp-count-grid .rsvp-n[aria-pressed="true"]::after { border-radius: 0; box-shadow: none; background: var(--paper); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.6 12.6l3.5 3.5 7.3-7.9' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.6 12.6l3.5 3.5 7.3-7.9' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+/* Confirmação */
+.inv[data-template="tropical"] .rsvp-count legend { font: 400 18px/1.4 var(--font-text); }
+.inv[data-template="tropical"] .inv-section .rsvp-count-grid .rsvp-n { font: 400 30px/1 var(--font-names); border-width: 2px; }
+.inv[data-template="tropical"] .rsvp-count-grid { gap: 12px 10px; margin-bottom: 4px; }
+.inv[data-template="tropical"] .rsvp-radio span { border-radius: var(--btn-radius); border-width: 2px; border-color: var(--ink); background: transparent; font: 400 24px/1 var(--font-names); }
+.inv[data-template="tropical"] .rsvp-radio input:checked + span { background: var(--ink); color: var(--btn-ink); box-shadow: var(--tp-off); }
+.inv[data-template="tropical"] .rsvp-state { text-align: left; border-radius: 4px; padding: 20px 18px 20px 22px; background: color-mix(in srgb, var(--liner) 14%, var(--paper)); box-shadow: inset 5px 0 0 var(--tp-a); color: var(--ink); }
+.inv[data-template="tropical"] .rsvp-state[data-status="no"] { background: color-mix(in srgb, var(--ink) 7%, var(--paper)); box-shadow: inset 5px 0 0 color-mix(in srgb, var(--ink) 45%, var(--paper)); }
+.inv[data-template="tropical"] .rsvp-state-title { font: 400 28px/1.12 var(--font-names); }
+.inv[data-template="tropical"] .rsvp-current { text-align: left; border-radius: 4px; background: color-mix(in srgb, var(--liner) 14%, var(--paper)); box-shadow: inset 5px 0 0 var(--tp-a); padding-left: 18px; }
+.inv[data-template="tropical"] .rsvp-links, .inv[data-template="tropical"] .inv-saved, .inv[data-template="tropical"] .rsvp-closed { text-align: left; }
+.inv[data-template="tropical"] .rsvp > .inv-hint { text-align: left !important; }
+.inv[data-template="tropical"] .inv-field { font: 500 17px/1.4 var(--font-text); }
+.inv[data-template="tropical"] .inv-field input, .inv[data-template="tropical"] .inv-field select, .inv[data-template="tropical"] .inv-field textarea { border-radius: var(--btn-radius); border: 1.5px solid color-mix(in srgb, var(--ink) 66%, var(--paper)); background: color-mix(in srgb, var(--paper) 94%, var(--ink)); }
+.inv[data-template="tropical"] .inv-pix { justify-items: start; }
+.inv[data-template="tropical"] .inv-qr { border-radius: 6px; border: 2px solid var(--ink); }
+.inv[data-template="tropical"] .inv-sticky { border-top: 2px solid var(--ink); }
+
+/* Fecho: assinado à esquerda, com o raminho; o maço da capa volta, menor, no canto de baixo à direita (SVG do slot divider) */
+.inv[data-template="tropical"] .tp-sign { display: none; }
+.inv[data-template="tropical"] .inv-sign { padding-block: 32px clamp(84px, 27cqw, 108px); }
+.inv[data-template="tropical"] .inv-sign::before, .inv[data-template="tropical"] .inv-sign::after { display: none; }
+.inv[data-template="tropical"] .inv-sign-art { position: static; justify-content: flex-start; margin-bottom: 16px; }
+.inv[data-template="tropical"] .inv-sign .tp-sign { display: block; position: absolute; right: 0; bottom: 0; width: min(72%, 280px); max-width: none; height: auto; }
+.inv[data-template="tropical"] .inv-sign-names { font-size: clamp(24px, 8.6cqw, 34px); line-height: 1.12; text-wrap: wrap; overflow-wrap: break-word; }
+.inv[data-template="tropical"] .inv-sign-date { font: 500 18px/1.4 var(--font-text); color: var(--ink); margin-top: 8px !important; }
+.inv[data-template="tropical"] .inv-footer { font: 400 15px/1.4 var(--font-label); }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="tropical"] .env-body { filter: drop-shadow(0 16px 26px color-mix(in srgb, var(--tp-ink) 30%, transparent)); }
+.inv[data-template="tropical"] .env-back { background: color-mix(in srgb, var(--paper) 84%, var(--ink)); }
+/* folhagem impressa no canto de baixo do envelope fechado: palmeira e bananeira claras atrás, costela-de-adão inteira na
+   frente (duas camadas por máscara, acima da frente e abaixo da aba e do lacre) */
+.inv[data-template="tropical"] .env-body::before, .inv[data-template="tropical"] .env-body::after { content: ""; position: absolute; inset: 0; z-index: 4; border-radius: 4px; pointer-events: none; background: var(--tp-c); -webkit-mask: var(--tp-mk-env-b) center / 100% 100% no-repeat; mask: var(--tp-mk-env-b) center / 100% 100% no-repeat; }
+.inv[data-template="tropical"] .env-body::after { background: var(--tp-a); -webkit-mask-image: var(--tp-mk-env-a); mask-image: var(--tp-mk-env-a); }
+.inv[data-template="tropical"] .env-card { color: var(--accent); }
+.inv[data-template="tropical"] .env-card-line { width: 20%; height: 3px; border-radius: 2px; box-shadow: none; opacity: 1; justify-self: start; margin-left: 10%; }
+/* forro: a base mostra o desenho girado em 180° na aba aberta; aqui ele gira de volta, para a folhagem sair de pé */
+.inv[data-template="tropical"] .env-liner { background: var(--tp-a); }
+.inv[data-template="tropical"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="tropical"] .env-seal { --seal-font: var(--font-names); --seal-weight: 400; }
+.inv[data-template="tropical"] .env-seal .seal-initials { stroke-width: 0; }
+.inv[data-template="tropical"] .env-to { font: 500 17px/1.4 var(--font-text); letter-spacing: 0.01em; color: var(--soft); }
+.inv[data-template="tropical"] .env-to strong { font: 400 clamp(28px, 9cqw, 34px)/1.1 var(--font-names); color: var(--ink); margin-top: 4px; }
+.inv[data-template="tropical"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; border-radius: var(--btn-radius); box-shadow: var(--tp-off); }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   Valores medidos; ao mexer nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). */
+.inv[data-template="tropical"] { --thumb-h: 755px; }
+.inv[data-template="tropical"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 670px; }
+.inv[data-template="tropical"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 701px; }
+.inv[data-template="tropical"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 665px; }
+.inv[data-template="tropical"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 692px; }
+.inv[data-template="tropical"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 681px; }

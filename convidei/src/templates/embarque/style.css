@@ -1,0 +1,279 @@
+/* Modelo Embarque: cartão de embarque. Todas as regras ficam sob .inv[data-template="embarque"]. */
+.inv[data-template="embarque"] {
+  --font-names: var(--f-archivonarrow), "Archivo Narrow", "Arial Narrow", sans-serif;
+  --font-text: var(--f-archivonarrow), "Archivo Narrow", "Arial Narrow", sans-serif;
+  --font-label: var(--f-spacemono), "Space Mono", ui-monospace, "Courier New", monospace;
+  --names-size: clamp(44px, 17cqw, 74px);
+  --names-weight: 700;
+  --names-leading: 1.04;
+  --names-tracking: 0.005em;
+  --names-transform: uppercase;
+  --names-em: 0.61; /* caixa alta condensada em negrito, medida com as palavras mais largas (BARTOLOMEU 0.59, WASHINGTON 0.57, WELLINGTON, EMMANUELLE) */
+  --amp-scale: 0.44;
+  --label-tracking: 0.12em;
+  --radius: 16px;
+  --btn-radius: 6px;
+  --paper-pad: clamp(20px, 6.8cqw, 30px);
+  --frame-inset: 0px;
+  /* a sombra acompanha o recorte do bilhete (meias-luas), por isso é drop-shadow e não box-shadow */
+  --emb-shadow: drop-shadow(0 1px 1px rgba(16, 24, 40, 0.16)) drop-shadow(0 12px 20px rgba(16, 24, 40, 0.16));
+  --emb-perf: color-mix(in srgb, var(--ink) 38%, var(--paper)); /* picote */
+  --emb-hair: color-mix(in srgb, var(--ink) 16%, var(--paper)); /* fio entre campos */
+  --emb-second: var(--seal); /* segunda cor da tarja de correio aéreo */
+  --emb-notch: 12px;
+  --emb-body: color-mix(in srgb, var(--ink) 80%, var(--paper)); /* texto corrido da capa */
+}
+
+/* rótulo de campo: Space Mono em caixa alta */
+.inv[data-template="embarque"] :is(.inv-names, .inv-date-day, .inv-date-side, .inv-place)::before,
+.inv[data-template="embarque"] .emb-l {
+  display: block;
+  font: 700 14px/1.2 var(--font-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+/* ───────── Capa: o bilhete ───────── */
+.inv[data-template="embarque"] .inv-paper {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  padding: 0 var(--paper-pad);
+  background: none;
+  box-shadow: none;
+  filter: var(--emb-shadow);
+  overflow: hidden;
+  overflow: clip;
+}
+.inv[data-template="embarque"] .inv-paper::before, .inv[data-template="embarque"] .inv-paper::after { content: none; }
+
+/* Picote. O papel do bilhete é pintado por esta faixa: ela mesma (com as meias-luas transparentes) e duas caixas, uma para
+   cima e outra para baixo, cortadas pelo contorno arredondado do cartão. Assim o recorte é de verdade (vê-se o fundo). */
+.inv[data-template="embarque"] .inv-cover .inv-art-divider {
+  order: 4;
+  display: block;
+  position: relative;
+  z-index: 0;
+  height: calc(2 * var(--emb-notch) + 2px);
+  margin: 9px calc(-1 * var(--paper-pad)) 0;
+  animation: none !important;
+  background:
+    repeating-linear-gradient(90deg, var(--emb-perf) 0 5px, transparent 5px 10px) center / calc(100% - 4 * var(--emb-notch)) 2px no-repeat,
+    radial-gradient(circle at 0 50%, transparent calc(var(--emb-notch) - 0.5px), var(--paper) var(--emb-notch)) left / 50.5% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, transparent calc(var(--emb-notch) - 0.5px), var(--paper) var(--emb-notch)) right / 50.5% 100% no-repeat;
+}
+.inv[data-template="embarque"] .inv-cover .inv-art-divider::before, .inv[data-template="embarque"] .inv-cover .inv-art-divider::after { content: ""; position: absolute; inset-inline: 0; height: 4000px; background: var(--paper); }
+.inv[data-template="embarque"] .inv-cover .inv-art-divider::before { bottom: calc(100% - 1px); }
+.inv[data-template="embarque"] .inv-cover .inv-art-divider::after { top: calc(100% - 1px); }
+.inv[data-template="embarque"] .inv-cover .inv-art-divider > svg { display: none; }
+
+/* topo: faixa e rota */
+.inv[data-template="embarque"] .inv-art-top { display: block; margin: 0 calc(-1 * var(--paper-pad)); color: var(--ink); }
+.inv[data-template="embarque"] .emb-band { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px var(--paper-pad) 11px; background: var(--accent); color: var(--paper); }
+.inv[data-template="embarque"] .emb-band-title { font: 700 clamp(15px, 4.9cqw, 18px)/1.1 var(--font-names); letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap; }
+.inv[data-template="embarque"] .emb-band-plane { width: 26px; height: 26px; flex: none; }
+.inv[data-template="embarque"] .emb-route { display: flex; align-items: center; gap: clamp(8px, 3cqw, 14px); padding: 13px var(--paper-pad) 18px; }
+.inv[data-template="embarque"] .emb-code { font: 700 clamp(38px, 12.4cqw, 50px)/0.9 var(--font-names); letter-spacing: 0.01em; text-transform: uppercase; color: var(--ink); }
+.inv[data-template="embarque"] .emb-code[data-len="long"] { font-size: clamp(30px, 9.6cqw, 40px); }
+/* trajeto pontilhado, com o avião no meio sobre um respiro da cor do papel */
+.inv[data-template="embarque"] .emb-path {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle, var(--emb-perf) 1.4px, transparent 1.8px) left center / 8px 8px repeat-x;
+}
+.inv[data-template="embarque"] .emb-path::before, .inv[data-template="embarque"] .emb-path::after { content: ""; position: absolute; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%; background: var(--paper); border: 2px solid var(--accent); }
+.inv[data-template="embarque"] .emb-path::before { left: 0; }
+.inv[data-template="embarque"] .emb-path::after { right: 0; background: var(--accent); }
+.inv[data-template="embarque"] .emb-plane { width: 38px; height: 38px; padding: 0 6px; box-sizing: content-box; background: var(--paper); color: var(--accent); }
+.inv[data-template="embarque"] .emb-tag { position: absolute; top: 100%; left: 0; right: 0; margin-top: -3px; text-align: center; font: 700 12px/1.2 var(--font-label); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--soft); }
+
+/* saudação e frase de abertura: texto corrido na Archivo Narrow (a Space Mono fica só para rótulos e dados) */
+.inv[data-template="embarque"] .inv-hello { order: 0; font: 500 17.5px/1.3 var(--font-text); letter-spacing: 0.005em; color: var(--emb-body); margin: 0 0 5px !important; }
+.inv[data-template="embarque"] .inv-hello strong { font-weight: 700; color: var(--ink); }
+.inv[data-template="embarque"] .inv-headline { --label-size: 17.5px; /* a base fixa o corpo da frase por esta variável */ font: 500 17.5px/1.32 var(--font-text); letter-spacing: 0.005em; text-transform: none; padding-left: 0; color: var(--emb-body); margin: 0 !important; padding-top: 12px; border-top: 1px solid var(--emb-hair); text-wrap: pretty; }
+.inv[data-template="embarque"] .inv-hello + .inv-headline { padding-top: 0; border-top: 0; }
+.inv[data-template="embarque"] .inv-hello { padding-top: 12px; border-top: 1px solid var(--emb-hair); }
+
+/* nomes: campo "passageiros" */
+.inv[data-template="embarque"] .inv-names { padding: 0; margin-top: 10px; text-wrap: wrap; }
+.inv[data-template="embarque"] .inv-names[data-count="2"] { align-items: flex-start; }
+.inv[data-template="embarque"] .inv-names::before { content: "Em nome de"; margin-bottom: 7px; }
+.inv[data-template="embarque"] .inv-names[data-count="2"]::before { content: "Passageiros"; }
+.inv[data-template="embarque"] .inv-names[data-count="1"]:not([data-words="1"], [data-words="2"])::before { content: "Ocasião"; }
+/* o conector: pequeno, na Space Mono, com um fio que corre até a margem */
+.inv[data-template="embarque"] .inv-amp { align-self: stretch; display: flex; align-items: center; gap: 0.5em; font: 700 calc(1em * var(--amp-scale))/1 var(--font-names); font-style: normal; color: var(--accent); margin: 0.1em 0 0.16em; }
+.inv[data-template="embarque"] .inv-amp::after { content: ""; flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--emb-perf) 0 2px, transparent 2px 6px); }
+.inv[data-template="embarque"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.06); }
+.inv[data-template="embarque"] .inv-names[data-count="1"][data-short="true"] { font-size: calc(var(--names-size) * 1.5); line-height: 0.96; }
+.inv[data-template="embarque"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); }
+.inv[data-template="embarque"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.72); }
+.inv[data-template="embarque"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.84); }
+/* Trecho inseparável de 15 letras ou mais: sem espaçamento, e a largura média por letra cai (numa palavra comprida as letras
+   largas e estreitas se compensam: OTORRINOLARINGOLOGIA 0.545, DE CONFRATERNIZAÇÃO 0.545). */
+.inv[data-template="embarque"] .inv-names:is([data-longest="15"], [data-longest="16"], [data-longest="17"], [data-longest="18"], [data-longest="19"], [data-longest="20"]) { --names-em: 0.575; --names-tracking: 0; }
+
+.inv[data-template="embarque"] .inv-message { font: 400 17.5px/1.4 var(--font-text); font-style: normal; color: color-mix(in srgb, var(--ink) 86%, var(--paper)); margin: 8px 0 0 !important; max-width: none; text-wrap: pretty; }
+
+/* data: campo DATA (numeral + mês) e, embaixo, DIA | EMBARQUE */
+.inv[data-template="embarque"] .inv-date { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 0; align-items: end; order: 2; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--emb-hair); text-align: left; }
+.inv[data-template="embarque"] .inv-date-day { grid-column: 1 / -1; grid-row: 1; font: 700 44px/1 var(--font-names); letter-spacing: 0; color: var(--ink); }
+.inv[data-template="embarque"] .inv-date-day::before { content: "Data"; margin-bottom: 5px; }
+.inv[data-template="embarque"] .inv-date-month { grid-column: 1 / -1; grid-row: 1; align-self: end; padding: 0 0 6px 54px; font: 700 clamp(15.5px, 5cqw, 17px)/1.1 var(--font-label); letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink); }
+.inv[data-template="embarque"] .inv-date-side { grid-row: 2; grid-column: 1; align-self: stretch; margin-top: 8px; padding: 10px 0 0; border: 0; border-top: 1px solid var(--emb-hair); font: 700 clamp(16px, 5.2cqw, 17.5px)/1.2 var(--font-label); letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
+.inv[data-template="embarque"] .inv-date-side::before { content: "Dia"; margin-bottom: 6px; }
+.inv[data-template="embarque"] .inv-date-side:last-child { grid-column: 2; padding-left: 14px; background: linear-gradient(var(--emb-hair), var(--emb-hair)) left 10px / 1px calc(100% - 10px) no-repeat; }
+.inv[data-template="embarque"] .inv-date-side:last-child::before { content: "Embarque"; }
+.inv[data-template="embarque"] .inv-date-side.inv-date-alt::before { content: "Ano"; }
+
+.inv[data-template="embarque"] .inv-place { font: 600 21px/1.22 var(--font-text); color: var(--ink); order: 3; margin: 8px 0 0 !important; padding-top: 10px; border-top: 1px solid var(--emb-hair); text-wrap: pretty; }
+.inv[data-template="embarque"] .inv-place::before { content: "Destino"; margin-bottom: 6px; }
+/* contagem: carimbo de borracha */
+/* A contagem é um carimbo de borracha batido no canto do campo DATA. Na ordem visual ela vem antes da data e a margem de
+   baixo negativa (a própria altura, 31px, mais os respiros) faz o campo começar por baixo dela. */
+.inv[data-template="embarque"] .inv-countdown { order: 1; align-self: flex-end; height: 31px; margin: 22px 0 -53px !important; padding: 7px 10px 6px; border: 2px solid currentColor; border-radius: 5px; background: none; box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px currentColor; font: 700 14px/1 var(--font-label); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--accent); rotate: -3deg; }
+
+/* canhoto */
+.inv[data-template="embarque"] .inv-art-bottom { order: 5; display: block; margin-top: 0; color: var(--ink); }
+.inv[data-template="embarque"] .emb-stub { position: relative; padding: 7px 0 15px; }
+.inv[data-template="embarque"] .emb-fields { display: flex; gap: clamp(14px, 6cqw, 28px); }
+.inv[data-template="embarque"] .emb-field { display: block; }
+.inv[data-template="embarque"] .emb-v { display: block; margin-top: 5px; font: 700 16px/1.2 var(--font-label); letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink); }
+.inv[data-template="embarque"] .emb-barcode { width: calc(100% - 116px); height: 38px; margin-top: 12px; color: var(--ink); }
+.inv[data-template="embarque"] .emb-serial { display: block; margin-top: 6px; font: 400 12px/1.2 var(--font-label); letter-spacing: 0.24em; color: var(--soft); white-space: nowrap; }
+.inv[data-template="embarque"] .emb-postmark { position: absolute; right: -10px; bottom: 6px; width: 150px; height: auto; color: var(--accent); rotate: -9deg; }
+.inv[data-template="embarque"] .emb-postmark-text { font: 700 8.6px/1 var(--font-label); letter-spacing: 0; }
+
+.inv[data-template="embarque"] .inv-more { font: 700 14px/1 var(--font-label); letter-spacing: 0.16em; color: color-mix(in srgb, var(--ink) 78%, var(--bg)); }
+
+/* fundo: carta de rotas, bem discreta */
+.inv[data-template="embarque"] .inv-art-backdrop { color: color-mix(in srgb, var(--accent) 13%, var(--bg)); }
+
+/* ───────── Seções: cupons do mesmo bilhete ───────── */
+.inv[data-template="embarque"] .inv-sheet { counter-reset: emb-cupom; }
+.inv[data-template="embarque"] .inv-section {
+  --emb-y: 55px; /* altura do picote do cabeçalho */
+  counter-increment: emb-cupom;
+  text-align: left;
+  padding: 19px clamp(14px, 6.4cqw, 24px) 26px;
+  box-shadow: none;
+  filter: drop-shadow(0 1px 1px rgba(16, 24, 40, 0.14)) drop-shadow(0 6px 12px rgba(16, 24, 40, 0.1));
+  background:
+    radial-gradient(circle at 0 var(--emb-y), transparent 9.5px, var(--paper) 10px) left / 50.5% 100% no-repeat,
+    radial-gradient(circle at 100% var(--emb-y), transparent 9.5px, var(--paper) 10px) right / 50.5% 100% no-repeat;
+}
+.inv[data-template="embarque"] .inv-section::after { content: none; }
+.inv[data-template="embarque"] .inv-section::before { content: ""; position: absolute; left: 20px; right: 20px; top: calc(var(--emb-y) - 1px); height: 2px; background: repeating-linear-gradient(90deg, var(--emb-perf) 0 5px, transparent 5px 10px); }
+/* cabeçalho do cupom: rótulo à esquerda, número à direita */
+.inv[data-template="embarque"] .inv-kicker { font: 700 14px/1.5 var(--font-label); letter-spacing: 0.12em; padding-left: 0; color: var(--soft); margin-bottom: 6px !important; }
+.inv[data-template="embarque"] .inv-section > .inv-kicker:first-child { display: flex; justify-content: space-between; gap: 10px; color: var(--accent); margin-bottom: 36px !important; white-space: nowrap; }
+.inv[data-template="embarque"] .inv-section > .inv-kicker:first-child::after { content: "Nº " counter(emb-cupom, decimal-leading-zero); color: var(--soft); letter-spacing: 0.08em; }
+.inv[data-template="embarque"] .inv-section-title { font: 700 clamp(31px, 10.4cqw, 38px)/1.02 var(--font-names); letter-spacing: 0.01em; text-transform: uppercase; margin-bottom: 8px !important; }
+.inv[data-template="embarque"] .inv-big { font: 700 25px/1.18 var(--font-text); letter-spacing: 0.005em; }
+.inv[data-template="embarque"] .inv-text { font: 400 18.5px/1.45 var(--font-text); }
+.inv[data-template="embarque"] .inv-big + .inv-text { margin-top: 2px; }
+.inv[data-template="embarque"] .inv-hint { font: 400 17px/1.45 var(--font-text); }
+.inv[data-template="embarque"] .inv-rule { height: 2px; margin: 22px 0 18px; background: repeating-linear-gradient(90deg, var(--emb-hair) 0 5px, transparent 5px 10px); }
+
+.inv[data-template="embarque"] .inv-btn { font: 700 17px/1.2 var(--font-names); letter-spacing: 0.09em; text-transform: uppercase; border-width: 1.5px; border-color: color-mix(in srgb, var(--ink) 70%, var(--paper)); }
+.inv[data-template="embarque"] .inv-btn-main { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.inv[data-template="embarque"] .inv-btn-main:hover { background: color-mix(in srgb, var(--accent) 88%, var(--ink)); }
+.inv[data-template="embarque"] .inv-btn-quiet { font-size: 16px; font-weight: 600; letter-spacing: 0.07em; border-style: dashed; border-color: color-mix(in srgb, var(--ink) 55%, var(--paper)); background: none; }
+.inv[data-template="embarque"] .inv-grid-2 .inv-btn { letter-spacing: 0.05em; padding-inline: 6px; }
+.inv[data-template="embarque"] .inv-section .rsvp-yes, .inv[data-template="embarque"] .inv-section .rsvp-no { font-size: 19px; }
+.inv[data-template="embarque"] .inv-section .rsvp-count-grid .rsvp-n { font-family: var(--font-label); font-weight: 700; font-size: 26px; }
+.inv[data-template="embarque"] .rsvp-radio span { border-radius: 6px; font-family: var(--font-label); font-weight: 700; }
+.inv[data-template="embarque"] .rsvp-radio input:not(:checked) + span { background: none; }
+.inv[data-template="embarque"] .rsvp-radio input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.inv[data-template="embarque"] .rsvp-count legend, .inv[data-template="embarque"] .inv-field { font-size: 18px; }
+/* resposta registrada: carimbo */
+.inv[data-template="embarque"] .rsvp-state { text-align: left; border-radius: 6px; padding: 18px 16px 16px; background: color-mix(in srgb, var(--accent) 9%, var(--paper)); border: 2px solid var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--accent); }
+.inv[data-template="embarque"] .rsvp-state[data-status="no"] { border-color: var(--emb-perf); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--emb-perf); background: color-mix(in srgb, var(--ink) 5%, var(--paper)); }
+.inv[data-template="embarque"] .rsvp-state-title { font: 700 28px/1.08 var(--font-names); letter-spacing: 0.02em; text-transform: uppercase; }
+.inv[data-template="embarque"] .rsvp-current { border-radius: 6px; text-align: left; }
+.inv[data-template="embarque"] .inv-field input, .inv[data-template="embarque"] .inv-field select, .inv[data-template="embarque"] .inv-field textarea { border-radius: 6px; background: color-mix(in srgb, var(--paper) 94%, var(--ink)); border-color: color-mix(in srgb, var(--ink) 45%, var(--paper)); }
+.inv[data-template="embarque"] .inv-link { font-family: var(--font-text); }
+.inv[data-template="embarque"] .inv-pix { justify-items: start; }
+.inv[data-template="embarque"] .inv-qr { border-radius: 6px; border: 1.5px dashed var(--emb-perf); }
+.inv[data-template="embarque"] .inv-sticky { border-top: 2px dashed var(--emb-perf); }
+
+/* fecho assinado: sem picote, centrado, com a rota em arco */
+.inv[data-template="embarque"] .inv-sign { text-align: center; background: var(--paper); padding-block: 30px 32px; }
+.inv[data-template="embarque"] .inv-sign::before { content: none; }
+.inv[data-template="embarque"] .inv-sign-art { color: var(--accent); margin-bottom: 14px; }
+.inv[data-template="embarque"] .inv-sign > .inv-kicker { display: block; color: var(--soft); margin-bottom: 8px !important; }
+.inv[data-template="embarque"] .inv-sign > .inv-kicker::after { content: none; }
+.inv[data-template="embarque"] .inv-sign-names { line-height: 1.06; }
+.inv[data-template="embarque"] .inv-sign-date { font: 700 15.5px/1.4 var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 10px !important; }
+.inv[data-template="embarque"] .inv-footer { font-size: 14px; }
+
+/* ───────── Envelope de correio aéreo ───────── */
+.inv[data-template="embarque"] .env-body { filter: drop-shadow(0 16px 24px rgba(16, 24, 40, 0.26)); }
+.inv[data-template="embarque"] .env-back { background: color-mix(in srgb, var(--paper) 86%, var(--ink)); }
+.inv[data-template="embarque"] .env-front { background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 95%, var(--ink)), var(--paper) 65%); }
+.inv[data-template="embarque"] .env-front::after { content: none; }
+/* tarja listrada nas bordas da frente */
+.inv[data-template="embarque"] .env-front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: clamp(7px, 2.6%, 11px);
+  background: repeating-linear-gradient(-45deg, var(--accent) 0 9px, transparent 9px 18px, var(--emb-second) 18px 27px, transparent 27px 36px);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+/* aba: a mesma tarja acompanha as duas diagonais (triângulo listrado por baixo, face recuada) */
+.inv[data-template="embarque"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 58%); background: repeating-linear-gradient(90deg, var(--accent) 0 10px, var(--paper) 10px 20px, var(--emb-second) 20px 30px, var(--paper) 30px 40px) center / 100% 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.inv[data-template="embarque"] .env-flap-face { clip-path: polygon(15px 0, calc(100% - 15px) 0, 50% calc(58% - 9px)); background-image: linear-gradient(to bottom, var(--paper), color-mix(in srgb, var(--paper) 93%, var(--ink))); }
+.inv[data-template="embarque"] .env-liner { color: color-mix(in srgb, var(--liner) 72%, var(--paper)); }
+.inv[data-template="embarque"] .env-liner > svg { transform: rotate(180deg); }
+/* o cartão dentro do envelope já mostra a faixa do bilhete */
+.inv[data-template="embarque"] .env-card { border-radius: 6px; background: linear-gradient(var(--accent) 0 17%, var(--paper) 17%); padding-top: 22%; color: var(--emb-perf); }
+.inv[data-template="embarque"] .env-to { font: 700 14px/1.4 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); }
+.inv[data-template="embarque"] .env-to strong { font: 700 clamp(28px, 9cqw, 34px)/1.05 var(--font-names); letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink); margin-top: 6px; }
+.inv[data-template="embarque"] .env-cta { font: 700 17px/1.1 var(--font-names); letter-spacing: 0.16em; color: var(--paper); background: var(--accent); border-color: var(--accent); box-shadow: 0 6px 16px rgba(16, 24, 40, 0.22); }
+.inv[data-template="embarque"] .env-seal { --seal-weight: 700; --seal-size: 40px; }
+
+/* ───────── Fecho da página: o avião segue viagem ───────── */
+.inv[data-template="embarque"] .inv-sheet::after {
+  content: "";
+  display: block;
+  width: 168px;
+  height: 22px;
+  margin: 26px auto 0;
+  background: color-mix(in srgb, var(--accent) 70%, var(--bg));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 168 22'%3E%3Cpath d='M4 11h58M106 11h58' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='.1 7'/%3E%3Cg transform='translate(72.5 -.5) scale(.36)'%3E%3Cpath d='M41.5 28.4L28.6 4.6c-.5-.9-1.4-1.4-2.4-1.4h-3.4c-.9 0-1.5.9-1.2 1.7l8 23.5zM41.5 35.6L28.6 59.4c-.5.9-1.4 1.4-2.4 1.4h-3.4c-.9 0-1.5-.9-1.2-1.7l8-23.5zM14.6 29.4L8.9 19.3c-.4-.7-1.1-1.1-1.9-1.1H5.3c-.7 0-1.2.7-1 1.4l3 9.8zM14.6 34.6L8.9 44.7c-.4.7-1.1 1.1-1.9 1.1H5.3c-.7 0-1.2-.7-1-1.4l3-9.8zM3.2 32c0-1.5 1.6-2.6 4.6-2.9l37.4-1.9c8.4 0 15.6 2 15.6 4.8s-7.2 4.8-15.6 4.8L7.8 34.9c-3-.3-4.6-1.4-4.6-2.9z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 168 22'%3E%3Cpath d='M4 11h58M106 11h58' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='.1 7'/%3E%3Cg transform='translate(72.5 -.5) scale(.36)'%3E%3Cpath d='M41.5 28.4L28.6 4.6c-.5-.9-1.4-1.4-2.4-1.4h-3.4c-.9 0-1.5.9-1.2 1.7l8 23.5zM41.5 35.6L28.6 59.4c-.5.9-1.4 1.4-2.4 1.4h-3.4c-.9 0-1.5-.9-1.2-1.7l8-23.5zM14.6 29.4L8.9 19.3c-.4-.7-1.1-1.1-1.9-1.1H5.3c-.7 0-1.2.7-1 1.4l3 9.8zM14.6 34.6L8.9 44.7c-.4.7-1.1 1.1-1.9 1.1H5.3c-.7 0-1.2-.7-1-1.4l3-9.8zM3.2 32c0-1.5 1.6-2.6 4.6-2.9l37.4-1.9c8.4 0 15.6 2 15.6 4.8s-7.2 4.8-15.6 4.8L7.8 34.9c-3-.3-4.6-1.4-4.6-2.9z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+.thumb > .inv[data-template="embarque"] .inv-sheet::after { display: none; }
+
+/* Coluna muito estreita (zoom de 200%): o cabeçalho do cupom perde o número e o picote sobe junto com o rótulo. */
+/* Celular de 320px: o carimbo encolhe e o código de barras recua, para o número de série ficar inteiro e livre. */
+@container (max-width: 300px) {
+  .inv[data-template="embarque"] .emb-postmark { width: 126px; right: -8px; bottom: 10px; }
+  .inv[data-template="embarque"] .emb-barcode { width: calc(100% - 130px); }
+  .inv[data-template="embarque"] .emb-serial { letter-spacing: 0.18em; }
+  /* nome de 17 letras ou mais sai perto de 22px: o destino desce um ponto para o nome continuar sendo o maior texto */
+  .inv[data-template="embarque"] .inv-paper:has(.inv-names:is([data-longest="17"], [data-longest="18"], [data-longest="19"], [data-longest="20"])) .inv-place { font-size: 19px; }
+}
+
+@container (max-width: 270px) {
+  .inv[data-template="embarque"] .inv-section > .inv-kicker:first-child::after { content: none; }
+  .inv[data-template="embarque"] .inv-section .inv-section-title { font-size: clamp(20px, 13cqw, 30px); }
+  .inv[data-template="embarque"] .inv-btn { letter-spacing: 0.02em; }
+  .inv[data-template="embarque"] .emb-band-title { letter-spacing: 0.08em; }
+}
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + 28px de respiro), por tipo de evento. Medir de novo ao mexer. */
+.inv[data-template="embarque"] { --thumb-h: 823px; }
+.inv[data-template="embarque"]:has(.inv-cover[data-type="casamento"]) { --thumb-h: 800px; }
+.inv[data-template="embarque"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 752px; }
+.inv[data-template="embarque"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 781px; }
+.inv[data-template="embarque"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 798px; }
+.inv[data-template="embarque"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 741px; }

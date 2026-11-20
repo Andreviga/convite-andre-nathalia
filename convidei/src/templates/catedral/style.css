@@ -1,0 +1,203 @@
+/* Modelo Catedral. Todas as regras ficam sob .inv[data-template="catedral"]. */
+.inv[data-template="catedral"] {
+  --font-names: var(--f-italiana), "Italiana", Georgia, "Times New Roman", serif;
+  --font-text: var(--f-spectral), "Spectral", Georgia, "Times New Roman", serif;
+  --font-label: var(--f-spectral), "Spectral", Georgia, "Times New Roman", serif;
+  --names-size: clamp(38px, 13cqw, 58px);
+  --names-weight: 400; /* a Italiana só tem um peso */
+  --names-leading: 1.1;
+  --names-em: 0.49; /* medido com "Maximiliano", "Wilhelmina" e "Confraternização" */
+  --names-tracking: 0.01em;
+  --amp-scale: 0.44;
+  --label-tracking: 0.2em;
+  --radius: 2px;
+  --btn-radius: 2px;
+  --paper-pad: clamp(34px, 11.6cqw, 50px);
+  --frame-inset: 10px;
+  --paper-shadow: 0 1px 2px color-mix(in srgb, #1a140c 20%, transparent), 0 18px 40px color-mix(in srgb, #1a140c 16%, transparent);
+  /* unidade do desenho: a moldura tem 340 unidades de largura (a mesma viewBox dos SVG do topo e da base) */
+  --cat-u: calc((100cqw - 2 * var(--frame-inset)) / 340);
+  /* fios: o grosso na cor do ornamento, o fino um pouco apagado para o papel */
+  --cat-line: color-mix(in srgb, var(--accent) 86%, var(--paper));
+  --cat-fine: color-mix(in srgb, var(--accent) 62%, var(--paper));
+  /* tímpanos (pedra em meio-tom) e vidro da rosácea */
+  --cat-tint: color-mix(in srgb, var(--accent) 11%, var(--paper));
+  --cat-glass: color-mix(in srgb, var(--accent) 20%, var(--paper));
+  /* dois passos de ritmo vertical */
+  --s1: clamp(12px, 3.8cqw, 16px);
+  --s2: clamp(18px, 5.6cqw, 26px);
+  /* máscaras estáticas (a cor vem da paleta): o arquinho com trifólio dos rótulos, o quadrifólio dos fios e o arco do cartão do envelope */
+  --cat-crest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 34' fill='none' stroke='%23000'%3E%3Cpath d='M4.5 34V20.5C4.5 11.6 10.6 5.2 22 1.6C33.4 5.2 39.5 11.6 39.5 20.5V34' stroke-width='1.5'/%3E%3Cpath d='M8.6 34V20.9C8.6 14 13.2 9.1 22 6C30.8 9.1 35.400 14 35.4 20.9V34' stroke-width='.7'/%3E%3Cpath d='M17.84 18.6A4.8 4.8 0 1 1 26.16 18.6A4.8 4.8 0 1 1 22 25.800A4.8 4.8 0 1 1 17.84 18.6Z' fill='%23000' fill-opacity='.22' stroke-width='.9'/%3E%3Ccircle cx='22' cy='21' r='1.5' fill='%23000' stroke='none'/%3E%3C/svg%3E");
+  --cat-quatre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 16'%3E%3Cpath d='M0 8L52 7.4V8.600ZM140 8L88 7.4V8.600Z'/%3E%3Cpath d='M60 8l-3-2.400-3 2.400 3 2.400zM86 8l-3-2.400-3 2.400 3 2.400z'/%3E%3Cpath fill-rule='evenodd' d='M66.9 4.9A3.1 3.1 0 1 1 73.1 4.9A3.1 3.1 0 1 1 73.1 11.1A3.1 3.1 0 1 1 66.9 11.1A3.1 3.1 0 1 1 66.9 4.9ZM70 6.700A1.300 1.300 0 1 0 70 9.300A1.300 1.300 0 1 0 70 6.700Z'/%3E%3C/svg%3E");
+  /* a rosácea do cartão do envelope é a mesma da capa e do forro (pétalas em gota, botões e gotas junto ao anel), a 65% */
+  --cat-niche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' fill='none' stroke='%23000'%3E%3Cpath d='M4 150V118A154 154 0 0 1 100 4A154 154 0 0 1 196 118V150' stroke-width='2.4'/%3E%3Cpath d='M11 150V119A147 147 0 0 1 100 13.5A147 147 0 0 1 189 119V150' stroke-width='1'/%3E%3Cg transform='translate(100 66) scale(.65)'%3E%3Ccircle r='40' stroke-width='3'/%3E%3Ccircle r='36.6' stroke-width='1.1'/%3E%3Cg transform='rotate(0)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Cg transform='rotate(45)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Cg transform='rotate(90)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Cg transform='rotate(135)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Cg transform='rotate(180)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Cg transform='rotate(225)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Cg transform='rotate(270)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Cg transform='rotate(315)'%3E%3Cpath d='M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z' fill='%23000' fill-opacity='.25' stroke-width='1.5'/%3E%3Ccircle cy='-27.4' r='2.6' fill='%23000' stroke='none'/%3E%3Cpath d='M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z' transform='rotate(22.5)' fill='%23000' stroke='none'/%3E%3C/g%3E%3Ccircle r='10.4' stroke-width='1.8'/%3E%3Cpath d='M3.1-3.1A3.1 3.1 0 1 1 3.1 3.1A3.1 3.1 0 1 1-3.1 3.1A3.1 3.1 0 1 1-3.1-3.1A3.1 3.1 0 1 1 3.1-3.1Z' fill='%23000' stroke='none'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ───────── Capa: o texto dentro do arco ───────── */
+.inv[data-template="catedral"] .inv-paper {
+  padding-top: calc(var(--frame-inset) + 98 * var(--cat-u) + var(--s1) + 6px); /* a rosácea termina em 96,9 u */
+  padding-bottom: calc(var(--frame-inset) + 34 * var(--cat-u) + var(--s2));
+}
+/* moldura reta de fio fino e, por dentro, as duas colunas de fio duplo, do capitel até a base (o arco e a base são SVG) */
+.inv[data-template="catedral"] .inv-paper::before {
+  border-color: color-mix(in srgb, var(--accent) 46%, var(--paper));
+  border-radius: 0;
+  --top: calc(256 * var(--cat-u));
+  --len: calc(100% - 282 * var(--cat-u));
+  background:
+    linear-gradient(var(--cat-line), var(--cat-line)) calc(7 * var(--cat-u) - 0.75px) var(--top) / 1.5px var(--len),
+    linear-gradient(var(--cat-fine), var(--cat-fine)) calc(13 * var(--cat-u) - 0.35px) var(--top) / 0.7px var(--len),
+    linear-gradient(var(--cat-line), var(--cat-line)) calc(100% - 7 * var(--cat-u) + 0.75px) var(--top) / 1.5px var(--len),
+    linear-gradient(var(--cat-fine), var(--cat-fine)) calc(100% - 13 * var(--cat-u) + 0.35px) var(--top) / 0.7px var(--len);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+}
+/* topo e base ficam presos à moldura, fora do fluxo; só aparecem (sem subir), para não se soltarem dos fios das colunas */
+.inv[data-template="catedral"] .inv-art-top,
+.inv[data-template="catedral"] .inv-art-bottom { position: absolute; left: var(--frame-inset); right: var(--frame-inset); margin: 0; display: block; z-index: 0; color: var(--cat-line); animation-name: catedral-fade; }
+.inv[data-template="catedral"]:has(> .env[data-opened="true"]) :is(.inv-art-top, .inv-art-bottom) { animation-name: catedral-fade; }
+@keyframes catedral-fade { from { opacity: 0; } to { opacity: 1; } }
+.inv[data-template="catedral"] .inv-art-top { top: var(--frame-inset); }
+.inv[data-template="catedral"] .inv-art-bottom { bottom: var(--frame-inset); }
+.inv[data-template="catedral"] .inv-art-top svg, .inv[data-template="catedral"] .inv-art-bottom svg { width: 100%; height: auto; overflow: visible; }
+
+/* saudação e chamada ficam na parte estreita do arco: coluna mais curta */
+.inv[data-template="catedral"] .inv-hello { font: italic 400 17px/1.4 var(--font-text); color: var(--soft); max-width: 64cqw; margin: 0 auto var(--s1) !important; }
+.inv[data-template="catedral"] .inv-hello strong { font-weight: 500; font-style: italic; }
+.inv[data-template="catedral"] .inv-headline { font: 500 14px/1.7 var(--font-label); letter-spacing: 0.16em; padding-left: 0.16em; color: var(--soft); max-width: 66cqw; margin: 0 auto var(--s1) !important; text-wrap: balance; }
+/* Celular estreito: a primeira linha da chamada cai onde o arco ainda fecha. Letras menos espaçadas, para
+   a chamada sair em duas linhas parelhas ("COM A BÊNÇÃO DE DEUS / E DE NOSSAS FAMÍLIAS"); e, sem a saudação antes dela, a
+   chamada desce um pouco, até onde o arco já tem a largura da linha (a folga até o fio de dentro fica em 10px ou mais). */
+@container (max-width: 340px) {
+  .inv[data-template="catedral"] .inv-headline { letter-spacing: 0.1em; padding-left: 0.1em; }
+  .inv[data-template="catedral"] .inv-monogram + .inv-headline { margin-top: 6px !important; }
+}
+@container (max-width: 300px) {
+  .inv[data-template="catedral"] .inv-headline { letter-spacing: 0.06em; padding-left: 0.06em; max-width: 70cqw; }
+  .inv[data-template="catedral"] .inv-monogram + .inv-headline { margin-top: 18px !important; }
+  /* a base do nome encolhe um pouco mais, para ele não encostar no fio de dentro na altura dos capitéis */
+  .inv[data-template="catedral"] .inv-names { --names-em: 0.52; }
+}
+
+.inv[data-template="catedral"] .inv-names { padding: 0.06em 0; }
+/* conector: o "&" em itálico da Spectral entre dois losangos; folga para descendentes (g, ç) e acentos de maiúscula (Â, É) */
+.inv[data-template="catedral"] .inv-amp { font-family: var(--font-text); font-style: italic; font-weight: 400; font-size: max(17px, calc(1em * var(--amp-scale))); line-height: 1; margin: 6px 0 5px; display: flex; align-items: center; gap: 0.62em; color: var(--accent); }
+.inv[data-template="catedral"] .inv-amp::before, .inv[data-template="catedral"] .inv-amp::after { content: ""; width: 0.3em; height: 0.3em; background: var(--cat-line); transform: rotate(45deg) scale(0.8); }
+.inv[data-template="catedral"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.84); }
+.inv[data-template="catedral"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.12); }
+.inv[data-template="catedral"] .inv-names[data-count="1"][data-short="true"] { font-size: calc(var(--names-size) * 1.3); letter-spacing: 0.03em; }
+.inv[data-template="catedral"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.18; }
+/* frase de seis palavras ou mais: menor, para não passar de quatro linhas a 320px; nunca abaixo de 30px, porque o "T" e o "f"
+   da Italiana (barra só para a direita) perdem a leitura em corpo pequeno */
+.inv[data-template="catedral"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: max(30px, calc(var(--names-size) * 0.72)); line-height: 1.2; }
+/* algarismos e travessão na Spectral: o "1" da Italiana é um traço reto, e "11" se lê como "II". A Spectral 400 é mais
+   pesada que o fio da Italiana: corpo menor e tinta um pouco apagada, para o número não parecer negrito ao lado do nome */
+.inv[data-template="catedral"] .inv-names .inv-num { font-family: var(--font-text); font-weight: 400; font-size: 0.8em; letter-spacing: 0; color: color-mix(in srgb, var(--ink) 82%, var(--paper)); }
+/* título curto ("Helena faz 30") cabe inteiro numa linha */
+.inv[data-template="catedral"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
+
+.inv[data-template="catedral"] .inv-message { font: italic 400 18px/1.5 var(--font-text); color: color-mix(in srgb, var(--ink) 82%, var(--paper)); margin-top: var(--s2) !important; max-width: 28ch; }
+.inv[data-template="catedral"] .inv-art-divider { margin: var(--s2) 0 0; color: var(--accent); }
+.inv[data-template="catedral"] .catedral-rule { width: min(168px, 58cqw); height: auto; }
+
+/* Data em coluna, como numa lápide: dia da semana, o numeral entre dois fios, mês e ano, e a hora por último. */
+.inv[data-template="catedral"] .inv-date {
+  margin-top: var(--s2);
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: "wd wd wd" "l day r" "month month month" "time time time";
+  column-gap: clamp(10px, 4cqw, 16px);
+  row-gap: 0;
+  align-items: center;
+}
+.inv[data-template="catedral"] .inv-date::before, .inv[data-template="catedral"] .inv-date::after { content: ""; height: 7px; background: linear-gradient(var(--cat-line), var(--cat-line)) center / 100% 1px no-repeat; -webkit-mask: linear-gradient(to left, #000 60%, transparent); mask: linear-gradient(to left, #000 60%, transparent); }
+.inv[data-template="catedral"] .inv-date::before { grid-area: l; }
+.inv[data-template="catedral"] .inv-date::after { grid-area: r; transform: scaleX(-1); }
+.inv[data-template="catedral"] .inv-date-side { border: 0; padding: 0 0 0 0.24em; font: 500 14.5px/1.3 var(--font-label); letter-spacing: 0.24em; color: var(--ink); }
+.inv[data-template="catedral"] .inv-date-side:first-child { grid-area: wd; }
+.inv[data-template="catedral"] .inv-date-side:last-child { grid-area: time; margin-top: 8px; padding: 0; font: italic 500 20px/1.3 var(--font-text); letter-spacing: 0.01em; text-transform: none; }
+.inv[data-template="catedral"] .inv-date-day { grid-area: day; font: 400 clamp(52px, 17cqw, 64px)/1 var(--font-text); letter-spacing: 0.01em; padding: 4px 0 6px; color: var(--ink); }
+.inv[data-template="catedral"] .inv-date-month { grid-area: month; font: 500 14.5px/1.3 var(--font-label); letter-spacing: 0.22em; padding-left: 0.22em; color: var(--ink); }
+/* sem horário: a data não ladeia o numeral, então o ano continua ao lado do mês e a lateral do ano some */
+.inv[data-template="catedral"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="catedral"] .inv-date .inv-date-alt { display: none; }
+
+.inv[data-template="catedral"] .inv-place { font: italic 400 18px/1.45 var(--font-text); color: var(--ink); margin-top: var(--s1) !important; max-width: 24ch; margin-inline: auto !important; }
+.inv[data-template="catedral"] .inv-countdown { background: none; border-radius: 0; padding: 0 0 0 0.2em; margin-top: var(--s1) !important; font: 500 14px/1.4 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); }
+.inv[data-template="catedral"] .inv-more { font-family: var(--font-label); font-weight: 500; letter-spacing: 0.22em; padding-left: calc(16px + 0.22em); }
+
+/* fundo: a trama gótica quase apagada */
+.inv[data-template="catedral"] .inv-art-backdrop { color: color-mix(in srgb, var(--accent) 12%, var(--bg)); }
+
+/* ───────── Seções: lápides do mesmo papel, com fio interno e um arquinho ou um losango sobre o primeiro rótulo ───────── */
+.inv[data-template="catedral"] .inv-section { padding: 36px clamp(16px, 7.6cqw, 28px) 34px; box-shadow: 0 1px 2px color-mix(in srgb, #1a140c 16%, transparent), 0 10px 26px color-mix(in srgb, #1a140c 11%, transparent); }
+.inv[data-template="catedral"] .inv-section::before { content: ""; position: absolute; inset: 7px; border: 1px solid color-mix(in srgb, var(--accent) 46%, var(--paper)); pointer-events: none; }
+.inv[data-template="catedral"] .inv-kicker { font: 500 14px/1.5 var(--font-label); letter-spacing: 0.22em; padding-left: 0.22em; color: var(--accent); margin-bottom: 8px !important; }
+/* o arquinho abre só a primeira seção e a da confirmação; nas outras, um losango pequeno (repetido em todas, virava carimbo) */
+.inv[data-template="catedral"] .inv-section > .inv-kicker:first-child::before { content: ""; display: block; width: 7px; height: 7px; margin: 0 auto 14px; transform: translateX(-0.11em) rotate(45deg); background: var(--cat-line); }
+.inv[data-template="catedral"] .inv-section:is(#detalhes, #confirmar) > .inv-kicker:first-child::before { width: 44px; height: 34px; margin: 0 auto 12px; transform: translateX(-0.11em); -webkit-mask: var(--cat-crest) center / contain no-repeat; mask: var(--cat-crest) center / contain no-repeat; }
+.inv[data-template="catedral"] .inv-section-title { font: 400 clamp(31px, 10cqw, 36px)/1.15 var(--font-names); letter-spacing: 0.02em; margin-bottom: 10px !important; }
+.inv[data-template="catedral"] .inv-big { font: 500 21px/1.35 var(--font-text); }
+.inv[data-template="catedral"] .inv-text { font: 400 18px/1.55 var(--font-text); }
+.inv[data-template="catedral"] .inv-hint { font: italic 400 17px/1.5 var(--font-text); }
+.inv[data-template="catedral"] .inv-rule { height: 16px; margin: 24px auto; background: var(--cat-line); -webkit-mask: var(--cat-quatre) center / 140px 16px no-repeat; mask: var(--cat-quatre) center / 140px 16px no-repeat; }
+
+/* botões: retângulos de tipografia, com um fio por dentro no principal */
+.inv[data-template="catedral"] .inv-btn { font: 600 16.5px/1.25 var(--font-label); letter-spacing: 0.03em; border-color: color-mix(in srgb, var(--ink) 70%, var(--paper)); }
+.inv[data-template="catedral"] .inv-btn-main { border-color: var(--ink); box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 55%, transparent); }
+.inv[data-template="catedral"] .inv-btn-quiet { font-weight: 500; font-size: 16px; border-color: color-mix(in srgb, var(--accent) 70%, var(--paper)); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.inv[data-template="catedral"] .inv-grid-2 .inv-btn { letter-spacing: 0.01em; }
+.inv[data-template="catedral"] .inv .inv-btn[aria-pressed="true"], .inv[data-template="catedral"] .inv-btn[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+.inv[data-template="catedral"] .inv-link { font-style: italic; }
+
+/* confirmação: os estados valem em papel claro e em papel escuro (nada de branco fixo) */
+.inv[data-template="catedral"] .rsvp-count legend { font: 400 18px/1.45 var(--font-text); }
+.inv[data-template="catedral"] .rsvp-state { border-radius: 0; background: color-mix(in srgb, var(--accent) 12%, var(--paper)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 55%, var(--paper)), inset 0 0 0 4px color-mix(in srgb, var(--accent) 12%, var(--paper)), inset 0 0 0 4.7px color-mix(in srgb, var(--accent) 40%, var(--paper)); padding: 24px 16px; }
+.inv[data-template="catedral"] .rsvp-state-title { font: 400 30px/1.15 var(--font-names); letter-spacing: 0.02em; }
+.inv[data-template="catedral"] .rsvp-current { border-radius: 0; }
+.inv[data-template="catedral"] .rsvp-radio span { border-radius: 2px; background: color-mix(in srgb, var(--paper) 90%, var(--ink)); }
+.inv[data-template="catedral"] .rsvp-radio input:checked + span { background: var(--ink); color: var(--btn-ink); }
+.inv[data-template="catedral"] .inv-field input, .inv[data-template="catedral"] .inv-field select, .inv[data-template="catedral"] .inv-field textarea { border-radius: 2px; background: color-mix(in srgb, var(--paper) 95%, var(--ink)); border-color: color-mix(in srgb, var(--ink) 45%, var(--paper)); }
+.inv[data-template="catedral"] .inv-error { border-radius: 2px; }
+.inv[data-template="catedral"] .inv-qr { border-radius: 0; border-color: var(--cat-line); }
+.inv[data-template="catedral"] .inv-sticky { border-top-color: color-mix(in srgb, var(--accent) 46%, var(--paper)); }
+
+/* fecho assinado: nomes na letra de inscrição */
+.inv[data-template="catedral"] .inv-sign-art { color: var(--accent); margin-bottom: 14px; }
+/* o "&" da Italiana lembra "Cr": a assinatura vai no itálico da Spectral */
+.inv[data-template="catedral"] .inv-sign-names { font: italic 400 clamp(25px, 8cqw, 30px)/1.25 var(--font-text); letter-spacing: 0; }
+.inv[data-template="catedral"] .inv-sign-date { font: italic 400 18px/1.4 var(--font-text); }
+.inv[data-template="catedral"] .inv-footer { font-family: var(--font-label); }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="catedral"] .env-body { filter: drop-shadow(0 18px 28px color-mix(in srgb, #1a140c 30%, transparent)); }
+/* aba: um fio do ornamento acompanha as duas diagonais (triângulo por baixo, face recuada) */
+.inv[data-template="catedral"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 1.5px)); background: var(--cat-line); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+/* frente: um fio fino recuado, que some sob a aba */
+.inv[data-template="catedral"] .env-front::before { content: ""; position: absolute; inset: 9px; border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--paper)); }
+.inv[data-template="catedral"] .env-flap-face { clip-path: polygon(2px 0, calc(100% - 2px) 0, 50% 58%); }
+/* forro: trama em tom sobre tom e a rosácea de pé (a base mostra o desenho girado; aqui ele gira de volta) */
+.inv[data-template="catedral"] .env-liner { color: color-mix(in srgb, var(--liner) 70%, var(--paper)); }
+.inv[data-template="catedral"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="catedral"] .catedral-liner-rose { color: color-mix(in srgb, var(--liner) 30%, var(--paper)); --cat-ground: var(--liner); --cat-glass: color-mix(in srgb, var(--liner) 78%, var(--paper)); }
+/* cartão dentro do envelope: o alto do arco com a rosácea, como na capa */
+.inv[data-template="catedral"] .env-card { color: var(--cat-line); }
+.inv[data-template="catedral"] .env-card::before { content: ""; position: absolute; inset: 5% 6% 0; background: currentColor; -webkit-mask: var(--cat-niche) top center / 100% auto no-repeat; mask: var(--cat-niche) top center / 100% auto no-repeat; }
+.inv[data-template="catedral"] .env-card-line { display: none; }
+.inv[data-template="catedral"] .env-to { font: italic 400 17px/1.4 var(--font-text); }
+.inv[data-template="catedral"] .env-to strong { font: 400 clamp(28px, 9cqw, 32px)/1.15 var(--font-names); font-style: normal; letter-spacing: 0.02em; margin-top: 4px; }
+.inv[data-template="catedral"] .env-cta { font: 600 16px/1.1 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.16em; padding-left: calc(30px + 0.16em); box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 55%, transparent), 0 6px 18px color-mix(in srgb, #1a140c 26%, transparent); }
+/* a Italiana é fina demais para a cera: iniciais nas capitais da Spectral */
+.inv[data-template="catedral"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; }
+
+/* ───────── Fecho da página: o filete com quadrifólio, depois da última seção ───────── */
+.inv[data-template="catedral"] .inv-sheet::after { content: ""; display: block; width: 140px; height: 16px; margin: 30px auto 0; background: var(--cat-line); -webkit-mask: var(--cat-quatre) center / contain no-repeat; mask: var(--cat-quatre) center / contain no-repeat; }
+.thumb > .inv[data-template="catedral"] .inv-sheet::after { display: none; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   Valores medidos; ao mexer nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). */
+.inv[data-template="catedral"] { --thumb-h: 774px; }
+.inv[data-template="catedral"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 691px; }
+.inv[data-template="catedral"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 711px; }
+.inv[data-template="catedral"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 688px; }
+.inv[data-template="catedral"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 739px; }
+.inv[data-template="catedral"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 693px; }

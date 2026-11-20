@@ -1,6 +1,7 @@
 import {
   Alex_Brush, Bodoni_Moda, Cinzel, Cormorant_SC, DM_Sans, DM_Serif_Display, EB_Garamond, Fraunces, Great_Vibes,
   Italianno, Jost, Marcellus, Montserrat, Ms_Madi, Parisienne, Pinyon_Script, Playfair_Display, Poiret_One,
+  Petit_Formal_Script, Gilda_Display, Forum, Tenor_Sans, Abril_Fatface, Sacramento, Italiana, Prata, Tilt_Neon, Shrikhand, UnifrakturMaguntia, Allura, Space_Mono, Old_Standard_TT, Spectral, Outfit, Josefin_Slab, Raleway, Sora, Archivo_Narrow, Libre_Franklin, Fredoka, Baloo_2, Mulish, Lora,
 } from "next/font/google";
 
 // Fontes disponíveis para o app e para os modelos de convite. Cada uma vira uma variável CSS (--f-*).
@@ -27,6 +28,32 @@ const marcellus = Marcellus({ subsets: ["latin"], display: "swap", preload: fals
 const poiret = Poiret_One({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-poiret" });
 const montserrat = Montserrat({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-montserrat" });
 
-export const fontVariables = [serif, sans, sc, pinyon, parisienne, italianno, alex, madi, greatVibes, playfair, bodoni, cinzel, jost, fraunces, dmSerif, marcellus, poiret, montserrat]
+const petit = Petit_Formal_Script({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-petit" });
+const gilda = Gilda_Display({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-gilda" });
+const forum = Forum({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-forum" });
+const tenor = Tenor_Sans({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-tenor" });
+const abril = Abril_Fatface({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-abril" });
+const sacramento = Sacramento({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-sacramento" });
+const italiana = Italiana({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-italiana" });
+const prata = Prata({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-prata" });
+const tiltneon = Tilt_Neon({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-tiltneon" });
+const shrikhand = Shrikhand({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-shrikhand" });
+const fraktur = UnifrakturMaguntia({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-fraktur" });
+const allura = Allura({ subsets: ["latin"], display: "swap", preload: false, weight: "400", variable: "--f-allura" });
+const spacemono = Space_Mono({ subsets: ["latin"], display: "swap", preload: false, weight: ["400", "700"], variable: "--f-spacemono" });
+const oldstandard = Old_Standard_TT({ subsets: ["latin"], display: "swap", preload: false, weight: ["400", "700"], style: ["normal", "italic"], variable: "--f-oldstandard" });
+const spectral = Spectral({ subsets: ["latin"], display: "swap", preload: false, weight: ["400", "500", "600"], style: ["normal", "italic"], variable: "--f-spectral" });
+const outfit = Outfit({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-outfit" });
+const josefinslab = Josefin_Slab({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-josefinslab" });
+const raleway = Raleway({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-raleway" });
+const sora = Sora({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-sora" });
+const archivonarrow = Archivo_Narrow({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-archivonarrow" });
+const franklin = Libre_Franklin({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-franklin" });
+const fredoka = Fredoka({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-fredoka" });
+const baloo = Baloo_2({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-baloo" });
+const mulish = Mulish({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-mulish" });
+const lora = Lora({ subsets: ["latin"], display: "swap", preload: false, style: ["normal", "italic"], variable: "--f-lora" });
+
+export const fontVariables = [serif, sans, sc, pinyon, parisienne, italianno, alex, madi, greatVibes, playfair, bodoni, cinzel, jost, fraunces, dmSerif, marcellus, poiret, montserrat, petit, gilda, forum, tenor, abril, sacramento, italiana, prata, tiltneon, shrikhand, fraktur, allura, spacemono, oldstandard, spectral, outfit, josefinslab, raleway, sora, archivonarrow, franklin, fredoka, baloo, mulish, lora]
   .map((font) => font.variable)
   .join(" ");

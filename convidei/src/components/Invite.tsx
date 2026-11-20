@@ -2,7 +2,8 @@ import QRCode from "qrcode";
 import { BRAND } from "@/lib/brand";
 import { rsvpClosed, type EventRow, type GuestRow } from "@/lib/events";
 import { calendarMessage, capitalize, eventCalendarTitle, dateBits, googleCalendarUrl, mapsUrl, prettyTime, shortDate, todayBR, uberUrl, wazeUrl } from "@/lib/format";
-import { splitTitle } from "@/lib/names";
+import type { CSSProperties } from "react";
+import { NBSP, splitTitle, titleShape } from "@/lib/names";
 import { pixPayload } from "@/lib/pix";
 import { isPremium } from "@/lib/plans";
 import { OPEN_MAX_PEOPLE } from "@/lib/remember";
@@ -12,7 +13,7 @@ import { paletteOf, paletteStyle, templateDef } from "@/templates";
 import { CopyButton } from "./CopyButton";
 import { Envelope } from "./Envelope";
 import { envelopeKey, sealNeedsEdge } from "@/lib/envelope";
-import { InviteCover } from "./InviteCover";
+import { InviteCover, TitleText } from "./InviteCover";
 import { RsvpForm } from "./RsvpForm";
 import { StickyRsvp } from "./StickyRsvp";
 
@@ -31,7 +32,9 @@ type Props = {
 export async function Invite({ event, guest, preview = false, envelope = true, justAnswered = false, changing = false }: Props) {
   const def = templateDef(event.template);
   const palette = paletteOf(def, event.palette);
-  const { initials } = splitTitle(event.title);
+  const signNames = splitTitle(event.title);
+  const { initials } = signNames;
+  const signShape = titleShape(event.title);
   const bits = dateBits(event.event_date);
   const time = prettyTime(event.event_time);
   const today = todayBR();
@@ -63,7 +66,7 @@ export async function Invite({ event, guest, preview = false, envelope = true, j
         <section className="inv-section" id="detalhes" aria-label="Data e local">
           <p className="inv-kicker">Quando</p>
           <p className="inv-big">
-            {capitalize(bits.weekday)}, {Number(bits.day)} de {bits.month} de {bits.year}
+            {capitalize(bits.weekday)}, {Number(bits.day)}{NBSP}de{NBSP}{bits.month} de{NBSP}{bits.year}
           </p>
           {time ? <p className="inv-text">às {time}</p> : null}
 
@@ -219,7 +222,18 @@ export async function Invite({ event, guest, preview = false, envelope = true, j
           <div className="inv-section inv-sign">
             <div className="inv-art inv-sign-art" aria-hidden="true"><Art slot="divider" initials={initials} eventType={event.type} /></div>
             <p className="inv-kicker">Esperamos você</p>
-            <p className="inv-sign-names">{event.title}</p>
+            {/* Mesmo cuidado da capa: algarismos em .inv-num, "&" fora da fonte dos nomes e nunca fechando a linha. */}
+            <p className="inv-sign-names" style={{ "--longest": signShape.longest } as CSSProperties}>
+              {signNames.names.length === 2 ? (
+                <>
+                  <TitleText text={signNames.names[0]} /> <span className="inv-sign-amp">{signNames.connector ?? "&"}</span>
+                  {NBSP}
+                  <TitleText text={signNames.names[1]} />
+                </>
+              ) : (
+                <TitleText text={event.title} />
+              )}
+            </p>
             <p className="inv-sign-date">
               {Number(bits.day)} de {bits.month} de {bits.year}
             </p>

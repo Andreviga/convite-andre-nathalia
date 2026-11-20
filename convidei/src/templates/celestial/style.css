@@ -1,0 +1,271 @@
+/* Modelo Celestial. Todas as regras ficam sob .inv[data-template="celestial"]. */
+.inv[data-template="celestial"] {
+  --font-names: var(--f-forum), "Forum", "Marcellus", Georgia, serif;
+  --font-text: var(--f-tenor), "Tenor Sans", "Jost", system-ui, sans-serif;
+  --font-label: var(--f-tenor), "Tenor Sans", "Jost", system-ui, sans-serif;
+  --names-size: clamp(31px, 10.4cqw, 45px);
+  --names-weight: 400;
+  --names-leading: 1.16;
+  --names-em: 0.71; /* capitais da Forum com 0.08em de espaçamento, medido com palavras largas */
+  --names-tracking: 0.08em;
+  --names-transform: uppercase;
+  --amp-scale: 0.56;
+  --label-tracking: 0.24em;
+  --radius: 3px;
+  --btn-radius: 2px;
+  --paper-pad: clamp(26px, 9.6cqw, 42px);
+  --frame-inset: 10px;
+  --paper-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent), 0 1px 2px rgba(0, 0, 0, 0.3), 0 20px 44px rgba(0, 0, 0, 0.3);
+  /* Metal: três tons tirados da paleta (o claro puxa para o branco, o escuro para o papel). */
+  --cel-foil-l: color-mix(in srgb, var(--accent) 60%, #fff);
+  --cel-foil-m: var(--accent);
+  --cel-foil-d: color-mix(in srgb, var(--accent) 80%, var(--paper));
+  --cel-foil: linear-gradient(100deg, var(--cel-foil-d) 0%, var(--cel-foil-m) 26%, var(--cel-foil-l) 48%, var(--cel-foil-m) 70%, var(--cel-foil-d) 100%);
+  --cel-line: color-mix(in srgb, var(--accent) 72%, var(--paper));
+  --cel-hair: color-mix(in srgb, var(--accent) 42%, var(--paper));
+  /* estrela de quatro pontas, usada como máscara (a cor vem da paleta) */
+  --cel-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 0Q6.9 5.1 12 6 6.9 6.9 6 12 5.1 6.9 0 6 5.1 5.1 6 0Z'/%3E%3C/svg%3E");
+  /* dois passos de ritmo vertical */
+  --s1: 10px;
+  --s2: 16px;
+}
+
+/* ───────── Capa ───────── */
+/* papel: um clarão de luar no alto e a carta de constelações em tom sobre tom */
+.inv[data-template="celestial"] .inv-paper {
+  padding-block: calc(var(--paper-pad) - 6px) calc(var(--paper-pad) - 10px);
+  background-image: radial-gradient(120% 44% at 50% 0, color-mix(in srgb, var(--accent) 13%, var(--paper)), transparent 100%), radial-gradient(90% 30% at 50% 100%, color-mix(in srgb, var(--bg) 45%, var(--paper)), transparent 100%);
+}
+/* moldura: fio e contrafio que param antes dos cantos; os cantos côncavos com estrela vêm do SVG */
+.inv[data-template="celestial"] .inv-paper::before {
+  border: 0;
+  border-radius: 0;
+  --c: var(--cel-line);
+  --h: var(--cel-hair);
+  background:
+    linear-gradient(var(--c), var(--c)) 28px 0 / calc(100% - 56px) 1px,
+    linear-gradient(var(--c), var(--c)) 28px 100% / calc(100% - 56px) 1px,
+    linear-gradient(var(--c), var(--c)) 0 28px / 1px calc(100% - 56px),
+    linear-gradient(var(--c), var(--c)) 100% 28px / 1px calc(100% - 56px),
+    linear-gradient(var(--h), var(--h)) 32px 4px / calc(100% - 64px) 1px,
+    linear-gradient(var(--h), var(--h)) 32px calc(100% - 4px) / calc(100% - 64px) 1px,
+    linear-gradient(var(--h), var(--h)) 4px 32px / 1px calc(100% - 64px),
+    linear-gradient(var(--h), var(--h)) calc(100% - 4px) 32px / 1px calc(100% - 64px);
+  background-repeat: no-repeat;
+}
+/* Carta e cantos se posicionam em relação ao cartão: os slots de ornamento não podem virar bloco de referência (sem
+   transform), então a entrada deles é só de opacidade. :nth-child(n) dá especificidade para valer também na regra da
+   base que reinicia a entrada quando o envelope abre. */
+.inv[data-template="celestial"] .inv-paper > .inv-art:is(.inv-art-top, .inv-art-bottom):nth-child(n) { position: static; animation-name: cel-fade; }
+.inv[data-template="celestial"][data-still="true"] .inv-paper > .inv-art:is(.inv-art-top, .inv-art-bottom):nth-child(n) { animation: none; }
+@keyframes cel-fade { from { opacity: 0; } to { opacity: 1; } }
+.inv[data-template="celestial"] .cel-chart { position: absolute; inset: 0; color: color-mix(in srgb, var(--accent) 27%, var(--paper)); border-radius: inherit; }
+.inv[data-template="celestial"] .cel-corner { position: absolute; color: var(--cel-line); }
+.inv[data-template="celestial"] .cel-corner-tl { top: var(--frame-inset); left: var(--frame-inset); }
+.inv[data-template="celestial"] .cel-corner-tr { top: var(--frame-inset); right: var(--frame-inset); transform: scaleX(-1); }
+.inv[data-template="celestial"] .cel-corner-bl { bottom: var(--frame-inset); left: var(--frame-inset); transform: scaleY(-1); }
+.inv[data-template="celestial"] .cel-corner-br { bottom: var(--frame-inset); right: var(--frame-inset); transform: scale(-1); }
+
+/* topo: fases da lua em fileira e, logo abaixo, o domo do zodíaco */
+.inv[data-template="celestial"] .inv-art-top { flex-direction: column; align-items: center; margin-bottom: 8px; }
+.inv[data-template="celestial"] .cel-moons { position: relative; width: clamp(168px, 57cqw, 220px); height: auto; }
+.inv[data-template="celestial"] .cel-maria { fill: var(--paper); opacity: 0.2; }
+.inv[data-template="celestial"] .cel-dome { position: relative; width: calc(100% + 12px); max-width: none; height: auto; margin: 6px -6px 0; }
+.inv[data-template="celestial"] .cel-cut { fill: var(--paper); stroke: var(--paper); stroke-width: 3.4px; stroke-linejoin: round; }
+.inv[data-template="celestial"] .cel-glint { fill: color-mix(in srgb, var(--cel-foil-l) 55%, var(--paper)); opacity: 0.55; }
+.inv[data-template="celestial"] .cel-shade { fill: var(--paper); opacity: 0.38; }
+.inv[data-template="celestial"] .cel-sign-moons { display: none; }
+/* horizonte: fecha a lente em volta dos nomes */
+.inv[data-template="celestial"] .inv-art-divider { margin: 8px -6px 0; }
+.inv[data-template="celestial"] .cel-horizon { width: 100%; height: auto; }
+
+.inv[data-template="celestial"] .inv-hello { font: 400 16px/1.4 var(--font-text); letter-spacing: 0.02em; color: var(--soft); margin-bottom: var(--s1) !important; }
+.inv[data-template="celestial"] .inv-hello strong { font-weight: 400; color: var(--ink); }
+.inv[data-template="celestial"] .inv-headline { font-weight: 400; line-height: 1.7; letter-spacing: 0.22em; padding-left: 0.22em; color: var(--cel-foil-m); margin-bottom: var(--s1) !important; }
+/* cartão estreito: menos espaçamento, para a frase de abertura caber em duas linhas */
+@container (max-width: 300px) { .inv[data-template="celestial"] .inv-headline { letter-spacing: 0.12em; padding-left: 0.12em; } }
+
+.inv[data-template="celestial"] .inv-names { padding: 0.04em 0; color: var(--ink); }
+.inv[data-template="celestial"] .inv-name { padding-left: var(--names-tracking); /* centro óptico */ }
+/* conector: pequeno, em metal, entre dois fios que somem para fora */
+.inv[data-template="celestial"] .inv-amp { font-family: var(--font-names); font-style: normal; line-height: 1; margin: 0.24em 0 0.22em; display: flex; align-items: center; gap: 0.62em; color: var(--accent); }
+.inv[data-template="celestial"] .inv-amp::before, .inv[data-template="celestial"] .inv-amp::after { content: ""; width: 2.3em; height: 1px; background: linear-gradient(to right, transparent, var(--cel-line)); }
+.inv[data-template="celestial"] .inv-amp::after { transform: scaleX(-1); }
+.inv[data-template="celestial"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.2); }
+.inv[data-template="celestial"] .inv-names[data-count="1"][data-short="true"] { font-size: calc(var(--names-size) * 1.42); --names-tracking: 0.12em; }
+.inv[data-template="celestial"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.78); line-height: 1.24; }
+/* título curto ("Helena faz 30") cabe inteiro numa linha */
+.inv[data-template="celestial"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
+/* frase de seis palavras ou mais: menor e menos espaçada, para não passar de quatro linhas a 320px */
+.inv[data-template="celestial"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { --names-tracking: 0.04em; --names-em: 0.67; font-size: calc(var(--names-size) * 0.7); }
+/* palavra ou trecho inseparável de 15 a 20 letras: menos espaçamento, para a fonte encolher menos */
+.inv[data-template="celestial"] .inv-names[data-count="1"]:is([data-longest="15"], [data-longest="16"], [data-longest="17"], [data-longest="18"], [data-longest="19"], [data-longest="20"]) { --names-tracking: 0.03em; --names-em: 0.66; }
+/* casal com nome composto: espaçamento menor para cada nome caber em uma linha */
+.inv[data-template="celestial"] .inv-names[data-count="2"][data-long="true"] { --names-tracking: 0.04em; --names-em: 0.67; font-size: calc(var(--names-size) * 0.8); }
+
+.inv[data-template="celestial"] .inv-message { font: 400 16.5px/1.6 var(--font-text); font-style: normal; color: color-mix(in srgb, var(--ink) 88%, var(--paper)); margin-top: var(--s2) !important; max-width: 28ch; }
+
+/* data: o numeral dentro de uma lua (anel fino com um crescente de metal), ladeado pelo dia da semana e pela hora
+   sobre fios que somem para fora; o mês corre embaixo. Laterais e mês nas capitais da Forum, como o numeral
+   (mais estreitas que as da Tenor: "domingo" e "às 20h30" cabem na coluna de um celular de 320px sem encolher) */
+.inv[data-template="celestial"] .inv-date { margin-top: 14px; column-gap: clamp(8px, 3.4cqw, 14px); row-gap: 10px; }
+.inv[data-template="celestial"] .inv-date-side { font: 400 clamp(15px, 4.6cqw, 16.5px)/1.3 var(--font-names); letter-spacing: 0.12em; padding: 0 0 9px 0.12em; color: var(--ink); border: 0; border-bottom: 1px solid; border-image: linear-gradient(to right, transparent, var(--cel-line)) 1; }
+.inv[data-template="celestial"] .inv-date-side:last-child { border-image: linear-gradient(to left, transparent, var(--cel-line)) 1; }
+.inv[data-template="celestial"] .inv-date-day {
+  display: grid;
+  place-items: center;
+  width: clamp(72px, 23.4cqw, 86px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  font: 400 clamp(37px, 12cqw, 44px)/1 var(--font-names);
+  letter-spacing: 0.02em;
+  padding: 0 0 0.04em 0.1em;
+  color: var(--ink);
+  background: radial-gradient(circle at 62% 42%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%);
+  box-shadow: inset 0 0 0 1px var(--cel-line), inset 7px 3px 0 0 var(--cel-foil-m), 0 0 0 4px var(--paper), 0 0 0 5px var(--cel-hair);
+}
+.inv[data-template="celestial"] .inv-date-month { font: 400 clamp(15px, 4.6cqw, 16.5px)/1.3 var(--font-names); letter-spacing: 0.24em; padding-left: 0.24em; color: var(--ink); }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="celestial"] .inv-date { column-gap: 6px; }
+  .inv[data-template="celestial"] .inv-date-day { width: 70px; }
+  .inv[data-template="celestial"] .inv-date-side { letter-spacing: 0.03em; padding-left: 0.03em; }
+  .inv[data-template="celestial"] .inv-date-month { letter-spacing: 0.16em; padding-left: 0.16em; }
+}
+.inv[data-template="celestial"] .inv-place { font: 400 17px/1.5 var(--font-text); color: var(--ink); margin-top: 14px !important; }
+/* contagem nas capitais da Forum, como o mês: o 7 da Tenor é cortado e, em versais espaçadas, confunde */
+.inv[data-template="celestial"] .inv-countdown { background: none; border-radius: 0; padding: 0 0 0 0.2em; margin-top: 8px !important; font: 400 15px/1.4 var(--font-names); letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft); }
+.inv[data-template="celestial"] .inv-art-bottom { margin-top: 14px; }
+.inv[data-template="celestial"] .cel-emblem { position: relative; width: clamp(84px, 26cqw, 96px); height: auto; }
+.inv[data-template="celestial"] .inv-more { font-family: var(--font-label); font-weight: 400; letter-spacing: 0.26em; padding-left: calc(16px + 0.26em); }
+
+/* fundo da página: a mesma carta do céu, maior e quase apagada */
+.inv[data-template="celestial"] .inv-art-backdrop { color: color-mix(in srgb, var(--accent) 17%, var(--bg)); }
+
+/* ───────── Seções ───────── */
+.inv[data-template="celestial"] .inv-section { padding: 40px clamp(14px, 7.4cqw, 26px) 34px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent), 0 12px 28px rgba(0, 0, 0, 0.2); background-image: radial-gradient(110% 90px at 50% 0, color-mix(in srgb, var(--accent) 9%, var(--paper)), transparent 100%); }
+/* uma estrela em cada canto, como na moldura da capa */
+.inv[data-template="celestial"] .inv-section::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  background: var(--cel-line);
+  -webkit-mask: var(--cel-star) 0 0 / 11px 11px no-repeat, var(--cel-star) 100% 0 / 11px 11px no-repeat, var(--cel-star) 0 100% / 11px 11px no-repeat, var(--cel-star) 100% 100% / 11px 11px no-repeat;
+  mask: var(--cel-star) 0 0 / 11px 11px no-repeat, var(--cel-star) 100% 0 / 11px 11px no-repeat, var(--cel-star) 0 100% / 11px 11px no-repeat, var(--cel-star) 100% 100% / 11px 11px no-repeat;
+}
+/* rótulo: versais espaçadas em metal, entre duas estrelas */
+.inv[data-template="celestial"] .inv-kicker { display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 400; letter-spacing: 0.22em; padding-left: 0; color: var(--cel-foil-m); margin-bottom: 10px !important; }
+.inv[data-template="celestial"] .inv-kicker::before, .inv[data-template="celestial"] .inv-kicker::after { content: ""; flex: none; width: 9px; height: 9px; background: var(--cel-line); -webkit-mask: var(--cel-star) center / contain no-repeat; mask: var(--cel-star) center / contain no-repeat; }
+.inv[data-template="celestial"] .inv-kicker::before { margin-right: 0.22em; }
+/* coluna de celular estreito: menos espaçamento, para "Para não esquecer" caber numa linha entre as estrelas */
+@container (max-width: 300px) { .inv[data-template="celestial"] .inv-kicker { letter-spacing: 0.12em; gap: 8px; } .inv[data-template="celestial"] .inv-kicker::before { margin-right: 0.12em; } }
+@container (max-width: 270px) {
+  .inv[data-template="celestial"] .inv-kicker { display: block; }
+  .inv[data-template="celestial"] .inv-kicker::before, .inv[data-template="celestial"] .inv-kicker::after { content: none; }
+  .inv[data-template="celestial"] .inv-section .inv-section-title { font-size: clamp(18px, 11.5cqw, 24px); letter-spacing: 0.03em; }
+}
+.inv[data-template="celestial"] .inv-section-title { font: 400 clamp(27px, 8.8cqw, 32px)/1.2 var(--font-names); letter-spacing: 0.09em; text-transform: uppercase; padding-left: 0.09em; margin-bottom: 10px !important; }
+.inv[data-template="celestial"] .inv-big { font: 400 22px/1.36 var(--font-names); letter-spacing: 0.02em; }
+.inv[data-template="celestial"] .inv-text { font: 400 17px/1.6 var(--font-text); }
+.inv[data-template="celestial"] .inv-text strong { font-weight: 400; color: var(--cel-foil-m); }
+.inv[data-template="celestial"] .inv-hint { font: 400 17.5px/1.5 var(--font-names); letter-spacing: 0.01em; }
+/* fio com uma estrela no meio */
+.inv[data-template="celestial"] .inv-rule { position: relative; height: 13px; margin: 24px auto; background: linear-gradient(to right, transparent, var(--cel-hair) 22%, var(--cel-hair) calc(50% - 15px), transparent calc(50% - 15px), transparent calc(50% + 15px), var(--cel-hair) calc(50% + 15px), var(--cel-hair) 78%, transparent) center / 100% 1px no-repeat; }
+.inv[data-template="celestial"] .inv-rule::before { content: ""; position: absolute; left: 50%; top: 0; width: 13px; height: 13px; margin-left: -6.5px; background: var(--cel-foil-m); -webkit-mask: var(--cel-star) center / contain no-repeat; mask: var(--cel-star) center / contain no-repeat; }
+
+.inv[data-template="celestial"] .inv-btn { font: 400 16.5px/1.25 var(--font-label); letter-spacing: 0.03em; border-color: var(--cel-line); }
+.inv[data-template="celestial"] .inv-btn:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.inv[data-template="celestial"] .inv-btn-main { background: linear-gradient(100deg, var(--accent), color-mix(in srgb, var(--accent) 82%, var(--ink)) 48%, var(--accent)); border-color: var(--accent); color: var(--btn-ink); box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 50%, transparent); }
+.inv[data-template="celestial"] .inv-btn-main:hover { background: var(--accent); }
+.inv[data-template="celestial"] .inv-grid-2 .inv-btn { font-size: clamp(14.5px, 4.7cqw, 16px); padding-inline: 4px; letter-spacing: 0.01em; }
+.inv[data-template="celestial"] .inv-btn-quiet { border-color: var(--cel-hair); background: color-mix(in srgb, var(--accent) 6%, transparent); font-size: 16px; }
+.inv[data-template="celestial"] .inv-link { font: 400 16.5px/1.3 var(--font-text); }
+.inv[data-template="celestial"] .inv-saved { font: 400 16.5px/1.5 var(--font-text); }
+/* confirmação: botões de número, estados e campos, legíveis no papel escuro e no claro */
+.inv[data-template="celestial"] .rsvp-yes, .inv[data-template="celestial"] .rsvp-no { font-size: 17.5px; }
+.inv[data-template="celestial"] .rsvp-count legend, .inv[data-template="celestial"] .rsvp-current, .inv[data-template="celestial"] .inv-field { font: 400 17px/1.45 var(--font-text); }
+.inv[data-template="celestial"] .rsvp-count legend strong, .inv[data-template="celestial"] .rsvp-current strong { font-weight: 400; color: var(--cel-foil-m); }
+.inv[data-template="celestial"] .inv-btn[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 50%, transparent), 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+.inv[data-template="celestial"] .rsvp-no[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+.inv[data-template="celestial"] .rsvp-current { border-radius: var(--radius); background: color-mix(in srgb, var(--accent) 11%, var(--paper)); }
+.inv[data-template="celestial"] .rsvp-state { border-radius: var(--radius); padding: 24px 16px 22px; background: color-mix(in srgb, var(--accent) 10%, var(--paper)); box-shadow: inset 0 0 0 1px var(--cel-hair), inset 0 0 0 4px color-mix(in srgb, var(--accent) 10%, var(--paper)), inset 0 0 0 5px color-mix(in srgb, var(--accent) 24%, var(--paper)); }
+.inv[data-template="celestial"] .rsvp-state-title { font: 400 25px/1.25 var(--font-names); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink); }
+.inv[data-template="celestial"] .rsvp-state[data-status="yes"] .rsvp-state-title { color: var(--cel-foil-m); }
+.inv[data-template="celestial"] .rsvp-state p + p { font: 400 17px/1.5 var(--font-text); margin-top: 6px; }
+.inv[data-template="celestial"] .rsvp-radio span { border-radius: var(--btn-radius); border-color: var(--cel-line); background: color-mix(in srgb, var(--accent) 7%, var(--paper)); }
+.inv[data-template="celestial"] .rsvp-radio input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--btn-ink); box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+.inv[data-template="celestial"] .inv-field input, .inv[data-template="celestial"] .inv-field select, .inv[data-template="celestial"] .inv-field textarea { background: color-mix(in srgb, var(--paper) 91%, var(--ink)); border-color: color-mix(in srgb, var(--accent) 60%, var(--paper)); border-radius: var(--btn-radius); }
+.inv[data-template="celestial"] .inv-field ::placeholder { color: var(--soft); opacity: 1; }
+.inv[data-template="celestial"] .inv-qr { border-radius: var(--radius); border-color: var(--accent); }
+.inv[data-template="celestial"] .inv-sticky { border-top-color: var(--cel-hair); }
+
+/* ───────── Fecho: as fases da lua assinam a página; depois, uma última estrela ───────── */
+.inv[data-template="celestial"] .inv-sign-art .cel-horizon { display: none; }
+.inv[data-template="celestial"] .inv-sign-art .cel-sign-moons { display: block; width: min(204px, 100%); }
+.inv[data-template="celestial"] .inv-sign-names { font-size: clamp(21px, 7cqw, 27px); line-height: 1.3; padding-left: var(--names-tracking); }
+.inv[data-template="celestial"] .inv-sign-date { font: 400 18px/1.4 var(--font-names); letter-spacing: 0.04em; margin-top: 8px !important; }
+.inv[data-template="celestial"] .inv-footer { font-family: var(--font-label); }
+.inv[data-template="celestial"] .inv-footer strong { font-weight: 400; }
+/* o céu se apaga atrás do rodapé e do trio de estrelas: o fecho fica sobre fundo limpo, sem fio de constelação cruzando */
+.inv[data-template="celestial"] .inv-footer { position: relative; }
+.inv[data-template="celestial"] .inv-footer::before { content: ""; position: absolute; z-index: -1; left: 50%; top: -22px; width: min(340px, 100cqw); height: calc(100% + 110px); transform: translateX(-50%); background: radial-gradient(closest-side, var(--bg) 58%, transparent); pointer-events: none; }
+.inv[data-template="celestial"] .inv-sheet::after {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 16px;
+  margin: 26px auto 0;
+  background: var(--cel-foil);
+  -webkit-mask: var(--cel-star) center / 16px 16px no-repeat, var(--cel-star) 8px center / 8px 8px no-repeat, var(--cel-star) calc(100% - 8px) center / 8px 8px no-repeat;
+  mask: var(--cel-star) center / 16px 16px no-repeat, var(--cel-star) 8px center / 8px 8px no-repeat, var(--cel-star) calc(100% - 8px) center / 8px 8px no-repeat;
+}
+.thumb > .inv[data-template="celestial"] .inv-sheet::after { display: none; }
+
+/* ───────── Envelope ───────── */
+/* No papel escuro a sombra não separa o envelope do fundo: quem dá corpo é um halo de luar, um fio de metal em volta
+   (fundo, bolso e aba) e a aba um tom acima do bolso. */
+.inv[data-template="celestial"] .env-body { filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 26px color-mix(in srgb, var(--accent) 16%, transparent)); }
+.inv[data-template="celestial"] .env-back { background: color-mix(in srgb, var(--paper) 70%, var(--bg)); box-shadow: inset 0 0 0 1px var(--cel-hair); }
+.inv[data-template="celestial"] .env-front { background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 93%, var(--ink)), var(--paper) 70%); box-shadow: inset 0 0 0 1px var(--cel-hair); }
+/* no bolso: um fio de metal na borda em V e estrelas esparsas, que anunciam o que vem dentro */
+.inv[data-template="celestial"] .env-front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--cel-line);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0L50 54L100 0' fill='none' stroke='%23000' stroke-width='2.6' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, var(--cel-star) 8% 64% / 13px 13px no-repeat, var(--cel-star) 17% 88% / 8px 8px no-repeat, var(--cel-star) 29% 76% / 6px 6px no-repeat, var(--cel-star) 92% 64% / 13px 13px no-repeat, var(--cel-star) 83% 88% / 8px 8px no-repeat, var(--cel-star) 71% 76% / 6px 6px no-repeat, var(--cel-star) 50% 92% / 7px 7px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0L50 54L100 0' fill='none' stroke='%23000' stroke-width='2.6' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, var(--cel-star) 8% 64% / 13px 13px no-repeat, var(--cel-star) 17% 88% / 8px 8px no-repeat, var(--cel-star) 29% 76% / 6px 6px no-repeat, var(--cel-star) 92% 64% / 13px 13px no-repeat, var(--cel-star) 83% 88% / 8px 8px no-repeat, var(--cel-star) 71% 76% / 6px 6px no-repeat, var(--cel-star) 50% 92% / 7px 7px no-repeat;
+}
+/* aba: um fio de metal acompanha a dobra e as duas diagonais (triângulo de metal por baixo, face recuada) */
+.inv[data-template="celestial"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 1.5px)); background: var(--cel-foil); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.inv[data-template="celestial"] .env-flap-face { clip-path: polygon(3px 1px, calc(100% - 3px) 1px, 50% 58%); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 93%, var(--ink)), color-mix(in srgb, var(--paper) 86%, var(--ink))); }
+/* forro: céu estrelado com a lua em glória; o desenho gira de volta para sair de pé na aba aberta */
+.inv[data-template="celestial"] .env-liner { color: color-mix(in srgb, var(--accent) 72%, #fff); background-image: radial-gradient(circle at 50% 24%, color-mix(in srgb, var(--liner) 78%, #fff), var(--liner) 46%); }
+.inv[data-template="celestial"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="celestial"] .cel-liner-disc { fill: var(--liner); }
+/* o cartão que sobe já traz a moldura e uma estrela */
+.inv[data-template="celestial"] .env-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 0 0 5px var(--paper), inset 0 0 0 6px var(--cel-line), inset 0 0 0 9px var(--paper), inset 0 0 0 10px var(--cel-hair); background-image: radial-gradient(120% 60% at 50% 0, color-mix(in srgb, var(--accent) 14%, var(--paper)), transparent 100%); padding-top: 8%; }
+.inv[data-template="celestial"] .env-card-line { width: 18px; height: 18px; opacity: 1; box-shadow: none; background: var(--cel-foil-m); -webkit-mask: var(--cel-star) center / contain no-repeat; mask: var(--cel-star) center / contain no-repeat; }
+.inv[data-template="celestial"] .env-to { font: 400 14px/1.6 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; padding-left: 0.2em; color: var(--soft); }
+.inv[data-template="celestial"] .env-to strong { font: 400 clamp(25px, 8cqw, 30px)/1.25 var(--font-names); letter-spacing: 0.08em; margin-top: 8px; color: var(--ink); }
+.inv[data-template="celestial"] .env-cta { font: 400 16px/1.1 var(--font-label); letter-spacing: 0.16em; padding-left: calc(30px + 0.16em); border-radius: var(--btn-radius); color: var(--btn-ink); background: var(--accent); border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 50%, transparent), 0 6px 18px rgba(0, 0, 0, 0.3); }
+.inv[data-template="celestial"] .env-seal { --seal-weight: 400; }
+
+/* ───────── Telas baixas: ritmo mais curto, para data e local caberem na primeira tela ───────── */
+@media (max-height: 780px) and (max-width: 500px) {
+  .inv[data-template="celestial"]:not([data-still="true"]) { --s1: 8px; --s2: 12px; }
+  .inv[data-template="celestial"]:not([data-still="true"]) .inv-cover { padding-top: 12px; gap: 8px; }
+  .inv[data-template="celestial"]:not([data-still="true"]) .inv-paper { padding-block: calc(var(--paper-pad) - 10px) calc(var(--paper-pad) - 12px); }
+  .inv[data-template="celestial"]:not([data-still="true"]) .cel-emblem { width: clamp(72px, 22cqw, 84px); }
+}
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="celestial"] { --thumb-h: 779px; }
+.inv[data-template="celestial"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 702px; }
+.inv[data-template="celestial"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 728px; }
+.inv[data-template="celestial"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 699px; }
+.inv[data-template="celestial"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 702px; }
+.inv[data-template="celestial"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 684px; }

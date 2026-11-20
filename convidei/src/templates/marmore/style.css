@@ -1,0 +1,306 @@
+/* Modelo Mármore. Todas as regras ficam sob .inv[data-template="marmore"]. */
+.inv[data-template="marmore"] {
+  --font-names: var(--f-prata), "Prata", "Bodoni 72", "Didot", Georgia, serif;
+  --font-text: var(--f-raleway), "Raleway", "Helvetica Neue", system-ui, sans-serif;
+  --font-label: var(--f-raleway), "Raleway", "Helvetica Neue", system-ui, sans-serif;
+  --names-size: clamp(31px, 11cqw, 45px);
+  --names-weight: 400;
+  --names-leading: 1.18;
+  --names-em: 0.58; /* Prata, medida com "Maximiliano" e "Wilhelmina" */
+  --names-tracking: 0;
+  /* Na Prata o "1" é igual ao "l" ("11" lê "ll"): onde pode haver algarismo, a didone é a Playfair, que tem o 1 com bandeira. */
+  --mm-num: var(--f-playfair), "Playfair Display", "Bodoni 72", Georgia, serif;
+  --amp-scale: 0.6;
+  --label-tracking: 0.24em;
+  --radius: 0px;
+  --btn-radius: 0px;
+  --mm-pad: clamp(24px, 8.4cqw, 34px);
+  --paper-pad: var(--mm-pad);
+  --frame-inset: 0px;
+  --paper-shadow: none;
+  --grain: none; /* pedra polida: sem grão de papel */
+  /* Ouro: tons tirados da paleta. O claro puxa para o champanhe do lacre, os escuros para a sombra. */
+  --foil-l: color-mix(in srgb, var(--accent) 46%, var(--seal-ink));
+  --foil-m: var(--accent);
+  --foil-d: color-mix(in srgb, var(--accent) 84%, #000);
+  --foil-x: color-mix(in srgb, var(--accent) 64%, #000);
+  --foil: linear-gradient(105deg, var(--foil-d) 0%, var(--foil-m) 22%, var(--foil-l) 46%, var(--foil-m) 68%, var(--foil-d) 100%);
+  --gold-line: color-mix(in srgb, var(--accent) 74%, var(--paper));
+  /* preenchimento de botão: ouro quase chapado, para o texto ter contraste em toda a largura */
+  --mm-fill: linear-gradient(100deg, var(--foil-d), var(--accent) 50%, var(--foil-d));
+  --mm-vein: color-mix(in srgb, var(--ink) 36%, var(--paper));
+  --mm-cut: clamp(16px, 5.4cqw, 22px); /* chanfro do cartão */
+  /* valores de partida do contorno chanfrado (cada peça redefine os seus) */
+  --c: 10px;
+  --k: var(--gold-line);
+  --kw: 1px;
+  --fill: linear-gradient(transparent, transparent);
+  /* ritmo vertical: dois passos */
+  --s1: clamp(12px, 3.9cqw, 16px);
+  --s2: clamp(18px, 6cqw, 24px);
+  /* Veios das seções e do envelope: máscaras estáticas, pintadas com a cor da paleta. Cada pedra tem duas máscaras, a dos
+     veios cinzentos (v) e a do veio de ouro (g), que recebe o gradiente --foil. Nas seções, uma peça para o canto de cima
+     (t) e outra para o de baixo (b): os veios cortam os cantos e descem pelas margens, fora da coluna do texto. No envelope
+     (e) a máscara é a mesma na frente e na aba, então o veio continua de uma para a outra. Fitas geradas pela mesma função
+     ribbon() do index.tsx. */
+  --mm-vt: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cfilter id='w' x='-8%25' y='-8%25' width='116%25' height='116%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='7'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cfilter id='s' x='-12%25' y='-12%25' width='124%25' height='124%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='7'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='5'/%3E%3C/filter%3E%3Cpath filter='url(%23s)' opacity='.17' d='M306 -30L308 -6L314.8 15L323.6 34L331.8 52.1L341.1 68.9L350.3 85L357.3 101.9L363.9 118.7L374.1 134.9L378.9 154.2L380.8 175.7L386 200L386 200L391.5 175.2L388.7 152.6L384.8 131.9L382.7 111.4L374.2 93.7L364.2 77.5L355.1 60.9L345.6 44.5L335.3 28L326.6 9.9L317.5 -9.4L306 -30Z'/%3E%3Cg filter='url(%23w)'%3E%3Cpath opacity='.36' d='M-20 150L-15.1 154.1L-10.6 158.5L-6.7 163.4L-3.4 168.8L-0.6 174.6L1.6 180.9L3.4 187.5L4.6 194.6L5.2 202L5.3 209.8L5 218L4.2 226.5L2.8 235.4L0.8 244.5L-1.8 253.9L-4.7 263.7L-8.1 273.7L-12 284L-12 284L-7.7 273.9L-4 263.9L-0.9 254.2L1.5 244.7L3.5 235.5L5 226.6L6 218.1L6.5 209.9L6.3 202L5.5 194.5L4.3 187.3L2.5 180.6L0.1 174.3L-2.8 168.5L-6.2 163.1L-10.2 158.2L-14.8 153.7L-20 150ZM392 170L393 178.2L393.7 186L394.1 193.5L394.4 200.8L394.6 207.9L394.6 214.8L394.6 221.6L394.7 228.3L394.8 235L395.2 241.7L395.8 248.4L396.5 255.3L397.8 262.2L399.6 269.3L401.8 276.6L404.5 284.1L407.9 291.9L412 300L412 300L408.2 291.8L404.9 283.9L402.3 276.4L400.2 269.1L398.7 262L397.5 255.1L396.6 248.3L396 241.6L395.7 235L395.4 228.3L395.4 221.6L395.4 214.8L395.2 207.9L395.1 200.8L394.8 193.5L394.2 186L393.3 178.1L392 170Z'/%3E%3Cpath opacity='.64' d='M316 -24L318.5 -13L321.7 -2.7L325.5 7.1L329.7 16.4L334 25.3L338.6 34L343.5 42.3L348.2 50.6L353 58.9L357.9 67L362.7 75.3L367 83.8L371.2 92.6L375.4 101.6L379.4 111L382.8 120.9L385.6 131.5L387.9 142.7L389.4 154.7L390.4 167.5L391 181.2L391 196L391 196L392.1 181.3L392.2 167.4L391.2 154.5L389.4 142.5L387.2 131.1L384.4 120.4L381.2 110.3L377.8 100.6L373.9 91.4L369.4 82.6L364.6 74.2L359.8 65.9L355.1 57.6L350.1 49.5L345 41.4L340.4 33L335.6 24.5L331.1 15.7L327 6.5L323.1 -3.2L319.5 -13.3L316 -24ZM354 -20L355 -14.9L356.4 -10.1L358 -5.6L359.7 -1.4L361.7 2.7L364 6.4L366.5 9.8L369.1 13.1L371.9 16.3L374.9 19.1L378.2 21.6L381.6 24.1L385.1 26.4L388.9 28.5L392.7 30.5L396.7 32.4L400.9 34L405.3 35.3L409.8 36.6L414.4 37.9L419.1 39L424 40L424 40L419.2 38.7L414.5 37.4L409.9 36.1L405.5 34.5L401.3 32.8L397.2 31.1L393.2 29.4L389.3 27.6L385.6 25.5L382.1 23.3L378.8 20.9L375.7 18.2L372.7 15.4L369.9 12.5L367.2 9.3L364.8 5.8L362.6 2.1L360.5 -1.7L358.5 -5.9L356.9 -10.3L355.4 -15L354 -20ZM-24 74L-19.1 71.9L-14.3 69.4L-9.6 66.8L-5 64L-0.6 60.9L3.8 57.7L8 54.2L12 50.5L15.8 46.5L19.6 42.4L23.3 38.1L26.6 33.5L29.7 28.7L32.8 23.7L35.7 18.5L38.4 13.1L41 7.5L43.3 1.7L45.4 -4.4L47.1 -10.7L48.7 -17.3L50 -24L50 -24L48.4 -17.3L46.6 -10.9L44.5 -4.7L42.3 1.3L40 7.1L37.6 12.8L34.9 18.1L32.1 23.3L29 28.2L25.7 32.9L22.2 37.4L18.8 41.7L15.1 45.9L11.3 49.8L7.3 53.4L3.2 56.9L-1 60.3L-5.4 63.4L-9.9 66.3L-14.5 69L-19.2 71.5L-24 74Z'/%3E%3C/g%3E%3C/svg%3E");
+  --mm-gt: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cfilter id='w' x='-8%25' y='-8%25' width='116%25' height='116%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='7'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cg filter='url(%23w)'%3E%3Cpath d='M329 -24L331.2 -15.6L333.8 -7.6L336.7 0.1L339.8 7.5L343.2 14.6L346.6 21.6L350.3 28.3L354.1 34.9L358 41.4L361.8 47.9L365.6 54.3L369.4 60.8L373.2 67.3L376.9 73.9L380.4 80.7L383.7 87.6L386.7 94.8L389.5 102.2L391.9 110L394.1 118.1L395.9 126.5L397.5 135.4L398.7 144.7L399.3 154.6L399.4 165L399 176L399 176L399.7 165L399.7 154.6L399.3 144.7L398.5 135.3L397.2 126.3L395.4 117.7L393.2 109.6L390.5 101.9L387.7 94.4L384.6 87.2L381.3 80.2L377.8 73.4L374.3 66.7L370.6 60.1L366.8 53.7L362.8 47.3L358.9 40.8L355.1 34.3L351.3 27.7L347.6 21L343.9 14.2L340.5 7.2L337.3 -0.2L334.3 -7.8L331.5 -15.7L329 -24Z'/%3E%3C/g%3E%3C/svg%3E");
+  --mm-vb: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cfilter id='w' x='-8%25' y='-8%25' width='116%25' height='116%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='9'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cfilter id='s' x='-12%25' y='-12%25' width='124%25' height='124%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='9'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='5'/%3E%3C/filter%3E%3Cpath filter='url(%23s)' opacity='.17' d='M96 330L93.7 308.3L86.8 289.2L78.1 271.9L70 255.1L60.9 239.3L51.8 224L44.9 207.7L38.3 191.2L28.4 175L23.4 155.8L21.2 134.3L16 110L16 110L11.3 134.9L14.3 157.4L18.5 177.9L21 198L29.3 215.3L39.2 231L48.1 246.9L57.4 262.4L67.5 277.7L76.1 294.3L85 311.7L96 330Z'/%3E%3Cg filter='url(%23w)'%3E%3Cpath opacity='.36' d='M412 20L407.8 26.7L404.5 33.6L401.6 40.7L399.3 48.1L397.5 55.6L396 63.3L395 71.2L394.2 79.2L393.5 87.5L393 95.9L392.8 104.5L392.6 113.3L392.2 122.3L391.7 131.5L391 140.8L390.3 150.3L389.3 160.1L388 170L388 170L389.6 160.1L390.9 150.4L391.8 140.9L392.4 131.5L392.8 122.3L393.2 113.3L393.6 104.6L394.1 95.9L394.5 87.5L395 79.3L395.8 71.3L396.9 63.4L398.2 55.7L399.9 48.2L402.1 40.9L404.9 33.8L408.2 26.9L412 20Z'/%3E%3Cpath opacity='.64' d='M86 324L83.4 314L80.1 304.7L76.3 295.7L72.2 287.1L67.8 278.8L63.3 270.6L58.6 262.6L53.7 254.8L48.7 247L43.9 239L39.3 230.8L34.6 222.6L29.9 214.2L25.7 205.3L21.9 195.9L18.5 186L15.7 175.6L13.4 164.4L11.4 152.6L9.8 140L9.1 126.5L9 112L9 112L8.4 126.5L8.6 140.1L9.4 152.9L11.2 164.8L13.7 176L16.8 186.6L20.2 196.5L24.1 206L28.2 215L32.3 223.8L37 232.2L42 240.2L47 248L51.9 255.9L56.7 263.8L61.7 271.6L66.5 279.5L70.9 287.8L75.2 296.2L79.1 305.1L82.6 314.3L86 324ZM44 324L43 319.7L41.7 315.6L40.2 311.7L38.4 308.1L36.4 304.6L34.3 301.3L32 298.2L29.4 295.4L26.8 292.6L23.9 290L20.8 287.6L17.6 285.3L14.2 283.1L10.6 281.1L6.8 279.4L2.8 277.8L-1.2 276.2L-5.5 274.7L-9.9 273.3L-14.4 272L-19.1 270.9L-24 270L-24 270L-19.2 271.4L-14.6 272.7L-10.1 274L-5.7 275.3L-1.5 276.8L2.6 278.5L6.4 280.3L10 282.3L13.6 284.2L17 286.2L20.2 288.4L23.2 290.8L26.1 293.3L28.8 295.9L31.3 298.8L33.6 301.9L35.8 305L37.8 308.4L39.5 312L41.1 315.8L42.6 319.8L44 324ZM424 232L418.8 233.5L413.8 235.5L409 237.8L404.3 240.4L399.8 243.1L395.5 246.2L391.3 249.5L387.3 252.9L383.6 256.7L380 260.8L376.6 264.9L373.3 269.3L370.3 273.9L367.7 278.8L365.2 283.9L362.9 289.1L360.7 294.5L358.8 300L357.1 305.8L355.8 311.7L354.7 317.8L354 324L354 324L355.2 317.8L356.5 311.8L358 306L359.6 300.3L361.4 294.7L363.6 289.4L365.9 284.2L368.5 279.3L371.4 274.6L374.4 270L377.4 265.6L380.7 261.4L384.3 257.4L388.1 253.7L391.9 250.1L396 246.8L400.3 243.8L404.7 241L409.3 238.4L414.1 236.1L419 234L424 232Z'/%3E%3C/g%3E%3C/svg%3E");
+  --mm-gb: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cfilter id='w' x='-8%25' y='-8%25' width='116%25' height='116%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='9'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cg filter='url(%23w)'%3E%3Cpath d='M73 324L70.8 316.3L68.3 308.8L65.4 301.7L62.2 294.9L58.8 288.3L55.2 281.8L51.6 275.4L47.8 269.2L43.9 263L40 256.9L36.2 250.7L32.3 244.5L28.5 238.2L24.8 231.8L21.4 225.2L18.1 218.4L14.8 211.5L11.8 204.3L9 196.7L6.7 188.8L4.7 180.5L3.2 171.8L2 162.6L1.3 153L1 142.8L1 132L1 132L0.4 142.8L0.5 153L1.2 162.7L2.4 171.9L4 180.7L6 189L8.3 197L10.8 204.6L13.6 212L16.7 219.1L20.1 225.8L23.8 232.4L27.5 238.8L31.3 245.1L35.2 251.3L39.1 257.4L43.1 263.5L46.9 269.7L50.7 275.9L54.5 282.2L58.1 288.6L61.5 295.2L64.6 302.1L67.6 309.1L70.4 316.4L73 324Z'/%3E%3C/g%3E%3C/svg%3E");
+  --mm-ev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 300' preserveAspectRatio='none'%3E%3Cfilter id='w' x='-8%25' y='-8%25' width='116%25' height='116%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='13'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='20' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cfilter id='s' x='-12%25' y='-12%25' width='124%25' height='124%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='13'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='20' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='5'/%3E%3C/filter%3E%3Cpath filter='url(%23s)' opacity='.17' d='M84 330L74.1 301.9L65.3 275.7L59.3 249.2L58.5 221.9L60.1 193.8L64.6 164.7L74.3 135.3L86.1 105L95.1 71.5L111 39L130.2 6.5L146 -30L146 -30L119.7 0.1L100.9 33.5L83.6 66L64.5 96.3L53.7 128.8L46.9 160.8L41.6 191.8L40.3 222.1L44.3 251.6L51.1 280.1L63.6 307L84 330ZM450 84L429.7 96.7L412.6 112.8L397.5 130.4L381.5 147.7L369.3 167.9L355.3 187.5L344.1 209.2L334.4 232.2L322.9 255.1L309.5 277.7L299.4 303.1L290 330L290 330L307.6 307.5L322.9 284.7L333.5 260.5L345.4 238L358.9 217.1L371.2 196.5L381.4 175.4L394.7 156.8L405.8 136.9L420.1 119.4L435.1 102.4L450 84Z'/%3E%3Cg filter='url(%23w)'%3E%3Cpath opacity='.36' d='M-24 60L-15.5 65.6L-7.9 72L-1.1 79L4.9 86.6L9.8 94.9L13.8 103.6L16.9 112.6L18.8 122L19.8 131.5L19.6 141.2L18.3 150.8L15.9 160.4L12.5 169.9L7.8 179.2L1.7 188.1L-5.6 196.5L-14.2 204.4L-24 212L-24 212L-13.8 204.9L-5.1 196.9L2.2 188.4L8.3 179.5L13.2 170.2L17 160.8L19.5 151L20.6 141.2L20.7 131.5L19.8 121.8L17.7 112.4L14.6 103.2L10.6 94.5L5.4 86.2L-0.5 78.5L-7.4 71.5L-15.3 65.3L-24 60ZM200 -24L202.3 -16.8L205.2 -10L208.4 -3.6L211.8 2.5L215.5 8.4L219.4 14L223.3 19.6L227.3 25.1L231.4 30.5L235.4 36L239.4 41.5L243.4 47.1L247.2 52.8L250.7 58.8L254 65.1L256.9 71.7L259.6 78.6L262 86L262 86L260 78.5L257.5 71.4L254.5 64.8L251.2 58.5L247.7 52.5L244.1 46.6L240.3 40.9L236.2 35.4L232.1 30L228 24.6L223.9 19.1L219.9 13.7L216.1 8L212.4 2.2L208.9 -3.9L205.7 -10.3L202.7 -17L200 -24ZM444 200L438.4 203.5L433.3 207.6L428.5 212.2L424 217.2L420.1 222.8L416.5 228.9L413.3 235.2L410.5 242L408.3 249.1L406.5 256.6L405 264.3L404 272.3L403.4 280.5L403.3 288.9L403.8 297.5L404.8 306.2L406.1 315.1L408 324L408 324L406.4 315L405.2 306.2L404.5 297.4L404.3 288.9L404.4 280.5L404.8 272.3L405.8 264.4L407.3 256.7L409.2 249.4L411.5 242.3L414.2 235.6L417.2 229.2L420.8 223.3L424.7 217.7L428.9 212.6L433.6 207.9L438.6 203.7L444 200Z'/%3E%3Cpath opacity='.64' d='M96 324L88 310.7L80.8 297.4L74.9 283.8L70.4 270L67 255.8L64.6 241.4L63.7 226.7L63.9 211.8L64.8 196.5L66.7 181L70 165.3L74.3 149.4L79.1 133.1L84.5 116.5L91 99.7L98.5 82.7L106.8 65.5L116 48.2L125.9 30.6L136.1 12.7L146.8 -5.5L158 -24L158 -24L145.8 -6.1L134.3 11.7L123.6 29.4L113.9 47.1L104.9 64.6L96.6 81.8L89 98.8L82.2 115.6L75.9 132.1L70.8 148.4L67 164.7L64.1 180.6L62 196.3L60.9 211.7L61.2 226.8L62.6 241.7L64.8 256.2L68.5 270.5L73.4 284.4L79.4 298.1L86.8 311.4L96 324ZM444 96L435.8 103.3L428 111.2L420.5 119.4L413.2 127.9L406.3 136.9L399.8 146.2L393.3 155.8L386.9 165.6L380.8 175.7L374.9 186.2L368.9 196.8L363 207.6L357.1 218.6L351.1 229.8L344.9 241L338.8 252.5L332.9 264.2L326.8 276.1L320.4 287.9L313.8 299.9L306.9 311.8L300 324L300 324L307.5 312.2L314.6 300.3L321.3 288.4L328 276.7L334.6 265.1L341 253.6L347.1 242.1L352.9 230.7L358.7 219.5L364.7 208.5L370.6 197.7L376.5 187.1L382.7 176.9L388.8 166.7L394.9 156.8L401.2 147.2L407.9 138L414.6 129L421.5 120.2L428.6 111.8L436.2 103.8L444 96ZM298 -24L302 -16.8L306.5 -10.2L311.2 -4.1L316.2 1.5L321.5 6.5L327 11.1L332.7 15.2L338.7 18.7L345 21.8L351.4 24.4L358.1 26.7L365 28.4L372.1 29.5L379.4 30.2L386.9 30.6L394.5 30.6L402.4 30.2L410.4 29.5L418.6 28.3L426.9 26.6L435.4 24.5L444 22L444 22L435.3 24.1L426.8 25.9L418.4 27.2L410.3 28.4L402.3 29.2L394.5 29.7L386.9 29.7L379.5 29.3L372.2 28.4L365.3 27L358.4 25.3L351.8 23.3L345.4 20.8L339.3 17.7L333.3 14.2L327.5 10.3L322 5.9L316.8 0.9L311.7 -4.5L306.9 -10.5L302.4 -17L298 -24ZM150 324L148.7 319.3L146.9 314.7L144.6 310.3L142.2 305.9L139.5 301.5L136.6 297.2L133.4 293L130.2 288.8L126.7 284.7L123.2 280.7L119.6 276.7L116 272.7L112.4 268.8L108.8 265L105.1 261.3L101.6 257.6L98.2 253.9L95 250.2L92.1 246.5L89.2 242.9L86.5 239.4L84 236L84 236L86.1 239.7L88.6 243.4L91.4 247L94.5 250.6L97.7 254.3L101.1 258L104.5 261.8L108 265.7L111.5 269.6L115.2 273.5L118.9 277.3L122.5 281.3L126 285.3L129.4 289.4L132.8 293.4L135.9 297.7L138.9 301.9L141.6 306.2L144.1 310.6L146.3 315L148.2 319.5L150 324Z'/%3E%3C/g%3E%3C/svg%3E");
+  --mm-eg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 300' preserveAspectRatio='none'%3E%3Cfilter id='w' x='-8%25' y='-8%25' width='116%25' height='116%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='2' seed='13'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='20' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cg filter='url(%23w)'%3E%3Cpath d='M111 324L103.8 313.2L97.5 302.2L92 291L87.4 279.6L83.9 267.9L81.1 256.1L79.1 244.1L77.8 231.8L77.3 219.4L77.8 206.7L79 193.8L80.7 180.7L83.1 167.4L86.3 153.9L90.3 140.2L94.8 126.2L99.9 112.1L105.8 97.8L112.3 83.3L119.2 68.6L126.6 53.7L134.4 38.5L142.8 23.1L151.8 7.6L161.2 -8.1L171 -24L171 -24L160.9 -8.3L151.3 7.4L142.3 22.8L133.6 38L125.4 53.1L117.8 67.9L110.8 82.7L104.5 97.2L98.8 111.6L93.6 125.8L89 139.8L85.1 153.5L81.9 167.1L79.2 180.5L77.3 193.6L76.3 206.6L76.1 219.4L76.5 231.9L77.7 244.2L79.8 256.4L82.8 268.2L86.7 279.9L91.4 291.3L96.9 302.4L103.5 313.4L111 324ZM444 112L438.4 117.5L433 123.4L427.8 129.6L422.7 136.1L417.7 142.8L412.8 149.8L408 156.9L403.3 164.4L398.5 171.9L393.9 179.7L389.3 187.7L384.7 195.9L380 204.3L375.3 212.7L370.6 221.3L366 230.2L361.3 239.2L356.6 248.2L351.7 257.4L346.7 266.7L341.5 276L336.2 285.4L330.8 294.9L325.3 304.5L319.7 314.2L314 324L314 324L320.1 314.4L325.9 304.9L331.6 295.3L337 285.8L342.2 276.4L347.3 267L352.3 257.8L357.2 248.6L362.2 239.6L367 230.7L371.8 222L376.4 213.3L381 204.7L385.5 196.4L390.2 188.2L394.8 180.3L399.4 172.4L403.9 164.8L408.7 157.4L413.5 150.2L418.3 143.2L423.2 136.5L428.3 130.1L433.5 123.8L438.7 117.8L444 112Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Corte chanfrado: cada peça diz o tamanho do seu chanfro em --c. */
+.inv[data-template="marmore"] :is(.marmore-slab-edge, .marmore-stone, .inv-btn, .rsvp-state, .env-cta),
+.inv[data-template="marmore"] .env-card::before,
+.inv[data-template="marmore"] .env-card::after,
+.inv[data-template="marmore"] .inv-section::before,
+.inv[data-template="marmore"] .inv-section::after {
+  clip-path: polygon(var(--c) 0, calc(100% - var(--c)) 0, 100% var(--c), 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, var(--c) 100%, 0 calc(100% - var(--c)), 0 var(--c));
+}
+/* Contorno chanfrado em fio (--k, espessura --kw) sobre um preenchimento (--fill): quatro diagonais nos cantos e quatro lados. */
+.inv[data-template="marmore"] :is(.inv-btn, .rsvp-state) {
+  background:
+    linear-gradient(135deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), transparent calc(50% + var(--kw))) 0 0 / var(--c) var(--c) no-repeat,
+    linear-gradient(225deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), transparent calc(50% + var(--kw))) 100% 0 / var(--c) var(--c) no-repeat,
+    linear-gradient(315deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), transparent calc(50% + var(--kw))) 100% 100% / var(--c) var(--c) no-repeat,
+    linear-gradient(45deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), transparent calc(50% + var(--kw))) 0 100% / var(--c) var(--c) no-repeat,
+    linear-gradient(var(--k), var(--k)) 0 0 / 100% var(--kw) no-repeat,
+    linear-gradient(var(--k), var(--k)) 0 100% / 100% var(--kw) no-repeat,
+    linear-gradient(var(--k), var(--k)) 0 0 / var(--kw) 100% no-repeat,
+    linear-gradient(var(--k), var(--k)) 100% 0 / var(--kw) 100% no-repeat,
+    var(--fill);
+}
+/* Placa chanfrada sem recorte (o elemento tem filhos que não podem ser cortados): os quatro cantos são pintados em diagonal
+   (transparente por fora, fio --k, pedra por dentro) e o miolo em três faixas. */
+.inv[data-template="marmore"] :is(.inv-section, .env-card) {
+  --pp: linear-gradient(var(--paper), var(--paper));
+  --kk: linear-gradient(var(--k), var(--k));
+  background:
+    linear-gradient(135deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), var(--paper) calc(50% + var(--kw))) 0 0 / var(--c) var(--c) no-repeat,
+    linear-gradient(225deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), var(--paper) calc(50% + var(--kw))) 100% 0 / var(--c) var(--c) no-repeat,
+    linear-gradient(315deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), var(--paper) calc(50% + var(--kw))) 100% 100% / var(--c) var(--c) no-repeat,
+    linear-gradient(45deg, transparent 50%, var(--k) 50%, var(--k) calc(50% + var(--kw)), var(--paper) calc(50% + var(--kw))) 0 100% / var(--c) var(--c) no-repeat,
+    var(--kk) var(--c) 0 / calc(100% - 2 * var(--c)) var(--kw) no-repeat,
+    var(--kk) var(--c) 100% / calc(100% - 2 * var(--c)) var(--kw) no-repeat,
+    var(--kk) 0 var(--c) / var(--kw) calc(100% - 2 * var(--c)) no-repeat,
+    var(--kk) 100% var(--c) / var(--kw) calc(100% - 2 * var(--c)) no-repeat,
+    var(--pp) 0 var(--c) / 100% calc(100% - 2 * var(--c)) no-repeat,
+    var(--pp) var(--c) 0 / calc(100% - 2 * var(--c)) var(--c) no-repeat,
+    var(--pp) var(--c) 100% / calc(100% - 2 * var(--c)) var(--c) no-repeat;
+}
+
+/* ───────── Capa: a placa de mármore ───────── */
+.inv[data-template="marmore"] .inv-paper { background: none; box-shadow: none; padding: var(--mm-pad) var(--mm-pad) calc(var(--mm-pad) - 4px); }
+.inv[data-template="marmore"] .inv-paper::before, .inv[data-template="marmore"] .inv-paper::after { display: none; }
+/* O slot do alto traz a placa (posicionada em relação ao cartão) e o emblema: não pode virar bloco de referência, então
+   não anima (uma animação com transform prenderia a placa dentro dele). */
+.inv[data-template="marmore"] .inv-art-top { position: static; animation: none !important; margin-bottom: var(--s1); }
+.inv[data-template="marmore"] .marmore-slab { position: absolute; inset: 0; z-index: 0; filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.2)) drop-shadow(0 16px 26px rgba(0, 0, 0, 0.2)); }
+.inv[data-template="marmore"] .marmore-slab-edge { position: absolute; inset: 0; --c: var(--mm-cut); background: var(--foil); }
+/* a pedra fica 1,5px para dentro: o que sobra em volta é a borda dourada (o chanfro de dentro é um pouco menor, para a borda ter a mesma espessura na diagonal) */
+.inv[data-template="marmore"] .marmore-stone { position: absolute; inset: 1.5px; width: calc(100% - 3px); height: calc(100% - 3px); --c: calc(var(--mm-cut) - 0.9px); background: var(--paper); }
+.inv[data-template="marmore"] .marmore-emblem { position: relative; z-index: 1; width: clamp(150px, 50cqw, 196px); height: auto; overflow: visible; }
+
+.inv[data-template="marmore"] .inv-hello { font: 400 16.5px/1.4 var(--font-text); color: var(--soft); margin-bottom: var(--s1) !important; }
+/* a saudação e a frase de abertura quebram antes do canto direito, por onde passa o veio */
+.inv[data-template="marmore"] :is(.inv-hello, .inv-headline) { max-width: 78cqw; margin-inline: auto; }
+.inv[data-template="marmore"] .inv-hello strong { font-weight: 600; }
+.inv[data-template="marmore"] .inv-headline { font-weight: 500; line-height: 1.7; letter-spacing: 0.22em; padding-left: 0.22em; color: var(--soft); margin-bottom: var(--s1) !important; }
+@container (max-width: 300px) { .inv[data-template="marmore"] .inv-headline { letter-spacing: 0.14em; padding-left: 0.14em; } }
+
+/* Nomes dentro de um hexágono de fio duplo, de ponta para cima, que vai quase de borda a borda da placa.
+   --hx-w é a largura do hexágono e --hx-h a altura de cada "telhado". O texto só pode ocupar 64% da largura (perto das
+   pontas o hexágono estreita), e a base usa --paper-pad para calcular a largura útil: por isso ele é redefinido aqui. */
+.inv[data-template="marmore"] .inv-names {
+  --hx-w: calc(100cqw - 24px);
+  --hx-h: calc(var(--hx-w) * 0.17);
+  --paper-pad: calc(18cqw + 8px);
+  position: relative;
+  margin-inline: calc(12px - var(--mm-pad));
+  padding: calc(var(--hx-h) * 0.68) calc(var(--hx-w) * 0.175) calc(var(--hx-h) * 0.66);
+  /* título de uma linha só ("Maximiliano"): o hexágono não achata em losango, os lados verticais continuam existindo */
+  min-height: calc(var(--hx-h) * 2.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--ink);
+}
+.inv[data-template="marmore"] .inv-names::before, .inv[data-template="marmore"] .inv-names::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --h: var(--hx-h);
+  --lk: var(--gold-line);
+  --up: linear-gradient(to bottom right, transparent calc(50% - 1px), var(--lk) calc(50% - 0.45px), var(--lk) calc(50% + 0.45px), transparent calc(50% + 1px));
+  --dn: linear-gradient(to bottom left, transparent calc(50% - 1px), var(--lk) calc(50% - 0.45px), var(--lk) calc(50% + 0.45px), transparent calc(50% + 1px));
+  background:
+    var(--up) 0 0 / 50% var(--h) no-repeat,
+    var(--dn) 100% 0 / 50% var(--h) no-repeat,
+    var(--dn) 0 100% / 50% var(--h) no-repeat,
+    var(--up) 100% 100% / 50% var(--h) no-repeat,
+    linear-gradient(var(--lk), var(--lk)) 0 var(--h) / 1px calc(100% - 2 * var(--h)) no-repeat,
+    linear-gradient(var(--lk), var(--lk)) 100% var(--h) / 1px calc(100% - 2 * var(--h)) no-repeat;
+}
+/* fio de dentro: paralelo ao de fora, mais apagado */
+.inv[data-template="marmore"] .inv-names::after { inset: 6.3px 6px; --h: calc(var(--hx-h) - 1.8px); --lk: color-mix(in srgb, var(--accent) 42%, var(--paper)); }
+/* um losango de ouro em cada ponta do hexágono, unindo os dois fios */
+.inv[data-template="marmore"] .inv-name:first-of-type::before, .inv[data-template="marmore"] .inv-name:last-of-type::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  background: var(--foil);
+  transform: translate(-50%, -50%) scaleX(0.7) rotate(45deg);
+}
+.inv[data-template="marmore"] .inv-name:last-of-type::after { top: 100%; }
+/* conector: "&" da própria Prata, em ouro, entre dois fios que somem */
+.inv[data-template="marmore"] .inv-amp { font-family: var(--font-names); font-style: normal; line-height: 1; margin: 0.26em 0 0.2em; display: flex; align-items: center; gap: 0.55em; color: var(--accent); }
+.inv[data-template="marmore"] .inv-amp::before, .inv[data-template="marmore"] .inv-amp::after { content: ""; width: 1.7em; height: 1px; background: linear-gradient(to right, transparent, var(--gold-line)); }
+.inv[data-template="marmore"] .inv-amp::after { transform: scaleX(-1); }
+.inv[data-template="marmore"] .inv-num { font-family: var(--mm-num); }
+.inv[data-template="marmore"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); }
+.inv[data-template="marmore"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.08); }
+.inv[data-template="marmore"] .inv-names[data-count="1"][data-short="true"] { font-size: calc(var(--names-size) * 1.42); }
+.inv[data-template="marmore"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.76); line-height: 1.26; }
+.inv[data-template="marmore"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.68); }
+
+.inv[data-template="marmore"] .inv-message { font: 400 17px/1.55 var(--font-text); color: color-mix(in srgb, var(--ink) 90%, var(--paper)); margin-top: var(--s2) !important; max-width: 28ch; }
+.inv[data-template="marmore"] .inv-art-divider { display: none; } /* a data já é um ornamento: o divisor fica para a assinatura da página */
+
+/* Data: o numeral dentro de um losango de fio duplo; o dia da semana e a hora apoiados em dois fios que saem das pontas
+   do losango e somem para fora; o mês embaixo. */
+.inv[data-template="marmore"] .inv-date { --dm: clamp(80px, 26cqw, 96px); margin-top: var(--s2); grid-template-columns: minmax(0, 1fr) var(--dm) minmax(0, 1fr); gap: 6px 0; align-items: center; }
+.inv[data-template="marmore"] .inv-date-day { position: relative; width: var(--dm); height: var(--dm); display: grid; place-items: center; font: 400 clamp(31px, 10.4cqw, 39px)/1 var(--mm-num); color: var(--ink); }
+.inv[data-template="marmore"] .inv-date-day::before, .inv[data-template="marmore"] .inv-date-day::after { content: ""; position: absolute; inset: 14.65%; border: 1px solid var(--gold-line); transform: rotate(45deg); }
+.inv[data-template="marmore"] .inv-date-day::after { inset: calc(14.65% + 5px); border-color: color-mix(in srgb, var(--accent) 42%, var(--paper)); }
+.inv[data-template="marmore"] .inv-date-side { align-self: center; transform: translateY(-50%); font: 600 14px/1.3 var(--font-label); letter-spacing: 0.14em; color: var(--ink); border: 0; border-bottom: 1px solid; border-image: linear-gradient(to right, transparent, var(--gold-line) 55%) 1; padding: 0 0 8px 0.14em; }
+.inv[data-template="marmore"] .inv-date-side:last-child { border-image: linear-gradient(to left, transparent, var(--gold-line) 55%) 1; }
+.inv[data-template="marmore"] .inv-date-month { font: 600 14px/1.3 var(--font-label); letter-spacing: 0.22em; padding-left: 0.22em; color: var(--ink); }
+@container (max-width: 300px) {
+  .inv[data-template="marmore"] .inv-date-side { letter-spacing: 0.04em; padding-left: 0.04em; }
+}
+.inv[data-template="marmore"] .inv-place { font: 400 clamp(17px, 5.4cqw, 19px)/1.4 var(--font-names); color: var(--ink); margin-top: var(--s2) !important; }
+.inv[data-template="marmore"] .inv-countdown { background: none; border-radius: 0; padding: 0 0 0 0.22em; margin-top: 10px !important; font: 500 14px/1.4 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--soft); }
+.inv[data-template="marmore"] .inv-art-bottom { margin-top: var(--s2); }
+.inv[data-template="marmore"] .inv-more { font-family: var(--font-label); font-weight: 600; letter-spacing: 0.24em; padding-left: calc(16px + 0.24em); }
+
+/* fundo: colmeia de hexágonos quase invisível, que some para baixo */
+.inv[data-template="marmore"] .inv-art-backdrop { color: color-mix(in srgb, var(--accent) 16%, var(--bg)); }
+
+/* ───────── Seções: placas menores da mesma pedra ───────── */
+.inv[data-template="marmore"] .inv-section { --c: 15px; --kw: 1.5px; --k: var(--accent); box-shadow: none; padding: 40px clamp(14px, 7.4cqw, 26px) 36px; }
+/* Os veios da placa: ::before, os cinzentos; ::after, o de ouro. Ficam nos cantos e nas margens, como na capa. */
+.inv[data-template="marmore"] .inv-section::before, .inv[data-template="marmore"] .inv-section::after { content: ""; position: absolute; inset: 1.5px; z-index: 0; pointer-events: none; --c: 14px; border-radius: 0; mix-blend-mode: normal; opacity: 1; }
+.inv[data-template="marmore"] .inv-section::before { background: var(--mm-vein); -webkit-mask: var(--mm-vt) top center / 100% auto no-repeat, var(--mm-vb) bottom center / 100% auto no-repeat; mask: var(--mm-vt) top center / 100% auto no-repeat, var(--mm-vb) bottom center / 100% auto no-repeat; }
+.inv[data-template="marmore"] .inv-section::after { background: var(--foil); -webkit-mask: var(--mm-gt) top center / 100% auto no-repeat, var(--mm-gb) bottom center / 100% auto no-repeat; mask: var(--mm-gt) top center / 100% auto no-repeat, var(--mm-gb) bottom center / 100% auto no-repeat; }
+/* a mesma pedra, cortada de outro jeito a cada placa */
+.inv[data-template="marmore"] .inv-section:nth-of-type(2n)::before, .inv[data-template="marmore"] .inv-section:nth-of-type(2n)::after { transform: scaleX(-1); }
+.inv[data-template="marmore"] .inv-section:nth-of-type(3n)::before, .inv[data-template="marmore"] .inv-section:nth-of-type(3n)::after { transform: scaleY(-1); }
+.inv[data-template="marmore"] .inv-end .inv-section::before, .inv[data-template="marmore"] .inv-end .inv-section::after { transform: scale(-1); }
+
+.inv[data-template="marmore"] .inv-kicker { font-weight: 600; letter-spacing: 0.24em; padding-left: 0; color: var(--accent); margin-bottom: 10px !important; }
+.inv[data-template="marmore"] .inv-kicker::before, .inv[data-template="marmore"] .inv-kicker::after { content: ""; display: inline-block; width: 6px; height: 6px; background: var(--accent); transform: scaleX(0.7) rotate(45deg); vertical-align: middle; position: relative; top: -1px; margin-right: 12px; }
+.inv[data-template="marmore"] .inv-kicker::after { margin: 0 0 0 calc(12px - 0.24em); }
+@container (max-width: 270px) {
+  .inv[data-template="marmore"] .inv-kicker::before, .inv[data-template="marmore"] .inv-kicker::after { content: none; }
+}
+.inv[data-template="marmore"] .inv-section-title { font: 400 clamp(26px, 8.6cqw, 31px)/1.22 var(--font-names); margin-bottom: 10px !important; }
+.inv[data-template="marmore"] .inv-big { font: 500 clamp(18.5px, 5.8cqw, 20.5px)/1.4 var(--font-text); letter-spacing: 0.01em; }
+.inv[data-template="marmore"] .inv-text { font: 400 17px/1.55 var(--font-text); }
+.inv[data-template="marmore"] .inv-hint { font: 500 16px/1.5 var(--font-text); }
+/* fio com losango no meio */
+.inv[data-template="marmore"] .inv-rule { position: relative; height: 9px; margin: 26px 0; background: linear-gradient(to right, transparent, var(--gold-line) 44%, transparent 44%, transparent 56%, var(--gold-line) 56%, transparent) center / min(170px, 70%) 1px no-repeat; }
+.inv[data-template="marmore"] .inv-rule::before { content: ""; position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; background: var(--foil); transform: translate(-50%, -50%) scaleX(0.7) rotate(45deg); }
+
+/* Botões: cantos chanfrados. Vazado = fio de ouro; principal = ouro cheio com a letra na cor da pedra. */
+.inv[data-template="marmore"] .inv-btn { --c: 10px; --kw: 1px; --k: color-mix(in srgb, var(--accent) 82%, var(--paper)); --fill: linear-gradient(transparent, transparent); border: 0; font: 600 15.5px/1.25 var(--font-label); letter-spacing: 0.05em; color: var(--ink); }
+.inv[data-template="marmore"] .inv-btn:hover { --fill: linear-gradient(color-mix(in srgb, var(--accent) 12%, transparent), color-mix(in srgb, var(--accent) 12%, transparent)); }
+.inv[data-template="marmore"] .inv-btn-main { --k: var(--foil-d); --fill: var(--mm-fill); color: var(--paper); }
+.inv[data-template="marmore"] .inv-btn-main:hover { --fill: linear-gradient(var(--accent), var(--accent)); }
+.inv[data-template="marmore"] .inv-btn-quiet { --k: color-mix(in srgb, var(--accent) 52%, var(--paper)); --fill: linear-gradient(color-mix(in srgb, var(--ink) 4%, transparent), color-mix(in srgb, var(--ink) 4%, transparent)); font-weight: 500; font-size: 15.5px; }
+.inv[data-template="marmore"] .inv-grid-2 .inv-btn { font-size: 15px; letter-spacing: 0.02em; padding-inline: 6px; }
+/* Resposta marcada: a peça inverte (tinta cheia) e ganha um fio interno. O anel externo da base seria cortado pelo chanfro. */
+.inv[data-template="marmore"] .inv-btn[aria-pressed="true"] { --k: var(--ink); --fill: linear-gradient(var(--ink), var(--ink)); color: var(--btn-ink); box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4.5px var(--accent); }
+/* Foco: por dentro da peça, porque o corte chanfrado esconde o contorno de fora. */
+.inv[data-template="marmore"] :is(.inv-btn, .inv-btn-main):focus-visible { outline: 2px solid currentColor; outline-offset: -6px; }
+.inv[data-template="marmore"] .rsvp-count-grid .inv-btn.rsvp-n { font-family: var(--mm-num); font-weight: 500; font-size: 27px; }
+
+.inv[data-template="marmore"] .rsvp-count legend { font: 500 17px/1.45 var(--font-text); }
+.inv[data-template="marmore"] .rsvp-current { font: 500 16.5px/1.45 var(--font-text); border-radius: 0; background: none; border-block: 1px solid var(--gold-line); padding: 12px 8px; }
+.inv[data-template="marmore"] .rsvp-state { --c: 13px; --kw: 1px; --k: var(--accent); --fill: linear-gradient(color-mix(in srgb, var(--accent) 11%, var(--paper)), color-mix(in srgb, var(--accent) 11%, var(--paper))); border-radius: 0; padding: 24px 16px 22px; }
+.inv[data-template="marmore"] .rsvp-state[data-status="no"] { --k: color-mix(in srgb, var(--ink) 46%, var(--paper)); --fill: linear-gradient(color-mix(in srgb, var(--ink) 6%, var(--paper)), color-mix(in srgb, var(--ink) 6%, var(--paper))); }
+.inv[data-template="marmore"] .rsvp-state-title { font: 400 clamp(23px, 7.6cqw, 27px)/1.25 var(--font-names); }
+.inv[data-template="marmore"] .rsvp-state p + p { font: 400 17px/1.5 var(--font-text); margin-top: 6px; }
+.inv[data-template="marmore"] .rsvp-radio span { border-radius: 0; border-color: color-mix(in srgb, var(--accent) 82%, var(--paper)); background: color-mix(in srgb, var(--paper) 94%, var(--ink)); font: 500 23px/1 var(--mm-num); }
+.inv[data-template="marmore"] .rsvp-radio input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--btn-ink); box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4.5px var(--accent); }
+.inv[data-template="marmore"] .inv-field { font: 500 16.5px/1.4 var(--font-text); }
+.inv[data-template="marmore"] .inv-field input, .inv[data-template="marmore"] .inv-field select, .inv[data-template="marmore"] .inv-field textarea { border-radius: 0; background: color-mix(in srgb, var(--paper) 93%, var(--ink)); border-color: color-mix(in srgb, var(--accent) 70%, var(--paper)); }
+.inv[data-template="marmore"] .inv-error { border-radius: 0; }
+.inv[data-template="marmore"] .inv-saved { font: 500 16.5px/1.45 var(--font-text); }
+.inv[data-template="marmore"] .inv-link { font: 500 16.5px/1.3 var(--font-text); text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.inv[data-template="marmore"] .inv-qr { border-radius: 0; border-color: var(--accent); }
+.inv[data-template="marmore"] .inv-sticky { border-top-color: var(--gold-line); }
+
+/* Assinatura e fecho da página */
+.inv[data-template="marmore"] .inv-sign-names { font-family: var(--mm-num); font-size: clamp(24px, 8cqw, 30px); line-height: 1.3; }
+.inv[data-template="marmore"] .inv-sign-date { font: 500 16.5px/1.4 var(--font-text); }
+.inv[data-template="marmore"] .inv-footer { font: 500 15px/1.4 var(--font-label); }
+/* três losangos depois da última placa */
+.inv[data-template="marmore"] .inv-sheet::after { content: ""; display: block; width: 8px; height: 8px; margin: 30px auto 0; background: var(--accent); transform: scaleX(0.7) rotate(45deg); box-shadow: 18px -18px 0 -2px var(--gold-line), -18px 18px 0 -2px var(--gold-line); }
+.thumb > .inv[data-template="marmore"] .inv-sheet::after { display: none; }
+
+/* ───────── Envelope: pedra por fora, outra pedra no forro ───────── */
+.inv[data-template="marmore"] .env-body { filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.28)); }
+.inv[data-template="marmore"] .env-back { background: color-mix(in srgb, var(--paper) 80%, var(--bg)); border-radius: 0; }
+.inv[data-template="marmore"] .env-front { border-radius: 0; background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 94%, var(--ink)), var(--paper) 65%); }
+/* Veios da frente e da aba: a mesma máscara, do tamanho do envelope, nas duas peças. O veio grande (cinza com o fio de ouro
+   ao lado) sobe do pé, cruza a frente pela esquerda e continua na aba; outro corta o canto direito. O meio, onde fica o
+   lacre, é livre. */
+.inv[data-template="marmore"] :is(.env-front, .env-flap-face)::before, .inv[data-template="marmore"] :is(.env-front, .env-flap-face)::after { content: ""; position: absolute; inset: 0; mix-blend-mode: normal; opacity: 1; }
+.inv[data-template="marmore"] :is(.env-front, .env-flap-face)::before { background: var(--mm-vein); -webkit-mask: var(--mm-ev) center / 100% 100% no-repeat; mask: var(--mm-ev) center / 100% 100% no-repeat; }
+.inv[data-template="marmore"] :is(.env-front, .env-flap-face)::after { background: var(--foil); -webkit-mask: var(--mm-eg) center / 100% 100% no-repeat; mask: var(--mm-eg) center / 100% 100% no-repeat; }
+/* aba: um fio de ouro acompanha as duas diagonais (triângulo dourado por baixo, face recuada) */
+.inv[data-template="marmore"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 1.6px)); background: var(--foil); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.inv[data-template="marmore"] .env-flap-face { clip-path: polygon(2.4px 0, calc(100% - 2.4px) 0, 50% 58%); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 97%, var(--ink)), color-mix(in srgb, var(--paper) 91%, var(--ink))); }
+.inv[data-template="marmore"] .env-liner { --mm-vein: color-mix(in srgb, var(--liner) 62%, var(--paper)); }
+.inv[data-template="marmore"] .env-liner > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.inv[data-template="marmore"] .marmore-liner-rules { stroke: var(--foil-l); }
+/* O cartão que sai do envelope é a mesma placa da capa: chanfrada, com borda de ouro e o veio no canto. */
+.inv[data-template="marmore"] .env-card { --c: 12px; --kw: 1.5px; --k: var(--accent); border-radius: 0; box-shadow: none; padding-top: 12%; }
+.inv[data-template="marmore"] .env-card::before, .inv[data-template="marmore"] .env-card::after { content: ""; position: absolute; inset: 1.5px; --c: 11.1px; }
+.inv[data-template="marmore"] .env-card::before { background: var(--mm-vein); -webkit-mask: var(--mm-vt) top center / 100% auto no-repeat; mask: var(--mm-vt) top center / 100% auto no-repeat; }
+.inv[data-template="marmore"] .env-card::after { background: var(--foil); -webkit-mask: var(--mm-gt) top center / 100% auto no-repeat; mask: var(--mm-gt) top center / 100% auto no-repeat; }
+.inv[data-template="marmore"] .env-card-line { position: relative; z-index: 1; width: 30%; opacity: 0.8; }
+.inv[data-template="marmore"] .env-to { font: 500 14px/1.6 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.22em; text-transform: uppercase; padding-left: 0.22em; color: var(--soft); }
+.inv[data-template="marmore"] .env-to strong { font: 400 clamp(24px, 8cqw, 29px)/1.3 var(--font-names); font-variant-numeric: lining-nums; letter-spacing: 0; text-transform: none; margin: 6px 0 0 -0.22em; color: var(--ink); }
+.inv[data-template="marmore"] .env-cta { --c: 10px; border: 0; border-radius: 0; background: var(--mm-fill); color: var(--paper); font: 600 16px/1.1 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.16em; padding-left: calc(30px + 0.16em); }
+.inv[data-template="marmore"] .env-seal { --seal-font: var(--font-names); --seal-weight: 400; }
+
+/* ───────── Telas baixas: ritmo mais curto para a capa caber (ou quase) na primeira tela ───────── */
+@media (max-height: 780px) and (max-width: 500px) {
+  .inv[data-template="marmore"]:not([data-still="true"]) { --s2: 18px; --s1: 10px; }
+  .inv[data-template="marmore"]:not([data-still="true"]) .marmore-emblem { width: clamp(136px, 44cqw, 170px); }
+  .inv[data-template="marmore"]:not([data-still="true"]) .inv-cover { padding-top: 12px; gap: 8px; }
+}
+/* mais um passo nos celulares pequenos (320 × 640) */
+@media (max-height: 660px) and (max-width: 500px) {
+  .inv[data-template="marmore"]:not([data-still="true"]) { --s2: 14px; --s1: 8px; }
+  .inv[data-template="marmore"]:not([data-still="true"]) .marmore-emblem { width: 122px; }
+  .inv[data-template="marmore"]:not([data-still="true"]) .inv-cover { padding-top: 8px; }
+  .inv[data-template="marmore"]:not([data-still="true"]) .inv-names { padding-block: calc(var(--hx-h) * 0.55) calc(var(--hx-h) * 0.53); }
+}
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="marmore"] { --thumb-h: 756px; }
+.inv[data-template="marmore"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 736px; }
+.inv[data-template="marmore"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 697px; }
+.inv[data-template="marmore"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 725px; }
+.inv[data-template="marmore"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 732px; }
+.inv[data-template="marmore"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 654px; }

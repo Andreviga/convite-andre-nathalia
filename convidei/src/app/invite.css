@@ -248,7 +248,7 @@ html.env-seen .inv .inv-paper > * { animation-play-state: running; }
 .inv-field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; font: 500 17px/1.4 var(--font-text); color: var(--ink); }
 .inv-field input, .inv-field select, .inv-field textarea { width: 100%; min-width: 0; min-height: 52px; font: 400 17px/1.4 var(--font-ui); color: var(--ink); background: color-mix(in srgb, var(--paper) 55%, #fff); border: 1px solid color-mix(in srgb, var(--ink) 30%, var(--paper)); border-radius: 10px; padding: 12px 14px; }
 .inv-field textarea { resize: vertical; min-height: 84px; }
-.inv-error { color: #8f2417; background: #fbe6e1; border-radius: 10px; padding: 12px 14px; font: 500 16px/1.45 var(--font-ui); }
+.inv-error { color: var(--error-ink, #8f2417); background: var(--error-bg, #fbe6e1); border-radius: 10px; padding: 12px 14px; font: 500 16px/1.45 var(--font-ui); }
 .inv-saved { color: var(--ink); font: 400 17px/1.45 var(--font-text); text-align: center; }
 .inv-saved:empty { display: none; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
@@ -263,7 +263,10 @@ html.env-seen .inv .inv-paper > * { animation-play-state: running; }
 .inv-sign { padding-block: 34px; }
 .inv-sign-art { display: flex; justify-content: center; margin-bottom: 18px; }
 .inv-sign-art svg { max-width: 100%; }
-.inv-sign-names { font-family: var(--font-names); font-weight: var(--names-weight); font-size: calc(var(--names-size) * 0.62); line-height: 1.2; letter-spacing: var(--names-tracking); text-transform: var(--names-transform); text-wrap: balance; overflow-wrap: anywhere; padding: 0.1em 0; }
+.inv-sign-names { font-family: var(--font-names); font-weight: var(--names-weight); font-size: min(calc(var(--names-size) * 0.62), calc((100vw - 96px) / var(--longest, 8) * 1.5)); line-height: 1.2; letter-spacing: var(--names-tracking); text-transform: var(--names-transform); text-wrap: balance; overflow-wrap: anywhere; padding: 0.1em 0; }
+/* Nos modelos com nomes em caligrafia (ou na Italiana, cujo "&" parece um "e"), o "&" do fecho sai na serifa de texto. */
+.inv[data-template="anjo"] .inv-sign-amp, .inv[data-template="aquarela"] .inv-sign-amp, .inv[data-template="botanico"] .inv-sign-amp, .inv[data-template="catedral"] .inv-sign-amp, .inv[data-template="classico"] .inv-sign-amp, .inv[data-template="debutante"] .inv-sign-amp, .inv[data-template="jardim"] .inv-sign-amp, .inv[data-template="rustico"] .inv-sign-amp, .inv[data-template="terracota"] .inv-sign-amp, .inv[data-template="traco"] .inv-sign-amp { font-family: var(--font-text); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.inv-sign-names .inv-num { font-variant-numeric: lining-nums; }
 .inv-sign-date { font: 400 18px/1.4 var(--font-text); color: var(--soft); margin-top: 6px !important; }
 .inv-footer { text-align: center; margin-top: 18px !important; font: 400 15px/1.4 var(--font-label); }
 .inv-footer a { color: var(--soft); text-decoration: none; display: inline-block; padding: 12px; }

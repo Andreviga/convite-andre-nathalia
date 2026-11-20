@@ -1,0 +1,323 @@
+/* Modelo Neon. Todas as regras ficam sob .inv[data-template="neon"].
+   Um letreiro aceso numa parede de tijolos escura. Duas cores de tubo por paleta: "a" = --accent (nomes, botões) e
+   "b" = --seal (moldura, numeral da data, lacre). Texto corrido sempre na tinta clara, sem brilho, para ler bem. */
+.inv[data-template="neon"] {
+  --font-names: var(--f-tiltneon), "Tilt Neon", "Trebuchet MS", system-ui, sans-serif;
+  --font-text: var(--f-sora), "Sora", system-ui, sans-serif;
+  --font-label: var(--f-sora), "Sora", system-ui, sans-serif;
+  --names-size: clamp(42px, 14.4cqw, 62px);
+  --names-weight: 400;
+  --names-leading: 1.1;
+  --names-em: 0.5; /* Tilt Neon: 0,46 a 0,50 por letra (medido com "Maximiliano", "Confraternização" e "Otorrinolaringologia") */
+  --names-tracking: 0.005em;
+  --amp-scale: 0.6;
+  --label-tracking: 0.2em;
+  --radius: 18px;
+  --btn-radius: 14px;
+  --paper-pad: clamp(26px, 9cqw, 40px);
+  --frame-inset: 8px;
+  --paper-shadow: none;
+
+  /* Tubo: o vidro tem a cor da paleta; o miolo aceso é quase branco, puxado para a cor. */
+  --neon-a: var(--accent);
+  --neon-b: var(--seal);
+  --core-a: color-mix(in srgb, var(--accent) 26%, #fff);
+  --core-b: color-mix(in srgb, var(--seal) 26%, #fff);
+  /* Brilho do texto em neon, em em (acompanha o corpo): halo curto e forte, depois dois mais largos e fracos. */
+  --lit-a: 0 0 0.03em var(--core-a), 0 0 0.12em var(--accent), 0 0 0.3em var(--accent), 0 0 0.66em color-mix(in srgb, var(--accent) 62%, transparent), 0 0 1.25em color-mix(in srgb, var(--accent) 34%, transparent);
+  --lit-b: 0 0 0.03em var(--core-b), 0 0 0.12em var(--seal), 0 0 0.3em var(--seal), 0 0 0.66em color-mix(in srgb, var(--seal) 62%, transparent), 0 0 1.25em color-mix(in srgb, var(--seal) 34%, transparent);
+  /* Brilho de um tubo desenhado com borda (moldura, botões). */
+  --halo-a: drop-shadow(0 0 1.5px var(--accent)) drop-shadow(0 0 6px var(--accent)) drop-shadow(0 0 16px color-mix(in srgb, var(--accent) 60%, transparent));
+  --halo-b: drop-shadow(0 0 1.5px var(--seal)) drop-shadow(0 0 6px var(--seal)) drop-shadow(0 0 16px color-mix(in srgb, var(--seal) 60%, transparent));
+  /* dois passos de ritmo vertical */
+  --s1: 14px;
+  --s2: 26px;
+  /* letreiro do alto e moldura */
+  --mw: clamp(106px, 35cqw, 138px); /* largura do letreiro */
+  --ft: calc(var(--mw) * 0.34 + 6px); /* altura em que a moldura cruza o letreiro */
+  --fr: 26px; /* raio dos cantos da moldura */
+  --tube: 2.5px;
+  --gap: calc(var(--mw) / 2 + 10px); /* meia largura do vão que o letreiro abre na moldura */
+  /* Brilho da moldura: sombras de caixa (por fora e por dentro do tubo), mais leves que um filtro. */
+  --glow-b: 0 0 2px var(--seal), 0 0 7px color-mix(in srgb, var(--seal) 85%, transparent), 0 0 18px color-mix(in srgb, var(--seal) 42%, transparent), inset 0 0 2px var(--seal), inset 0 0 7px color-mix(in srgb, var(--seal) 85%, transparent), inset 0 0 18px color-mix(in srgb, var(--seal) 42%, transparent);
+}
+
+/* ───────── Parede ───────── */
+.inv[data-template="neon"] .inv-art-backdrop { color: color-mix(in srgb, var(--ink) 7%, var(--bg)); background: color-mix(in srgb, var(--bg) 55%, #000); }
+.inv[data-template="neon"] .neon-brick-hi { stroke: var(--ink); stroke-width: 1; opacity: 0.07; }
+.inv[data-template="neon"] .neon-brick-lo { stroke: #000; stroke-width: 1.2; opacity: 0.35; }
+/* a luz do letreiro bate na parede no alto da página e morre para baixo e para os lados */
+.inv[data-template="neon"] .inv-art-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 340px 300px at 50% 330px, color-mix(in srgb, var(--accent) 17%, transparent), transparent 100%),
+    radial-gradient(ellipse 120% 760px at 50% 360px, transparent 40%, color-mix(in srgb, var(--bg) 78%, transparent) 100%),
+    linear-gradient(to bottom, transparent 700px, color-mix(in srgb, var(--bg) 62%, transparent) 1200px);
+  pointer-events: none;
+}
+
+/* ───────── Letreiros em SVG (capa, divisor, forro) ───────── */
+.inv[data-template="neon"] .neon-sign { overflow: visible; }
+.inv[data-template="neon"] .neon-a { --c: var(--accent); --cc: var(--core-a); }
+.inv[data-template="neon"] .neon-b { --c: var(--seal); --cc: var(--core-b); }
+.inv[data-template="neon"] .neon-shadow { stroke: #000; opacity: 0.5; }
+.inv[data-template="neon"] .neon-halo { stroke: var(--c); opacity: 0.6; }
+.inv[data-template="neon"] .neon-halo[data-spill] { fill: var(--c); fill-opacity: 0.2; }
+.inv[data-template="neon"] .neon-halo-fill { fill: var(--c); opacity: 0.85; }
+.inv[data-template="neon"] .neon-glass { stroke: var(--c); }
+.inv[data-template="neon"] .neon-core { stroke: var(--cc); }
+.inv[data-template="neon"] .neon-spark { fill: var(--c); }
+.inv[data-template="neon"] .neon-spark-core { fill: var(--cc); }
+.inv[data-template="neon"] .neon-cap rect { fill: color-mix(in srgb, var(--ink) 30%, var(--bg)); stroke: color-mix(in srgb, var(--bg) 70%, #000); stroke-width: 0.8; }
+.inv[data-template="neon"] .neon-cap-hi { stroke: color-mix(in srgb, var(--ink) 70%, var(--bg)); stroke-width: 0.9; }
+.inv[data-template="neon"] .neon-mini-halo { stroke: var(--c); opacity: 0.16; }
+.inv[data-template="neon"] .neon-mini-halo-fill { fill: var(--c); stroke: var(--c); stroke-width: 4; stroke-linejoin: round; opacity: 0.3; }
+
+/* ───────── Capa: sem papel; o letreiro e a moldura de tubo ficam direto na parede ───────── */
+.inv[data-template="neon"] .inv-paper { background: none; padding: 4px var(--paper-pad) calc(var(--frame-inset) + 30px); }
+.inv[data-template="neon"] .inv-paper::after { display: none; }
+/* Moldura: um tubo só, numa peça só (sem emendas), interrompido no alto pelo letreiro. O brilho é sombra de caixa; o vão
+   é aberto por recorte, e as duas pontas do tubo terminam em eletrodos, como nos letreiros. */
+.inv[data-template="neon"] .inv-paper::before {
+  inset: var(--ft) var(--frame-inset) var(--frame-inset);
+  border: var(--tube) solid var(--core-b);
+  border-radius: var(--fr);
+  box-shadow: var(--glow-b);
+  clip-path: polygon(-40px -40px, calc(50% - var(--gap)) -40px, calc(50% - var(--gap)) 26px, calc(50% + var(--gap)) 26px, calc(50% + var(--gap)) -40px, calc(100% + 40px) -40px, calc(100% + 40px) calc(100% + 40px), -40px calc(100% + 40px));
+}
+/* Onde o navegador deixa a máscara passar da caixa, o brilho morre suave junto ao eletrodo em vez de ser cortado reto. */
+@supports (mask-clip: no-clip) {
+  .inv[data-template="neon"] .inv-paper::before {
+    clip-path: none;
+    mask:
+      linear-gradient(90deg, #000 calc(50% - var(--gap) - 7px), transparent calc(50% - var(--gap) + 1px), transparent calc(50% + var(--gap) - 1px), #000 calc(50% + var(--gap) + 7px)) -40px -40px / calc(100% + 80px) calc(100% + 80px) no-repeat no-clip,
+      linear-gradient(transparent 66px, #000 66px) -40px -40px / calc(100% + 80px) calc(100% + 80px) no-repeat no-clip;
+  }
+}
+/* Os eletrodos se posicionam em relação ao cartão: o slot não pode virar bloco de referência (sem transform na entrada). */
+.inv[data-template="neon"] .inv-art-top { position: static; margin: 0 0 var(--s1); animation-name: neon-fade; }
+.inv[data-template="neon"] .inv-art-top::before,
+.inv[data-template="neon"] .inv-art-top::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--ft) + var(--tube) / 2 - 4px);
+  width: 6px;
+  height: 8px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--ink) 52%, var(--bg)), color-mix(in srgb, var(--ink) 24%, var(--bg)) 45%);
+  box-shadow: 0 0 0 0.8px color-mix(in srgb, var(--bg) 70%, #000), 1.5px 3px 3px rgba(0, 0, 0, 0.5);
+}
+.inv[data-template="neon"] .inv-art-top::before { left: calc(50% - var(--gap) - 6px); }
+.inv[data-template="neon"] .inv-art-top::after { left: calc(50% + var(--gap) - 1px); }
+.inv[data-template="neon"] .neon-marquee { width: var(--mw); height: auto; }
+@keyframes neon-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.inv[data-template="neon"] .inv-hello { font: 400 16px/1.4 var(--font-text); color: var(--soft); margin-bottom: var(--s1) !important; }
+.inv[data-template="neon"] .inv-hello strong { font-weight: 600; color: var(--ink); }
+.inv[data-template="neon"] .inv-headline { font: 600 14px/1.6 var(--font-label); letter-spacing: 0.2em; padding-left: 0.2em; color: color-mix(in srgb, var(--seal) 24%, var(--ink)); margin-bottom: var(--s1) !important; }
+@container (max-width: 300px) { .inv[data-template="neon"] .inv-headline { letter-spacing: 0.12em; padding-left: 0.12em; } }
+
+/* Nomes: o letreiro. Cor = miolo aceso; a cor da paleta vem no halo. */
+.inv[data-template="neon"] .inv-names { padding: 0.08em 0 0.04em; }
+.inv[data-template="neon"] .inv-name { color: var(--core-a); text-shadow: var(--lit-a); }
+/* conector: outro tubo, na segunda cor, menor */
+.inv[data-template="neon"] .inv-amp { font-family: var(--font-names); font-style: normal; line-height: 1; margin: 0.34em 0 0.22em; color: var(--core-b); text-shadow: var(--lit-b); }
+.inv[data-template="neon"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); }
+.inv[data-template="neon"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.08); }
+.inv[data-template="neon"] .inv-names[data-count="1"][data-short="true"] { font-size: calc(var(--names-size) * 1.42); line-height: 1; }
+.inv[data-template="neon"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.76); line-height: 1.16; }
+/* frase de seis palavras ou mais: menor, para não passar de quatro linhas a 320px */
+.inv[data-template="neon"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.66); line-height: 1.2; }
+
+.inv[data-template="neon"] .inv-message { font: 400 16.5px/1.55 var(--font-text); color: color-mix(in srgb, var(--ink) 86%, var(--bg)); margin-top: var(--s2) !important; max-width: 27ch; }
+.inv[data-template="neon"] .inv-art-divider { margin: var(--s2) 0 0; }
+.inv[data-template="neon"] .inv-art-divider:not(:has(+ .inv-date)) { display: none; }
+.inv[data-template="neon"] .neon-rule { width: 140px; max-width: 100%; height: auto; }
+
+/* Data: o numeral é um letreiro na segunda cor, à esquerda; à direita, em coluna, dia da semana, mês e hora. */
+.inv[data-template="neon"] .inv-date {
+  grid-template-columns: auto auto;
+  grid-template-areas: "day wd" "day mo" "day tm";
+  justify-content: center;
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 3px;
+  margin-top: var(--s2);
+  text-align: left;
+}
+.inv[data-template="neon"] .inv-date[data-time="false"] { grid-template-areas: "day wd" "day mo"; }
+.inv[data-template="neon"] .inv-date-day { grid-area: day; font: 400 clamp(62px, 21cqw, 84px)/0.86 var(--font-names); letter-spacing: 0; color: var(--core-b); text-shadow: var(--lit-b); padding: 0.06em 16px 0.02em 0; border-right: 1px solid color-mix(in srgb, var(--seal) 46%, var(--bg)); }
+.inv[data-template="neon"] .inv-date-side { grid-area: wd; font: 600 14px/1.3 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in srgb, var(--accent) 30%, var(--ink)); border: 0; padding: 0; }
+.inv[data-template="neon"] .inv-date-side:last-child { grid-area: tm; font: 600 17px/1.3 var(--font-text); letter-spacing: 0.01em; text-transform: none; color: var(--ink); }
+.inv[data-template="neon"] .inv-date-month { grid-area: mo; justify-self: start; font: 500 clamp(17px, 5.6cqw, 20px)/1.25 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); padding: 0; }
+.inv[data-template="neon"] .inv-date-month::first-letter { text-transform: uppercase; }
+/* sem horário: o ano continua ao lado do mês, e a lateral do ano some */
+.inv[data-template="neon"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="neon"] .inv-date .inv-date-alt { display: none; }
+/* Título comprido ou frase sai em corpo menor: o numeral cede junto, para o letreiro dos nomes continuar mandando na capa. */
+.inv[data-template="neon"] .inv-paper:has(.inv-names[data-long="true"], .inv-names[data-phrase="true"]) .inv-date-day { font-size: clamp(50px, 16.5cqw, 64px); }
+/* Cartão estreito (celular de 320px): quem cede é o espaço entre colunas, não a letra. */
+@container (max-width: 300px) {
+  .inv[data-template="neon"] .inv-date { column-gap: 11px; }
+  .inv[data-template="neon"] .inv-date-day { padding-right: 11px; }
+  .inv[data-template="neon"] .inv-date-month { font-size: 16px; }
+}
+.inv[data-template="neon"] .inv-place { font: 500 16.5px/1.45 var(--font-text); color: var(--ink); margin-top: var(--s2) !important; }
+/* contagem: plaquinha de neon, como o "aberto" de uma vitrine */
+.inv[data-template="neon"] .inv-countdown { font: 600 14px/1 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--core-a); background: color-mix(in srgb, var(--accent) 9%, transparent); border: 1.5px solid var(--core-a); border-radius: 999px; padding: 9px 15px 9px calc(15px + 0.16em); margin-top: var(--s2) !important; box-shadow: 0 0 5px var(--accent), 0 0 14px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 0 6px color-mix(in srgb, var(--accent) 55%, transparent); }
+.inv[data-template="neon"] .inv-more { font: 600 14px/1 var(--font-label); letter-spacing: 0.2em; color: var(--soft); }
+
+/* "Acender": a moldura e os nomes piscam uma vez ao aparecer, como tubo ligando, e ficam acesos. Só opacidade, uma vez. */
+@keyframes neon-on { 0% { opacity: 0.1; } 9% { opacity: 1; } 14% { opacity: 0.22; } 24% { opacity: 1; } 31% { opacity: 0.4; } 40%, 100% { opacity: 1; } }
+@keyframes neon-on-env { 0% { opacity: 0.1; } 9% { opacity: 1; } 14% { opacity: 0.22; } 24% { opacity: 1; } 31% { opacity: 0.4; } 40%, 100% { opacity: 1; } }
+.inv[data-template="neon"] .inv-paper::before,
+.inv[data-template="neon"] .inv-name,
+.inv[data-template="neon"] .inv-amp { animation: neon-on 1.2s linear both; animation-delay: calc(var(--rise-delay, 0ms) + 260ms); }
+.inv[data-template="neon"] .inv-amp { animation-delay: calc(var(--rise-delay, 0ms) + 520ms); }
+.inv[data-template="neon"] .inv-paper::before { animation-delay: var(--rise-delay, 0ms); }
+/* envelope fechado: espera; envelope aberto nesta visita: recomeça depois da abertura (mesma regra da base para o texto) */
+.inv[data-template="neon"]:has(.env[data-ready="true"][data-state="closed"]) .inv-paper::before,
+.inv[data-template="neon"]:has(.env[data-ready="true"][data-state="closed"]) .inv-name,
+.inv[data-template="neon"]:has(.env[data-ready="true"][data-state="closed"]) .inv-amp { animation-play-state: paused; }
+html.env-seen .inv[data-template="neon"] .inv-paper::before,
+html.env-seen .inv[data-template="neon"] .inv-name,
+html.env-seen .inv[data-template="neon"] .inv-amp { animation-play-state: running; }
+.inv[data-template="neon"]:has(> .env[data-opened="true"]) .inv-paper > .inv-art-top { animation-name: neon-fade; }
+.inv[data-template="neon"]:has(> .env[data-opened="true"]) .inv-paper::before { animation-name: neon-on-env; animation-delay: 1450ms; }
+.inv[data-template="neon"]:has(> .env[data-opened="true"]) .inv-name { animation-name: neon-on-env; animation-delay: 1750ms; }
+.inv[data-template="neon"]:has(> .env[data-opened="true"]) .inv-amp { animation-name: neon-on-env; animation-delay: 2000ms; }
+.inv[data-template="neon"][data-still="true"] .inv-paper::before,
+.inv[data-template="neon"][data-still="true"] .inv-name,
+.inv[data-template="neon"][data-still="true"] .inv-amp { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .inv[data-template="neon"] .inv-paper::before,
+  .inv[data-template="neon"] .inv-name,
+  .inv[data-template="neon"] .inv-amp { animation: none !important; }
+}
+
+/* ───────── Seções: placas escuras presas à parede, cada uma com um tubo curto aceso no alto ───────── */
+.inv[data-template="neon"] .inv-section {
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 96%, var(--ink)), var(--paper) 120px);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 7%, transparent) inset, 0 14px 30px rgba(0, 0, 0, 0.5);
+  padding: 40px clamp(14px, 7.4cqw, 26px) 32px;
+  margin-top: 22px;
+}
+.inv[data-template="neon"] .inv-section::after { display: none; }
+.inv[data-template="neon"] .inv-section::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 76px;
+  height: 3px;
+  margin-left: -38px;
+  border-radius: 3px;
+  background: var(--core-a);
+  box-shadow: 0 0 4px var(--accent), 0 0 12px var(--accent), 0 0 26px color-mix(in srgb, var(--accent) 60%, transparent), 0 10px 34px 6px color-mix(in srgb, var(--accent) 16%, transparent);
+  pointer-events: none;
+}
+/* as cores dos tubos se alternam de uma placa para a outra */
+.inv[data-template="neon"] .inv-section:nth-of-type(even)::before { background: var(--core-b); box-shadow: 0 0 4px var(--seal), 0 0 12px var(--seal), 0 0 26px color-mix(in srgb, var(--seal) 60%, transparent), 0 10px 34px 6px color-mix(in srgb, var(--seal) 16%, transparent); }
+.inv[data-template="neon"] .inv-kicker { font: 600 14px/1.5 var(--font-label); letter-spacing: 0.2em; padding-left: 0.2em; color: color-mix(in srgb, var(--seal) 42%, var(--ink)); margin-bottom: 10px !important; }
+.inv[data-template="neon"] .inv-section-title { font: 400 clamp(32px, 10.4cqw, 38px)/1.15 var(--font-names); color: var(--core-a); text-shadow: 0 0 0.03em var(--core-a), 0 0 0.14em var(--accent), 0 0 0.4em color-mix(in srgb, var(--accent) 70%, transparent), 0 0 0.9em color-mix(in srgb, var(--accent) 34%, transparent); margin-bottom: 10px !important; padding: 0.06em 0; }
+.inv[data-template="neon"] .inv-big { font: 600 20px/1.35 var(--font-text); letter-spacing: -0.005em; }
+.inv[data-template="neon"] .inv-text { font: 400 17px/1.55 var(--font-text); color: color-mix(in srgb, var(--ink) 90%, var(--paper)); }
+.inv[data-template="neon"] .inv-text strong { font-weight: 600; color: var(--ink); }
+.inv[data-template="neon"] .inv-hint { font: 400 16px/1.5 var(--font-text); }
+/* fio: um traço de luz que some nas pontas, com um ponto aceso no meio */
+.inv[data-template="neon"] .inv-rule { height: 9px; margin: 24px auto 20px; background: radial-gradient(circle at 50% 50%, var(--core-b) 0 2px, transparent 2.6px), linear-gradient(90deg, transparent, color-mix(in srgb, var(--seal) 55%, var(--paper)) 30%, transparent 46%, transparent 54%, color-mix(in srgb, var(--seal) 55%, var(--paper)) 70%, transparent) center / 100% 1px no-repeat; width: min(190px, 100%); filter: drop-shadow(0 0 4px var(--seal)); }
+
+/* Botões: o principal é uma placa acesa (cor cheia, letra escura); os outros são tubo de contorno. */
+.inv[data-template="neon"] .inv-btn { font: 600 16.5px/1.25 var(--font-label); letter-spacing: 0.01em; color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--seal) 78%, var(--paper)); background: color-mix(in srgb, var(--seal) 6%, transparent); box-shadow: 0 0 9px color-mix(in srgb, var(--seal) 30%, transparent), inset 0 0 9px color-mix(in srgb, var(--seal) 16%, transparent); }
+.inv[data-template="neon"] .inv-btn:hover { background: color-mix(in srgb, var(--seal) 15%, transparent); }
+.inv[data-template="neon"] .inv-btn-main { color: var(--btn-ink); background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 84%, #fff), var(--accent) 55%); border-color: var(--core-a); box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 70%, transparent), 0 0 22px color-mix(in srgb, var(--accent) 38%, transparent); }
+.inv[data-template="neon"] .inv-btn-main:hover { background: color-mix(in srgb, var(--accent) 84%, #fff); }
+.inv[data-template="neon"] .inv-btn-quiet { font-weight: 500; font-size: 16px; border: 1px solid color-mix(in srgb, var(--ink) 46%, var(--paper)); background: color-mix(in srgb, var(--ink) 5%, transparent); box-shadow: none; }
+.inv[data-template="neon"] .inv-btn-quiet:hover { background: color-mix(in srgb, var(--ink) 11%, transparent); }
+.inv[data-template="neon"] .inv-grid-2 .inv-btn { font-size: clamp(14.5px, 4.8cqw, 16px); padding-inline: 6px; }
+.inv[data-template="neon"] .inv-link { font: 500 16.5px/1.3 var(--font-text); }
+/* Confirmação */
+/* "Quantas pessoas vão?": depois da resposta, só o número escolhido fica aceso; os outros apagam (tubo de contorno). */
+.inv[data-template="neon"] .rsvp-count-grid:has([aria-pressed="true"]) .rsvp-n:not([aria-pressed="true"]) { background: color-mix(in srgb, var(--accent) 8%, transparent); color: var(--ink); border-color: color-mix(in srgb, var(--accent) 70%, var(--paper)); box-shadow: none; }
+.inv[data-template="neon"] .rsvp-count-grid .rsvp-n[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink), 0 0 16px 4px color-mix(in srgb, var(--accent) 70%, transparent); }
+/* aviso de erro: placa escura de alerta (o vermelho é semântico, não muda com a paleta) */
+.inv[data-template="neon"] .inv-error { font: 500 16px/1.45 var(--font-text); background: color-mix(in srgb, #ff5a4a 14%, var(--paper)); border: 1px solid color-mix(in srgb, #ff5a4a 60%, var(--paper)); color: #ffd9d3; border-radius: 12px; }
+.inv[data-template="neon"] .rsvp-count legend { font: 400 17px/1.45 var(--font-text); }
+.inv[data-template="neon"] .rsvp-current { font: 400 16.5px/1.45 var(--font-text); border-radius: 12px; background: color-mix(in srgb, var(--accent) 12%, var(--paper)); border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--paper)); }
+.inv[data-template="neon"] .rsvp-radio span { background: color-mix(in srgb, var(--paper) 90%, var(--ink)); border-color: color-mix(in srgb, var(--ink) 46%, var(--paper)); border-radius: 12px; }
+.inv[data-template="neon"] .rsvp-radio input:checked + span { background: var(--accent); border-color: var(--core-a); color: var(--btn-ink); box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 60%, transparent); }
+.inv[data-template="neon"] .rsvp-state { border-radius: 14px; background: color-mix(in srgb, var(--accent) 10%, var(--paper)); border: 1.5px solid color-mix(in srgb, var(--accent) 72%, var(--paper)); box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 30%, transparent), inset 0 0 14px color-mix(in srgb, var(--accent) 12%, transparent); }
+/* recusa: placa apagada (sem brilho), contorno neutro */
+.inv[data-template="neon"] .rsvp-state[data-status="no"] { background: color-mix(in srgb, var(--ink) 5%, var(--paper)); border-color: color-mix(in srgb, var(--ink) 40%, var(--paper)); box-shadow: none; }
+.inv[data-template="neon"] .rsvp-state-title { font: 400 clamp(22px, 7.4cqw, 28px)/1.2 var(--font-names); text-wrap: balance; color: var(--core-a); text-shadow: 0 0 0.14em var(--accent), 0 0 0.5em color-mix(in srgb, var(--accent) 60%, transparent); }
+.inv[data-template="neon"] .rsvp-state[data-status="no"] .rsvp-state-title { color: var(--ink); text-shadow: none; }
+.inv[data-template="neon"] .rsvp-state p + p { font: 400 17px/1.5 var(--font-text); }
+.inv[data-template="neon"] .inv-field { font: 500 16.5px/1.4 var(--font-text); }
+.inv[data-template="neon"] .inv-field input, .inv[data-template="neon"] .inv-field select, .inv[data-template="neon"] .inv-field textarea { background: color-mix(in srgb, var(--paper) 90%, var(--ink)); border-color: color-mix(in srgb, var(--ink) 46%, var(--paper)); border-radius: 12px; }
+.inv[data-template="neon"] .inv-saved { font: 400 16.5px/1.45 var(--font-text); }
+.inv[data-template="neon"] .inv-qr { border-radius: 14px; border-color: var(--core-b); box-shadow: 0 0 12px color-mix(in srgb, var(--seal) 45%, transparent); }
+.inv[data-template="neon"] .inv-sticky { border-top-color: color-mix(in srgb, var(--accent) 45%, var(--paper)); }
+
+/* Fecho assinado: os nomes voltam como letreiro */
+.inv[data-template="neon"] .inv-sign-names { color: var(--core-a); text-shadow: var(--lit-a); font-size: calc(var(--names-size) * 0.6); padding: 0.14em 0; }
+.inv[data-template="neon"] .inv-sign-date { font: 400 16.5px/1.4 var(--font-text); }
+.inv[data-template="neon"] .inv-footer { font: 400 15px/1.4 var(--font-text); }
+/* depois da última placa: um tubo curto e dois pontos de luz encerram a página */
+.inv[data-template="neon"] .inv-sheet::after {
+  content: "";
+  display: block;
+  width: 112px;
+  height: 5px;
+  margin: 26px auto 0;
+  background:
+    radial-gradient(circle at 2.5px 50%, var(--core-b) 0 2.4px, transparent 3px),
+    radial-gradient(circle at calc(100% - 2.5px) 50%, var(--core-b) 0 2.4px, transparent 3px),
+    linear-gradient(var(--core-a), var(--core-a)) center / 64px 3px no-repeat;
+  filter: drop-shadow(0 0 3px var(--accent)) drop-shadow(0 0 9px var(--accent));
+}
+.thumb > .inv[data-template="neon"] .inv-sheet::after { display: none; }
+
+/* ───────── Envelope: papel preto fosco, contraluz de neon ───────── */
+.inv[data-template="neon"] .env { background: radial-gradient(ellipse 85% 46% at 50% 50%, color-mix(in srgb, var(--accent) 15%, var(--bg)), var(--bg) 100%); }
+.inv[data-template="neon"] .env-body { filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 22px color-mix(in srgb, var(--seal) 34%, transparent)); }
+.inv[data-template="neon"] .env-back { background: color-mix(in srgb, var(--paper) 55%, var(--bg)); border-radius: 6px; }
+.inv[data-template="neon"] .env-front { border-radius: 6px; background: color-mix(in srgb, var(--paper) 90%, var(--ink)); background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 84%, var(--ink)), color-mix(in srgb, var(--paper) 94%, var(--ink)) 70%); }
+.inv[data-template="neon"] .env-front::after { display: none; }
+/* aba: um tubo aceso acompanha as duas diagonais (triângulo claro por baixo, face recuada) */
+.inv[data-template="neon"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 2px)); background: linear-gradient(to bottom, var(--accent), var(--core-a) 70%); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.inv[data-template="neon"] .env-flap-face { clip-path: polygon(3px 0, calc(100% - 3px) 0, 50% calc(58% - 1px)); background: color-mix(in srgb, var(--paper) 88%, var(--ink)); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 93%, var(--ink)), color-mix(in srgb, var(--paper) 82%, var(--ink)) 40%, color-mix(in srgb, var(--accent) 16%, color-mix(in srgb, var(--paper) 86%, var(--ink))) 60%); }
+/* forro: os letreirinhos saem de pé (a base mostra o desenho girado em 180° na aba aberta) */
+.inv[data-template="neon"] .env-liner { background: var(--liner); }
+.inv[data-template="neon"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="neon"] .env-card { background: var(--paper); border-radius: 8px; box-shadow: inset 0 0 0 1.5px var(--core-b), inset 0 0 12px color-mix(in srgb, var(--seal) 50%, transparent), 0 1px 3px rgba(0, 0, 0, 0.4); color: var(--core-a); padding-top: 10%; }
+.inv[data-template="neon"] .env-card-line { height: 2px; border-radius: 2px; opacity: 1; box-shadow: 0 9px 0 currentColor; filter: drop-shadow(0 0 4px var(--accent)); }
+/* lacre: um botão de luz na segunda cor (disco liso de vidro com anel de tubo, sem a borda de cera), iniciais escuras gravadas */
+.inv[data-template="neon"] .env-seal { --seal-font: var(--font-names); --seal-weight: 400; filter: none; }
+.inv[data-template="neon"] .env-seal .seal-wax,
+.inv[data-template="neon"] .env-seal .seal-light { display: none; }
+.inv[data-template="neon"] .env-seal::before {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border-radius: 50%;
+  border: 2px solid var(--core-b);
+  background: radial-gradient(circle at 50% 36%, color-mix(in srgb, var(--seal) 62%, #fff), var(--seal) 58%, color-mix(in srgb, var(--seal) 84%, #000) 100%);
+  box-shadow: 0 0 5px var(--seal), 0 0 14px var(--seal), 0 0 30px color-mix(in srgb, var(--seal) 55%, transparent), 0 4px 6px rgba(0, 0, 0, 0.5), inset 0 0 6px color-mix(in srgb, #fff 55%, transparent);
+}
+.inv[data-template="neon"] .env-seal svg { position: relative; }
+.inv[data-template="neon"] .env-to { font: 400 16px/1.4 var(--font-text); color: var(--soft); }
+.inv[data-template="neon"] .env-to strong { font: 400 clamp(28px, 9cqw, 34px)/1.15 var(--font-names); color: var(--core-a); text-shadow: 0 0 0.12em var(--accent), 0 0 0.4em color-mix(in srgb, var(--accent) 70%, transparent), 0 0 0.9em color-mix(in srgb, var(--accent) 34%, transparent); margin-top: 6px; padding: 0.06em 0; font-variant-numeric: lining-nums; }
+.inv[data-template="neon"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; color: var(--btn-ink); background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 84%, #fff), var(--accent) 55%); border-color: var(--core-a); border-radius: 14px; box-shadow: 0 0 9px color-mix(in srgb, var(--accent) 75%, transparent), 0 0 26px color-mix(in srgb, var(--accent) 42%, transparent); font-variant-numeric: lining-nums; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="neon"] { --thumb-h: 739px; }
+.inv[data-template="neon"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 704px; }
+.inv[data-template="neon"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 656px; }
+.inv[data-template="neon"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 700px; }
+.inv[data-template="neon"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 704px; }
+.inv[data-template="neon"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 619px; }
