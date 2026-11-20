@@ -1,0 +1,87 @@
+/* Modelo Retro. Todas as regras ficam sob .inv[data-template="retro"]. */
+.inv[data-template="retro"] {
+  --font-names: var(--f-pinyon), "Pinyon Script", cursive;
+  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
+  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
+  --names-size: clamp(46px, 15.5cqw, 70px);
+  --names-weight: 400;
+  --names-leading: 1.12;
+  --names-em: 0.45;
+  --amp-scale: 0.5;
+  --label-tracking: 0.2em;
+  --radius: 2px;
+  --btn-radius: 2px;
+  --frame-inset: 13px;
+}
+/* Algarismos alinhados em tudo: os de texto da Cormorant fazem "16h30" virar "16h3o" e "11" virar "ıı". */
+.inv[data-template="retro"] * { font-variant-numeric: lining-nums !important; } /* !important: os atalhos "font:" da base e do modelo zeram esta propriedade */
+
+/* ───────── Capa ───────── */
+/* moldura dupla: fio de 1px e, por dentro, um fio mais fino */
+.inv[data-template="retro"] .inv-paper::before { border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
+.inv[data-template="retro"] .inv-paper { padding-block: calc(var(--paper-pad) + 18px); }
+.inv[data-template="retro"] .inv-headline { font-size: 13.5px; font-weight: 500; }
+.inv[data-template="retro"] .inv-names { padding: 0.16em 0 0.1em; }
+/* o conector tem folga dos dois lados: descendentes do nome de cima e acentos de maiúscula do nome de baixo (Ângela & Érica) */
+.inv[data-template="retro"] .inv-amp { margin: 0.14em 0 0.3em; line-height: 1.1; }
+/* frase (data-phrase: travessão ou quatro palavras ou mais): itálico de texto em vez de caligrafia, que só fica bem em nomes.
+   Nome comprido ("Maximiliano Albuquerque") não é frase e continua na caligrafia, só menor (regra data-long da base). */
+.inv[data-template="retro"] .inv-names[data-phrase="true"] { --names-em: 0.5; font-family: var(--font-text); font-style: italic; font-weight: 500; font-size: calc(var(--names-size) * 0.62); line-height: 1.2; text-wrap: balance; padding: 0.1em 0; }
+/* algarismos na caligrafia ficam ruins ("30" parece "Zo"): vão na serifa do modelo, em itálico, com a altura das maiúsculas da caligrafia */
+.inv[data-template="retro"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.84em; font-weight: 500; letter-spacing: 0.01em; }
+/* título curto ("Helena faz 30", "Chá do Miguel") cabe inteiro numa linha: a medida passa a ser o título todo (--line), para "faz 30" não cair sozinho embaixo */
+.inv[data-template="retro"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
+
+.inv[data-template="retro"] .inv-message { font-size: 20px; }
+.inv[data-template="retro"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); }
+.inv[data-template="retro"] .inv-hello strong { font-weight: 500; }
+
+/* Data: a grade é a da base (dia da semana e hora ladeiam o numeral, mês na linha de baixo). */
+.inv[data-template="retro"] .inv-date { gap: 8px clamp(10px, 4cqw, 16px); }
+.inv[data-template="retro"] .inv-date-day { font-weight: 400; font-size: clamp(48px, 16cqw, 58px); }
+.inv[data-template="retro"] .inv-date-side, .inv[data-template="retro"] .inv-date-month { font-size: clamp(14px, 4cqw, 14.5px); letter-spacing: 0.12em; border-color: var(--accent); }
+.inv[data-template="retro"] .inv-date-side { padding-left: 0.12em; }
+/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+@container (max-width: 300px) {
+  .inv[data-template="retro"] .inv-date { column-gap: 8px; }
+  .inv[data-template="retro"] .inv-date-side { letter-spacing: 0.08em; padding-left: 0.08em; }
+}
+.inv[data-template="retro"] .inv-place { font-style: italic; font-size: 18px; }
+.inv[data-template="retro"] .inv-countdown { background: none; font: 500 13.5px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0 0 0 0.18em; }
+.inv[data-template="retro"] .inv-more { font-family: var(--font-label); font-size: 13px; }
+
+/* ───────── Seções: a mesma papelaria da capa (serifa e versaletes), sem cara de aplicativo ───────── */
+.inv[data-template="retro"] .inv-kicker { font-size: 13.5px; }
+.inv[data-template="retro"] .inv-section { box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px var(--line); }
+.inv[data-template="retro"] .inv-big { font-size: 23px; }
+.inv[data-template="retro"] .inv-text { font: 400 19.5px/1.45 var(--font-text); }
+.inv[data-template="retro"] .inv-hint { font: italic 400 17.5px/1.45 var(--font-text); }
+.inv[data-template="retro"] .inv-rule { background: color-mix(in srgb, var(--accent) 55%, transparent); }
+.inv[data-template="retro"] .inv-btn { font: 600 15.5px/1.2 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; padding-left: calc(18px + 0.14em); }
+.inv[data-template="retro"] .inv-btn-quiet { border-color: var(--accent); font-weight: 600; font-size: 14.5px; }
+.inv[data-template="retro"] .rsvp-yes, .inv[data-template="retro"] .rsvp-no { font-size: 16.5px; }
+.inv[data-template="retro"] .rsvp-state { border-radius: var(--radius); }
+.inv[data-template="retro"] .inv-link { font: italic 500 18px/1.3 var(--font-text); }
+.inv[data-template="retro"] .inv-saved { font: italic 400 17px/1.45 var(--font-text); }
+
+/* ───────── Envelope ───────── */
+.inv[data-template="retro"] .env-to { font: italic 400 19px/1.4 var(--font-text); }
+.inv[data-template="retro"] .env-to strong { font-family: var(--font-names); font-style: normal; font-size: 42px; font-weight: 400; }
+.inv[data-template="retro"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 3.8px color-mix(in srgb, var(--accent) 85%, var(--btn-ink)), 0 6px 16px color-mix(in srgb, var(--ink) 20%, transparent); }
+.inv[data-template="retro"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; } /* lacre gravado em capitais romanas: a caligráfica dos nomes não cabe na cera */
+/* forro: tinta mais marcada, margem de papel e filete acompanhando as bordas da aba */
+.inv[data-template="retro"] .env-liner { color: color-mix(in srgb, var(--liner) 58%, var(--ink)); }
+.inv[data-template="retro"] .retro-liner-rule { stroke: var(--accent); stroke-width: 19px; }
+.inv[data-template="retro"] .retro-liner-edge { stroke: color-mix(in srgb, var(--paper) 94%, var(--ink)); stroke-width: 17px; }
+/* o cartão que sobe já traz a moldura dupla do convite */
+.inv[data-template="retro"] .env-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), inset 0 0 0 6px var(--paper), inset 0 0 0 7px var(--accent), inset 0 0 0 9px var(--paper), inset 0 0 0 9.6px color-mix(in srgb, var(--accent) 70%, transparent); padding-top: 13%; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
+   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
+   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
+.inv[data-template="retro"] { --thumb-h: 768px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 664px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 671px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 635px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 664px; }
+.inv[data-template="retro"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 585px; }
