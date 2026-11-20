@@ -1,87 +1,202 @@
 /* Modelo Anjo. Todas as regras ficam sob .inv[data-template="anjo"]. */
 .inv[data-template="anjo"] {
-  --font-names: var(--f-pinyon), "Pinyon Script", cursive;
-  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
-  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
-  --names-size: clamp(46px, 15.5cqw, 70px);
+  --font-names: var(--f-allura), "Allura", cursive;
+  --font-text: var(--f-lora), "Lora", Georgia, serif;
+  --font-label: var(--f-lora), "Lora", Georgia, serif;
+  --names-size: clamp(54px, 18cqw, 82px);
   --names-weight: 400;
-  --names-leading: 1.12;
-  --names-em: 0.45;
-  --amp-scale: 0.5;
-  --label-tracking: 0.2em;
-  --radius: 2px;
-  --btn-radius: 2px;
-  --frame-inset: 13px;
+  --names-leading: 1.02;
+  --names-em: 0.445;
+  --amp-scale: 0.34;
+  --label-tracking: 0.18em;
+  --radius: 26px;
+  --btn-radius: 999px;
+  --frame-inset: 9px;
+  --paper-pad: clamp(24px, 8.6cqw, 40px);
+  --paper-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent), 0 18px 40px color-mix(in srgb, var(--ink) 13%, transparent);
+  /* metal: o fio (degradê, como folha de ouro) e uma versão mais escura para traço fino sobre papel */
+  --anjo-foil: linear-gradient(118deg, color-mix(in srgb, var(--accent) 86%, var(--ink)), color-mix(in srgb, var(--accent) 68%, #fff) 28%, var(--accent) 50%, color-mix(in srgb, var(--accent) 70%, #fff) 74%, color-mix(in srgb, var(--accent) 84%, var(--ink)));
+  --anjo-metal: color-mix(in srgb, var(--accent) 76%, var(--ink));
+  --anjo-thread: color-mix(in srgb, var(--accent) 62%, var(--paper));
+  /* dois passos de respiro vertical */
+  --anjo-s1: clamp(12px, 3.8cqw, 16px);
+  --anjo-s2: clamp(20px, 6.4cqw, 28px);
+  --anjo-cloud: color-mix(in srgb, #fff 78%, transparent);
+  /* fundo da página: céu claro com nuvens largas e desfocadas, repetidas a cada 1100px */
+  background:
+    radial-gradient(ellipse 46% 7% at 8% 7%, var(--anjo-cloud), transparent 72%),
+    radial-gradient(ellipse 30% 5% at 34% 10%, var(--anjo-cloud), transparent 72%),
+    radial-gradient(ellipse 50% 8% at 96% 31%, var(--anjo-cloud), transparent 72%),
+    radial-gradient(ellipse 30% 5% at 70% 35%, var(--anjo-cloud), transparent 72%),
+    radial-gradient(ellipse 54% 8% at 4% 62%, var(--anjo-cloud), transparent 72%),
+    radial-gradient(ellipse 44% 7% at 88% 86%, var(--anjo-cloud), transparent 72%),
+    radial-gradient(ellipse 28% 4.5% at 58% 90%, var(--anjo-cloud), transparent 72%),
+    var(--bg);
+  background-size: 100% 1100px;
 }
-/* Algarismos alinhados em tudo: os de texto da Cormorant fazem "16h30" virar "16h3o" e "11" virar "ıı". */
-.inv[data-template="anjo"] * { font-variant-numeric: lining-nums !important; } /* !important: os atalhos "font:" da base e do modelo zeram esta propriedade */
 
-/* ───────── Capa ───────── */
-/* moldura dupla: fio de 1px e, por dentro, um fio mais fino */
-.inv[data-template="anjo"] .inv-paper::before { border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
-.inv[data-template="anjo"] .inv-paper { padding-block: calc(var(--paper-pad) + 18px); }
-.inv[data-template="anjo"] .inv-headline { font-size: 13.5px; font-weight: 500; }
-.inv[data-template="anjo"] .inv-names { padding: 0.16em 0 0.1em; }
-/* o conector tem folga dos dois lados: descendentes do nome de cima e acentos de maiúscula do nome de baixo (Ângela & Érica) */
-.inv[data-template="anjo"] .inv-amp { margin: 0.14em 0 0.3em; line-height: 1.1; }
-/* frase (data-phrase: travessão ou quatro palavras ou mais): itálico de texto em vez de caligrafia, que só fica bem em nomes.
-   Nome comprido ("Maximiliano Albuquerque") não é frase e continua na caligrafia, só menor (regra data-long da base). */
-.inv[data-template="anjo"] .inv-names[data-phrase="true"] { --names-em: 0.5; font-family: var(--font-text); font-style: italic; font-weight: 500; font-size: calc(var(--names-size) * 0.62); line-height: 1.2; text-wrap: balance; padding: 0.1em 0; }
-/* algarismos na caligrafia ficam ruins ("30" parece "Zo"): vão na serifa do modelo, em itálico, com a altura das maiúsculas da caligrafia */
-.inv[data-template="anjo"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.84em; font-weight: 500; letter-spacing: 0.01em; }
-/* título curto ("Helena faz 30", "Chá do Miguel") cabe inteiro numa linha: a medida passa a ser o título todo (--line), para "faz 30" não cair sozinho embaixo */
+/* ───── Cartão: cantos bem arredondados, fio de ouro por dentro, céu no alto e nuvens no pé ───── */
+.inv[data-template="anjo"] .inv-paper { overflow: hidden; padding: 42cqw var(--paper-pad) 26cqw; }
+.inv[data-template="anjo"] .inv-paper::before {
+  z-index: 2;
+  border: 0;
+  padding: 1.25px;
+  border-radius: calc(var(--radius) - var(--frame-inset));
+  background: var(--anjo-foil);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.inv[data-template="anjo"] .inv-art-top,
+.inv[data-template="anjo"] .inv-art-bottom { position: absolute; left: var(--frame-inset); right: var(--frame-inset); z-index: 0; margin: 0; display: block; overflow: hidden; }
+/* o céu e as nuvens ficam dentro do fio de ouro: entre o fio e a borda, só o papel */
+.inv[data-template="anjo"] .inv-art-top { top: var(--frame-inset); border-radius: calc(var(--radius) - var(--frame-inset)) calc(var(--radius) - var(--frame-inset)) 0 0; }
+.inv[data-template="anjo"] .inv-art-bottom { bottom: var(--frame-inset); border-radius: 0 0 calc(var(--radius) - var(--frame-inset)) calc(var(--radius) - var(--frame-inset)); }
+.inv[data-template="anjo"] .inv-art-top svg,
+.inv[data-template="anjo"] .inv-art-bottom svg { display: block; width: 100%; height: auto; }
+
+.inv[data-template="anjo"] .inv-hello { font: italic 400 17px/1.4 var(--font-text); margin-bottom: var(--anjo-s1) !important; }
+.inv[data-template="anjo"] .inv-hello strong { font-weight: 600; }
+/* frase de abertura em itálico corrido, sem caixa alta: é uma voz baixa, não um rótulo */
+.inv[data-template="anjo"] .inv-headline { --label-size: 17px; font: italic 400 17px/1.5 var(--font-text); letter-spacing: 0.01em; text-transform: none; padding-left: 0; color: var(--soft); margin-bottom: var(--anjo-s2) !important; }
+.inv[data-template="anjo"] .inv-names { padding: 0.1em 0 0.06em; }
+/* folga em volta do conector: descendentes do primeiro nome (g, j, ç) e acentos do segundo (É, Â) não encostam nele */
+.inv[data-template="anjo"] .inv-amp { font-family: var(--font-text); font-weight: 400; color: var(--anjo-metal); margin: 0.2em 0 0.3em; line-height: 1; }
+.inv[data-template="anjo"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.84); }
+.inv[data-template="anjo"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.1); }
+.inv[data-template="anjo"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); line-height: 1.12; }
+/* Frase comprida (travessão, ou seis palavras ou mais) sai da caligrafia e vai para a Lora em itálico; frases curtas de
+   quatro ou cinco palavras ("Chá de bebê da Helena") e nomes compridos continuam na Allura. */
+.inv[data-template="anjo"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { --names-em: 0.5; font: italic 500 clamp(28px, 9.4cqw, 42px)/1.2 var(--font-text); }
+/* algarismos e travessão na serifa do modelo: os da caligrafia são frágeis */
+.inv[data-template="anjo"] .inv-names:is(:not([data-phrase]), [data-words="4"], [data-words="5"]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.62em; font-weight: 500; }
+/* título curto ("Helena faz 30") cabe inteiro numa linha: a medida passa a ser o título todo */
 .inv[data-template="anjo"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
 
-.inv[data-template="anjo"] .inv-message { font-size: 20px; }
-.inv[data-template="anjo"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); }
-.inv[data-template="anjo"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="anjo"] .inv-message { font: 400 17.5px/1.55 var(--font-text); margin-top: var(--anjo-s1) !important; }
+.inv[data-template="anjo"] .inv-art-divider { margin: var(--anjo-s2) 0 var(--anjo-s1); }
+.inv[data-template="anjo"] .inv-art-divider svg { width: min(200px, 62cqw); height: auto; }
+.inv[data-template="anjo"] .inv-art-divider:not(:has(+ .inv-date)) { display: none; }
 
-/* Data: a grade é a da base (dia da semana e hora ladeiam o numeral, mês na linha de baixo). */
-.inv[data-template="anjo"] .inv-date { gap: 8px clamp(10px, 4cqw, 16px); }
-.inv[data-template="anjo"] .inv-date-day { font-weight: 400; font-size: clamp(48px, 16cqw, 58px); }
-.inv[data-template="anjo"] .inv-date-side, .inv[data-template="anjo"] .inv-date-month { font-size: clamp(14px, 4cqw, 14.5px); letter-spacing: 0.12em; border-color: var(--accent); }
-.inv[data-template="anjo"] .inv-date-side { padding-left: 0.12em; }
-/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
-@container (max-width: 300px) {
-  .inv[data-template="anjo"] .inv-date { column-gap: 8px; }
-  .inv[data-template="anjo"] .inv-date-side { letter-spacing: 0.08em; padding-left: 0.08em; }
+/* ───── Data: o numeral dentro de um medalhão (a auréola), dia da semana e hora em itálico de cada lado, mês embaixo ───── */
+.inv[data-template="anjo"] .inv-date { margin-top: var(--anjo-s2); gap: 12px clamp(8px, 3cqw, 14px); }
+.inv[data-template="anjo"] .inv-art-divider + .inv-date { margin-top: 0; }
+.inv[data-template="anjo"] .inv-date-side { border: 0; padding: 0; font: italic 500 17px/1.25 var(--font-text); font-variant-numeric: lining-nums; letter-spacing: 0; text-transform: none; color: var(--ink); }
+.inv[data-template="anjo"] .inv-date-side::after { content: ""; display: block; height: 1px; margin-top: 7px; background: linear-gradient(to right, transparent, var(--anjo-thread) 55%, var(--accent)); }
+.inv[data-template="anjo"] .inv-date-side:last-child::after { background: linear-gradient(to left, transparent, var(--anjo-thread) 55%, var(--accent)); }
+.inv[data-template="anjo"] .inv-date-day {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  font: 500 44px/1 var(--font-text);
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+  padding-bottom: 0.06em;
+  background: radial-gradient(circle at 50% 28%, var(--paper) 30%, color-mix(in srgb, var(--liner) 38%, var(--paper)));
+  box-shadow: 0 0 0 1.5px var(--accent), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--anjo-thread);
 }
-.inv[data-template="anjo"] .inv-place { font-style: italic; font-size: 18px; }
-.inv[data-template="anjo"] .inv-countdown { background: none; font: 500 13.5px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0 0 0 0.18em; }
-.inv[data-template="anjo"] .inv-more { font-family: var(--font-label); font-size: 13px; }
+.inv[data-template="anjo"] .inv-date-month { --label-size: 14px; font: 600 14px/1.3 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.2em; padding-left: 0.2em; color: var(--ink); margin-top: 2px; }
+/* Cartão estreito (celular de 320px): a letra das laterais não encolhe abaixo de 16px; quem cede é o medalhão e o respiro. */
+@container (max-width: 300px) {
+  .inv[data-template="anjo"] .inv-date { column-gap: 6px; }
+  .inv[data-template="anjo"] .inv-date-side { font-size: 16px; }
+  .inv[data-template="anjo"] .inv-date-day { width: 78px; font-size: 38px; }
+}
+.inv[data-template="anjo"] .inv-place { font: italic 500 18px/1.4 var(--font-text); color: var(--ink); margin-top: var(--anjo-s1) !important; }
+.inv[data-template="anjo"] .inv-countdown { --label-size: 16px; background: none; padding: 0; border-radius: 0; margin-top: 10px !important; font: italic 400 16px/1.3 var(--font-text); font-variant-numeric: lining-nums; color: var(--soft); }
+.inv[data-template="anjo"] .inv-countdown::before,
+.inv[data-template="anjo"] .inv-countdown::after { content: ""; display: inline-block; width: 7px; height: 7px; margin: 0 9px 2px; vertical-align: middle; background: var(--accent); clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
+.inv[data-template="anjo"] .inv-more { --label-size: 14px; font: 600 14px/1 var(--font-label); letter-spacing: 0.18em; }
 
-/* ───────── Seções: a mesma papelaria da capa (serifa e versaletes), sem cara de aplicativo ───────── */
-.inv[data-template="anjo"] .inv-kicker { font-size: 13.5px; }
-.inv[data-template="anjo"] .inv-section { box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px var(--line); }
-.inv[data-template="anjo"] .inv-big { font-size: 23px; }
-.inv[data-template="anjo"] .inv-text { font: 400 19.5px/1.45 var(--font-text); }
-.inv[data-template="anjo"] .inv-hint { font: italic 400 17.5px/1.45 var(--font-text); }
-.inv[data-template="anjo"] .inv-rule { background: color-mix(in srgb, var(--accent) 55%, transparent); }
-.inv[data-template="anjo"] .inv-btn { font: 600 15.5px/1.2 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; padding-left: calc(18px + 0.14em); }
-.inv[data-template="anjo"] .inv-btn-quiet { border-color: var(--accent); font-weight: 600; font-size: 14.5px; }
-.inv[data-template="anjo"] .rsvp-yes, .inv[data-template="anjo"] .rsvp-no { font-size: 16.5px; }
-.inv[data-template="anjo"] .rsvp-state { border-radius: var(--radius); }
-.inv[data-template="anjo"] .inv-link { font: italic 500 18px/1.3 var(--font-text); }
-.inv[data-template="anjo"] .inv-saved { font: italic 400 17px/1.45 var(--font-text); }
+/* ───── Seções: o mesmo papel arredondado, com o fio de ouro por dentro e um sopro de céu no alto ───── */
+.inv[data-template="anjo"] .inv-section { --radius: 22px; padding: 42px clamp(18px, 7cqw, 26px) 34px; box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 10%, transparent), 0 10px 26px color-mix(in srgb, var(--ink) 8%, transparent), inset 0 0 0 7px var(--paper), inset 0 0 0 8px var(--anjo-thread); }
+.inv[data-template="anjo"] .inv-section::before {
+  content: "";
+  position: absolute;
+  inset: 9px 9px auto 9px;
+  height: 96px;
+  border-radius: 13px 13px 0 0;
+  background:
+    radial-gradient(ellipse 34% 46% at 22% 34%, color-mix(in srgb, #fff 85%, transparent), transparent 70%),
+    radial-gradient(ellipse 30% 40% at 76% 26%, color-mix(in srgb, #fff 85%, transparent), transparent 70%),
+    linear-gradient(to bottom, color-mix(in srgb, var(--liner) 46%, transparent), transparent);
+  pointer-events: none;
+}
+/* centelha de quatro pontas sobre o primeiro rótulo de cada seção (a mesma do céu da capa) */
+.inv[data-template="anjo"] .inv-section > .inv-kicker:first-child::before { content: ""; display: block; width: 13px; height: 13px; margin: 0 auto 11px; background: var(--anjo-foil); clip-path: polygon(50% 0, 59% 41%, 100% 50%, 59% 59%, 50% 100%, 41% 59%, 0 50%, 41% 41%); }
+.inv[data-template="anjo"] .inv-kicker { --label-size: 14px; font: 600 14px/1.5 var(--font-label); letter-spacing: 0.18em; padding-left: 0.18em; color: var(--soft); }
+.inv[data-template="anjo"] .inv-section-title { font: italic 500 31px/1.15 var(--font-text); margin-bottom: 8px !important; }
+.inv[data-template="anjo"] .inv-big { font: 500 21px/1.35 var(--font-text); }
+.inv[data-template="anjo"] .inv-text { font: 400 17.5px/1.55 var(--font-text); }
+.inv[data-template="anjo"] .inv-hint { font: italic 400 16.5px/1.45 var(--font-text); }
+/* fio com uma centelha no meio */
+.inv[data-template="anjo"] .inv-rule { position: relative; height: 9px; margin: 22px 0 18px; background: linear-gradient(to right, transparent, var(--anjo-thread) 34%, var(--accent) 44%, transparent 44%, transparent 56%, var(--accent) 56%, var(--anjo-thread) 66%, transparent) center / min(180px, 80%) 1px no-repeat; }
+.inv[data-template="anjo"] .inv-rule::before { content: ""; position: absolute; left: 50%; top: 0; width: 9px; height: 9px; margin-left: -4.5px; background: var(--accent); clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
 
-/* ───────── Envelope ───────── */
-.inv[data-template="anjo"] .env-to { font: italic 400 19px/1.4 var(--font-text); }
-.inv[data-template="anjo"] .env-to strong { font-family: var(--font-names); font-style: normal; font-size: 42px; font-weight: 400; }
-.inv[data-template="anjo"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 3.8px color-mix(in srgb, var(--accent) 85%, var(--btn-ink)), 0 6px 16px color-mix(in srgb, var(--ink) 20%, transparent); }
-.inv[data-template="anjo"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; } /* lacre gravado em capitais romanas: a caligráfica dos nomes não cabe na cera */
-/* forro: tinta mais marcada, margem de papel e filete acompanhando as bordas da aba */
-.inv[data-template="anjo"] .env-liner { color: color-mix(in srgb, var(--liner) 58%, var(--ink)); }
-.inv[data-template="anjo"] .anjo-liner-rule { stroke: var(--accent); stroke-width: 19px; }
-.inv[data-template="anjo"] .anjo-liner-edge { stroke: color-mix(in srgb, var(--paper) 94%, var(--ink)); stroke-width: 17px; }
-/* o cartão que sobe já traz a moldura dupla do convite */
-.inv[data-template="anjo"] .env-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), inset 0 0 0 6px var(--paper), inset 0 0 0 7px var(--accent), inset 0 0 0 9px var(--paper), inset 0 0 0 9.6px color-mix(in srgb, var(--accent) 70%, transparent); padding-top: 13%; }
+.inv[data-template="anjo"] .inv-btn { font: 600 16.5px/1.2 var(--font-text); letter-spacing: 0.01em; border-color: color-mix(in srgb, var(--ink) 58%, var(--accent)); }
+.inv[data-template="anjo"] .inv-btn-main { border-color: var(--ink); box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--accent) 70%, #fff); }
+.inv[data-template="anjo"] .inv-btn-quiet { font-weight: 500; font-size: 16px; border-color: color-mix(in srgb, var(--ink) 42%, var(--accent)); background: color-mix(in srgb, var(--liner) 16%, transparent); }
+.inv[data-template="anjo"] .inv-btn[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--accent) 70%, #fff), 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+.inv[data-template="anjo"] .rsvp-no[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); background: color-mix(in srgb, var(--ink) 9%, transparent); }
+.inv[data-template="anjo"] .rsvp-state,
+.inv[data-template="anjo"] .rsvp-current { border-radius: 18px; background: color-mix(in srgb, var(--liner) 26%, var(--paper)); box-shadow: inset 0 0 0 1px var(--anjo-thread); }
+.inv[data-template="anjo"] .rsvp-state-title { font: italic 500 27px/1.2 var(--font-text); }
+.inv[data-template="anjo"] .inv-field input, .inv[data-template="anjo"] .inv-field select, .inv[data-template="anjo"] .inv-field textarea { border-radius: 14px; border-color: color-mix(in srgb, var(--ink) 38%, var(--paper)); }
+.inv[data-template="anjo"] .rsvp-radio span { border-radius: 14px; }
+.inv[data-template="anjo"] .inv-qr { border-radius: 16px; border-color: var(--anjo-thread); }
+.inv[data-template="anjo"] .inv-sticky { border-top-color: var(--anjo-thread); }
+
+/* Assinatura do fecho: o título vem como texto simples (sem .inv-amp nem .inv-num), então a caligrafia traria o "&", os
+   algarismos e o travessão dela. Vai na Lora em itálico, a mesma voz dos títulos de seção; o corpo acompanha a largura
+   para uma palavra de 20 letras caber inteira a 320px. */
+.inv[data-template="anjo"] .inv-sign-names { font: italic 500 clamp(22px, 8cqw, 30px)/1.22 var(--font-text); letter-spacing: 0; }
+.inv[data-template="anjo"] .inv-sign-date { font: italic 400 17px/1.4 var(--font-text); }
+.inv[data-template="anjo"] .inv-footer { font: 400 15px/1.4 var(--font-text); }
+
+/* ───── Fecho da página: três centelhas, como as do céu da capa ───── */
+.inv[data-template="anjo"] .inv-sheet::after {
+  content: "";
+  display: block;
+  width: 84px;
+  height: 18px;
+  margin: 26px auto 0;
+  background: var(--anjo-foil);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 18'%3E%3Cpath d='M42 0q1.3 7.7 9 9q-7.7 1.3-9 9q-1.3-7.7-9-9q7.7-1.3 9-9zM12 4q.7 4.3 5 5q-4.3.7-5 5q-.7-4.3-5-5q4.3-.7 5-5zM72 4q.7 4.3 5 5q-4.3.7-5 5q-.7-4.3-5-5q4.3-.7 5-5z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 18'%3E%3Cpath d='M42 0q1.3 7.7 9 9q-7.7 1.3-9 9q-1.3-7.7-9-9q7.7-1.3 9-9zM12 4q.7 4.3 5 5q-4.3.7-5 5q-.7-4.3-5-5q4.3-.7 5-5zM72 4q.7 4.3 5 5q-4.3.7-5 5q-.7-4.3-5-5q4.3-.7 5-5z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.thumb > .inv[data-template="anjo"] .inv-sheet::after { display: none; }
+
+/* ───── Envelope: papel branco com um sopro de céu, aba debruada a ouro, forro de nuvens ───── */
+.inv[data-template="anjo"] .env { background: radial-gradient(ellipse 60% 12% at 10% 12%, var(--anjo-cloud), transparent 72%), radial-gradient(ellipse 56% 11% at 94% 80%, var(--anjo-cloud), transparent 72%), var(--bg); }
+.inv[data-template="anjo"] .env-body { filter: drop-shadow(0 16px 26px color-mix(in srgb, var(--ink) 24%, transparent)); }
+.inv[data-template="anjo"] .env-back { background: color-mix(in srgb, var(--paper) 86%, var(--liner)); border-radius: 10px; }
+.inv[data-template="anjo"] .env-front {
+  border-radius: 10px;
+  background-image:
+    radial-gradient(ellipse 46% 34% at 16% 104%, color-mix(in srgb, var(--liner) 62%, transparent), transparent 72%),
+    radial-gradient(ellipse 42% 30% at 86% 106%, color-mix(in srgb, var(--liner) 56%, transparent), transparent 72%),
+    radial-gradient(ellipse 30% 20% at 52% 108%, color-mix(in srgb, var(--liner) 40%, transparent), transparent 72%),
+    linear-gradient(to top, color-mix(in srgb, var(--paper) 95%, var(--ink)), var(--paper) 60%);
+}
+/* aba: um fio de ouro acompanha as duas diagonais (triângulo dourado por baixo, face recuada) */
+.inv[data-template="anjo"] .env-flap::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% calc(58% + 1.5px)); background: var(--anjo-foil); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.inv[data-template="anjo"] .env-flap-face { clip-path: polygon(2.5px 0, calc(100% - 2.5px) 0, 50% 58%); background-image: linear-gradient(to bottom, var(--paper), color-mix(in srgb, var(--paper) 93%, var(--ink))); }
+.inv[data-template="anjo"] .env-card { border-radius: 9px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--anjo-thread); }
+.inv[data-template="anjo"] .env-card-line { opacity: 0.85; }
+/* forro: a base mostra o desenho girado em 180° na aba aberta; aqui ele gira de volta, para as nuvens saírem de pé */
+.inv[data-template="anjo"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="anjo"] .env-seal { --seal-font: var(--font-text); --seal-weight: 600; } /* capitais romanas da Lora: floreio não cabe na cera */
+.inv[data-template="anjo"] .env-to { font: italic 400 17px/1.4 var(--font-text); }
+.inv[data-template="anjo"] .env-to strong { font: italic 500 30px/1.15 var(--font-text); }
+.inv[data-template="anjo"] .env-cta { font: 600 16px/1.1 var(--font-text); font-variant-numeric: lining-nums; letter-spacing: 0.14em; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--accent) 70%, #fff), 0 6px 16px color-mix(in srgb, var(--ink) 20%, transparent); }
 
 /* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
-   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
-   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
-.inv[data-template="anjo"] { --thumb-h: 768px; }
-.inv[data-template="anjo"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 664px; }
-.inv[data-template="anjo"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 671px; }
-.inv[data-template="anjo"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 635px; }
-.inv[data-template="anjo"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 664px; }
-.inv[data-template="anjo"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 585px; }
+   Valores medidos em /modelos; ao mexer em respiros, fontes ou ornamentos da capa, meça de novo (README, "Miniaturas"). */
+.inv[data-template="anjo"] { --thumb-h: 849px; }
+.inv[data-template="anjo"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 740px; }
+.inv[data-template="anjo"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 760px; }
+.inv[data-template="anjo"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 713px; }
+.inv[data-template="anjo"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 740px; }
+.inv[data-template="anjo"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 746px; }

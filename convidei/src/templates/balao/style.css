@@ -1,87 +1,166 @@
-/* Modelo Balao. Todas as regras ficam sob .inv[data-template="balao"]. */
+/* Modelo Balão: festa infantil em formas chapadas. Todas as regras ficam sob .inv[data-template="balao"]. */
 .inv[data-template="balao"] {
-  --font-names: var(--f-pinyon), "Pinyon Script", cursive;
-  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
-  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
-  --names-size: clamp(46px, 15.5cqw, 70px);
-  --names-weight: 400;
-  --names-leading: 1.12;
-  --names-em: 0.45;
-  --amp-scale: 0.5;
-  --label-tracking: 0.2em;
-  --radius: 2px;
-  --btn-radius: 2px;
-  --frame-inset: 13px;
+  --font-names: var(--f-baloo), "Baloo 2", "Fredoka", system-ui, sans-serif;
+  --font-text: var(--f-fredoka), "Fredoka", system-ui, sans-serif;
+  --font-label: var(--f-fredoka), "Fredoka", system-ui, sans-serif;
+  --names-size: clamp(40px, 14.6cqw, 62px);
+  --names-weight: 800;
+  --names-leading: 0.96;
+  --names-em: 0.53; /* Baloo 2 extrabold, medida com "Maximiliano" e "Confraternização" */
+  --names-tracking: -0.005em;
+  --amp-scale: 0.46;
+  --label-tracking: 0.12em;
+  --label-size: 15px; /* frase de abertura, contagem e rótulos: acima do piso de 14px da base */
+  --balao-string: color-mix(in srgb, var(--ink) 58%, var(--paper));
+  --radius: 30px;
+  --btn-radius: 999px;
+  --paper-pad: clamp(20px, 7.4cqw, 34px);
+  --paper-shadow: 0 2px 0 color-mix(in srgb, var(--ink) 7%, transparent), 0 18px 38px color-mix(in srgb, var(--ink) 13%, transparent);
+  /* tons claros das três cores do desenho */
+  --tint-a: color-mix(in srgb, var(--accent) 16%, var(--paper));
+  --tint-s: color-mix(in srgb, var(--seal) 13%, var(--paper));
+  --tint-l: color-mix(in srgb, var(--liner) 34%, var(--paper));
+  /* cinco bandeirolas num barbante frouxo (máscara das seções), confete da frente do envelope (máscara) e nuvem (fecho da página) */
+  --balao-bunting: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 28'%3E%3Cpath d='M0 0Q66 12 132 0' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3Cpath d='M-10.5-.6h21l-8.9 16.8q-1.6 2.6-3.2 0z' transform='translate(18 2.8) rotate(7.5)'/%3E%3Cpath d='M-10.5-.6h21l-8.9 16.8q-1.6 2.6-3.2 0z' transform='translate(42 5.2) rotate(3.8)'/%3E%3Cpath d='M-10.5-.6h21l-8.9 16.8q-1.6 2.6-3.2 0z' transform='translate(66 6) rotate(0)'/%3E%3Cpath d='M-10.5-.6h21l-8.9 16.8q-1.6 2.6-3.2 0z' transform='translate(90 5.2) rotate(-3.8)'/%3E%3Cpath d='M-10.5-.6h21l-8.9 16.8q-1.6 2.6-3.2 0z' transform='translate(114 2.8) rotate(-7.5)'/%3E%3C/svg%3E");
+  --balao-confetti: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 350 250' preserveAspectRatio='none'%3E%3Cpath d='M0 -4.4L4.2 3.2H-4.2Z' stroke='%23000' stroke-width='2.2' stroke-linejoin='round' transform='translate(8.8 214) rotate(-18)'/%3E%3Ccircle cx='8.8' cy='172' r='2.6'/%3E%3Ccircle cx='8.8' cy='244' r='2.2'/%3E%3Cpath d='M-10 1.4C-7.6-4.6-3.6-4.4-1.4-.4C.4 3 3 3.2 4.8-.2C6.4-3.2 8.6-3.6 10.4-1.6C8.6-2 7.4-1 6.2 1.4C3.8 6.4-.6 6.2-3 2C-4.6-1-6.8-1-8.4 2.4C-9 3.6-10.6 3-10 1.4Z' transform='translate(26.3 234) rotate(78) scale(0.8)'/%3E%3Ccircle cx='26.3' cy='190' r='3.8'/%3E%3Ccircle cx='26.3' cy='152' r='3' fill='none' stroke='%23000' stroke-width='1.9'/%3E%3Cpath d='M0-1C.14-.36.36-.14 1 0C.36.14.14.36 0 1C-.14.36-.36.14-1 0C-.36-.14-.14-.36 0-1Z' transform='translate(43.8 208) rotate(10) scale(6.6)'/%3E%3Ccircle cx='43.8' cy='240' r='2.8'/%3E%3Crect x='-5.6' y='-1.7' width='11.2' height='3.4' rx='1.7' transform='translate(61.3 230) rotate(62)'/%3E%3Ccircle cx='61.3' cy='196' r='2.2'/%3E%3Cpath d='M0 -3.8L3.6 2.7H-3.6Z' stroke='%23000' stroke-width='1.9' stroke-linejoin='round' transform='translate(78.8 241) rotate(20)'/%3E%3Ccircle cx='78.8' cy='212' r='2.8' fill='none' stroke='%23000' stroke-width='1.7'/%3E%3Ccircle cx='96.3' cy='228' r='3.4'/%3E%3Cpath d='M0-1C.14-.36.36-.14 1 0C.36.14.14.36 0 1C-.14.36-.36.14-1 0C-.36-.14-.14-.36 0-1Z' transform='translate(113.8 241) rotate(0) scale(5)'/%3E%3Ccircle cx='131.3' cy='236' r='2.3'/%3E%3Ccircle cx='166.3' cy='243' r='2'/%3E%3Cpath d='M0-1C.14-.36.36-.14 1 0C.36.14.14.36 0 1C-.14.36-.36.14-1 0C-.36-.14-.14-.36 0-1Z' transform='translate(341.3 212) rotate(-8) scale(6.6)'/%3E%3Ccircle cx='341.3' cy='174' r='2.6'/%3E%3Ccircle cx='341.3' cy='243' r='2.2'/%3E%3Crect x='-5.6' y='-1.7' width='11.2' height='3.4' rx='1.7' transform='translate(323.8 236) rotate(-58)'/%3E%3Ccircle cx='323.8' cy='192' r='3' fill='none' stroke='%23000' stroke-width='1.9'/%3E%3Ccircle cx='323.8' cy='154' r='2.6'/%3E%3Cpath d='M0 -4.4L4.2 3.2H-4.2Z' stroke='%23000' stroke-width='2.2' stroke-linejoin='round' transform='translate(306.3 206) rotate(22)'/%3E%3Ccircle cx='306.3' cy='240' r='2.8'/%3E%3Cpath d='M-10 1.4C-7.6-4.6-3.6-4.4-1.4-.4C.4 3 3 3.2 4.8-.2C6.4-3.2 8.6-3.6 10.4-1.6C8.6-2 7.4-1 6.2 1.4C3.8 6.4-.6 6.2-3 2C-4.6-1-6.8-1-8.4 2.4C-9 3.6-10.6 3-10 1.4Z' transform='translate(288.8 230) rotate(-76) scale(0.8)'/%3E%3Ccircle cx='288.8' cy='198' r='2.2'/%3E%3Ccircle cx='271.3' cy='241' r='3.2'/%3E%3Cpath d='M0-1C.14-.36.36-.14 1 0C.36.14.14.36 0 1C-.14.36-.36.14-1 0C-.36-.14-.14-.36 0-1Z' transform='translate(271.3 214) rotate(0) scale(4.6)'/%3E%3Ccircle cx='253.8' cy='228' r='2.8' fill='none' stroke='%23000' stroke-width='1.7'/%3E%3Cpath d='M0 -3.6L3.4 2.6H-3.4Z' stroke='%23000' stroke-width='1.8' stroke-linejoin='round' transform='translate(236.3 241) rotate(-16)'/%3E%3Ccircle cx='218.8' cy='236' r='2.3'/%3E%3Ccircle cx='183.8' cy='243' r='2'/%3E%3C/svg%3E");
+  --balao-cloud: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 44'%3E%3Cpath d='M22 44a16 16 0 0 1-1.6-31.9A21 21 0 0 1 59.600 9.200 14.500 14.500 0 0 1 77.500 21.300 11.500 11.500 0 0 1 80 44z'/%3E%3C/svg%3E");
 }
-/* Algarismos alinhados em tudo: os de texto da Cormorant fazem "16h30" virar "16h3o" e "11" virar "ıı". */
-.inv[data-template="balao"] * { font-variant-numeric: lining-nums !important; } /* !important: os atalhos "font:" da base e do modelo zeram esta propriedade */
 
 /* ───────── Capa ───────── */
-/* moldura dupla: fio de 1px e, por dentro, um fio mais fino */
-.inv[data-template="balao"] .inv-paper::before { border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
-.inv[data-template="balao"] .inv-paper { padding-block: calc(var(--paper-pad) + 18px); }
-.inv[data-template="balao"] .inv-headline { font-size: 13.5px; font-weight: 500; }
-.inv[data-template="balao"] .inv-names { padding: 0.16em 0 0.1em; }
-/* o conector tem folga dos dois lados: descendentes do nome de cima e acentos de maiúscula do nome de baixo (Ângela & Érica) */
-.inv[data-template="balao"] .inv-amp { margin: 0.14em 0 0.3em; line-height: 1.1; }
-/* frase (data-phrase: travessão ou quatro palavras ou mais): itálico de texto em vez de caligrafia, que só fica bem em nomes.
-   Nome comprido ("Maximiliano Albuquerque") não é frase e continua na caligrafia, só menor (regra data-long da base). */
-.inv[data-template="balao"] .inv-names[data-phrase="true"] { --names-em: 0.5; font-family: var(--font-text); font-style: italic; font-weight: 500; font-size: calc(var(--names-size) * 0.62); line-height: 1.2; text-wrap: balance; padding: 0.1em 0; }
-/* algarismos na caligrafia ficam ruins ("30" parece "Zo"): vão na serifa do modelo, em itálico, com a altura das maiúsculas da caligrafia */
-.inv[data-template="balao"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.84em; font-weight: 500; letter-spacing: 0.01em; }
-/* título curto ("Helena faz 30", "Chá do Miguel") cabe inteiro numa linha: a medida passa a ser o título todo (--line), para "faz 30" não cair sozinho embaixo */
-.inv[data-template="balao"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
+/* O cartão não tem moldura: as bandeirolas atravessam o topo de ponta a ponta e as nuvens fecham o rodapé, cortadas pelos cantos redondos. */
+.inv[data-template="balao"] .inv-paper { padding: 0 var(--paper-pad); overflow: hidden; }
+.inv[data-template="balao"] .inv-paper::before { content: none; }
+.inv[data-template="balao"] .inv-paper::after { opacity: 0.28; }
+.inv[data-template="balao"] .inv-art-top { display: block; margin: 0 calc(-1 * var(--paper-pad)) 8px; }
+.inv[data-template="balao"] .inv-art-bottom { display: block; margin: 2px calc(-1 * var(--paper-pad)) 0; }
+.inv[data-template="balao"] .inv-art-divider { margin: 14px 0 16px; }
+.inv[data-template="balao"] .inv-art svg { height: auto; }
 
-.inv[data-template="balao"] .inv-message { font-size: 20px; }
-.inv[data-template="balao"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); }
-.inv[data-template="balao"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="balao"] .inv-hello { font: 400 16px/1.4 var(--font-text); margin-bottom: 10px !important; }
+.inv[data-template="balao"] .inv-headline { font: 600 15px/1.45 var(--font-label); letter-spacing: 0.12em; padding-left: 0.12em; color: var(--soft); margin-bottom: 8px !important; }
 
-/* Data: a grade é a da base (dia da semana e hora ladeiam o numeral, mês na linha de baixo). */
-.inv[data-template="balao"] .inv-date { gap: 8px clamp(10px, 4cqw, 16px); }
-.inv[data-template="balao"] .inv-date-day { font-weight: 400; font-size: clamp(48px, 16cqw, 58px); }
-.inv[data-template="balao"] .inv-date-side, .inv[data-template="balao"] .inv-date-month { font-size: clamp(14px, 4cqw, 14.5px); letter-spacing: 0.12em; border-color: var(--accent); }
-.inv[data-template="balao"] .inv-date-side { padding-left: 0.12em; }
-/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
+.inv[data-template="balao"] .inv-names { color: var(--ink); padding: 0.06em 0 0; }
+.inv[data-template="balao"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.1); }
+.inv[data-template="balao"] .inv-names[data-count="1"][data-short="true"] { font-size: calc(var(--names-size) * 1.42); line-height: 1; }
+.inv[data-template="balao"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); line-height: 1.02; }
+.inv[data-template="balao"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.7); }
+.inv[data-template="balao"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.8); }
+/* "&" numa bolinha de confete, entre os dois nomes */
+.inv[data-template="balao"] .inv-amp { font: 700 calc(1em * var(--amp-scale)) / 1 var(--font-names); display: grid; place-items: center; width: 1.62em; height: 1.62em; padding-top: 0.12em; margin: 0.06em 0 0.14em; border-radius: 50%; background: var(--liner); color: var(--ink); }
+/* Aniversário: a idade vai num adesivo redondo, meio torto, na segunda cor ("Theo faz 5", "Helena faz 30"). */
+.inv[data-template="balao"] .inv-cover[data-type="aniversario"] .inv-names[data-count="1"]:not([data-phrase]) .inv-num { display: inline-block; min-width: 1.36em; padding: 0.2em 0.26em 0.02em; margin: -0.1em 0 0 0.04em; border-radius: 0.7em; line-height: 1; white-space: nowrap; background: var(--seal); color: var(--seal-ink); box-shadow: 0 0.07em 0 color-mix(in srgb, var(--seal) 72%, var(--ink)); transform: rotate(-4deg); }
+
+.inv[data-template="balao"] .inv-message { font: 400 17.5px/1.5 var(--font-text); font-style: normal; color: var(--soft); margin-top: 12px !important; max-width: 27ch; }
+
+/* Data: o dia vai num balão (com brilho e bico), entre duas etiquetas redondas; o mês fica embaixo. */
+.inv[data-template="balao"] .inv-date { margin-top: 0; column-gap: clamp(6px, 2.6cqw, 12px); row-gap: 18px; }
+.inv[data-template="balao"] .inv-date-side { border: 0; border-radius: 999px; background: var(--tint-s); padding: 10px 4px; font: 600 15.5px/1.2 var(--font-label); letter-spacing: 0.01em; text-transform: none; color: var(--ink); }
+.inv[data-template="balao"] .inv-date-side:first-child::first-letter { text-transform: uppercase; }
+.inv[data-template="balao"] .inv-date-day { position: relative; display: grid; place-items: center; width: 84px; height: 92px; padding-top: 7px; border-radius: 50% 50% 50% 50% / 46% 46% 54% 54%; background: var(--liner); color: var(--ink); font: 800 46px/1 var(--font-names); letter-spacing: -0.01em; box-shadow: inset -7px -8px 0 color-mix(in srgb, var(--ink) 9%, transparent); }
+.inv[data-template="balao"] .inv-date-day::before { content: ""; position: absolute; left: 11px; top: 10px; width: 30px; height: 30px; border-radius: 50%; border: 5px solid transparent; border-top-color: rgba(255, 255, 255, 0.72); transform: rotate(-42deg); }
+.inv[data-template="balao"] .inv-date-day::after { content: ""; position: absolute; left: 50%; top: calc(100% - 2px); width: 14px; height: 10px; margin-left: -7px; clip-path: polygon(50% 0, 100% 78%, 78% 100%, 22% 100%, 0 78%); background: color-mix(in srgb, var(--liner) 84%, var(--ink)); }
+.inv[data-template="balao"] .inv-date-month { font: 600 15px/1.3 var(--font-label); letter-spacing: 0.13em; padding-left: 0.13em; color: var(--soft); }
 @container (max-width: 300px) {
-  .inv[data-template="balao"] .inv-date { column-gap: 8px; }
-  .inv[data-template="balao"] .inv-date-side { letter-spacing: 0.08em; padding-left: 0.08em; }
+  .inv[data-template="balao"] .inv-date { column-gap: 6px; }
+  .inv[data-template="balao"] .inv-date-side { font-size: 15px; letter-spacing: 0; padding-inline: 2px; }
+  .inv[data-template="balao"] .inv-date { row-gap: 12px; }
+  .inv[data-template="balao"] .inv-date-day { width: 68px; height: 76px; padding-top: 6px; font-size: 39px; box-shadow: inset -6px -7px 0 color-mix(in srgb, var(--ink) 9%, transparent); }
+  .inv[data-template="balao"] .inv-date-day::before { left: 9px; top: 8px; width: 25px; height: 25px; border-width: 4.5px; }
+  .inv[data-template="balao"] .inv-art-divider { margin: 10px 0; }
 }
-.inv[data-template="balao"] .inv-place { font-style: italic; font-size: 18px; }
-.inv[data-template="balao"] .inv-countdown { background: none; font: 500 13.5px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0 0 0 0.18em; }
-.inv[data-template="balao"] .inv-more { font-family: var(--font-label); font-size: 13px; }
+.inv[data-template="balao"] .inv-place { font: 500 17px/1.4 var(--font-text); color: var(--ink); margin-top: 12px !important; }
+.inv[data-template="balao"] .inv-countdown { font: 600 15px/1 var(--font-label); padding: 9px 16px 8px; margin-top: 12px !important; background: var(--tint-a); color: var(--ink); }
+.inv[data-template="balao"] .inv-more { font: 600 14px/1 var(--font-label); letter-spacing: 0.14em; }
 
-/* ───────── Seções: a mesma papelaria da capa (serifa e versaletes), sem cara de aplicativo ───────── */
-.inv[data-template="balao"] .inv-kicker { font-size: 13.5px; }
-.inv[data-template="balao"] .inv-section { box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px var(--line); }
-.inv[data-template="balao"] .inv-big { font-size: 23px; }
-.inv[data-template="balao"] .inv-text { font: 400 19.5px/1.45 var(--font-text); }
-.inv[data-template="balao"] .inv-hint { font: italic 400 17.5px/1.45 var(--font-text); }
-.inv[data-template="balao"] .inv-rule { background: color-mix(in srgb, var(--accent) 55%, transparent); }
-.inv[data-template="balao"] .inv-btn { font: 600 15.5px/1.2 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; padding-left: calc(18px + 0.14em); }
-.inv[data-template="balao"] .inv-btn-quiet { border-color: var(--accent); font-weight: 600; font-size: 14.5px; }
-.inv[data-template="balao"] .rsvp-yes, .inv[data-template="balao"] .rsvp-no { font-size: 16.5px; }
-.inv[data-template="balao"] .rsvp-state { border-radius: var(--radius); }
-.inv[data-template="balao"] .inv-link { font: italic 500 18px/1.3 var(--font-text); }
-.inv[data-template="balao"] .inv-saved { font: italic 400 17px/1.45 var(--font-text); }
+/* fundo: confete quase da cor da página */
+.inv[data-template="balao"] .inv-art-backdrop { opacity: 0.42; }
+
+/* ───────── Seções ───────── */
+.inv[data-template="balao"] .inv-section { border-radius: 28px; padding: 46px clamp(14px, 6.6cqw, 26px) 30px; box-shadow: 0 2px 0 color-mix(in srgb, var(--ink) 6%, transparent), 0 10px 24px color-mix(in srgb, var(--ink) 9%, transparent); }
+.inv[data-template="balao"] .inv-section::after { opacity: 0.28; }
+/* cinco bandeirolas num barbante frouxo, penduradas na borda de cima de cada cartão; a ordem das cores muda de um cartão para o
+   outro. Camadas, de cima para baixo: o barbante (um arco de círculo de raio 366px), a meia-face clara de cada bandeirola e as cores. */
+.inv[data-template="balao"] .inv-section { --f1: var(--accent); --f2: var(--liner); --f3: var(--seal); }
+.inv[data-template="balao"] .inv-section:nth-of-type(3n + 2) { --f1: var(--seal); --f2: var(--accent); --f3: var(--liner); }
+.inv[data-template="balao"] .inv-section:nth-of-type(3n) { --f1: var(--liner); --f2: var(--seal); --f3: var(--accent); }
+.inv[data-template="balao"] .inv-section::before {
+  content: ""; position: absolute; top: 0; left: 50%; width: 132px; height: 28px; margin-left: -66px; pointer-events: none;
+  background:
+    radial-gradient(circle at 50% -360px, transparent 364.9px, var(--balao-string) 365.3px 366.7px, transparent 367.1px),
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(255, 255, 255, 0.26) 6px 18px, transparent 18px 24px),
+    linear-gradient(90deg, var(--f1) 0 30px, var(--f2) 30px 54px, var(--f3) 54px 78px, var(--f1) 78px 102px, var(--f2) 102px);
+  -webkit-mask: var(--balao-bunting) center / 100% 100% no-repeat; mask: var(--balao-bunting) center / 100% 100% no-repeat;
+}
+.inv[data-template="balao"] .inv-kicker { width: fit-content; max-width: 100%; margin-inline: auto !important; padding: 5px 14px 4px calc(14px + 0.1em); border-radius: 999px; background: var(--tint-l); color: var(--ink); font: 600 14px/1.5 var(--font-label); letter-spacing: 0.1em; margin-bottom: 10px !important; }
+.inv[data-template="balao"] .inv-section-title { font: 800 34px/1.1 var(--font-names); margin-bottom: 6px !important; }
+.inv[data-template="balao"] .inv-big { font: 600 21.5px/1.3 var(--font-text); }
+.inv[data-template="balao"] .inv-text { font: 400 17.5px/1.5 var(--font-text); }
+.inv[data-template="balao"] .inv-hint { font: 400 16px/1.5 var(--font-text); }
+/* fio: três bolinhas de confete */
+.inv[data-template="balao"] .inv-rule { height: 8px; margin: 24px 0 20px; background: radial-gradient(circle at calc(50% - 18px) 50%, var(--accent) 0 3.4px, transparent 4px), radial-gradient(circle at 50% 50%, var(--liner) 0 3.4px, transparent 4px), radial-gradient(circle at calc(50% + 18px) 50%, var(--seal) 0 3.4px, transparent 4px); }
+
+/* botões: pílulas com uma "base" de cor embaixo, como tecla de brinquedo */
+.inv[data-template="balao"] .inv-btn { border: 2px solid var(--ink); background: var(--paper); font: 600 17px/1.2 var(--font-label); letter-spacing: 0.01em; box-shadow: 0 4px 0 var(--liner); margin-bottom: 4px; }
+.inv[data-template="balao"] .inv-btn:hover { background: var(--tint-l); }
+.inv[data-template="balao"] .inv-btn:active { transform: translateY(2px); }
+.inv[data-template="balao"] .inv-btn-main { background: var(--ink); color: var(--btn-ink); box-shadow: 0 4px 0 var(--accent); }
+.inv[data-template="balao"] .inv-btn-main:hover { background: color-mix(in srgb, var(--ink) 90%, var(--paper)); }
+.inv[data-template="balao"] .inv-btn-quiet { border-color: color-mix(in srgb, var(--ink) 50%, var(--paper)); background: var(--paper); font-weight: 500; font-size: 16.5px; box-shadow: 0 4px 0 var(--line); }
+.inv[data-template="balao"] .inv-grid-2 .inv-btn { font-size: clamp(15px, 5cqw, 16.5px); }
+.inv[data-template="balao"] .inv-link { font: 500 17px/1.3 var(--font-text); }
+.inv[data-template="balao"] .rsvp-count legend { font: 400 18px/1.4 var(--font-text); }
+.inv[data-template="balao"] .rsvp-radio span { border-radius: 18px; border-width: 2px; }
+.inv[data-template="balao"] .rsvp-current { border-radius: 16px; background: var(--tint-l); }
+.inv[data-template="balao"] .rsvp-state { border-radius: 22px; background: var(--tint-l); padding: 22px 16px 20px; }
+.inv[data-template="balao"] .rsvp-state[data-status="no"] { background: var(--tint-s); }
+.inv[data-template="balao"] .rsvp-state-title { font: 800 27px/1.12 var(--font-names); }
+.inv[data-template="balao"] .inv-field input, .inv[data-template="balao"] .inv-field select, .inv[data-template="balao"] .inv-field textarea { border-radius: 16px; border-width: 2px; border-color: color-mix(in srgb, var(--ink) 34%, var(--paper)); }
+.inv[data-template="balao"] .inv-error { border-radius: 16px; }
+.inv[data-template="balao"] .inv-qr { border-radius: 20px; border: 2px solid var(--line); }
+.inv[data-template="balao"] .inv-sign { padding-bottom: 34px; }
+.inv[data-template="balao"] .inv-sign-names { font-size: calc(var(--names-size) * 0.66); line-height: 1.05; }
+.inv[data-template="balao"] .inv-sign-date { font: 500 17px/1.4 var(--font-text); }
+.inv[data-template="balao"] .inv-footer { font: 400 15px/1.4 var(--font-label); }
+
+/* fecho da página: uma nuvem branca solta no fundo */
+.inv[data-template="balao"] .inv-sheet::after { content: ""; display: block; width: 72px; height: 33px; margin: 22px auto 0; background: var(--paper); -webkit-mask: var(--balao-cloud) center / contain no-repeat; mask: var(--balao-cloud) center / contain no-repeat; }
+.thumb > .inv[data-template="balao"] .inv-sheet::after { display: none; }
 
 /* ───────── Envelope ───────── */
-.inv[data-template="balao"] .env-to { font: italic 400 19px/1.4 var(--font-text); }
-.inv[data-template="balao"] .env-to strong { font-family: var(--font-names); font-style: normal; font-size: 42px; font-weight: 400; }
-.inv[data-template="balao"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 3.8px color-mix(in srgb, var(--accent) 85%, var(--btn-ink)), 0 6px 16px color-mix(in srgb, var(--ink) 20%, transparent); }
-.inv[data-template="balao"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; } /* lacre gravado em capitais romanas: a caligráfica dos nomes não cabe na cera */
-/* forro: tinta mais marcada, margem de papel e filete acompanhando as bordas da aba */
-.inv[data-template="balao"] .env-liner { color: color-mix(in srgb, var(--liner) 58%, var(--ink)); }
-.inv[data-template="balao"] .balao-liner-rule { stroke: var(--accent); stroke-width: 19px; }
-.inv[data-template="balao"] .balao-liner-edge { stroke: color-mix(in srgb, var(--paper) 94%, var(--ink)); stroke-width: 17px; }
-/* o cartão que sobe já traz a moldura dupla do convite */
-.inv[data-template="balao"] .env-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), inset 0 0 0 6px var(--paper), inset 0 0 0 7px var(--accent), inset 0 0 0 9px var(--paper), inset 0 0 0 9.6px color-mix(in srgb, var(--accent) 70%, transparent); padding-top: 13%; }
+.inv[data-template="balao"] .env-body { filter: drop-shadow(0 16px 26px color-mix(in srgb, var(--ink) 22%, transparent)); }
+.inv[data-template="balao"] .env-back { border-radius: 14px; background: color-mix(in srgb, var(--line) 70%, var(--ink) 6%); }
+.inv[data-template="balao"] .env-card { border-radius: 12px; }
+.inv[data-template="balao"] .env-card-line { height: 5px; width: 40%; border-radius: 3px; opacity: 1; background: var(--accent); box-shadow: 0 12px 0 var(--liner); }
+/* frente: papel do cartão com o confete da capa (triângulo, serpentina, estrela, anel) nos cantos de baixo. O desenho é uma
+   máscara; as cores vêm de faixas verticais de 5% (cada peça fica inteira dentro de uma faixa). */
+.inv[data-template="balao"] .env-front { border-radius: 14px; background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 95%, var(--ink)), var(--paper) 60%); }
+.inv[data-template="balao"] .env-front::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, var(--accent) 0 5%, var(--liner) 5% 10%, var(--seal) 10% 15%); -webkit-mask: var(--balao-confetti) center / 100% 100% no-repeat; mask: var(--balao-confetti) center / 100% 100% no-repeat; }
+.inv[data-template="balao"] .env-front::after { opacity: 0.28; }
+/* aba num tom da cor do lacre, com um debrum mais escuro nas duas bordas inclinadas (39,6° é o ângulo da borda num envelope
+   de 7 por 5): ela se destaca do fundo da página e do papel da frente em todas as paletas */
+.inv[data-template="balao"] .env-flap-face {
+  --flap: color-mix(in srgb, var(--seal) 34%, var(--paper));
+  border-radius: 14px 14px 0 0;
+  --flap-edge: color-mix(in srgb, var(--seal) 52%, var(--paper));
+  background: var(--flap);
+  background-image:
+    linear-gradient(39.6deg, transparent 46.3%, var(--flap-edge) 46.3% 47.5%, transparent 47.5%),
+    linear-gradient(-39.6deg, transparent 46.3%, var(--flap-edge) 46.3% 47.5%, transparent 47.5%),
+    linear-gradient(to bottom, color-mix(in srgb, var(--flap) 72%, var(--paper)), var(--flap) 70%);
+}
+/* forro: o desenho gira de volta para os balões saírem de pé (vale o triângulo de baixo do desenho) */
+.inv[data-template="balao"] .env-liner > svg { transform: rotate(180deg); }
+.inv[data-template="balao"] .env-liner { border-radius: 14px 14px 0 0; }
+.inv[data-template="balao"] .env-seal { --seal-font: var(--font-names); --seal-weight: 800; --seal-size: 40px; }
+.inv[data-template="balao"] .env-seal .seal-initials { stroke-width: 0; }
+.inv[data-template="balao"] .env-to { font: 500 16.5px/1.4 var(--font-text); }
+.inv[data-template="balao"] .env-to strong { font: 800 32px/1.08 var(--font-names); margin-top: 4px; }
+.inv[data-template="balao"] .env-cta { font: 600 16.5px/1.1 var(--font-label); letter-spacing: 0.08em; padding-top: 6px; box-shadow: 0 4px 0 var(--accent); border-width: 2px; }
 
-/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
-   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
-   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
-.inv[data-template="balao"] { --thumb-h: 768px; }
-.inv[data-template="balao"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 664px; }
-.inv[data-template="balao"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 671px; }
-.inv[data-template="balao"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 635px; }
-.inv[data-template="balao"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 664px; }
-.inv[data-template="balao"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 585px; }
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + 28px de respiro, capa a 390px de largura), por tipo de evento. */
+.inv[data-template="balao"] { --thumb-h: 792px; }
+.inv[data-template="balao"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 772px; }
+.inv[data-template="balao"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 728px; }
+.inv[data-template="balao"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 737px; }
+.inv[data-template="balao"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 763px; }
+.inv[data-template="balao"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 684px; }

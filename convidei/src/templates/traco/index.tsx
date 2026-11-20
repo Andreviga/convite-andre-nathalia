@@ -1,100 +1,317 @@
+import type { ReactNode } from "react";
 import type { ArtProps, TemplateDef } from "../types";
-import { useUid } from "../uid";
 
-// Traco: papelaria formal gravada. Eixo central, moldura dupla, nomes em caligrafia copperplate, uma só cor de tinta.
+// Traço: desenho de linha contínua. Uma única linha entra pela borda esquerda do cartão, desenha o motivo do evento e sai
+// pela direita. Por trás dela, manchas de cor chapada, deslocadas do contorno como numa impressão em duas tintas fora de
+// registro. O resto é branco e tipografia pequena, alinhada à esquerda.
 
-// Floreios desenhados como traço de pena: forma preenchida que engrossa na curva e afina nas pontas, voluta com terminal em gota.
-// (Contornos gerados a partir de uma espiral e duas curvas de Bézier com largura variável; metade direita, a esquerda é espelhada.)
-const SCROLL_TOP = "M131 10.05L130.3 10.06L129.56 10.2L128.85 10.48L128.19 10.92L127.62 11.5L127.16 12.21L126.85 13.02L126.71 13.91L126.75 14.84L127 15.76L127.45 16.64L128.09 17.43L128.91 18.08L129.88 18.57L130.96 18.85L132.1 18.9L133.27 18.7L134.4 18.25L135.43 17.55L136.32 16.62L137.02 15.5L137.48 14.22L137.66 12.84L137.55 11.42L137.13 10.01L136.4 8.69L135.39 7.52L134.13 6.57L132.66 5.89L131.04 5.52L129.34 5.5L127.64 5.84L126.01 6.55L124.53 7.61L123.27 8.99L122.31 10.63L121.71 12.48L121.5 14.45L121.71 16.47L122.36 18.44L123.42 20.27L124.87 21.86L126.66 23.14L128.71 24.04L130.96 24.5L133 24.61L134.99 24.48L136.96 24.19L138.92 23.74L140.86 23.18L142.8 22.51L144.72 21.77L146.63 20.96L148.54 20.11L150.46 19.24L152.38 18.37L154.32 17.51L156.27 16.69L158.25 15.92L160.26 15.21L162.3 14.58L164.39 14.06L166.53 13.65L168.73 13.38L171.01 13.25L173.02 13.27L175.05 13.41L177.08 13.65L179.14 13.98L181.22 14.39L183.33 14.87L185.47 15.4L187.66 15.97L189.89 16.57L192.18 17.18L194.52 17.79L196.92 18.38L199.38 18.95L201.92 19.48L204.54 19.95L207.24 20.35L210.03 20.68L212.92 20.91L215.9 21.04L219 21.06L219 20.94L215.91 20.83L212.94 20.58L210.09 20.23L207.33 19.77L204.68 19.24L202.11 18.63L199.62 17.98L197.21 17.28L194.86 16.56L192.57 15.82L190.33 15.09L188.13 14.37L185.96 13.67L183.82 13.02L181.69 12.42L179.57 11.89L177.44 11.44L175.31 11.09L173.17 10.86L170.99 10.75L168.54 10.8L166.16 11.02L163.84 11.4L161.59 11.91L159.4 12.54L157.27 13.27L155.2 14.07L153.19 14.93L151.22 15.83L149.29 16.76L147.4 17.68L145.55 18.59L143.71 19.47L141.9 20.3L140.1 21.07L138.31 21.76L136.52 22.36L134.71 22.85L132.88 23.22L131.04 23.5L129 23.1L127.13 22.3L125.5 21.15L124.17 19.71L123.19 18.06L122.59 16.28L122.38 14.45L122.56 12.66L123.09 10.98L123.95 9.48L125.08 8.22L126.41 7.25L127.88 6.6L129.42 6.28L130.96 6.28L132.42 6.6L133.75 7.21L134.9 8.06L135.82 9.1L136.48 10.29L136.87 11.55L136.98 12.83L136.82 14.07L136.42 15.22L135.81 16.23L135.02 17.06L134.1 17.69L133.09 18.1L132.06 18.28L131.04 18.25L130.09 18.01L129.23 17.59L128.5 17.01L127.93 16.32L127.53 15.55L127.3 14.75L127.25 13.94L127.37 13.16L127.64 12.45L128.03 11.83L128.53 11.32L129.1 10.94L129.71 10.69L130.35 10.56L131 10.55Z";
-const SCROLL_BOTTOM = "M87.99 12.15L88.53 12.17L89.1 12.1L89.69 11.91L90.25 11.6L90.75 11.16L91.17 10.59L91.48 9.93L91.65 9.18L91.65 8.38L91.49 7.56L91.13 6.76L90.6 6.03L89.89 5.4L89.04 4.92L88.06 4.62L87.01 4.53L85.92 4.67L84.84 5.05L83.84 5.67L82.96 6.52L82.26 7.57L81.78 8.78L81.56 10.11L81.63 11.5L82 12.89L82.67 14.21L83.64 15.39L84.87 16.37L86.32 17.09L87.95 17.5L89.39 17.58L90.77 17.5L92.14 17.29L93.48 16.97L94.81 16.57L96.12 16.09L97.41 15.56L98.7 14.99L99.98 14.39L101.26 13.77L102.54 13.15L103.83 12.55L105.12 11.97L106.44 11.42L107.78 10.92L109.14 10.48L110.54 10.11L111.97 9.83L113.46 9.63L115 9.54L116.57 9.55L118.11 9.64L119.64 9.81L121.15 10.04L122.65 10.33L124.16 10.66L125.67 11.04L127.2 11.45L128.75 11.87L130.33 12.31L131.94 12.74L133.59 13.17L135.29 13.58L137.04 13.95L138.85 14.29L140.72 14.58L142.66 14.8L144.69 14.97L146.8 15.05L149 15.06L149 14.94L146.81 14.85L144.71 14.67L142.71 14.41L140.8 14.07L138.97 13.68L137.2 13.24L135.5 12.76L133.85 12.25L132.24 11.73L130.67 11.19L129.13 10.66L127.6 10.13L126.08 9.62L124.56 9.14L123.04 8.7L121.49 8.31L119.93 7.98L118.33 7.72L116.69 7.55L115 7.46L113.3 7.49L111.65 7.65L110.06 7.92L108.52 8.28L107.04 8.73L105.6 9.25L104.2 9.82L102.85 10.44L101.53 11.08L100.24 11.73L98.98 12.39L97.75 13.03L96.53 13.65L95.33 14.24L94.13 14.78L92.93 15.26L91.73 15.68L90.52 16.03L89.28 16.29L88.05 16.5L86.65 16.17L85.37 15.56L84.28 14.73L83.42 13.71L82.81 12.57L82.47 11.36L82.39 10.15L82.56 8.99L82.96 7.93L83.56 7.01L84.31 6.26L85.17 5.71L86.09 5.36L87.03 5.23L87.94 5.29L88.78 5.53L89.52 5.94L90.13 6.46L90.6 7.08L90.91 7.75L91.06 8.44L91.07 9.12L90.94 9.75L90.69 10.31L90.35 10.79L89.93 11.16L89.47 11.43L88.99 11.6L88.5 11.66L88.01 11.65Z";
+const r1 = (n: number) => Math.round(n * 10) / 10;
 
-function Flourish() {
-  const u = useUid();
+type Pt = [number, number];
+
+/** Traço da caneta: 1.2 unidade, pontas e junções redondas (a viewBox tem a largura do cartão, então 1 unidade ≈ 1px). */
+const PEN = { fill: "none", stroke: "currentColor", strokeWidth: 1.2, strokeLinecap: "round", strokeLinejoin: "round" } as const;
+
+/** Moldura comum dos desenhos do topo: manchas (tinta 2) por baixo, linha (tinta 1) por cima. */
+function Sheet({ wash, children, tag, low, box = "0 0 360 176" }: { wash: ReactNode; children: ReactNode; tag: string; low?: boolean; box?: string }) {
   return (
-    <svg viewBox="0 0 220 28" width="204" height="26" fill="currentColor">
-      <g id={`traco-scroll-top-${u}`}>
-        <path d={SCROLL_TOP} />
-        <circle cx="131" cy="10.3" r="1.25" />
-      </g>
-      <use href={`#traco-scroll-top-${u}`} transform="translate(220 0) scale(-1 1)" />
-      <path d="M110 7.5l4.6 6.5-4.6 6.5-4.6-6.5z" />
-    </svg>
-  );
-}
-
-// Rodapé: variante menor, de uma volta só, virada para cima e com um ponto no centro (não é o espelho do topo).
-function FlourishSmall() {
-  const u = useUid();
-  return (
-    <svg viewBox="0 0 160 20" width="148" height="18.5" fill="currentColor">
-      <g transform="translate(0 20) scale(1 -1)">
-        <g id={`traco-scroll-bottom-${u}`}>
-          <path d={SCROLL_BOTTOM} />
-          <circle cx="88" cy="11.9" r="1" />
-        </g>
-        <use href={`#traco-scroll-bottom-${u}`} transform="translate(160 0) scale(-1 1)" />
-        <circle cx="80" cy="12" r="1.6" />
-      </g>
-    </svg>
-  );
-}
-
-// Divisor: dois fios que afinam para fora, losango cheio e dois pontos.
-function Rule() {
-  return (
-    <svg viewBox="0 0 132 10" width="118" height="9" fill="currentColor">
-      <path d="M2 5L50 4.3v1.4zM130 5L82 4.3v1.4z" />
-      <circle cx="56" cy="5" r="0.9" />
-      <circle cx="76" cy="5" r="0.9" />
-      <path d="M66 0.8l3 4.2-3 4.2-3-4.2z" />
-    </svg>
-  );
-}
-
-// Forro do envelope: treliça de losangos com florão de quatro pétalas, e uma margem de papel com filete junto às bordas da aba.
-function Liner() {
-  const u = useUid();
-  return (
-    <svg width="100%" height="100%">
-      <defs>
-        <pattern id={`traco-liner-${u}`} width="26" height="26" patternUnits="userSpaceOnUse">
-          <path d="M0 13L13 0l13 13-13 13z" fill="none" stroke="currentColor" strokeWidth="0.8" />
-          <path d="M13 7.4c2.3 1.8 2.3 3.8 0 5.6-2.3-1.8-2.3-3.8 0-5.6zM13 18.6c-2.3-1.8-2.3-3.8 0-5.6 2.3 1.8 2.3 3.8 0 5.6zM7.4 13c1.8-2.3 3.8-2.3 5.6 0-1.8 2.3-3.8 2.3-5.6 0zM18.6 13c-1.8 2.3-3.8 2.3-5.6 0 1.8-2.3 3.8-2.3 5.6 0z" fill="currentColor" />
-          <circle cx="0" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="0" cy="26" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="26" r="1.2" fill="currentColor" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#traco-liner-${u})`} />
-      {/* a aba é um triângulo (0,0) (100%,0) (50%,58%): margem de papel e filete acompanhando as duas bordas */}
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" fill="none">
-        <path className="traco-liner-rule" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-        <path className="traco-liner-edge" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
+    <>
+      <svg className="traco-draw" viewBox={box} aria-hidden="true">
+        <g className="traco-wash">{wash}</g>
+        <g {...PEN}>{children}</g>
       </svg>
+      <span className="traco-tag" data-low={low || undefined} aria-hidden="true">{tag}</span>
+    </>
+  );
+}
+
+/* ───────── Casamento: dois rostos de perfil, frente a frente, numa linha só ───────── */
+const FACES =
+  "M-4 153C24 153 56 152 78 138C95 127 100 113 96 97C90 73 91 45 113 31C128 21 148 22 156 34C162 43 160 52 161 60" +
+  "C161.5 64 164 67 166 71C168 75 172 80 171.5 83C171 86 166 86 163.5 87.5C162 90 166.5 91.5 166 94.5C165.6 96.5 162.5 96.5 161.5 98" +
+  "C163 99.5 166 101 165 104C164 107 160.5 107 160.5 110C160.5 115 164.5 119 160 123C155 127.5 145 124 137 118" +
+  // os dois pescoços descem e se encontram numa ponta: com os queixos por cima, o vão entre os dois vira um coração
+  "C129 137 152 157 180 171C209 157 232 142 224 125" +
+  "C216 131 206 134.5 201 130C196.5 126 200.5 122 200.5 117C200.5 114 197 114 196 111C195 108 198 106.5 199.5 105" +
+  "C198.5 103.5 195.4 103.5 195 101.5C194.5 98.5 199 97 197.5 94.5C195 93 190 93 189.5 90C189 87 193 82 195 78C197 74 199.5 71 200 67" +
+  "C201 59 199 50 205 41C213 29 233 28 247 37C269 51 272 79 265 103C260 121 267 138 283 146C303 155 334 152 364 152";
+
+function Faces() {
+  return (
+    <Sheet
+      tag="Casamento"
+      box="0 14 360 162"
+      wash={
+        <>
+          {/* mancha maior atrás do rosto da esquerda, sol atrás do da direita e o coração entre os dois, fora de registro */}
+          <path d="M92 44C112 12 168 14 186 46C200 72 190 112 160 128C128 144 92 132 82 102C76 82 80 62 92 44Z" />
+          <circle className="traco-wash-2" cx="252" cy="62" r="31" />
+          <path d="M185 170C170 160 160 151 160 141C160 131 174 127 185 138C196 127 210 131 210 141C210 151 200 160 185 170Z" />
+        </>
+      }
+    >
+      <path d={FACES} />
+    </Sheet>
+  );
+}
+
+/* ───────── Estrela de cinco pontas (louro da formatura) ───────── */
+function star(cx: number, cy: number, ro: number, ri: number): string {
+  const pts: string[] = [];
+  for (let i = 0; i < 10; i++) {
+    const a = -Math.PI / 2 + (i * Math.PI) / 5;
+    const r = i % 2 === 0 ? ro : ri;
+    pts.push(`${r1(cx + Math.cos(a) * r)} ${r1(cy + Math.sin(a) * r)}`);
+  }
+  return `M${pts[0]}L${pts.slice(1).join("L")}Z`;
+}
+
+/* ───────── Chá: carrinho de bebê numa linha só (as rodas são dois laços da linha do chão) ───────── */
+const PRAM =
+  "M-4 160C30 160 92 161 128 160C152 160 159 130 140 130C121 130 128 160 152 160C176 160 192 160 208 160C232 160 239 130 220 130C201 130 208 160 232 160" +
+  // sobe pela lateral, desenha o cesto, a capota, a borda e sai pela alça
+  "C258 160 264 122 250 98C244 138 116 138 110 98C110 62 142 40 182 40C181 60 180 80 180 98C204 99 228 99 250 98C266 84 280 68 298 68C322 68 328 118 364 120";
+
+function Pram() {
+  return (
+    <Sheet
+      tag="Chá"
+      box="0 14 360 162"
+      wash={
+        <>
+          <path d="M116 94C116 58 148 36 188 36C187 56 186 76 186 94Z" />
+          <circle className="traco-wash-2" cx="222" cy="82" r="34" />
+        </>
+      }
+    >
+      <path d={PRAM} />
+    </Sheet>
+  );
+}
+
+/* ───────── Quinze anos: tiara de três pontas, com uma gota em cada ponta ───────── */
+/** Gota no alto de uma ponta: a linha sobe, dá a volta e desce pelo mesmo ponto. */
+const drop = (x: number, y: number) => `C${x - 3} ${y - 5} ${x - 8} ${y - 11} ${x} ${y - 14}C${x + 8} ${y - 11} ${x + 3} ${y - 5} ${x} ${y}`;
+const TIARA =
+  "M-4 152C40 152 80 156 106 146C108 130 116 114 128 104" + drop(128, 104) +
+  "C134 112 142 124 152 128C160 112 168 86 180 68" + drop(180, 68) +
+  "C192 86 200 112 208 128C218 124 226 112 232 104" + drop(232, 104) +
+  "C244 114 252 130 254 146C210 156 150 156 106 146C99 144 98 156 108 158C150 169 210 169 252 158C282 151 322 162 364 162";
+
+function Tiara() {
+  return (
+    <Sheet
+      tag="Quinze anos"
+      box="0 14 360 162"
+      wash={
+        <>
+          <circle className="traco-wash-2" cx="186" cy="104" r="46" />
+          <circle cx="133" cy="97" r="7" />
+          <circle cx="185" cy="61" r="7" />
+          <circle cx="237" cy="97" r="7" />
+        </>
+      }
+    >
+      <path d={TIARA} />
+    </Sheet>
+  );
+}
+
+/* ───────── Aniversário: duas taças que se tocam, uma linha só ───────── */
+/** Taça em coordenadas próprias (origem no centro do pé, y para cima negativo): sequência de curvas de Bézier encadeadas. */
+const GLASS: Pt[] = [
+  [-23, 0], // pé: da ponta esquerda…
+  [-8, 1], [10, 1], [23, 0], // …à direita
+  [31, -1], [31, -8], [20, -7], // volta num laço
+  [10, -6], [1, -8], [0, -15], // e sobe pela haste
+  [0, -26], [0, -36], [0, -47],
+  [15, -49], [28, -70], [28, -97], // lado direito do bojo
+  [28, -104.5], [-28, -104.5], [-28, -97], // borda de trás
+  [-28, -70], [-15, -49], [0, -47], // lado esquerdo, até a haste
+  [-15, -49], [-28, -70], [-28, -97], // de volta pela mesma linha
+  [-28, -89.5], [28, -89.5], [28, -97], // borda da frente: a linha sai pela boca
+];
+/** O vinho: a parte de baixo do bojo, com a superfície ondulada. */
+const WINE: Pt[] = [
+  [-23.5, -76], [-10, -71], [8, -80], [23.5, -76], [20, -60], [12, -50], [0, -47], [-12, -50], [-20, -60], [-23.5, -76],
+];
+function place(pts: Pt[], cx: number, cy: number, deg: number, mirror: boolean): Pt[] {
+  const a = (deg * Math.PI) / 180;
+  const c = Math.cos(a);
+  const s = Math.sin(a);
+  return pts.map(([x0, y]) => {
+    const x = mirror ? -x0 : x0;
+    return [r1(cx + x * c - y * s), r1(cy + x * s + y * c)] as Pt;
+  });
+}
+const curve = (pts: Pt[]) => `C${pts.map((p) => p.join(" ")).join(" ")}`;
+
+function Toast({ tag }: { tag: string }) {
+  const a = place(GLASS, 131, 152, 11, false);
+  const b = place(GLASS, 229, 152, -11, true).reverse();
+  const first = a[0];
+  const last = b[b.length - 1];
+  const rimA = a[a.length - 1];
+  const rimB = b[0];
+  const line =
+    `M-4 128C22 128 44 150 70 156C86 160 96 152 ${first.join(" ")}` +
+    curve(a.slice(1)) +
+    // o brinde: um laço pequeno entre as duas bocas
+    `C${r1(rimA[0] - 6)} ${r1(rimA[1] - 24)} ${r1(rimB[0] + 6)} ${r1(rimB[1] - 24)} ${rimB.join(" ")}` +
+    curve(b.slice(1)) +
+    `C${r1(last[0] + 14)} ${r1(last[1] + 8)} ${r1(last[0] + 34)} ${r1(last[1] + 10)} 290 156C316 152 340 167 364 167`;
+  const wineA = place(WINE, 131 + 4, 152 + 3, 11, false);
+  const wineB = place(WINE, 229 - 4, 152 + 3, -11, true);
+  return (
+    <Sheet
+      tag={tag}
+      wash={
+        <>
+          <path d={`M${wineA[0].join(" ")}${curve(wineA.slice(1))}Z`} />
+          <path d={`M${wineB[0].join(" ")}${curve(wineB.slice(1))}Z`} />
+          {/* bolhas e faíscas do brinde */}
+          <circle className="traco-wash-2" cx="180" cy="26" r="13" />
+          <circle cx="150" cy="22" r="3.2" />
+          <circle cx="212" cy="30" r="2.4" />
+          <circle cx="196" cy="8" r="1.8" />
+        </>
+      }
+    >
+      <path d={line} />
+      <path d="M180 17v18M171 26h18" />
+    </Sheet>
+  );
+}
+
+/* ───────── Ramo (formatura, festa e o que mais vier): haste que atravessa o cartão, com as folhas em laço ───────── */
+type Cubic = [Pt, Pt, Pt, Pt];
+function at([p0, p1, p2, p3]: Cubic, t: number): { p: Pt; d: Pt } {
+  const u = 1 - t;
+  const x = u * u * u * p0[0] + 3 * u * u * t * p1[0] + 3 * u * t * t * p2[0] + t * t * t * p3[0];
+  const y = u * u * u * p0[1] + 3 * u * u * t * p1[1] + 3 * u * t * t * p2[1] + t * t * t * p3[1];
+  const dx = 3 * u * u * (p1[0] - p0[0]) + 6 * u * t * (p2[0] - p1[0]) + 3 * t * t * (p3[0] - p2[0]);
+  const dy = 3 * u * u * (p1[1] - p0[1]) + 6 * u * t * (p2[1] - p1[1]) + 3 * t * t * (p3[1] - p2[1]);
+  const len = Math.hypot(dx, dy) || 1;
+  return { p: [x, y], d: [dx / len, dy / len] };
+}
+/** Folha em laço: sai do ponto p na direção `deg` (em relação à haste), abre até `w` e volta ao mesmo ponto. */
+function leaf(p: Pt, d: Pt, deg: number, len: number, w: number): string {
+  const a = (deg * Math.PI) / 180;
+  const fx = d[0] * Math.cos(a) - d[1] * Math.sin(a);
+  const fy = d[0] * Math.sin(a) + d[1] * Math.cos(a);
+  const nx = -fy;
+  const ny = fx;
+  const q = (f: number, n: number) => `${r1(p[0] + fx * len * f + nx * w * n)} ${r1(p[1] + fy * len * f + ny * w * n)}`;
+  return `M${q(0, 0)}C${q(0.22, 1)} ${q(0.72, 0.95)} ${q(1, 0)}C${q(0.66, -0.62)} ${q(0.24, -0.7)} ${q(0, 0)}`;
+}
+
+function Branch({ laurel, tag }: { laurel: boolean; tag: string }) {
+  const stem: Cubic = laurel ? [[-4, 150], [80, 150], [150, 60], [364, 44]] : [[-4, 64], [110, 10], [196, 176], [364, 164]];
+  const ts = laurel ? [0.2, 0.31, 0.42, 0.53, 0.64, 0.75, 0.86] : [0.16, 0.27, 0.38, 0.5, 0.61, 0.72, 0.83];
+  const leaves: string[] = [];
+  const fills: string[] = [];
+  ts.forEach((t, i) => {
+    const { p, d } = at(stem, t);
+    const grow = 1 - Math.abs(i - 3) * 0.07;
+    if (laurel) {
+      // louro: folhas aos pares, curtas e regulares
+      leaves.push(leaf(p, d, -46, 42 * grow, 10), leaf(p, d, 46, 40 * grow, -10));
+      if (i % 2 === 0) fills.push(leaf(p, d, -46, 42 * grow, 10));
+      else fills.push(leaf(p, d, 46, 40 * grow, -10));
+    } else {
+      // ramo solto: folhas alternadas, compridas
+      const up = i % 2 === 0;
+      const one = leaf(p, d, up ? -54 : 52, (up ? 56 : 48) * grow, up ? 13 : -12);
+      leaves.push(one);
+      if (i % 3 !== 1) fills.push(one);
+    }
+  });
+  return (
+    <Sheet
+      low={laurel}
+      tag={tag}
+      wash={
+        <>
+          <g transform="translate(5 -3)">
+            {fills.map((d) => (
+              <path key={d} d={`${d}Z`} />
+            ))}
+          </g>
+          <circle className="traco-wash-2" cx={laurel ? 72 : 78} cy={laurel ? 56 : 128} r={laurel ? 26 : 22} />
+        </>
+      }
+    >
+      <path d={`M${stem[0].join(" ")}C${stem.slice(1).map((p) => p.join(" ")).join(" ")}`} />
+      <path d={leaves.join("")} />
+      {laurel ? <path d={star(72, 56, 13, 5.4)} /> : <circle cx="78" cy="128" r="9" />}
+    </Sheet>
+  );
+}
+
+/* ───────── Fio com um laço: separa os nomes da data e assina o fecho da página ───────── */
+function Loop() {
+  return (
+    <svg className="traco-loop" viewBox="0 0 132 18" width="132" height="18" aria-hidden="true">
+      <circle className="traco-wash" cx="60" cy="8" r="7" />
+      <path {...PEN} d="M1 11C22 11 40 15 54 10C63 6.6 62 0 56 1.4C50 3 52 11 62 12.4C78 14.6 100 9 131 10" />
     </svg>
   );
 }
 
-function Art({ slot }: ArtProps) {
-  if (slot === "top") return <Flourish />;
-  if (slot === "divider") return <Rule />;
-  if (slot === "bottom") return <FlourishSmall />;
+/* ───────── Forro do envelope: linhas de laços (um caderno de caligrafia) e duas manchas ───────── */
+function Liner() {
+  const rows: string[] = [];
+  for (let y = 24; y < 210; y += 21) {
+    let d = `M${-12 + ((y / 21) % 2) * 9} ${y}`;
+    for (let i = 0; i < 18; i++) d += "c9 0 15-13 8-13c-7 0-1 13 10 13";
+    rows.push(d);
+  }
+  return (
+    <svg className="traco-liner" viewBox="0 0 280 200" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true">
+      <g className="traco-liner-wash">
+        <path d="M96 -10C150 -24 214 4 210 52C206 96 152 112 116 92C78 72 52 2 96 -10Z" />
+        <circle cx="62" cy="96" r="22" />
+        <circle cx="228" cy="150" r="30" />
+      </g>
+      <path {...PEN} strokeWidth="1" d={rows.join("")} />
+    </svg>
+  );
+}
+
+const TAGS: Record<string, string> = {
+  casamento: "Casamento",
+  aniversario: "Aniversário",
+  "quinze-anos": "Quinze anos",
+  cha: "Chá",
+  formatura: "Formatura",
+};
+
+function Art({ slot, eventType }: ArtProps) {
+  if (slot === "top") {
+    if (eventType === "casamento") return <Faces />;
+    if (eventType === "cha") return <Pram />;
+    if (eventType === "quinze-anos") return <Tiara />;
+    if (eventType === "aniversario") return <Toast tag={TAGS.aniversario} />;
+    if (eventType === "formatura") return <Branch laurel tag={TAGS.formatura} />;
+    return <Branch laurel={false} tag={(eventType && TAGS[eventType]) || "Convite"} />;
+  }
+  if (slot === "divider") return <Loop />;
   if (slot === "liner") return <Liner />;
   return null;
 }
 
 export const def: TemplateDef = {
   id: "traco",
-  name: "Traco",
-  description: "Papel marfim, moldura dupla e nomes em caligrafia",
+  name: "Traço",
+  description: "Desenho de linha contínua, muito branco e letra fina",
   premium: false,
-  suits: ["casamento", "outro"],
+  suits: ["casamento", "aniversario", "quinze-anos", "cha", "formatura", "outro"],
   palettes: [
-    { id: "marfim", name: "Marfim e ouro", vars: { bg: "#E9E1D2", paper: "#FBF7EE", ink: "#2B2622", soft: "#665B4E", accent: "#A6864B", line: "#CDBE9F", btnInk: "#FFFFFF", seal: "#7A1F2B", sealInk: "#F1D9B5", liner: "#E8DCC4" } },
-    { id: "marinho", name: "Marinho", vars: { bg: "#DCE1E9", paper: "#FAFAF6", ink: "#1B2A41", soft: "#53607A", accent: "#9A8250", line: "#BFC8D6", btnInk: "#FFFFFF", seal: "#1B2A41", sealInk: "#E9D9B0", liner: "#C9D2E0" } },
-    { id: "verde", name: "Verde garrafa", vars: { bg: "#E0E5DA", paper: "#FAF8F0", ink: "#2A3A30", soft: "#59685C", accent: "#A6864B", line: "#C4CDBC", btnInk: "#FFFFFF", seal: "#2A3A30", sealInk: "#EADBB4", liner: "#CFD8C6" } },
-    { id: "preto", name: "Preto e branco", vars: { bg: "#E6E3DE", paper: "#FCFBF8", ink: "#1C1C1C", soft: "#5C5853", accent: "#77715F", line: "#CFCAC0", btnInk: "#FFFFFF", seal: "#1C1C1C", sealInk: "#EDE6D6", liner: "#D8D4CC" } },
+    { id: "branco", name: "Branco e preto", vars: { bg: "#E9E8E4", paper: "#FFFFFF", ink: "#161616", soft: "#5A5A58", accent: "#1C1C1C", line: "#D6D5D0", btnInk: "#FFFFFF", seal: "#1C1C1C", sealInk: "#FFFFFF", liner: "#F1F0EC" } },
+    { id: "terracota", name: "Areia e terracota", vars: { bg: "#E7DCCA", paper: "#F8F2E7", ink: "#2C231E", soft: "#69594D", accent: "#AD4E2C", line: "#DCCDB6", btnInk: "#F8F2E7", seal: "#AD4E2C", sealInk: "#FFF6EA", liner: "#EFD3BF" } },
+    { id: "tinta", name: "Cinza-pérola e azul-tinta", vars: { bg: "#DCDFE3", paper: "#F5F6F7", ink: "#16233B", soft: "#525E76", accent: "#1F3D72", line: "#CCD2DA", btnInk: "#F5F6F7", seal: "#1F3D72", sealInk: "#F5F6F7", liner: "#CFD9E8" } },
+    { id: "vinho", name: "Rosa-pó e vinho", vars: { bg: "#EAD8D5", paper: "#F9EFED", ink: "#38151F", soft: "#735058", accent: "#7B2238", line: "#E2CAC7", btnInk: "#F9EFED", seal: "#7B2238", sealInk: "#F9EFED", liner: "#EFD2D2" } },
+    { id: "grafite", name: "Grafite e giz", vars: { bg: "#151617", paper: "#202224", ink: "#F3F0EA", soft: "#B7B3AB", accent: "#EAE5DA", line: "#45474A", btnInk: "#202224", seal: "#EAE5DA", sealInk: "#202224", liner: "#2C2E31" } },
   ],
   Art,
 };

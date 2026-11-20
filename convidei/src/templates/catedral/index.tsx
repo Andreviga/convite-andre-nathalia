@@ -1,85 +1,258 @@
+import type { CSSProperties } from "react";
 import type { ArtProps, TemplateDef } from "../types";
 import { useUid } from "../uid";
 
-// Catedral: papelaria formal gravada. Eixo central, moldura dupla, nomes em caligrafia copperplate, uma só cor de tinta.
+// Catedral: o texto do convite fica dentro de um arco ogival de fio duplo, com a rosácea no fecho do arco,
+// florões nos tímpanos (os cantos entre o arco e a moldura) e colunas finas que descem até a base do cartão.
+// A cabeça do arco (slot "top") e a base (slot "bottom") são SVG na largura do cartão; as colunas entre elas são
+// fios desenhados no CSS, nas mesmas posições (unidade --cat-u = largura da moldura / 340).
 
-// Floreios desenhados como traço de pena: forma preenchida que engrossa na curva e afina nas pontas, voluta com terminal em gota.
-// (Contornos gerados a partir de uma espiral e duas curvas de Bézier com largura variável; metade direita, a esquerda é espelhada.)
-const SCROLL_TOP = "M131 10.05L130.3 10.06L129.56 10.2L128.85 10.48L128.19 10.92L127.62 11.5L127.16 12.21L126.85 13.02L126.71 13.91L126.75 14.84L127 15.76L127.45 16.64L128.09 17.43L128.91 18.08L129.88 18.57L130.96 18.85L132.1 18.9L133.27 18.7L134.4 18.25L135.43 17.55L136.32 16.62L137.02 15.5L137.48 14.22L137.66 12.84L137.55 11.42L137.13 10.01L136.4 8.69L135.39 7.52L134.13 6.57L132.66 5.89L131.04 5.52L129.34 5.5L127.64 5.84L126.01 6.55L124.53 7.61L123.27 8.99L122.31 10.63L121.71 12.48L121.5 14.45L121.71 16.47L122.36 18.44L123.42 20.27L124.87 21.86L126.66 23.14L128.71 24.04L130.96 24.5L133 24.61L134.99 24.48L136.96 24.19L138.92 23.74L140.86 23.18L142.8 22.51L144.72 21.77L146.63 20.96L148.54 20.11L150.46 19.24L152.38 18.37L154.32 17.51L156.27 16.69L158.25 15.92L160.26 15.21L162.3 14.58L164.39 14.06L166.53 13.65L168.73 13.38L171.01 13.25L173.02 13.27L175.05 13.41L177.08 13.65L179.14 13.98L181.22 14.39L183.33 14.87L185.47 15.4L187.66 15.97L189.89 16.57L192.18 17.18L194.52 17.79L196.92 18.38L199.38 18.95L201.92 19.48L204.54 19.95L207.24 20.35L210.03 20.68L212.92 20.91L215.9 21.04L219 21.06L219 20.94L215.91 20.83L212.94 20.58L210.09 20.23L207.33 19.77L204.68 19.24L202.11 18.63L199.62 17.98L197.21 17.28L194.86 16.56L192.57 15.82L190.33 15.09L188.13 14.37L185.96 13.67L183.82 13.02L181.69 12.42L179.57 11.89L177.44 11.44L175.31 11.09L173.17 10.86L170.99 10.75L168.54 10.8L166.16 11.02L163.84 11.4L161.59 11.91L159.4 12.54L157.27 13.27L155.2 14.07L153.19 14.93L151.22 15.83L149.29 16.76L147.4 17.68L145.55 18.59L143.71 19.47L141.9 20.3L140.1 21.07L138.31 21.76L136.52 22.36L134.71 22.85L132.88 23.22L131.04 23.5L129 23.1L127.13 22.3L125.5 21.15L124.17 19.71L123.19 18.06L122.59 16.28L122.38 14.45L122.56 12.66L123.09 10.98L123.95 9.48L125.08 8.22L126.41 7.25L127.88 6.6L129.42 6.28L130.96 6.28L132.42 6.6L133.75 7.21L134.9 8.06L135.82 9.1L136.48 10.29L136.87 11.55L136.98 12.83L136.82 14.07L136.42 15.22L135.81 16.23L135.02 17.06L134.1 17.69L133.09 18.1L132.06 18.28L131.04 18.25L130.09 18.01L129.23 17.59L128.5 17.01L127.93 16.32L127.53 15.55L127.3 14.75L127.25 13.94L127.37 13.16L127.64 12.45L128.03 11.83L128.53 11.32L129.1 10.94L129.71 10.69L130.35 10.56L131 10.55Z";
-const SCROLL_BOTTOM = "M87.99 12.15L88.53 12.17L89.1 12.1L89.69 11.91L90.25 11.6L90.75 11.16L91.17 10.59L91.48 9.93L91.65 9.18L91.65 8.38L91.49 7.56L91.13 6.76L90.6 6.03L89.89 5.4L89.04 4.92L88.06 4.62L87.01 4.53L85.92 4.67L84.84 5.05L83.84 5.67L82.96 6.52L82.26 7.57L81.78 8.78L81.56 10.11L81.63 11.5L82 12.89L82.67 14.21L83.64 15.39L84.87 16.37L86.32 17.09L87.95 17.5L89.39 17.58L90.77 17.5L92.14 17.29L93.48 16.97L94.81 16.57L96.12 16.09L97.41 15.56L98.7 14.99L99.98 14.39L101.26 13.77L102.54 13.15L103.83 12.55L105.12 11.97L106.44 11.42L107.78 10.92L109.14 10.48L110.54 10.11L111.97 9.83L113.46 9.63L115 9.54L116.57 9.55L118.11 9.64L119.64 9.81L121.15 10.04L122.65 10.33L124.16 10.66L125.67 11.04L127.2 11.45L128.75 11.87L130.33 12.31L131.94 12.74L133.59 13.17L135.29 13.58L137.04 13.95L138.85 14.29L140.72 14.58L142.66 14.8L144.69 14.97L146.8 15.05L149 15.06L149 14.94L146.81 14.85L144.71 14.67L142.71 14.41L140.8 14.07L138.97 13.68L137.2 13.24L135.5 12.76L133.85 12.25L132.24 11.73L130.67 11.19L129.13 10.66L127.6 10.13L126.08 9.62L124.56 9.14L123.04 8.7L121.49 8.31L119.93 7.98L118.33 7.72L116.69 7.55L115 7.46L113.3 7.49L111.65 7.65L110.06 7.92L108.52 8.28L107.04 8.73L105.6 9.25L104.2 9.82L102.85 10.44L101.53 11.08L100.24 11.73L98.98 12.39L97.75 13.03L96.53 13.65L95.33 14.24L94.13 14.78L92.93 15.26L91.73 15.68L90.52 16.03L89.28 16.29L88.05 16.5L86.65 16.17L85.37 15.56L84.28 14.73L83.42 13.71L82.81 12.57L82.47 11.36L82.39 10.15L82.56 8.99L82.96 7.93L83.56 7.01L84.31 6.26L85.17 5.71L86.09 5.36L87.03 5.23L87.94 5.29L88.78 5.53L89.52 5.94L90.13 6.46L90.6 7.08L90.91 7.75L91.06 8.44L91.07 9.12L90.94 9.75L90.69 10.31L90.35 10.79L89.93 11.16L89.47 11.43L88.99 11.6L88.5 11.66L88.01 11.65Z";
+const r2 = (n: number) => Math.round(n * 100) / 100;
 
-function Flourish() {
-  const u = useUid();
-  return (
-    <svg viewBox="0 0 220 28" width="204" height="26" fill="currentColor">
-      <g id={`catedral-scroll-top-${u}`}>
-        <path d={SCROLL_TOP} />
-        <circle cx="131" cy="10.3" r="1.25" />
-      </g>
-      <use href={`#catedral-scroll-top-${u}`} transform="translate(220 0) scale(-1 1)" />
-      <path d="M110 7.5l4.6 6.5-4.6 6.5-4.6-6.5z" />
-    </svg>
-  );
+// ───── Geometria do arco (viewBox de 340 de largura) ─────
+const W = 340;
+const X0 = 7; // fio de fora da coluna esquerda
+const X1 = W - X0;
+const CX = W / 2;
+const SPAN = X1 - X0;
+const R = SPAN * 0.8; // raio menor que o vão: arco ogival rebaixado (o equilátero ficaria alto demais para o cartão)
+const OFF = R - SPAN / 2; // distância do centro de cada arco ao eixo
+const APEX = 3;
+const SPRING = r2(APEX + Math.sqrt(R * R - OFF * OFF)); // linha de imposta (onde o arco nasce das colunas)
+const GAP = 6; // distância entre os dois fios do arco e das colunas
+const HEAD_H = 264; // altura da viewBox do topo: a imposta, o capitel e um trecho das colunas
+const ROSE_R = 40;
+// A rosácea encosta (com 3 de folga) no fio de dentro dos dois arcos.
+const ROSE_Y = r2(SPRING - Math.sqrt((R - GAP - 3 - ROSE_R) ** 2 - OFF * OFF));
+
+/** Arco paralelo ao de fora, recuado `d` para dentro, com as colunas até `foot`. */
+function arch(d: number, foot: number): string {
+  const r = R - d;
+  const top = r2(SPRING - Math.sqrt(r * r - OFF * OFF));
+  return `M${X0 + d} ${foot}V${SPRING}A${r2(r)} ${r2(r)} 0 0 1 ${CX} ${top}A${r2(r)} ${r2(r)} 0 0 1 ${X1 - d} ${SPRING}V${foot}`;
 }
 
-// Rodapé: variante menor, de uma volta só, virada para cima e com um ponto no centro (não é o espelho do topo).
-function FlourishSmall() {
-  const u = useUid();
+/** Tímpano: o canto entre a moldura reta e o arco (lado esquerdo; o direito é espelhado). */
+const SPANDREL = `M0 0H${CX}V${APEX}A${r2(R)} ${r2(R)} 0 0 0 ${X0} ${SPRING}H0Z`;
+
+/** Contorno de um florão de `n` lóbulos (trifólio, quadrifólio): arcos de raio `a` que se encontram em cúspides. */
+function foil(cx: number, cy: number, a: number, n: number, rot = -90): string {
+  const cusp = a * Math.cos(Math.PI / n) + a * Math.sqrt(1 - Math.sin(Math.PI / n) ** 2);
+  const at = (deg: number) => {
+    const t = (deg * Math.PI) / 180;
+    return `${r2(cx + Math.cos(t) * cusp)} ${r2(cy + Math.sin(t) * cusp)}`;
+  };
+  const step = 360 / n;
+  let d = `M${at(rot - step / 2)}`;
+  for (let k = 0; k < n; k++) d += `A${r2(a)} ${r2(a)} 0 1 1 ${at(rot + step * k + step / 2)}`;
+  return `${d}Z`;
+}
+
+const TINT: CSSProperties = { fill: "var(--cat-tint)" };
+const GLASS: CSSProperties = { fill: "var(--cat-glass)" };
+const FINE: CSSProperties = { stroke: "var(--cat-fine)" };
+const HOLE: CSSProperties = { fill: "var(--cat-ground, var(--paper))" };
+
+/** Rosácea: anel duplo, oito pétalas de vitral em gota, botões entre elas e um quadrifólio no miolo. Raio 40, centro em 0,0. */
+function Rose() {
+  const petal = "M0-11.5C4.6-15.4 8.4-21 8-27.2A8 8 0 1 0-8-27.2C-8.4-21-4.6-15.4 0-11.5Z";
+  const eight = [0, 45, 90, 135, 180, 225, 270, 315];
   return (
-    <svg viewBox="0 0 160 20" width="148" height="18.5" fill="currentColor">
-      <g transform="translate(0 20) scale(1 -1)">
-        <g id={`catedral-scroll-bottom-${u}`}>
-          <path d={SCROLL_BOTTOM} />
-          <circle cx="88" cy="11.9" r="1" />
+    <g fill="none" stroke="currentColor">
+      <circle r={ROSE_R} style={HOLE} strokeWidth="1.5" />
+      <circle r="36.6" strokeWidth="0.55" />
+      {eight.map((a) => (
+        <g key={a} transform={`rotate(${a})`}>
+          <path d={petal} style={GLASS} strokeWidth="0.9" />
+          {/* nervura da pétala e o botão no alto dela */}
+          <path d="M0-15.5V-23" strokeWidth="0.5" />
+          <circle cy="-27.4" r="2.5" fill="currentColor" stroke="none" />
+          {/* entre duas pétalas: gota cheia junto ao anel */}
+          <path d="M0-35.6C1.9-33.6 1.7-30.6 0-28.4C-1.7-30.6-1.9-33.6 0-35.6Z" transform="rotate(22.5)" fill="currentColor" stroke="none" />
         </g>
-        <use href={`#catedral-scroll-bottom-${u}`} transform="translate(160 0) scale(-1 1)" />
-        <circle cx="80" cy="12" r="1.6" />
+      ))}
+      <circle r="10.4" style={HOLE} strokeWidth="1.1" />
+      <path d={foil(0, 0, 3.1, 4, 0)} fill="currentColor" stroke="none" />
+      <circle r="1.25" style={HOLE} stroke="none" />
+    </g>
+  );
+}
+
+/** Medalhão do tímpano: trifólio dentro de um círculo, com dois botões que diminuem para as pontas do canto. */
+function SpandrelArt({ flip }: { flip?: boolean }) {
+  return (
+    <g transform={flip ? `translate(${W} 0) scale(-1 1)` : undefined} fill="none" stroke="currentColor">
+      <path d={SPANDREL} style={TINT} stroke="none" />
+      <circle cx="38" cy="40" r="24" style={HOLE} strokeWidth="1.2" />
+      <circle cx="38" cy="40" r="20.8" strokeWidth="0.5" />
+      <path d={foil(38, 41, 6.9, 3)} style={GLASS} strokeWidth="0.9" />
+      <circle cx="38" cy="41" r="2.3" fill="currentColor" stroke="none" />
+      {/* botões: um para o alto do arco, outro para a imposta */}
+      <circle cx="103" cy="16" r="6.4" style={HOLE} strokeWidth="0.9" />
+      <path d={foil(103, 16, 1.7, 4, 0)} fill="currentColor" stroke="none" />
+      <circle cx="16" cy="112" r="6.4" style={HOLE} strokeWidth="0.9" />
+      <path d={foil(16, 112, 1.7, 4, 0)} fill="currentColor" stroke="none" />
+      <circle cx="139" cy="9.5" r="2.1" fill="currentColor" stroke="none" />
+      <circle cx="9.5" cy="163" r="2.1" fill="currentColor" stroke="none" />
+    </g>
+  );
+}
+
+/** Capitel (lado esquerdo): ábaco cheio, cesto em trapézio e o anel do colarinho, sobre os dois fios da coluna. */
+function Capital({ flip }: { flip?: boolean }) {
+  const y = SPRING;
+  const mid = X0 + GAP / 2;
+  return (
+    <g transform={flip ? `translate(${W} 0) scale(-1 1)` : undefined} fill="currentColor" stroke="none">
+      <path d={`M${mid - 9} ${r2(y - 1.5)}h18v3h-18z`} />
+      <path d={`M${mid - 7.4} ${r2(y + 2.6)}h14.8l-2.6 5.4h-9.6z`} style={{ ...HOLE, stroke: "currentColor", strokeWidth: 0.8 }} />
+      <path d={`M${mid - 6.2} ${r2(y + 9.6)}h12.4v1.3h-12.4z`} />
+    </g>
+  );
+}
+
+/** Topo do cartão: tímpanos, arco de fio duplo, rosácea e capitéis. */
+function Head() {
+  return (
+    <svg className="catedral-head" viewBox={`0 0 ${W} ${HEAD_H}`} fill="none" stroke="currentColor" aria-hidden="true">
+      <SpandrelArt />
+      <SpandrelArt flip />
+      <path d={arch(0, HEAD_H)} strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+      {/* o fio de dentro tem o mesmo traço e a mesma cor do fio de dentro das colunas, que o CSS desenha */}
+      <path d={arch(GAP, HEAD_H)} style={FINE} strokeWidth="0.7" vectorEffect="non-scaling-stroke" />
+      <g transform={`translate(${CX} ${ROSE_Y})`}>
+        <Rose />
+      </g>
+      {/* dois olhos de trifólio, nos vãos entre a rosácea e o arco */}
+      {[-1, 1].map((s) => (
+        <g key={s}>
+          <path d={foil(CX + s * 61, ROSE_Y + 27, 4.6, 3, s < 0 ? 150 : 30)} style={GLASS} strokeWidth="0.8" />
+          <circle cx={CX + s * 61} cy={ROSE_Y + 27} r="1.5" fill="currentColor" stroke="none" />
+        </g>
+      ))}
+      <Capital />
+      <Capital flip />
+    </svg>
+  );
+}
+
+/** Pé do cartão: as bases das duas colunas e o degrau de fio duplo, com um florão no eixo. */
+function Base() {
+  const mid = X0 + GAP / 2;
+  const half = (flip: boolean) => (
+    <g transform={flip ? `translate(${W} 0) scale(-1 1)` : undefined}>
+      {/* tocos das colunas: fio de fora grosso, fio de dentro fino, como no trecho que o CSS desenha */}
+      <path d={`M${X0} 0V9`} fill="none" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+      <path d={`M${X0 + GAP} 0V9`} fill="none" style={FINE} strokeWidth="0.7" vectorEffect="non-scaling-stroke" />
+      <path d={`M${mid - 6.2} 8.4h12.4v1.3h-12.4z`} fill="currentColor" />
+      <path d={`M${mid - 4.8} 11.4h9.6l2.6 5.4h-14.8z`} style={{ ...HOLE, stroke: "currentColor", strokeWidth: 0.8 }} />
+      <path d={`M${mid - 9} 18.2h18v3h-18z`} fill="currentColor" />
+    </g>
+  );
+  return (
+    <svg className="catedral-base" viewBox={`0 0 ${W} 34`} fill="none" aria-hidden="true">
+      {half(false)}
+      {half(true)}
+      {/* degrau: fio grosso e fio fino, interrompidos pelo florão */}
+      <path d={`M${mid + 13} 19.7H${CX - 13}M${CX + 13} 19.7H${W - mid - 13}`} stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+      <path d={`M${mid + 13} 25.4H${W - mid - 13}`} style={FINE} strokeWidth="0.7" vectorEffect="non-scaling-stroke" />
+      <circle cx={CX} cy="19.7" r="8.6" style={HOLE} stroke="currentColor" strokeWidth="1" />
+      <path d={foil(CX, 19.7, 2.5, 4, 0)} fill="currentColor" />
+      <circle cx={CX} cy="19.7" r="1" style={HOLE} />
+      <path d={`M${CX - 20} 19.7l3.2-2.4 3.2 2.4-3.2 2.4zM${CX + 20} 19.7l-3.2-2.4-3.2 2.4 3.2 2.4z`} fill="currentColor" />
+    </svg>
+  );
+}
+
+/** Cruz pátea pequena (braços que se abrem para as pontas), para o filete do casamento. Centro em 0,0. */
+function Cross() {
+  const arm = "M-.95-1.4C-.95-3.9-1.5-5.6-3.1-7.2H3.1C1.5-5.6.95-3.9.95-1.4Z";
+  return (
+    <g fill="currentColor">
+      <path d={arm} />
+      <path d={arm} transform="rotate(90)" />
+      <path d={arm} transform="rotate(180) scale(1 1.22)" />
+      <path d={arm} transform="rotate(270)" />
+      <circle r="1.75" />
+    </g>
+  );
+}
+
+/** Filete: dois fios que afinam para fora, losangos e, no eixo, a cruz (só no casamento) ou um quadrifólio. */
+function Rule({ cross }: { cross: boolean }) {
+  return (
+    <svg className="catedral-rule" viewBox="0 0 168 22" width="168" height="22" fill="currentColor" aria-hidden="true">
+      <path d="M0 11L58 10.25V11.75ZM168 11L110 10.25V11.75Z" />
+      <path d="M66 11l-3.4-2.7L59.2 11l3.4 2.7zM108.8 11l-3.4-2.7L102 11l3.4 2.7z" />
+      <circle cx="71.6" cy="11" r="1.1" />
+      <circle cx="96.4" cy="11" r="1.1" />
+      <g transform="translate(84 10.2)">
+        {cross ? (
+          <Cross />
+        ) : (
+          <>
+            <path d={foil(0, 0.8, 3.1, 4, 0)} />
+            <circle cy="0.8" r="1.3" style={HOLE} />
+          </>
+        )}
       </g>
     </svg>
   );
 }
 
-// Divisor: dois fios que afinam para fora, losango cheio e dois pontos.
-function Rule() {
+/** Trama gótica (losangos de fio fino com um quadrifólio em cada um): fundo da página e forro do envelope. */
+function Diaper({ id, size }: { id: string; size: number }) {
+  const h = size / 2;
   return (
-    <svg viewBox="0 0 132 10" width="118" height="9" fill="currentColor">
-      <path d="M2 5L50 4.3v1.4zM130 5L82 4.3v1.4z" />
-      <circle cx="56" cy="5" r="0.9" />
-      <circle cx="76" cy="5" r="0.9" />
-      <path d="M66 0.8l3 4.2-3 4.2-3-4.2z" />
+    <pattern id={id} width={size} height={size} patternUnits="userSpaceOnUse">
+      <path d={`M0 ${h}L${h} 0L${size} ${h}L${h} ${size}Z`} fill="none" stroke="currentColor" strokeWidth="1" />
+      <path d={foil(h, h, size * 0.085, 4, 0)} fill="none" stroke="currentColor" strokeWidth="1" />
+      <circle cx={h} cy={h} r={size * 0.03} fill="currentColor" />
+      {[[0, 0], [size, 0], [0, size], [size, size]].map(([x, y]) => (
+        <path key={`${x}_${y}`} d={`M${x} ${y - size * 0.08}L${x + size * 0.08} ${y}L${x} ${y + size * 0.08}L${x - size * 0.08} ${y}Z`} fill="currentColor" />
+      ))}
+    </pattern>
+  );
+}
+
+function Backdrop() {
+  const u = useUid();
+  return (
+    <svg width="100%" height="100%" aria-hidden="true">
+      <defs>
+        <Diaper id={`catedral-bg-${u}`} size={52} />
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#catedral-bg-${u})`} />
     </svg>
   );
 }
 
-// Forro do envelope: treliça de losangos com florão de quatro pétalas, e uma margem de papel com filete junto às bordas da aba.
+/** Forro: a trama e, de pé na aba aberta, a rosácea grande sobre um disco liso (o CSS gira o desenho em 180°). */
 function Liner() {
   const u = useUid();
   return (
-    <svg width="100%" height="100%">
+    <svg className="catedral-liner" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id={`catedral-liner-${u}`} width="26" height="26" patternUnits="userSpaceOnUse">
-          <path d="M0 13L13 0l13 13-13 13z" fill="none" stroke="currentColor" strokeWidth="0.8" />
-          <path d="M13 7.4c2.3 1.8 2.3 3.8 0 5.6-2.3-1.8-2.3-3.8 0-5.6zM13 18.6c-2.3-1.8-2.3-3.8 0-5.6 2.3 1.8 2.3 3.8 0 5.6zM7.4 13c1.8-2.3 3.8-2.3 5.6 0-1.8 2.3-3.8 2.3-5.6 0zM18.6 13c-1.8 2.3-3.8 2.3-5.6 0 1.8-2.3 3.8-2.3 5.6 0z" fill="currentColor" />
-          <circle cx="0" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="0" cy="26" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="26" r="1.2" fill="currentColor" />
-        </pattern>
+        <Diaper id={`catedral-liner-${u}`} size={46} />
       </defs>
-      <rect width="100%" height="100%" fill={`url(#catedral-liner-${u})`} />
-      {/* a aba é um triângulo (0,0) (100%,0) (50%,58%): margem de papel e filete acompanhando as duas bordas */}
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" fill="none">
-        <path className="catedral-liner-rule" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-        <path className="catedral-liner-edge" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-      </svg>
+      <rect width="700" height="500" fill={`url(#catedral-liner-${u})`} />
+      <g className="catedral-liner-rose" transform="translate(350 334) scale(1.62)">
+        <circle r="46" style={{ fill: "var(--liner)" }} />
+        <circle r="44.6" fill="none" stroke="currentColor" strokeWidth="0.5" />
+        <Rose />
+      </g>
     </svg>
   );
 }
 
-function Art({ slot }: ArtProps) {
-  if (slot === "top") return <Flourish />;
-  if (slot === "divider") return <Rule />;
-  if (slot === "bottom") return <FlourishSmall />;
+function Art({ slot, eventType }: ArtProps) {
+  // A cruz só entra no casamento. "Outro" também serve a jantar, bodas civis e confraternização: ali, como nos demais
+  // tipos e quando o tipo não vem, fica o quadrifólio.
+  const cross = eventType === "casamento";
+  if (slot === "top") return <Head />;
+  if (slot === "divider") return <Rule cross={cross} />;
+  if (slot === "bottom") return <Base />;
+  if (slot === "backdrop") return <Backdrop />;
   if (slot === "liner") return <Liner />;
   return null;
 }
@@ -87,14 +260,15 @@ function Art({ slot }: ArtProps) {
 export const def: TemplateDef = {
   id: "catedral",
   name: "Catedral",
-  description: "Papel marfim, moldura dupla e nomes em caligrafia",
-  premium: false,
+  description: "Arco gótico de fio duplo, rosácea e letras de inscrição",
+  premium: true,
   suits: ["casamento", "outro"],
   palettes: [
-    { id: "marfim", name: "Marfim e ouro", vars: { bg: "#E9E1D2", paper: "#FBF7EE", ink: "#2B2622", soft: "#665B4E", accent: "#A6864B", line: "#CDBE9F", btnInk: "#FFFFFF", seal: "#7A1F2B", sealInk: "#F1D9B5", liner: "#E8DCC4" } },
-    { id: "marinho", name: "Marinho", vars: { bg: "#DCE1E9", paper: "#FAFAF6", ink: "#1B2A41", soft: "#53607A", accent: "#9A8250", line: "#BFC8D6", btnInk: "#FFFFFF", seal: "#1B2A41", sealInk: "#E9D9B0", liner: "#C9D2E0" } },
-    { id: "verde", name: "Verde garrafa", vars: { bg: "#E0E5DA", paper: "#FAF8F0", ink: "#2A3A30", soft: "#59685C", accent: "#A6864B", line: "#C4CDBC", btnInk: "#FFFFFF", seal: "#2A3A30", sealInk: "#EADBB4", liner: "#CFD8C6" } },
-    { id: "preto", name: "Preto e branco", vars: { bg: "#E6E3DE", paper: "#FCFBF8", ink: "#1C1C1C", soft: "#5C5853", accent: "#77715F", line: "#CFCAC0", btnInk: "#FFFFFF", seal: "#1C1C1C", sealInk: "#EDE6D6", liner: "#D8D4CC" } },
+    { id: "pedra", name: "Pedra e ouro velho", vars: { bg: "#D8D2C6", paper: "#F4F0E7", ink: "#2C2823", soft: "#5E564B", accent: "#836428", line: "#CDC2AC", btnInk: "#F7F3EA", seal: "#8C6B2F", sealInk: "#FBF0D2", liner: "#A88A4C" } },
+    { id: "mariano", name: "Azul-mariano e prata", vars: { bg: "#142548", paper: "#1F3767", ink: "#F1F3F7", soft: "#C3CBDA", accent: "#C9D1DE", line: "#4A5F8C", btnInk: "#1F3767", seal: "#B4BCC9", sealInk: "#1F3767", liner: "#BFC7D3" } },
+    { id: "bordo", name: "Bordô e ouro", vars: { bg: "#2E0A14", paper: "#4B1422", ink: "#F7ECDB", soft: "#DBC3B8", accent: "#DDBB76", line: "#7A4B40", btnInk: "#4B1422", seal: "#9C7A2E", sealInk: "#FBEFC8", liner: "#C9A860" } },
+    { id: "sacristia", name: "Verde-sacristia e marfim", vars: { bg: "#D9DDCF", paper: "#F6F1E3", ink: "#1F3A2D", soft: "#4F6355", accent: "#3F6A50", line: "#C5CDB7", btnInk: "#F6F1E3", seal: "#2C5540", sealInk: "#F1E6C8", liner: "#2F5843" } },
+    { id: "ceu", name: "Marfim e azul-mariano", vars: { bg: "#D6DCE6", paper: "#F5F4EE", ink: "#1E3260", soft: "#505F7E", accent: "#56698C", line: "#C2CBDA", btnInk: "#FFFFFF", seal: "#27448A", sealInk: "#E9EEF6", liner: "#27448A" } },
   ],
   Art,
 };

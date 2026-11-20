@@ -1,87 +1,224 @@
-/* Modelo Jornal. Todas as regras ficam sob .inv[data-template="jornal"]. */
+/* Modelo Jornal: primeira página de jornal antigo. Todas as regras ficam sob .inv[data-template="jornal"]. */
 .inv[data-template="jornal"] {
-  --font-names: var(--f-pinyon), "Pinyon Script", cursive;
-  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
-  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
-  --names-size: clamp(46px, 15.5cqw, 70px);
-  --names-weight: 400;
-  --names-leading: 1.12;
-  --names-em: 0.45;
-  --amp-scale: 0.5;
-  --label-tracking: 0.2em;
-  --radius: 2px;
-  --btn-radius: 2px;
-  --frame-inset: 13px;
+  --font-names: var(--f-oldstandard), "Old Standard TT", "Times New Roman", Georgia, serif;
+  --font-text: var(--f-oldstandard), "Old Standard TT", "Times New Roman", Georgia, serif;
+  --font-label: var(--f-franklin), "Libre Franklin", "Franklin Gothic Medium", system-ui, sans-serif;
+  --jornal-fraktur: var(--f-fraktur), "UnifrakturMaguntia", var(--f-oldstandard), Georgia, serif;
+  --names-size: clamp(42px, 15cqw, 62px);
+  --names-weight: 700;
+  --names-leading: 1;
+  --names-tracking: -0.012em;
+  --names-transform: none;
+  --names-em: 0.6; /* Old Standard Bold, medida com "Maximiliano" e "Wilhelmina" */
+  --amp-scale: 0.86;
+  --label-tracking: 0.08em;
+  --radius: 0px;
+  --btn-radius: 0px;
+  --paper-pad: clamp(18px, 6.2cqw, 26px);
+  --frame-inset: 0px;
+  --paper-shadow: 0 1px 1px color-mix(in srgb, #000 16%, transparent), 0 12px 30px color-mix(in srgb, #000 15%, transparent);
+  /* tinta dos fios e a retícula do papel (pontos de clichê, quase invisíveis) */
+  --jornal-hair: color-mix(in srgb, var(--ink) 72%, var(--paper));
+  --jornal-dots: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--ink) 13%, transparent) 0.55px, transparent 0.95px);
+  --jornal-age: radial-gradient(120% 90% at 50% 45%, transparent 58%, color-mix(in srgb, var(--accent) 7%, color-mix(in srgb, var(--ink) 7%, transparent)) 100%);
+  /* fio duplo (grosso e fino) em cima e embaixo de uma faixa */
+  --jornal-double:
+    linear-gradient(var(--ink), var(--ink)) 0 0 / 100% 2px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 0 4px / 100% 1px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 0 100% / 100% 2px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 0 calc(100% - 4px) / 100% 1px no-repeat;
 }
-/* Algarismos alinhados em tudo: os de texto da Cormorant fazem "16h30" virar "16h3o" e "11" virar "ıı". */
-.inv[data-template="jornal"] * { font-variant-numeric: lining-nums !important; } /* !important: os atalhos "font:" da base e do modelo zeram esta propriedade */
 
-/* ───────── Capa ───────── */
-/* moldura dupla: fio de 1px e, por dentro, um fio mais fino */
-.inv[data-template="jornal"] .inv-paper::before { border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
-.inv[data-template="jornal"] .inv-paper { padding-block: calc(var(--paper-pad) + 18px); }
-.inv[data-template="jornal"] .inv-headline { font-size: 13.5px; font-weight: 500; }
-.inv[data-template="jornal"] .inv-names { padding: 0.16em 0 0.1em; }
-/* o conector tem folga dos dois lados: descendentes do nome de cima e acentos de maiúscula do nome de baixo (Ângela & Érica) */
-.inv[data-template="jornal"] .inv-amp { margin: 0.14em 0 0.3em; line-height: 1.1; }
-/* frase (data-phrase: travessão ou quatro palavras ou mais): itálico de texto em vez de caligrafia, que só fica bem em nomes.
-   Nome comprido ("Maximiliano Albuquerque") não é frase e continua na caligrafia, só menor (regra data-long da base). */
-.inv[data-template="jornal"] .inv-names[data-phrase="true"] { --names-em: 0.5; font-family: var(--font-text); font-style: italic; font-weight: 500; font-size: calc(var(--names-size) * 0.62); line-height: 1.2; text-wrap: balance; padding: 0.1em 0; }
-/* algarismos na caligrafia ficam ruins ("30" parece "Zo"): vão na serifa do modelo, em itálico, com a altura das maiúsculas da caligrafia */
-.inv[data-template="jornal"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.84em; font-weight: 500; letter-spacing: 0.01em; }
-/* título curto ("Helena faz 30", "Chá do Miguel") cabe inteiro numa linha: a medida passa a ser o título todo (--line), para "faz 30" não cair sozinho embaixo */
+/* ───────── Papel ───────── */
+.inv[data-template="jornal"] .inv-paper,
+.inv[data-template="jornal"] .inv-section { background-image: var(--jornal-age), var(--jornal-dots); background-size: 100% 100%, 3.5px 3.5px; }
+.inv[data-template="jornal"] .inv-paper { padding: calc(var(--paper-pad) - 2px) var(--paper-pad) var(--paper-pad); }
+.inv[data-template="jornal"] .inv-paper::before { border: 0; }
+.inv[data-template="jornal"] .inv-art-backdrop { color: color-mix(in srgb, var(--ink) 9%, var(--bg)); }
+
+/* ───────── Cabeçalho: vinheta, título em gótico, linha de edição entre fios duplos, "Extra!" ───────── */
+.inv[data-template="jornal"] .inv-art-top { display: block; margin-bottom: 0; color: var(--ink); }
+.inv[data-template="jornal"] .jornal-ears { display: flex; align-items: flex-end; gap: 10px; font: 600 11px/1 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
+.inv[data-template="jornal"] .jornal-ear { flex: 1; display: flex; align-items: center; gap: 8px; white-space: nowrap; padding-bottom: 1px; }
+.inv[data-template="jornal"] .jornal-ear::before, .inv[data-template="jornal"] .jornal-ear::after { content: ""; height: 1px; background: var(--jornal-hair); }
+.inv[data-template="jornal"] .jornal-ear:first-child::after, .inv[data-template="jornal"] .jornal-ear:last-child::before { flex: 1; }
+.inv[data-template="jornal"] .jornal-ear:first-child::before, .inv[data-template="jornal"] .jornal-ear:last-child::after { content: none; }
+.inv[data-template="jornal"] .jornal-emblem { flex: none; width: clamp(76px, 25cqw, 96px); height: auto; color: var(--ink); }
+.inv[data-template="jornal"] .jornal-title { font: 400 clamp(29px, 10.6cqw, 42px)/1.12 var(--jornal-fraktur); letter-spacing: 0.005em; white-space: nowrap; color: var(--ink); margin-top: 4px; padding-bottom: 7px; }
+.inv[data-template="jornal"] .jornal-title[data-len="long"] { font-size: clamp(27px, 9.7cqw, 39px); }
+.inv[data-template="jornal"] .jornal-edition { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 10px 1px; background: var(--jornal-double); font: 600 clamp(11px, 3.1cqw, 11.5px)/1.2 var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; color: var(--ink); }
+.inv[data-template="jornal"] .jornal-edition-star { flex: none; width: 9px; height: 9px; background: var(--accent); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.inv[data-template="jornal"] .jornal-extra { margin-top: 16px; }
+.inv[data-template="jornal"] .jornal-extra span { display: inline-block; font: 800 13px/1 var(--font-label); letter-spacing: 0.26em; text-transform: uppercase; padding: 5px 9px 5px calc(9px + 0.26em); background: var(--accent); color: var(--paper); transform: rotate(-2deg); }
+
+/* nome curto da edição ("Edição extra"): só no cartão estreito, onde o nome inteiro não cabe a 11px */
+.inv[data-template="jornal"] .jornal-edition-name[data-short] > span:last-child { display: none; }
+@container (max-width: 335px) {
+  .inv[data-template="jornal"] .jornal-edition { letter-spacing: 0.01em; gap: 4px; padding-inline: 0; }
+}
+@container (max-width: 310px) {
+  .inv[data-template="jornal"] .jornal-edition-name[data-short] > span:first-child { display: none; }
+  .inv[data-template="jornal"] .jornal-edition-name[data-short] > span:last-child { display: inline; }
+}
+
+/* ───────── Chapéu e manchete ───────── */
+.inv[data-template="jornal"] .inv-hello { font: italic 400 17px/1.3 var(--font-text); color: var(--ink); margin: 12px 0 0 !important; }
+.inv[data-template="jornal"] .inv-hello strong { font-weight: 700; font-style: normal; }
+.inv[data-template="jornal"] .inv-headline { font: 700 14px/1.4 var(--font-label); letter-spacing: 0.08em; padding-left: 0.08em; color: var(--ink); margin: 11px 0 8px !important; }
+.inv[data-template="jornal"] .inv-names { padding: 0.04em 0 0.1em; color: var(--ink); }
+/* casal em texto corrido, como manchete: "André / & Nathália" (o "&" vai colado ao segundo nome, nunca fecha a linha) */
+.inv[data-template="jornal"] .inv-names[data-count="2"] { display: block; --names-em: 0.7; text-wrap: balance; }
+.inv[data-template="jornal"] .inv-amp { font-family: var(--font-names); font-style: italic; font-weight: 400; line-height: inherit; letter-spacing: 0; color: var(--accent); }
+.inv[data-template="jornal"] .inv-amp::before { content: " "; }
+.inv[data-template="jornal"] .inv-amp::after { content: "\00a0"; }
+.inv[data-template="jornal"] .inv-names[data-count="2"][data-long="true"] { font-size: calc(var(--names-size) * 0.74); letter-spacing: -0.02em; --names-em: 0.64; }
+.inv[data-template="jornal"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.04); }
+.inv[data-template="jornal"] .inv-names[data-count="1"][data-short="true"] { font-size: calc(var(--names-size) * 1.36); letter-spacing: -0.02em; }
+.inv[data-template="jornal"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.78); }
+.inv[data-template="jornal"] .inv-names[data-phrase="true"] { font-size: calc(var(--names-size) * 0.74); line-height: 1.06; }
+.inv[data-template="jornal"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.64); }
+/* título curto ("Helena faz 30") numa linha só */
 .inv[data-template="jornal"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
 
-.inv[data-template="jornal"] .inv-message { font-size: 20px; }
-.inv[data-template="jornal"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); }
-.inv[data-template="jornal"] .inv-hello strong { font-weight: 500; }
-
-/* Data: a grade é a da base (dia da semana e hora ladeiam o numeral, mês na linha de baixo). */
-.inv[data-template="jornal"] .inv-date { gap: 8px clamp(10px, 4cqw, 16px); }
-.inv[data-template="jornal"] .inv-date-day { font-weight: 400; font-size: clamp(48px, 16cqw, 58px); }
-.inv[data-template="jornal"] .inv-date-side, .inv[data-template="jornal"] .inv-date-month { font-size: clamp(14px, 4cqw, 14.5px); letter-spacing: 0.12em; border-color: var(--accent); }
-.inv[data-template="jornal"] .inv-date-side { padding-left: 0.12em; }
-/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
-@container (max-width: 300px) {
-  .inv[data-template="jornal"] .inv-date { column-gap: 8px; }
-  .inv[data-template="jornal"] .inv-date-side { letter-spacing: 0.08em; padding-left: 0.08em; }
+/* ───────── Recado: lide de coluna única, alinhado à esquerda, com capitular alta ─────────
+   O CSS não sabe o tamanho do recado. Duas colunas e capitular rebaixada (flutuante) só funcionam com texto longo: num
+   recado de uma linha a letra ia parar na segunda coluna ("erá um prazer | S receber você."). A capitular alta fica na
+   linha de base da primeira linha e serve a "Venha!" e a um parágrafo inteiro. Sem justificar: abre buracos em coluna curta. */
+.inv[data-template="jornal"] .inv-names:has(+ .inv-message) { padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+.inv[data-template="jornal"] .inv-message {
+  font: 400 17px/1.4 var(--font-text);
+  color: var(--ink);
+  /* recado de uma linha: a caixa encolhe até o texto e fica centrada sob a manchete; com duas linhas ou mais ocupa a coluna inteira */
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 9px !important;
+  text-align: left;
+  text-wrap: pretty;
+  hyphens: manual;
+  -webkit-hyphens: manual;
 }
-.inv[data-template="jornal"] .inv-place { font-style: italic; font-size: 18px; }
-.inv[data-template="jornal"] .inv-countdown { background: none; font: 500 13.5px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0 0 0 0.18em; }
-.inv[data-template="jornal"] .inv-more { font-family: var(--font-label); font-size: 13px; }
+.inv[data-template="jornal"] .inv-message::first-letter { font: 700 2.6em/0.8 var(--font-names); text-transform: uppercase; padding-right: 0.035em; color: var(--accent); }
+.inv[data-template="jornal"] .inv-art-divider { margin: 13px 0 14px; color: var(--ink); }
+.inv[data-template="jornal"] .jornal-rule { width: min(180px, 62cqw); height: auto; }
 
-/* ───────── Seções: a mesma papelaria da capa (serifa e versaletes), sem cara de aplicativo ───────── */
-.inv[data-template="jornal"] .inv-kicker { font-size: 13.5px; }
-.inv[data-template="jornal"] .inv-section { box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px var(--line); }
-.inv[data-template="jornal"] .inv-big { font-size: 23px; }
-.inv[data-template="jornal"] .inv-text { font: 400 19.5px/1.45 var(--font-text); }
-.inv[data-template="jornal"] .inv-hint { font: italic 400 17.5px/1.45 var(--font-text); }
-.inv[data-template="jornal"] .inv-rule { background: color-mix(in srgb, var(--accent) 55%, transparent); }
-.inv[data-template="jornal"] .inv-btn { font: 600 15.5px/1.2 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; padding-left: calc(18px + 0.14em); }
-.inv[data-template="jornal"] .inv-btn-quiet { border-color: var(--accent); font-weight: 600; font-size: 14.5px; }
-.inv[data-template="jornal"] .rsvp-yes, .inv[data-template="jornal"] .rsvp-no { font-size: 16.5px; }
-.inv[data-template="jornal"] .rsvp-state { border-radius: var(--radius); }
-.inv[data-template="jornal"] .inv-link { font: italic 500 18px/1.3 var(--font-text); }
-.inv[data-template="jornal"] .inv-saved { font: italic 400 17px/1.45 var(--font-text); }
+/* ───────── Data: box de "Serviço" (numeral à esquerda, mês e ano em cima, dia da semana e hora embaixo) ───────── */
+.inv[data-template="jornal"] .inv-date {
+  margin-top: 0;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas: "head head head" "day month month" "day week time";
+  gap: 0;
+  align-items: stretch;
+  border: 1.5px solid var(--ink);
+  background: color-mix(in srgb, var(--ink) 3.5%, transparent);
+  text-align: center;
+}
+.inv[data-template="jornal"] .inv-date::before { content: "Serviço"; grid-area: head; font: 800 12.5px/1 var(--font-label); letter-spacing: 0.34em; text-transform: uppercase; padding: 6px 0 6px 0.34em; background: var(--ink); color: var(--paper); }
+.inv[data-template="jornal"] .inv-date-day { grid-area: day; align-self: center; font: 700 clamp(46px, 15.6cqw, 56px)/0.86 var(--font-names); letter-spacing: -0.03em; color: var(--ink); padding: 11px clamp(11px, 4.4cqw, 18px) 9px clamp(10px, 4cqw, 16px); }
+.inv[data-template="jornal"] .inv-date-month { grid-area: month; align-self: stretch; display: grid; place-items: center; font: 700 14px/1.2 var(--font-label); letter-spacing: 0.1em; padding: 10px 2px 9px calc(2px + 0.1em); color: var(--ink); border-left: 1px solid var(--ink); border-bottom: 1px solid var(--jornal-hair); }
+.inv[data-template="jornal"] .inv-date-month { display: flex; align-items: center; justify-content: center; }
+.inv[data-template="jornal"] .inv-date-side { grid-area: week; grid-row: auto; grid-column: auto; display: grid; place-items: center; font: italic 400 17px/1.2 var(--font-text); letter-spacing: 0; text-transform: none; color: var(--ink); border: 0; border-left: 1px solid var(--ink); padding: 9px 2px 10px; }
+.inv[data-template="jornal"] .inv-date-side:first-child { grid-area: week; }
+.inv[data-template="jornal"] .inv-date-side:first-child::first-letter { text-transform: uppercase; }
+.inv[data-template="jornal"] .inv-date-side:last-child { grid-area: time; border-left: 1px solid var(--jornal-hair); font-style: normal; font-weight: 700; }
+@container (max-width: 300px) {
+  .inv[data-template="jornal"] .inv-date-month { letter-spacing: 0.03em; padding-left: calc(2px + 0.03em); }
+  .inv[data-template="jornal"] .inv-date-side { font-size: 16px; }
+}
+/* local: continua o box, numa célula de baixo */
+.inv[data-template="jornal"] .inv-place { font: 400 16.5px/1.35 var(--font-text); color: var(--ink); margin-top: 14px !important; padding: 9px 12px 11px; border: 1.5px solid var(--ink); }
+.inv[data-template="jornal"] .inv-dateline + .inv-place { margin-top: 0 !important; border-top: 0; background: color-mix(in srgb, var(--ink) 3.5%, transparent); box-shadow: inset 0 1px 0 var(--ink); }
+.inv[data-template="jornal"] .inv-place::before { content: "Local"; display: block; font: 800 12.5px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; padding-left: 0.2em; }
+.inv[data-template="jornal"] .inv-countdown { display: block; background: none; border-radius: 0; padding: 0 0 0 0.07em; margin-top: 14px !important; font: 700 14px/1.3 var(--font-label); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink); }
+.inv[data-template="jornal"] .inv-countdown::before { content: "Urgente \2022\00a0"; color: var(--accent); }
 
-/* ───────── Envelope ───────── */
-.inv[data-template="jornal"] .env-to { font: italic 400 19px/1.4 var(--font-text); }
-.inv[data-template="jornal"] .env-to strong { font-family: var(--font-names); font-style: normal; font-size: 42px; font-weight: 400; }
-.inv[data-template="jornal"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 3.8px color-mix(in srgb, var(--accent) 85%, var(--btn-ink)), 0 6px 16px color-mix(in srgb, var(--ink) 20%, transparent); }
-.inv[data-template="jornal"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; } /* lacre gravado em capitais romanas: a caligráfica dos nomes não cabe na cera */
-/* forro: tinta mais marcada, margem de papel e filete acompanhando as bordas da aba */
-.inv[data-template="jornal"] .env-liner { color: color-mix(in srgb, var(--liner) 58%, var(--ink)); }
-.inv[data-template="jornal"] .jornal-liner-rule { stroke: var(--accent); stroke-width: 19px; }
-.inv[data-template="jornal"] .jornal-liner-edge { stroke: color-mix(in srgb, var(--paper) 94%, var(--ink)); stroke-width: 17px; }
-/* o cartão que sobe já traz a moldura dupla do convite */
-.inv[data-template="jornal"] .env-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), inset 0 0 0 6px var(--paper), inset 0 0 0 7px var(--accent), inset 0 0 0 9px var(--paper), inset 0 0 0 9.6px color-mix(in srgb, var(--accent) 70%, transparent); padding-top: 13%; }
+/* rodapé da primeira página: a previsão do tempo */
+.inv[data-template="jornal"] .inv-art-bottom { display: block; margin-top: 13px; color: var(--ink); }
+.inv[data-template="jornal"] .jornal-weather { display: flex; align-items: center; gap: 10px; text-align: left; padding: 9px 0 0; border-top: 1px solid var(--ink); background: linear-gradient(var(--ink), var(--ink)) 0 2px / 100% 1px no-repeat; }
+.inv[data-template="jornal"] .jornal-weather-icon { flex: none; width: 34px; height: 26px; margin-top: 3px; }
+.inv[data-template="jornal"] .jornal-weather-text { font: italic 400 14px/1.3 var(--font-text); color: var(--ink); margin-top: 3px; text-wrap: pretty; }
+.inv[data-template="jornal"] .jornal-weather-text b { font: 800 11px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; margin-right: 7px; padding: 2px 4px 2px calc(4px + 0.18em); background: var(--ink); color: var(--paper); vertical-align: 1.5px; }
+.inv[data-template="jornal"] .inv-more { font: 700 14px/1 var(--font-label); letter-spacing: 0.18em; padding-left: calc(16px + 0.18em); color: var(--ink); }
 
-/* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
-   A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
-   nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
-.inv[data-template="jornal"] { --thumb-h: 768px; }
-.inv[data-template="jornal"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 664px; }
-.inv[data-template="jornal"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 671px; }
-.inv[data-template="jornal"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 635px; }
-.inv[data-template="jornal"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 664px; }
-.inv[data-template="jornal"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 585px; }
+/* Celular baixo (360 × 740, 320 × 640): o ritmo aperta um pouco para a primeira página mostrar o box de serviço inteiro */
+@media (max-height: 780px) and (max-width: 500px) {
+  .inv[data-template="jornal"] .inv-paper { padding-top: calc(var(--paper-pad) - 6px); }
+  .inv[data-template="jornal"] .jornal-emblem { width: 68px; }
+  .inv[data-template="jornal"] .jornal-title { margin-top: 2px; padding-bottom: 5px; }
+  .inv[data-template="jornal"] .jornal-edition { padding-block: 9px; }
+  .inv[data-template="jornal"] .jornal-extra { margin-top: 11px; }
+  .inv[data-template="jornal"] .inv-headline { margin: 8px 0 6px !important; }
+  .inv[data-template="jornal"] .inv-names:has(+ .inv-message) { padding-bottom: 10px; }
+  .inv[data-template="jornal"] .inv-message { margin-top: 6px !important; }
+  .inv[data-template="jornal"] .inv-art-divider { margin: 9px 0 10px; }
+  .inv[data-template="jornal"] .inv-date-day { padding-block: 8px 6px; }
+  .inv[data-template="jornal"] .inv-date-month { padding-block: 8px 7px; }
+  .inv[data-template="jornal"] .inv-date-side { padding-block: 7px 8px; }
+  .inv[data-template="jornal"] .inv-place { padding-block: 7px 9px; }
+  .inv[data-template="jornal"] .inv-countdown { margin-top: 10px !important; }
+  .inv[data-template="jornal"] .inv-art-bottom { margin-top: 9px; }
+}
+
+/* ───────── Seções: páginas internas, com fólio e fio duplo no alto ───────── */
+/* a capa é a página 1. O contador nasce na capa (irmã das seções): .inv-sheet é um contêiner com contenção de estilo. */
+.inv[data-template="jornal"] .inv-cover { counter-reset: jornal-page 1; }
+.inv[data-template="jornal"] .inv-section { counter-increment: jornal-page; padding: 50px clamp(14px, 6.4cqw, 26px) 30px; box-shadow: 0 1px 1px color-mix(in srgb, #000 14%, transparent), 0 8px 20px color-mix(in srgb, #000 10%, transparent); }
+.inv[data-template="jornal"] .inv-section::before { content: "Página " counter(jornal-page); position: absolute; inset: 12px clamp(14px, 6.4cqw, 26px) auto; padding: 0 0 12px 0.16em; background: linear-gradient(var(--ink), var(--ink)) 0 100% / 100% 2px no-repeat, linear-gradient(var(--ink), var(--ink)) 0 calc(100% - 4px) / 100% 1px no-repeat; font: 600 12.5px/1 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); text-align: center; font-variant-numeric: lining-nums; }
+/* chapéu da matéria: rótulo com fio até a margem (nas duas pontas quando o bloco é centrado: Pix e assinatura) */
+.inv[data-template="jornal"] .inv-kicker { display: flex; align-items: center; gap: 10px; font: 800 14px/1.4 var(--font-label); letter-spacing: 0.2em; padding-left: 0; color: var(--accent); margin-bottom: 9px !important; text-align: left; }
+.inv[data-template="jornal"] .inv-kicker::after, .inv[data-template="jornal"] :is(.inv-sign, .inv-pix) > .inv-kicker::before { content: ""; flex: 1; min-width: 12px; height: 1px; background: var(--jornal-hair); }
+.inv[data-template="jornal"] :is(.inv-sign, .inv-pix) > .inv-kicker { padding-left: 0.2em; }
+/* páginas internas compostas como abertura de matéria: chapéu, título e texto à esquerda; botões de ponta a ponta */
+.inv[data-template="jornal"] .inv-section:not(.inv-sign) > :is(.inv-section-title, .inv-big, .inv-text, .inv-hint) { text-align: left; text-wrap: pretty; }
+.inv[data-template="jornal"] .inv-section-title { font: 700 36px/1.06 var(--font-text); letter-spacing: -0.015em; margin-bottom: 8px !important; }
+.inv[data-template="jornal"] .inv-big { font: 700 25px/1.18 var(--font-text); letter-spacing: -0.005em; }
+.inv[data-template="jornal"] .inv-text { font: 400 18px/1.45 var(--font-text); }
+.inv[data-template="jornal"] .inv-hint { font: italic 400 17px/1.4 var(--font-text); }
+.inv[data-template="jornal"] .inv-link { font-family: var(--font-text); }
+.inv[data-template="jornal"] .inv-rule { height: 4px; background: none; border-block: 1px solid var(--jornal-hair); margin: 22px 0 20px; }
+.inv[data-template="jornal"] .inv-btn { font: 700 15px/1.2 var(--font-label); letter-spacing: 0.08em; text-transform: uppercase; border: 1.5px solid var(--ink); }
+.inv[data-template="jornal"] .inv-btn-main { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 70%, transparent); }
+.inv[data-template="jornal"] .inv-btn-quiet { border-width: 1px; border-color: var(--jornal-hair); font-weight: 600; font-size: 14.5px; }
+.inv[data-template="jornal"] .inv-grid-2 .inv-btn { font-size: clamp(14px, 4.3cqw, 14.5px); letter-spacing: 0.04em; padding-inline: 4px; }
+.inv[data-template="jornal"] .rsvp-yes, .inv[data-template="jornal"] .rsvp-no { font-size: 16px; letter-spacing: 0.1em; }
+.inv[data-template="jornal"] .inv-section .rsvp-count-grid .rsvp-n { font-family: var(--font-names); font-weight: 700; font-size: 30px; }
+.inv[data-template="jornal"] .inv-section .inv-btn[aria-pressed="true"] { background: var(--ink); color: var(--btn-ink); }
+.inv[data-template="jornal"] .rsvp-count legend, .inv[data-template="jornal"] .rsvp-current, .inv[data-template="jornal"] .inv-field, .inv[data-template="jornal"] .inv-saved { font-family: var(--font-text); }
+.inv[data-template="jornal"] .rsvp-current { border-radius: 0; background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.inv[data-template="jornal"] .rsvp-state { border-radius: 0; background: color-mix(in srgb, var(--ink) 4%, transparent); border: 1.5px solid var(--ink); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--jornal-hair); padding: 22px 16px 20px; }
+.inv[data-template="jornal"] .rsvp-state-title { font: 700 29px/1.1 var(--font-text); letter-spacing: -0.01em; }
+.inv[data-template="jornal"] .rsvp-state[data-status="yes"] .rsvp-state-title::before { content: "Confirmado"; display: block; width: fit-content; margin: 0 auto 10px; font: 800 12px/1 var(--font-label); letter-spacing: 0.24em; text-transform: uppercase; padding: 5px 9px 5px calc(9px + 0.24em); background: var(--accent); color: var(--paper); transform: rotate(-2deg); }
+.inv[data-template="jornal"] .rsvp-state p + p { font-family: var(--font-text); }
+.inv[data-template="jornal"] .rsvp-radio span { border-radius: 0; font-family: var(--font-names); font-weight: 700; }
+.inv[data-template="jornal"] .rsvp-radio input:not(:checked) + span { background: color-mix(in srgb, var(--paper) 94%, var(--ink)); }
+.inv[data-template="jornal"] .inv-field input, .inv[data-template="jornal"] .inv-field select, .inv[data-template="jornal"] .inv-field textarea { border-radius: 0; background: color-mix(in srgb, var(--paper) 93%, var(--ink)); border-color: var(--jornal-hair); }
+.inv[data-template="jornal"] .inv-qr { border-radius: 0; border: 1.5px solid var(--ink); }
+.inv[data-template="jornal"] .inv-sticky { border-top: 2px solid var(--ink); }
+
+/* fecho: assinatura como rodapé de jornal */
+.inv[data-template="jornal"] .inv-sign-art { color: var(--ink); margin-bottom: 14px; }
+.inv[data-template="jornal"] .inv-sign-names { font-size: calc(var(--names-size) * 0.66); line-height: 1.08; }
+.inv[data-template="jornal"] .inv-sign-date { font: italic 400 18px/1.4 var(--font-text); }
+.inv[data-template="jornal"] .inv-footer { font-family: var(--font-label); font-size: 14px; }
+.inv[data-template="jornal"] .inv-sheet::after { content: "Fim desta edição"; display: block; width: fit-content; margin: 26px auto 0; padding: 9px 14px 9px calc(14px + 0.22em); background: var(--jornal-double); font: 600 12.5px/1 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink); }
+.thumb > .inv[data-template="jornal"] .inv-sheet::after { display: none; }
+
+/* ───────── Envelope: papel-jornal por dentro, carimbo de "Impresso" por fora ───────── */
+.inv[data-template="jornal"] .env-back { background: color-mix(in srgb, var(--paper) 84%, var(--ink)); border-radius: 1px; }
+.inv[data-template="jornal"] .env-front { border-radius: 1px; background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 90%, var(--ink)), color-mix(in srgb, var(--paper) 95%, var(--ink)) 62%); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 26%, var(--paper)); }
+.inv[data-template="jornal"] .env-front::before { content: "Impresso \2022  urgente"; position: absolute; left: 6%; bottom: 9%; font: 800 10px/1 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap; padding: 5px 6px 5px calc(6px + 0.2em); color: var(--accent); border: 1.5px solid currentColor; box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px currentColor; transform: rotate(-5deg); opacity: 0.85; }
+.inv[data-template="jornal"] .env-flap-face { background-image: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 97%, var(--ink)), color-mix(in srgb, var(--paper) 89%, var(--ink))); }
+.inv[data-template="jornal"] .env-liner { color: color-mix(in srgb, var(--liner) 50%, var(--ink)); }
+.inv[data-template="jornal"] .env-card { border-radius: 0; color: var(--ink); background-image: var(--jornal-dots); background-size: 3.5px 3.5px; }
+.inv[data-template="jornal"] .env-card-line { width: 76%; height: 2px; opacity: 0.9; box-shadow: 0 3px 0 -0.5px currentColor, 0 13px 0 -0.5px currentColor, 0 16px 0 currentColor; }
+.inv[data-template="jornal"] .env-to { font: 600 13px/1.5 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; padding-left: 0.18em; }
+.inv[data-template="jornal"] .env-to strong { font: 700 31px/1.12 var(--font-names); font-variant-numeric: lining-nums; letter-spacing: -0.01em; text-transform: none; margin-top: 6px; padding-left: 0; }
+.inv[data-template="jornal"] .env-cta { font: 700 15px/1.1 var(--font-label); font-variant-numeric: lining-nums; letter-spacing: 0.16em; padding-left: calc(30px + 0.16em); box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--btn-ink) 70%, transparent), 0 6px 16px color-mix(in srgb, #000 22%, transparent); }
+.inv[data-template="jornal"] .env-seal { --seal-font: var(--font-names); --seal-weight: 700; }
+
+/* Miniaturas: altura que a capa de exemplo ocupa (cartão + 28px de respiro, capa a 390px de largura), por tipo de evento. */
+.inv[data-template="jornal"] { --thumb-h: 785px; }
+.inv[data-template="jornal"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 726px; }
+.inv[data-template="jornal"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 736px; }
+.inv[data-template="jornal"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 702px; }
+.inv[data-template="jornal"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 726px; }
+.inv[data-template="jornal"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 723px; }

@@ -1,87 +1,185 @@
-/* Modelo Traco. Todas as regras ficam sob .inv[data-template="traco"]. */
+/* Modelo Traço. Todas as regras ficam sob .inv[data-template="traco"]. */
 .inv[data-template="traco"] {
-  --font-names: var(--f-pinyon), "Pinyon Script", cursive;
-  --font-text: var(--f-serif), "Cormorant Garamond", Georgia, serif;
-  --font-label: var(--f-sc), "Cormorant SC", var(--f-serif), serif;
-  --names-size: clamp(46px, 15.5cqw, 70px);
+  --font-names: var(--f-italiana), "Italiana", "Marcellus", Georgia, serif;
+  --font-text: var(--f-mulish), "Mulish", system-ui, sans-serif;
+  --font-label: var(--f-mulish), "Mulish", system-ui, sans-serif;
+  --names-size: clamp(38px, 13cqw, 58px);
   --names-weight: 400;
-  --names-leading: 1.12;
-  --names-em: 0.45;
-  --amp-scale: 0.5;
+  --names-leading: 1.06;
+  --names-em: 0.52; /* Italiana: medida com "Maximiliano", "Wilhelmina" e "Confraternização" */
+  --amp-scale: 0.6;
   --label-tracking: 0.2em;
-  --radius: 2px;
-  --btn-radius: 2px;
-  --frame-inset: 13px;
+  --radius: 0px;
+  --btn-radius: 0px;
+  --paper-pad: clamp(24px, 8.4cqw, 38px);
+  --frame-inset: 0px;
+  --paper-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 9%, transparent), 0 22px 40px -22px color-mix(in srgb, var(--ink) 30%, transparent);
+  /* duas tintas: a da caneta e a da mancha chapada por trás */
+  --tr-pen: var(--accent);
+  --tr-wash: color-mix(in srgb, var(--accent) 15%, var(--paper));
+  --tr-wash-2: color-mix(in srgb, var(--accent) 11%, var(--paper));
+  --tr-hair: color-mix(in srgb, var(--ink) 24%, var(--paper));
+  /* dois passos de ritmo vertical */
+  --tr-s1: clamp(12px, 3.8cqw, 16px);
+  --tr-s2: clamp(20px, 6.4cqw, 26px);
+  /* reforço da Italiana: as barras de F, T, L e f são fios que somem em corpo pequeno e em tela 1x */
+  --tr-bold: 0.2px;
 }
-/* Algarismos alinhados em tudo: os de texto da Cormorant fazem "16h30" virar "16h3o" e "11" virar "ıı". */
-.inv[data-template="traco"] * { font-variant-numeric: lining-nums !important; } /* !important: os atalhos "font:" da base e do modelo zeram esta propriedade */
 
-/* ───────── Capa ───────── */
-/* moldura dupla: fio de 1px e, por dentro, um fio mais fino */
-.inv[data-template="traco"] .inv-paper::before { border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.6px color-mix(in srgb, var(--accent) 70%, transparent); }
-.inv[data-template="traco"] .inv-paper { padding-block: calc(var(--paper-pad) + 18px); }
-.inv[data-template="traco"] .inv-headline { font-size: 13.5px; font-weight: 500; }
-.inv[data-template="traco"] .inv-names { padding: 0.16em 0 0.1em; }
-/* o conector tem folga dos dois lados: descendentes do nome de cima e acentos de maiúscula do nome de baixo (Ângela & Érica) */
-.inv[data-template="traco"] .inv-amp { margin: 0.14em 0 0.3em; line-height: 1.1; }
-/* frase (data-phrase: travessão ou quatro palavras ou mais): itálico de texto em vez de caligrafia, que só fica bem em nomes.
-   Nome comprido ("Maximiliano Albuquerque") não é frase e continua na caligrafia, só menor (regra data-long da base). */
-.inv[data-template="traco"] .inv-names[data-phrase="true"] { --names-em: 0.5; font-family: var(--font-text); font-style: italic; font-weight: 500; font-size: calc(var(--names-size) * 0.62); line-height: 1.2; text-wrap: balance; padding: 0.1em 0; }
-/* algarismos na caligrafia ficam ruins ("30" parece "Zo"): vão na serifa do modelo, em itálico, com a altura das maiúsculas da caligrafia */
-.inv[data-template="traco"] .inv-names:not([data-phrase]) .inv-num { font-family: var(--font-text); font-style: italic; font-size: 0.84em; font-weight: 500; letter-spacing: 0.01em; }
-/* título curto ("Helena faz 30", "Chá do Miguel") cabe inteiro numa linha: a medida passa a ser o título todo (--line), para "faz 30" não cair sozinho embaixo */
+/* ───────── Capa: o desenho sangra no alto; o texto corre à esquerda ───────── */
+.inv[data-template="traco"] .inv-paper { text-align: left; overflow: hidden; padding: 0 var(--paper-pad) calc(var(--paper-pad) + 2px); }
+.inv[data-template="traco"] .inv-paper::before { display: none; }
+.inv[data-template="traco"] .inv-art-top { display: block; position: relative; margin: 0 calc(-1 * var(--paper-pad)) var(--tr-s1); color: var(--tr-pen); }
+.inv[data-template="traco"] .traco-draw { width: 100%; height: auto; }
+/* com a saudação ao convidado logo abaixo, o desenho encosta mais: a capa de casamento cabe melhor na primeira tela */
+.inv[data-template="traco"] .inv-art-top:has(~ .inv-hello) { margin-bottom: 4px; }
+.inv[data-template="traco"] .traco-wash { fill: var(--tr-wash); }
+.inv[data-template="traco"] .traco-wash-2 { fill: var(--tr-wash-2); }
+/* etiqueta na vertical, no canto: o tipo de evento, como a lombada de uma gravura */
+.inv[data-template="traco"] .traco-tag { position: absolute; top: 4.6cqw; right: clamp(10px, 3.8cqw, 17px); writing-mode: vertical-rl; font: 700 clamp(10px, 2.8cqw, 11px)/1 var(--font-label); letter-spacing: 0.22em; text-transform: uppercase; white-space: nowrap; color: var(--soft); }
+
+.inv[data-template="traco"] .traco-tag[data-low] { top: 36%; }
+
+.inv[data-template="traco"] .inv-hello { font: 400 16px/1.4 var(--font-text); margin-bottom: var(--tr-s1) !important; }
+.inv[data-template="traco"] .inv-hello strong { font-weight: 700; }
+/* frase de abertura: versalete pequeno, precedido de um fio curto */
+.inv[data-template="traco"] .inv-headline { font-weight: 600; line-height: 1.7; letter-spacing: 0.14em; padding-left: 0; margin-bottom: var(--tr-s1) !important; text-wrap: balance; }
+.inv[data-template="traco"] .inv-headline::before { content: ""; display: block; width: 26px; height: 1px; margin-bottom: 12px; background: var(--tr-pen); }
+
+.inv[data-template="traco"] .inv-names { padding: 0; text-wrap: wrap; -webkit-text-stroke: var(--tr-bold) currentColor; }
+.inv[data-template="traco"] .inv-names[data-count="2"] { align-items: flex-start; }
+/* o "&" pequeno abre um fio que corre até a margem direita */
+/* na Mulish leve, como o numeral da data: o "&" da Italiana, pequeno, parece um "e" solto */
+.inv[data-template="traco"] .inv-amp { align-self: stretch; display: flex; align-items: center; gap: 0.5em; font-family: var(--font-text); font-style: normal; font-weight: 300; line-height: 1; margin: 0.22em 0 0.2em; color: var(--tr-pen); -webkit-text-stroke: 0; }
+.inv[data-template="traco"] .inv-amp::after { content: ""; flex: 1; height: 1px; background: var(--tr-hair); }
+.inv[data-template="traco"] .inv-names[data-count="1"] { font-size: calc(var(--names-size) * 1.14); }
+.inv[data-template="traco"] .inv-names[data-short="true"] { font-size: calc(var(--names-size) * 1.5); line-height: 1; }
+.inv[data-template="traco"] .inv-names[data-count="1"][data-long="true"] { font-size: calc(var(--names-size) * 0.82); line-height: 1.12; }
+.inv[data-template="traco"] .inv-names[data-long="true"] { --tr-bold: 0.3px; }
+.inv[data-template="traco"] .inv-names[data-phrase="true"] { text-wrap: balance; --tr-bold: 0.35px; }
+.inv[data-template="traco"] .inv-names[data-phrase="true"]:not([data-words="4"], [data-words="5"]) { font-size: calc(var(--names-size) * 0.78); line-height: 1.14; }
+/* os algarismos da Italiana não servem ("11" sai "II", "30" sai "3o"): vão na Mulish leve, na altura das maiúsculas */
+.inv[data-template="traco"] .inv-num { font-family: var(--font-text); font-weight: 300; font-size: 0.88em; letter-spacing: -0.01em; -webkit-text-stroke: 0; }
+/* título curto ("Helena faz 30") numa linha só: a medida passa a ser o título todo */
 .inv[data-template="traco"] .inv-names[data-count="1"]:not([data-phrase]) .inv-name { --longest: var(--line); }
 
-.inv[data-template="traco"] .inv-message { font-size: 20px; }
-.inv[data-template="traco"] .inv-hello { font: italic 400 18px/1.4 var(--font-text); }
-.inv[data-template="traco"] .inv-hello strong { font-weight: 500; }
+.inv[data-template="traco"] .inv-message { font: 400 16px/1.6 var(--font-text); color: var(--soft); margin: var(--tr-s2) 0 0 !important; max-width: 30ch; text-wrap: pretty; }
+.inv[data-template="traco"] .inv-art-divider { justify-content: flex-start; margin: var(--tr-s2) 0 var(--tr-s1) -2px; color: var(--tr-pen); }
+.inv[data-template="traco"] .traco-loop .traco-wash { fill: var(--tr-wash); }
 
-/* Data: a grade é a da base (dia da semana e hora ladeiam o numeral, mês na linha de baixo). */
-.inv[data-template="traco"] .inv-date { gap: 8px clamp(10px, 4cqw, 16px); }
-.inv[data-template="traco"] .inv-date-day { font-weight: 400; font-size: clamp(48px, 16cqw, 58px); }
-.inv[data-template="traco"] .inv-date-side, .inv[data-template="traco"] .inv-date-month { font-size: clamp(14px, 4cqw, 14.5px); letter-spacing: 0.12em; border-color: var(--accent); }
-.inv[data-template="traco"] .inv-date-side { padding-left: 0.12em; }
-/* Cartão estreito (celular de 320px): a letra das laterais fica em 14px; quem cede é o espaçamento entre letras e entre colunas. */
-@container (max-width: 300px) {
-  .inv[data-template="traco"] .inv-date { column-gap: 8px; }
-  .inv[data-template="traco"] .inv-date-side { letter-spacing: 0.08em; padding-left: 0.08em; }
+/* data: numeral grande à esquerda, a linha da caneta em laço e três linhas pequenas à direita (dia da semana, mês e ano, hora) */
+.inv[data-template="traco"] .inv-date { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: repeat(3, auto); align-content: center; align-items: center; justify-items: start; gap: 4px 0; margin-top: var(--tr-s2); text-align: left; --tr-date-ls: clamp(0.5px, (100cqw - 268px) * 0.032, 2.3px); }
+.inv[data-template="traco"] .inv-art-divider + .inv-date { margin-top: 0; }
+.inv[data-template="traco"] .inv-date-day { grid-column: 1; grid-row: 1 / -1; align-self: stretch; display: flex; align-items: center; font: 200 clamp(58px, 20.5cqw, 80px)/0.8 var(--font-text); letter-spacing: -0.03em; position: relative; padding: 0 clamp(15px, 5.4cqw, 23px) 0 0; margin-right: clamp(15px, 5.4cqw, 23px); }
+/* no lugar da régua reta, um trecho da linha da caneta, com o laço no meio */
+.inv[data-template="traco"] .inv-date-day::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  right: -9px;
+  width: 22px;
+  background: var(--tr-pen);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 76' preserveAspectRatio='none' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' d='M13 1C13 14 16 24 12 31C8 38 1 37 2 31C3 25 13 26 14.5 35C16 48 12 62 13 75'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 76' preserveAspectRatio='none' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' d='M13 1C13 14 16 24 12 31C8 38 1 37 2 31C3 25 13 26 14.5 35C16 48 12 62 13 75'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
-.inv[data-template="traco"] .inv-place { font-style: italic; font-size: 18px; }
-.inv[data-template="traco"] .inv-countdown { background: none; font: 500 13.5px/1 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); padding: 0 0 0 0.18em; }
-.inv[data-template="traco"] .inv-more { font-family: var(--font-label); font-size: 13px; }
+.inv[data-template="traco"] .inv-date-side,
+.inv[data-template="traco"] .inv-date-month { grid-column: 2; font: 600 14px/1.4 var(--font-label); letter-spacing: var(--tr-date-ls); padding: 0; border: 0; color: var(--ink); }
+.inv[data-template="traco"] .inv-date-side:first-child { grid-row: 1; color: var(--soft); }
+.inv[data-template="traco"] .inv-date-month { grid-row: 2; font-weight: 700; }
+.inv[data-template="traco"] .inv-date-side:last-child { grid-row: 3; color: var(--soft); }
+/* sem horário: o ano continua na linha do mês e a lateral do ano some (o modelo não ladeia o numeral) */
+.inv[data-template="traco"] .inv-date[data-time="false"] .inv-date-year { display: inline; }
+.inv[data-template="traco"] .inv-date .inv-date-alt { display: none; }
 
-/* ───────── Seções: a mesma papelaria da capa (serifa e versaletes), sem cara de aplicativo ───────── */
-.inv[data-template="traco"] .inv-kicker { font-size: 13.5px; }
-.inv[data-template="traco"] .inv-section { box-shadow: 0 1px 2px rgba(60, 45, 30, 0.1), 0 6px 18px rgba(60, 45, 30, 0.07), inset 0 0 0 1px var(--line); }
-.inv[data-template="traco"] .inv-big { font-size: 23px; }
-.inv[data-template="traco"] .inv-text { font: 400 19.5px/1.45 var(--font-text); }
-.inv[data-template="traco"] .inv-hint { font: italic 400 17.5px/1.45 var(--font-text); }
-.inv[data-template="traco"] .inv-rule { background: color-mix(in srgb, var(--accent) 55%, transparent); }
-.inv[data-template="traco"] .inv-btn { font: 600 15.5px/1.2 var(--font-label); letter-spacing: 0.14em; text-transform: uppercase; padding-left: calc(18px + 0.14em); }
-.inv[data-template="traco"] .inv-btn-quiet { border-color: var(--accent); font-weight: 600; font-size: 14.5px; }
-.inv[data-template="traco"] .rsvp-yes, .inv[data-template="traco"] .rsvp-no { font-size: 16.5px; }
-.inv[data-template="traco"] .rsvp-state { border-radius: var(--radius); }
-.inv[data-template="traco"] .inv-link { font: italic 500 18px/1.3 var(--font-text); }
-.inv[data-template="traco"] .inv-saved { font: italic 400 17px/1.45 var(--font-text); }
+.inv[data-template="traco"] .inv-place { font: 500 16px/1.5 var(--font-text); color: var(--ink); margin-top: var(--tr-s2) !important; text-wrap: pretty; }
+/* contagem: última linha do cartão, à direita, sobre um fio */
+.inv[data-template="traco"] .inv-countdown { display: block; background: none; border-radius: 0; border-top: 1px solid var(--tr-hair); padding: 12px 0 0; margin-top: var(--tr-s2) !important; text-align: right; font: 600 14px/1.3 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--soft); }
+.inv[data-template="traco"] .inv-more { font-weight: 600; letter-spacing: 0.2em; }
 
-/* ───────── Envelope ───────── */
-.inv[data-template="traco"] .env-to { font: italic 400 19px/1.4 var(--font-text); }
-.inv[data-template="traco"] .env-to strong { font-family: var(--font-names); font-style: normal; font-size: 42px; font-weight: 400; }
-.inv[data-template="traco"] .env-cta { font: 600 16px/1.1 var(--font-label); letter-spacing: 0.12em; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 3.8px color-mix(in srgb, var(--accent) 85%, var(--btn-ink)), 0 6px 16px color-mix(in srgb, var(--ink) 20%, transparent); }
-.inv[data-template="traco"] .env-seal { --seal-font: var(--font-text); --seal-weight: 500; } /* lacre gravado em capitais romanas: a caligráfica dos nomes não cabe na cera */
-/* forro: tinta mais marcada, margem de papel e filete acompanhando as bordas da aba */
-.inv[data-template="traco"] .env-liner { color: color-mix(in srgb, var(--liner) 58%, var(--ink)); }
-.inv[data-template="traco"] .traco-liner-rule { stroke: var(--accent); stroke-width: 19px; }
-.inv[data-template="traco"] .traco-liner-edge { stroke: color-mix(in srgb, var(--paper) 94%, var(--ink)); stroke-width: 17px; }
-/* o cartão que sobe já traz a moldura dupla do convite */
-.inv[data-template="traco"] .env-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), inset 0 0 0 6px var(--paper), inset 0 0 0 7px var(--accent), inset 0 0 0 9px var(--paper), inset 0 0 0 9.6px color-mix(in srgb, var(--accent) 70%, transparent); padding-top: 13%; }
+/* ───────── Seções: folhas brancas numeradas, texto à esquerda ───────── */
+.inv[data-template="traco"] .inv-sheet { counter-reset: tr-sec; }
+.inv[data-template="traco"] .inv-section { counter-increment: tr-sec; text-align: left; padding: 30px clamp(16px, 7.4cqw, 28px) 30px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 9%, transparent), 0 16px 30px -22px color-mix(in srgb, var(--ink) 26%, transparent); }
+/* número da folha, no canto */
+.inv[data-template="traco"] .inv-section:not(.inv-sign)::before { content: counter(tr-sec, decimal-leading-zero); position: absolute; top: 25px; right: clamp(16px, 7.4cqw, 28px); font: 300 22px/1 var(--font-text); letter-spacing: 0.02em; color: var(--tr-pen); font-variant-numeric: lining-nums; }
+.inv[data-template="traco"] .inv-kicker { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: 0.2em; padding: 0 44px 0 0; margin-bottom: 12px !important; }
+.inv[data-template="traco"] .inv-kicker::before { content: ""; flex: none; width: 22px; height: 1px; background: var(--tr-pen); }
+.inv[data-template="traco"] .inv-rule + .inv-kicker, .inv[data-template="traco"] .inv-pix .inv-kicker, .inv[data-template="traco"] .inv-sign .inv-kicker { padding-right: 0; }
+.inv[data-template="traco"] .inv-section-title { font: 400 38px/1.08 var(--font-names); margin-bottom: 12px !important; -webkit-text-stroke: 0.25px currentColor; }
+.inv[data-template="traco"] .inv-big { font: 400 22px/1.35 var(--font-text); letter-spacing: -0.005em; }
+.inv[data-template="traco"] .inv-text { font: 400 17px/1.6 var(--font-text); margin-top: 4px !important; }
+.inv[data-template="traco"] .inv-hint { font: 400 16px/1.55 var(--font-text); }
+.inv[data-template="traco"] .inv-rule { background: var(--tr-hair); margin: 24px 0 22px; }
+.inv[data-template="traco"] .inv-btn { font: 700 14.5px/1.25 var(--font-label); letter-spacing: 0.12em; text-transform: uppercase; padding-left: calc(clamp(8px, 4.6cqw, 18px) + 0.12em); }
+.inv[data-template="traco"] .inv-grid-2 .inv-btn { letter-spacing: 0.08em; padding-left: 8px; }
+.inv[data-template="traco"] .inv-btn-quiet { font-weight: 600; font-size: 14.5px; border-color: color-mix(in srgb, var(--ink) 56%, var(--paper)); background: none; }
+.inv[data-template="traco"] .rsvp-yes, .inv[data-template="traco"] .rsvp-no { font-size: 15.5px; }
+.inv[data-template="traco"] .rsvp-count legend, .inv[data-template="traco"] .rsvp-current, .inv[data-template="traco"] .inv-saved, .inv[data-template="traco"] .inv-field { font-family: var(--font-text); }
+.inv[data-template="traco"] .rsvp-current { border-radius: 0; background: var(--tr-wash); }
+/* resposta dada: bloco de mancha chapada com um fio da caneta à esquerda */
+.inv[data-template="traco"] .rsvp-state { text-align: left; border-radius: 0; background: var(--tr-wash); border-left: 2px solid var(--tr-pen); padding: 20px 18px; }
+.inv[data-template="traco"] .rsvp-state-title { font: 300 26px/1.2 var(--font-text); letter-spacing: -0.01em; }
+.inv[data-template="traco"] .rsvp-state p + p { font: 400 17px/1.5 var(--font-text); margin-top: 6px; }
+/* campos e fichas sem branco fixo: na paleta escura o fundo sai do próprio papel */
+.inv[data-template="traco"] .rsvp-radio span { border-radius: 0; background: color-mix(in srgb, var(--paper) 94%, var(--ink)); }
+.inv[data-template="traco"] .rsvp-radio input:checked + span { background: var(--ink); color: var(--btn-ink); }
+.inv[data-template="traco"] .inv-field input, .inv[data-template="traco"] .inv-field select, .inv[data-template="traco"] .inv-field textarea { border-radius: 0; background: color-mix(in srgb, var(--paper) 95%, var(--ink)); border-color: color-mix(in srgb, var(--ink) 46%, var(--paper)); }
+.inv[data-template="traco"] .inv-error { border-radius: 0; }
+.inv[data-template="traco"] .inv-link { font: 600 16px/1.3 var(--font-text); }
+.inv[data-template="traco"] .inv-qr { border-radius: 0; }
+.inv[data-template="traco"] .inv-pix { justify-items: start; }
+.inv[data-template="traco"] .inv-sticky { border-top-color: var(--tr-hair); }
+
+/* fecho: a mesma folha, assinada */
+.inv[data-template="traco"] .inv-sign-art { justify-content: flex-start; margin-bottom: 16px; color: var(--tr-pen); }
+.inv[data-template="traco"] .inv-sign-names { font-size: calc(var(--names-size) * 0.72); line-height: 1.12; -webkit-text-stroke: 0.35px currentColor; }
+/* título com algarismos ("Helena faz 30"): a assinatura vai na Mulish leve, porque aqui não há como trocar só os números */
+.inv[data-template="traco"] .inv-sheet:has(.inv-names .inv-num) .inv-sign-names { font: 300 clamp(22px, 7.4cqw, 28px)/1.25 var(--font-text); letter-spacing: -0.01em; -webkit-text-stroke: 0; }
+.inv[data-template="traco"] .inv-sign-date { font: 500 16px/1.4 var(--font-text); margin-top: 8px !important; }
+.inv[data-template="traco"] .inv-footer { font-size: 15px; }
+/* depois da última folha, a linha sai da página: um laço e um ponto final */
+.inv[data-template="traco"] .inv-sheet::after {
+  content: "";
+  display: block;
+  height: 26px;
+  margin: 18px 0 0;
+  background: var(--tr-pen);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 26' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M2 16C60 16 100 22 134 15C150 11.5 150 1.5 141 3C132 4.5 134 16 150 18C176 21 210 13 244 14'/%3E%3Ccircle cx='250' cy='14' r='2.6' fill='%23000' stroke='none'/%3E%3C/svg%3E") center / 300px 26px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 26' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M2 16C60 16 100 22 134 15C150 11.5 150 1.5 141 3C132 4.5 134 16 150 18C176 21 210 13 244 14'/%3E%3Ccircle cx='250' cy='14' r='2.6' fill='%23000' stroke='none'/%3E%3C/svg%3E") center / 300px 26px no-repeat;
+}
+.thumb > .inv[data-template="traco"] .inv-sheet::after { display: none; }
+
+/* ───────── Envelope: papel liso, uma linha que o atravessa e o forro de laços ───────── */
+.inv[data-template="traco"] .env-body { filter: drop-shadow(0 20px 26px color-mix(in srgb, #000 22%, transparent)); }
+.inv[data-template="traco"] .env-back { background: color-mix(in srgb, var(--paper) 90%, var(--ink)); border-radius: 0; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 16%, transparent); }
+.inv[data-template="traco"] .env-front { border-radius: 0; background-image: linear-gradient(to top, color-mix(in srgb, var(--paper) 95%, var(--ink)), var(--paper) 55%); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 16%, transparent); }
+/* a linha cruza a frente do envelope, logo abaixo do lacre */
+.inv[data-template="traco"] .env-front::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 9% 0;
+  height: 16%;
+  background: var(--tr-pen);
+  opacity: 0.85;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 350 40' preserveAspectRatio='none' fill='none' stroke='%23000' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-4 24C50 24 96 34 134 26C150 22 156 8 146 5C136 2 132 18 148 26C176 39 220 16 262 18C296 20 322 28 354 24'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 350 40' preserveAspectRatio='none' fill='none' stroke='%23000' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-4 24C50 24 96 34 134 26C150 22 156 8 146 5C136 2 132 18 148 26C176 39 220 16 262 18C296 20 322 28 354 24'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.inv[data-template="traco"] .env-flap-face { background-image: linear-gradient(to bottom, var(--paper), color-mix(in srgb, var(--paper) 93%, var(--ink))); }
+.inv[data-template="traco"] .env-liner { color: color-mix(in srgb, var(--accent) 62%, var(--liner)); }
+.inv[data-template="traco"] .traco-liner-wash { fill: color-mix(in srgb, var(--accent) 16%, var(--liner)); }
+.inv[data-template="traco"] .env-card { border-radius: 0; color: var(--tr-pen); background: color-mix(in srgb, var(--paper) 96%, var(--ink)); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 30%, transparent), 0 1px 3px rgba(0, 0, 0, 0.14); place-items: start; padding: 9% 0 0 9%; }
+.inv[data-template="traco"] .env-card-line { width: 30%; opacity: 0.8; box-shadow: 0 9px 0 color-mix(in srgb, currentColor 45%, transparent); }
+.inv[data-template="traco"] .env-to { font: 600 14px/1.6 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase; padding-left: 0.2em; }
+.inv[data-template="traco"] .env-to strong { font: 400 36px/1.12 var(--font-names); letter-spacing: 0.01em; text-transform: none; margin-top: 6px; font-variant-numeric: lining-nums; -webkit-text-stroke: 0.4px currentColor; }
+.inv[data-template="traco"] .env-cta { font: 700 16px/1.1 var(--font-label); letter-spacing: 0.16em; padding-left: calc(30px + 0.16em); font-variant-numeric: lining-nums; }
+.inv[data-template="traco"] .env-seal { --seal-weight: 400; --seal-size: 40px; }
 
 /* Miniaturas: altura que a capa de exemplo ocupa (cartão + respiros, em px da capa a 390px de largura), por tipo de evento.
    A base calcula com isto o ajuste inicial da miniatura, sem JavaScript (invite.css, "Miniaturas"). Valores medidos; ao mexer
    nos respiros ou nas fontes da capa, meça de novo (README, "Miniaturas"). O primeiro vale para qualquer outro conteúdo. */
-.inv[data-template="traco"] { --thumb-h: 768px; }
-.inv[data-template="traco"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 664px; }
-.inv[data-template="traco"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 671px; }
-.inv[data-template="traco"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 635px; }
-.inv[data-template="traco"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 664px; }
-.inv[data-template="traco"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 585px; }
+.inv[data-template="traco"] { --thumb-h: 744px; }
+.inv[data-template="traco"]:has(.inv-cover[data-type="aniversario"]) { --thumb-h: 668px; }
+.inv[data-template="traco"]:has(.inv-cover[data-type="quinze-anos"]) { --thumb-h: 677px; }
+.inv[data-template="traco"]:has(.inv-cover[data-type="cha"]) { --thumb-h: 628px; }
+.inv[data-template="traco"]:has(.inv-cover[data-type="formatura"]) { --thumb-h: 668px; }
+.inv[data-template="traco"]:has(.inv-cover[data-type="outro"]) { --thumb-h: 655px; }

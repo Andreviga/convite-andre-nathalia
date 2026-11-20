@@ -26,7 +26,7 @@ import { def as anjo } from "./anjo/index";
 import type { Palette, TemplateDef } from "./types";
 
 // Ordem da galeria: primeiro os grátis, depois os Premium.
-export const TEMPLATE_DEFS: TemplateDef[] = [classico, botanico, moderno, festa, doce, debutante, noite, terracota, monograma, editorial, azulejo, aquarela, jardim, celestial, tropical, rustico, catedral, traco, marmore, neon, retro, embarque, jornal, balao, anjo];
+export const TEMPLATE_DEFS: TemplateDef[] = [classico, botanico, moderno, festa, doce, debutante, traco, balao, noite, terracota, monograma, editorial, azulejo, aquarela, jardim, celestial, tropical, rustico, catedral, marmore, neon, retro, embarque, jornal, anjo];
 
 export function templateDef(id: string): TemplateDef {
   return TEMPLATE_DEFS.find((t) => t.id === id) ?? TEMPLATE_DEFS[0];

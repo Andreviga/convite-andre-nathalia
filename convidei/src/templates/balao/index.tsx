@@ -1,100 +1,387 @@
+import type { CSSProperties, ReactNode } from "react";
 import type { ArtProps, TemplateDef } from "../types";
 import { useUid } from "../uid";
 
-// Balao: papelaria formal gravada. Eixo central, moldura dupla, nomes em caligrafia copperplate, uma só cor de tinta.
+// Balão: festa infantil em formas chapadas. Bandeirolas penduradas de ponta a ponta no topo do cartão, um buquê de três
+// balões preso por um laço logo acima do título, confete geométrico e uma faixa de nuvens fechando o cartão.
+// Três cores da paleta fazem o desenho (--accent, --seal e --liner), cada uma com um tom claro tirado do papel.
 
-// Floreios desenhados como traço de pena: forma preenchida que engrossa na curva e afina nas pontas, voluta com terminal em gota.
-// (Contornos gerados a partir de uma espiral e duas curvas de Bézier com largura variável; metade direita, a esquerda é espelhada.)
-const SCROLL_TOP = "M131 10.05L130.3 10.06L129.56 10.2L128.85 10.48L128.19 10.92L127.62 11.5L127.16 12.21L126.85 13.02L126.71 13.91L126.75 14.84L127 15.76L127.45 16.64L128.09 17.43L128.91 18.08L129.88 18.57L130.96 18.85L132.1 18.9L133.27 18.7L134.4 18.25L135.43 17.55L136.32 16.62L137.02 15.5L137.48 14.22L137.66 12.84L137.55 11.42L137.13 10.01L136.4 8.69L135.39 7.52L134.13 6.57L132.66 5.89L131.04 5.52L129.34 5.5L127.64 5.84L126.01 6.55L124.53 7.61L123.27 8.99L122.31 10.63L121.71 12.48L121.5 14.45L121.71 16.47L122.36 18.44L123.42 20.27L124.87 21.86L126.66 23.14L128.71 24.04L130.96 24.5L133 24.61L134.99 24.48L136.96 24.19L138.92 23.74L140.86 23.18L142.8 22.51L144.72 21.77L146.63 20.96L148.54 20.11L150.46 19.24L152.38 18.37L154.32 17.51L156.27 16.69L158.25 15.92L160.26 15.21L162.3 14.58L164.39 14.06L166.53 13.65L168.73 13.38L171.01 13.25L173.02 13.27L175.05 13.41L177.08 13.65L179.14 13.98L181.22 14.39L183.33 14.87L185.47 15.4L187.66 15.97L189.89 16.57L192.18 17.18L194.52 17.79L196.92 18.38L199.38 18.95L201.92 19.48L204.54 19.95L207.24 20.35L210.03 20.68L212.92 20.91L215.9 21.04L219 21.06L219 20.94L215.91 20.83L212.94 20.58L210.09 20.23L207.33 19.77L204.68 19.24L202.11 18.63L199.62 17.98L197.21 17.28L194.86 16.56L192.57 15.82L190.33 15.09L188.13 14.37L185.96 13.67L183.82 13.02L181.69 12.42L179.57 11.89L177.44 11.44L175.31 11.09L173.17 10.86L170.99 10.75L168.54 10.8L166.16 11.02L163.84 11.4L161.59 11.91L159.4 12.54L157.27 13.27L155.2 14.07L153.19 14.93L151.22 15.83L149.29 16.76L147.4 17.68L145.55 18.59L143.71 19.47L141.9 20.3L140.1 21.07L138.31 21.76L136.52 22.36L134.71 22.85L132.88 23.22L131.04 23.5L129 23.1L127.13 22.3L125.5 21.15L124.17 19.71L123.19 18.06L122.59 16.28L122.38 14.45L122.56 12.66L123.09 10.98L123.95 9.48L125.08 8.22L126.41 7.25L127.88 6.6L129.42 6.28L130.96 6.28L132.42 6.6L133.75 7.21L134.9 8.06L135.82 9.1L136.48 10.29L136.87 11.55L136.98 12.83L136.82 14.07L136.42 15.22L135.81 16.23L135.02 17.06L134.1 17.69L133.09 18.1L132.06 18.28L131.04 18.25L130.09 18.01L129.23 17.59L128.5 17.01L127.93 16.32L127.53 15.55L127.3 14.75L127.25 13.94L127.37 13.16L127.64 12.45L128.03 11.83L128.53 11.32L129.1 10.94L129.71 10.69L130.35 10.56L131 10.55Z";
-const SCROLL_BOTTOM = "M87.99 12.15L88.53 12.17L89.1 12.1L89.69 11.91L90.25 11.6L90.75 11.16L91.17 10.59L91.48 9.93L91.65 9.18L91.65 8.38L91.49 7.56L91.13 6.76L90.6 6.03L89.89 5.4L89.04 4.92L88.06 4.62L87.01 4.53L85.92 4.67L84.84 5.05L83.84 5.67L82.96 6.52L82.26 7.57L81.78 8.78L81.56 10.11L81.63 11.5L82 12.89L82.67 14.21L83.64 15.39L84.87 16.37L86.32 17.09L87.95 17.5L89.39 17.58L90.77 17.5L92.14 17.29L93.48 16.97L94.81 16.57L96.12 16.09L97.41 15.56L98.7 14.99L99.98 14.39L101.26 13.77L102.54 13.15L103.83 12.55L105.12 11.97L106.44 11.42L107.78 10.92L109.14 10.48L110.54 10.11L111.97 9.83L113.46 9.63L115 9.54L116.57 9.55L118.11 9.64L119.64 9.81L121.15 10.04L122.65 10.33L124.16 10.66L125.67 11.04L127.2 11.45L128.75 11.87L130.33 12.31L131.94 12.74L133.59 13.17L135.29 13.58L137.04 13.95L138.85 14.29L140.72 14.58L142.66 14.8L144.69 14.97L146.8 15.05L149 15.06L149 14.94L146.81 14.85L144.71 14.67L142.71 14.41L140.8 14.07L138.97 13.68L137.2 13.24L135.5 12.76L133.85 12.25L132.24 11.73L130.67 11.19L129.13 10.66L127.6 10.13L126.08 9.62L124.56 9.14L123.04 8.7L121.49 8.31L119.93 7.98L118.33 7.72L116.69 7.55L115 7.46L113.3 7.49L111.65 7.65L110.06 7.92L108.52 8.28L107.04 8.73L105.6 9.25L104.2 9.82L102.85 10.44L101.53 11.08L100.24 11.73L98.98 12.39L97.75 13.03L96.53 13.65L95.33 14.24L94.13 14.78L92.93 15.26L91.73 15.68L90.52 16.03L89.28 16.29L88.05 16.5L86.65 16.17L85.37 15.56L84.28 14.73L83.42 13.71L82.81 12.57L82.47 11.36L82.39 10.15L82.56 8.99L82.96 7.93L83.56 7.01L84.31 6.26L85.17 5.71L86.09 5.36L87.03 5.23L87.94 5.29L88.78 5.53L89.52 5.94L90.13 6.46L90.6 7.08L90.91 7.75L91.06 8.44L91.07 9.12L90.94 9.75L90.69 10.31L90.35 10.79L89.93 11.16L89.47 11.43L88.99 11.6L88.5 11.66L88.01 11.65Z";
+type Tone = "a" | "s" | "l" | "ta" | "ts";
+const TONE: Record<Tone, string> = {
+  a: "var(--accent)",
+  s: "var(--seal)",
+  l: "var(--liner)",
+  ta: "color-mix(in srgb, var(--accent) 46%, var(--paper))",
+  ts: "color-mix(in srgb, var(--seal) 42%, var(--paper))",
+};
+const fill = (t: Tone): CSSProperties => ({ fill: TONE[t] });
+const STRING: CSSProperties = { stroke: "color-mix(in srgb, var(--ink) 58%, var(--paper))" };
+const SHADE: CSSProperties = { fill: "var(--ink)" }; // sombra chapada: a tinta do texto, bem diluída, por cima da cor
+const r1 = (n: number) => Math.round(n * 10) / 10;
 
-function Flourish() {
-  const u = useUid();
+// ───── Balões ─────
+type BalloonKind = "round" | "star" | "heart";
+type BalloonDef = { x: number; y: number; s: number; tilt: number; tone: Tone; kind?: BalloonKind };
+
+/** Estrela de cinco pontas; os cantos arredondam com um contorno grosso da mesma cor (balão metalizado). */
+const STAR = Array.from({ length: 10 }, (_, i) => {
+  const a = (Math.PI / 5) * i - Math.PI / 2;
+  const r = i % 2 ? 19.5 : 37;
+  return `${r1(Math.cos(a) * r)} ${r1(Math.sin(a) * r)}`;
+}).join("L");
+
+/** Onde o fio sai (o bico do balão), em coordenadas do desenho. */
+function knotOf(b: BalloonDef): [number, number] {
+  const len = (b.kind === "star" ? 35 : b.kind === "heart" ? 49 : 53) * b.s;
+  const a = (b.tilt * Math.PI) / 180;
+  return [r1(b.x - Math.sin(a) * len), r1(b.y + Math.cos(a) * len)];
+}
+
+function Balloon({ b }: { b: BalloonDef }) {
+  const kind = b.kind ?? "round";
+  const tone = fill(b.tone);
   return (
-    <svg viewBox="0 0 220 28" width="204" height="26" fill="currentColor">
-      <g id={`balao-scroll-top-${u}`}>
-        <path d={SCROLL_TOP} />
-        <circle cx="131" cy="10.3" r="1.25" />
-      </g>
-      <use href={`#balao-scroll-top-${u}`} transform="translate(220 0) scale(-1 1)" />
-      <path d="M110 7.5l4.6 6.5-4.6 6.5-4.6-6.5z" />
-    </svg>
+    <g transform={`translate(${b.x} ${b.y}) rotate(${b.tilt}) scale(${b.s})`}>
+      {kind === "round" ? (
+        <>
+          <path d="M-6.5 51.5Q0 54.6 6.5 51.5L1.6 42H-1.6Z" style={tone} />
+          <path d="M-6.5 51.5Q0 54.6 6.5 51.5L1.6 42H-1.6Z" style={SHADE} fillOpacity={0.16} />
+          <path d="M0-44C26-44 38-24 38-4C38 20 18 40 0 44C-18 40-38 20-38-4C-38-24-26-44 0-44Z" style={tone} />
+          <path d="M37.6-9C39 18 19 40 0 44C-5 43-10 40.5-14 37C8 38 30 20 33-8C33.4-12 37.2-13 37.6-9Z" style={SHADE} fillOpacity={0.13} />
+          <path d="M-27-12C-27-26-18-35-8-37C-5-37.6-4-33.5-7-32.5C-15-30-21-22-22-11C-22.3-7.5-27-8-27-12Z" fill="#fff" fillOpacity={0.62} />
+          <circle cx="-24.6" cy="-1" r="2.5" fill="#fff" fillOpacity={0.62} />
+        </>
+      ) : kind === "heart" ? (
+        <>
+          <path d="M-6 47.6Q0 50.4 6 47.6L1.6 38H-1.6Z" style={tone} />
+          <path d="M-6 47.6Q0 50.4 6 47.6L1.6 38H-1.6Z" style={SHADE} fillOpacity={0.16} />
+          <path d="M0 41C-10 31-41 13-41-14C-41-32-28-43-15-43C-6-43-1-37 0-31C1-37 6-43 15-43C28-43 41-32 41-14C41 13 10 31 0 41Z" style={tone} />
+          <path d="M40-8C37 14 10 31 0 41C14 27 31 12 34.4-8C35-11.6 40.4-11.6 40-8Z" style={SHADE} fillOpacity={0.13} />
+          <path d="M-31-18C-31-28-25-34.4-17-35.6C-14-36-13.4-32-16.4-31.2C-22-29.8-25.6-25-26-18C-26.2-14.6-31-14.6-31-18Z" fill="#fff" fillOpacity={0.62} />
+          <circle cx="-27.6" cy="-7.4" r="2.4" fill="#fff" fillOpacity={0.62} />
+        </>
+      ) : (
+        <>
+          <path d="M-5.4 34Q0 36.6 5.4 34L1.6 25H-1.6Z" style={tone} />
+          <path d="M-5.4 34Q0 36.6 5.4 34L1.6 25H-1.6Z" style={SHADE} fillOpacity={0.16} />
+          <path d={`M${STAR}Z`} style={{ ...tone, stroke: TONE[b.tone] }} strokeWidth={11} strokeLinejoin="round" />
+          {/* gomos do balão metalizado: dois vincos claros saindo do centro */}
+          <path d="M0-37L4.6-3 0 1.6-4.6-3Z" fill="#fff" fillOpacity={0.2} />
+          <path d="M35.2-11.4L4.4 3.4 0 1.6 3-4.4Z" style={SHADE} fillOpacity={0.09} />
+          <path d="M21.8 30L-2.2 6.4 0 1.6 5.4 3.4Z" style={SHADE} fillOpacity={0.13} />
+          <ellipse cx="-17" cy="-12.6" rx="2.6" ry="7.4" transform="rotate(52 -17 -12.6)" fill="#fff" fillOpacity={0.66} />
+          <circle cx="-25" cy="-9.6" r="2" fill="#fff" fillOpacity={0.66} />
+        </>
+      )}
+    </g>
   );
 }
 
-// Rodapé: variante menor, de uma volta só, virada para cima e com um ponto no centro (não é o espelho do topo).
-function FlourishSmall() {
-  const u = useUid();
+/** Fio do bico até o ponto onde o buquê é amarrado: uma curva frouxa, nunca reta. */
+function Thread({ b, to, bend = 0 }: { b: BalloonDef; to: [number, number]; bend?: number }) {
+  const [x, y] = knotOf(b);
+  const mx = (x + to[0]) / 2 + bend;
+  const my = (y + to[1]) / 2 + Math.abs(bend) * 0.4;
+  return <path d={`M${x} ${y}Q${r1(mx)} ${r1(my)} ${to[0]} ${to[1]}`} />;
+}
+
+/** Laço que amarra os fios. */
+function Bow({ x, y, tone }: { x: number; y: number; tone: Tone }) {
   return (
-    <svg viewBox="0 0 160 20" width="148" height="18.5" fill="currentColor">
-      <g transform="translate(0 20) scale(1 -1)">
-        <g id={`balao-scroll-bottom-${u}`}>
-          <path d={SCROLL_BOTTOM} />
-          <circle cx="88" cy="11.9" r="1" />
+    <g transform={`translate(${x} ${y})`}>
+      <path d="M-.6 1.4C-3 5.4-4 9-7.4 12.6L-3.4 13.4C-1.6 9.6-.2 6 1 2Z" style={fill(tone)} />
+      <path d="M.6 1.4C2.6 5 4.4 8 8 11L4.6 13C2 9.6.2 6-1 2Z" style={fill(tone)} />
+      <path d="M-.6 1.4C-3 5.4-4 9-7.4 12.6L-3.4 13.4C-1.6 9.6-.2 6 1 2Z" style={SHADE} fillOpacity={0.14} />
+      <path d="M0 0C-5-7.6-13.6-7-13.2-.4C-13.6 6-5 6.6 0 0Z" style={fill(tone)} />
+      <path d="M0 0C5-7.6 13.6-7 13.2-.4C13.6 6 5 6.6 0 0Z" style={fill(tone)} />
+      <path d="M0 0C-4-1-9-.6-13.2-.4C-13.6 6-5 6.6 0 0Z" style={SHADE} fillOpacity={0.12} />
+      <path d="M0 0C4-1 9-.6 13.2-.4C13.6 6 5 6.6 0 0Z" style={SHADE} fillOpacity={0.12} />
+      <rect x="-3.1" y="-3.3" width="6.2" height="6.6" rx="2.4" style={fill(tone)} />
+      <rect x="-3.1" y="-3.3" width="6.2" height="6.6" rx="2.4" style={SHADE} fillOpacity={0.2} />
+    </g>
+  );
+}
+
+// ───── Confete ─────
+type Bit = [kind: "dot" | "bar" | "tri" | "ring" | "spark" | "wave", x: number, y: number, size: number, tone: Tone, rot?: number];
+
+const SPARK = "M0-1C.14-.36.36-.14 1 0C.36.14.14.36 0 1C-.14.36-.36.14-1 0C-.36-.14-.14-.36 0-1Z";
+
+function Confetti({ bits }: { bits: Bit[] }) {
+  return (
+    <>
+      {bits.map(([kind, x, y, size, tone, rot = 0], i) => {
+        const at = `translate(${x} ${y}) rotate(${rot})`;
+        const c = TONE[tone];
+        if (kind === "dot") return <circle key={i} cx={x} cy={y} r={size} style={{ fill: c }} />;
+        if (kind === "ring") return <circle key={i} cx={x} cy={y} r={size} fill="none" style={{ stroke: c }} strokeWidth={r1(size * 0.62)} />;
+        if (kind === "bar") return <rect key={i} x={-size} y={r1(-size * 0.3)} width={size * 2} height={r1(size * 0.6)} rx={r1(size * 0.3)} transform={at} style={{ fill: c }} />;
+        if (kind === "tri") return <path key={i} d={`M0 ${-size}L${r1(size * 0.95)} ${r1(size * 0.72)}H${r1(-size * 0.95)}Z`} transform={at} style={{ fill: c, stroke: c }} strokeWidth={r1(size * 0.5)} strokeLinejoin="round" />;
+        if (kind === "spark") return <path key={i} d={SPARK} transform={`${at} scale(${size})`} style={{ fill: c }} />;
+        // serpentina: fita mais grossa no meio que nas pontas
+        return (
+          <path
+            key={i}
+            d="M-10 1.4C-7.6-4.6-3.6-4.4-1.4-.4C.4 3 3 3.2 4.8-.2C6.4-3.2 8.6-3.6 10.4-1.6C8.6-2 7.4-1 6.2 1.4C3.8 6.4-.6 6.2-3 2C-4.6-1-6.8-1-8.4 2.4C-9 3.6-10.6 3-10 1.4Z"
+            transform={`${at} scale(${r1(size / 10)})`}
+            style={{ fill: c }}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+// ───── Topo: bandeirolas e buquê ─────
+const FLAG_TONES: Tone[] = ["a", "l", "s", "ta", "l", "a", "ts", "l", "s"];
+const FLAGS = FLAG_TONES.map((tone, i) => {
+  const t = (i + 0.5) / FLAG_TONES.length;
+  // barbante: curva de (30, 11) a (360, 11), com a barriga em y = 26 no meio. As pontas ficam para dentro do canto
+  // redondo do cartão, presas por duas fitas adesivas: nenhuma bandeirola é cortada pelo canto.
+  const x = 30 + 330 * t;
+  const y = (1 - t) ** 2 * 11 + 2 * (1 - t) * t * 41 + t * t * 11;
+  const rot = (Math.atan2(60 * (1 - 2 * t), 330) * 180) / Math.PI;
+  return { tone, x: r1(x), y: r1(y), rot: r1(rot), dot: i % 4 === 1 };
+});
+
+type BunchId = "padrao" | "aniversario" | "cha" | "casamento" | "estrela";
+const BUNCH: Record<BunchId, BalloonDef[]> = {
+  padrao: [
+    { x: 147, y: 112, s: 0.66, tilt: -17, tone: "s" },
+    { x: 245, y: 108, s: 0.72, tilt: 15, tone: "l" },
+    { x: 195, y: 100, s: 0.86, tilt: -2, tone: "a" },
+  ],
+  aniversario: [
+    { x: 146, y: 112, s: 0.66, tilt: -17, tone: "s" },
+    { x: 246, y: 108, s: 0.72, tilt: 15, tone: "a" },
+    { x: 195, y: 98, s: 0.98, tilt: -4, tone: "l", kind: "star" },
+  ],
+  cha: [
+    { x: 146, y: 112, s: 0.66, tilt: -17, tone: "l" },
+    { x: 246, y: 108, s: 0.72, tilt: 15, tone: "s" },
+    { x: 195, y: 100, s: 0.84, tilt: -3, tone: "a", kind: "heart" },
+  ],
+  // casamento: o coração no meio, com as outras duas cores trocadas de lado em relação ao chá
+  casamento: [
+    { x: 146, y: 112, s: 0.66, tilt: -17, tone: "s" },
+    { x: 246, y: 108, s: 0.72, tilt: 15, tone: "l" },
+    { x: 195, y: 100, s: 0.84, tilt: -3, tone: "a", kind: "heart" },
+  ],
+  // quinze anos e formatura: a estrela na cor principal
+  estrela: [
+    { x: 146, y: 112, s: 0.66, tilt: -17, tone: "l" },
+    { x: 246, y: 108, s: 0.72, tilt: 15, tone: "s" },
+    { x: 195, y: 98, s: 0.98, tilt: -4, tone: "a", kind: "star" },
+  ],
+};
+const BUNCH_OF: Record<string, BunchId> = { aniversario: "aniversario", cha: "cha", casamento: "casamento", "quinze-anos": "estrela", formatura: "estrela" };
+
+/** Fita adesiva que prende a ponta do barbante ao cartão. */
+function Tape({ x, y, rot }: { x: number; y: number; rot: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot})`}>
+      <rect x="-11" y="-4.6" width="22" height="9.2" rx="1.2" style={{ fill: "color-mix(in srgb, var(--liner) 62%, var(--paper))" }} fillOpacity={0.92} />
+      <rect x="-11" y="-4.6" width="22" height="3.2" rx="1.2" fill="#fff" fillOpacity={0.3} />
+      <rect x="-11" y="2.4" width="22" height="2.2" rx="1.1" style={SHADE} fillOpacity={0.08} />
+    </g>
+  );
+}
+
+const TOP_BITS: Bit[] = [
+  ["bar", 42, 76, 7, "ta", 38],
+  ["dot", 78, 96, 4.6, "l"],
+  ["tri", 30, 122, 5, "a", -18],
+  ["ring", 100, 136, 4.2, "s"],
+  ["spark", 62, 150, 7.5, "l", 12],
+  ["wave", 92, 66, 11, "s", -24],
+  ["dot", 22, 160, 2.8, "ts"],
+  ["dot", 116, 166, 2.6, "a"],
+  ["wave", 300, 70, 11, "a", 22],
+  ["dot", 338, 92, 4.4, "s"],
+  ["tri", 362, 128, 5, "l", 24],
+  ["ring", 292, 132, 4.2, "ta"],
+  ["spark", 328, 152, 7.5, "a", -8],
+  ["bar", 356, 74, 7, "l", -34],
+  ["dot", 370, 162, 2.8, "ta"],
+  ["dot", 276, 166, 2.6, "l"],
+];
+
+function Top({ eventType }: { eventType?: string }) {
+  const bunch = BUNCH[BUNCH_OF[eventType ?? ""] ?? "padrao"];
+  const tie: [number, number] = [196, 165];
+  return (
+    <svg className="balao-top" viewBox="0 0 390 184" width="100%" aria-hidden="true">
+      {FLAGS.map((f, i) => (
+        <g key={i} transform={`translate(${f.x} ${f.y}) rotate(${f.rot})`}>
+          <path d="M-15.5-1H15.5L2.3 28.4Q0 31.8-2.3 28.4Z" style={fill(f.tone)} />
+          <path d="M-15.5-1H0V31Q-1.4 30.2-2.3 28.4Z" fill="#fff" fillOpacity={0.24} />
+          <path d="M-15.5-1H15.5L13.6 3.2H-13.6Z" style={SHADE} fillOpacity={0.12} />
+          {f.dot ? <circle cx="0" cy="11.4" r="3.4" fill="#fff" fillOpacity={0.7} /> : null}
         </g>
-        <use href={`#balao-scroll-bottom-${u}`} transform="translate(160 0) scale(-1 1)" />
-        <circle cx="80" cy="12" r="1.6" />
+      ))}
+      <path d="M30 11Q195 41 360 11" fill="none" style={STRING} strokeWidth={1.7} strokeLinecap="round" />
+      <Tape x={30} y={11} rot={-34} />
+      <Tape x={360} y={11} rot={34} />
+      <Confetti bits={TOP_BITS} />
+      <g fill="none" style={STRING} strokeWidth={1.3} strokeLinecap="round">
+        <Thread b={bunch[0]} to={tie} bend={-9} />
+        <Thread b={bunch[1]} to={tie} bend={10} />
+        <Thread b={bunch[2]} to={tie} bend={3} />
+      </g>
+      {bunch.map((b, i) => (
+        <Balloon key={i} b={b} />
+      ))}
+      <Bow x={tie[0]} y={tie[1]} tone={bunch[2].tone === "a" ? "s" : "a"} />
+    </svg>
+  );
+}
+
+// ───── Divisor: uma linha de confete ─────
+const DIVIDER_BITS: Bit[] = [
+  ["wave", 19, 9, 11, "ts", -4],
+  ["dot", 42, 9, 3, "l"],
+  ["tri", 55, 9.6, 3.6, "a", -14],
+  ["spark", 70, 9, 7.6, "s"],
+  ["ring", 85.4, 9, 3.3, "a"],
+  ["dot", 98, 9, 3, "l"],
+  ["wave", 121, 9, 11, "ta", 6],
+];
+
+function Divider() {
+  return (
+    <svg className="balao-divider" viewBox="0 0 140 18" width="140" height="18" aria-hidden="true">
+      <Confetti bits={DIVIDER_BITS} />
+    </svg>
+  );
+}
+
+// ───── Rodapé do cartão: duas camadas de nuvens ─────
+const CLOUD_BACK: [number, number, number][] = [[-6, 52, 34], [50, 46, 27], [102, 56, 25], [158, 49, 30], [214, 58, 23], [262, 47, 30], [318, 54, 27], [370, 45, 32], [406, 58, 24]];
+const CLOUD_FRONT: [number, number, number][] = [[16, 66, 27], [68, 70, 22], [122, 67, 28], [180, 72, 22], [232, 67, 26], [288, 72, 22], [340, 65, 28], [392, 70, 24]];
+const BOTTOM_BITS: Bit[] = [
+  ["dot", 96, 16, 3, "a"],
+  ["spark", 132, 8, 6, "l"],
+  ["dot", 304, 14, 3, "s"],
+  ["tri", 262, 8, 3.6, "a", 20],
+];
+
+function Clouds() {
+  return (
+    <svg className="balao-clouds" viewBox="0 2 390 70" width="100%" aria-hidden="true">
+      <Confetti bits={BOTTOM_BITS} />
+      <g style={{ fill: "color-mix(in srgb, var(--line) 52%, var(--paper))" }}>
+        {CLOUD_BACK.map(([x, y, r], i) => (
+          <circle key={i} cx={x} cy={y} r={r} />
+        ))}
+        <rect x="0" y="54" width="390" height="24" />
+      </g>
+      <g style={{ fill: "var(--line)" }}>
+        {CLOUD_FRONT.map(([x, y, r], i) => (
+          <circle key={i} cx={x} cy={y} r={r} />
+        ))}
+        <rect x="0" y="68" width="390" height="10" />
       </g>
     </svg>
   );
 }
 
-// Divisor: dois fios que afinam para fora, losango cheio e dois pontos.
-function Rule() {
-  return (
-    <svg viewBox="0 0 132 10" width="118" height="9" fill="currentColor">
-      <path d="M2 5L50 4.3v1.4zM130 5L82 4.3v1.4z" />
-      <circle cx="56" cy="5" r="0.9" />
-      <circle cx="76" cy="5" r="0.9" />
-      <path d="M66 0.8l3 4.2-3 4.2-3-4.2z" />
-    </svg>
-  );
-}
+// ───── Fundo da página: confete esparso, quase da cor do fundo ─────
+const BACK_BITS: Bit[] = [
+  ["bar", 28, 34, 8, "a", 32],
+  ["dot", 118, 22, 4.6, "l"],
+  ["tri", 196, 48, 5.4, "s", -16],
+  ["ring", 72, 104, 4.8, "s"],
+  ["spark", 160, 122, 8, "a", 10],
+  ["wave", 226, 138, 12, "l", -22],
+  ["dot", 24, 168, 3.4, "s"],
+  ["bar", 110, 196, 8, "l", -40],
+  ["tri", 52, 238, 5.2, "a", 22],
+  ["dot", 190, 218, 4.4, "a"],
+  ["ring", 236, 250, 4.6, "l"],
+  ["spark", 136, 272, 7, "s", -12],
+  ["wave", 36, 300, 12, "a", 18],
+  ["dot", 214, 300, 3.2, "l"],
+];
 
-// Forro do envelope: treliça de losangos com florão de quatro pétalas, e uma margem de papel com filete junto às bordas da aba.
-function Liner() {
-  const u = useUid();
+function Backdrop() {
+  const id = `balao-confete-${useUid()}`;
   return (
-    <svg width="100%" height="100%">
+    <svg className="balao-backdrop" width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id={`balao-liner-${u}`} width="26" height="26" patternUnits="userSpaceOnUse">
-          <path d="M0 13L13 0l13 13-13 13z" fill="none" stroke="currentColor" strokeWidth="0.8" />
-          <path d="M13 7.4c2.3 1.8 2.3 3.8 0 5.6-2.3-1.8-2.3-3.8 0-5.6zM13 18.6c-2.3-1.8-2.3-3.8 0-5.6 2.3 1.8 2.3 3.8 0 5.6zM7.4 13c1.8-2.3 3.8-2.3 5.6 0-1.8 2.3-3.8 2.3-5.6 0zM18.6 13c-1.8 2.3-3.8 2.3-5.6 0 1.8-2.3 3.8-2.3 5.6 0z" fill="currentColor" />
-          <circle cx="0" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="0" cy="26" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="26" r="1.2" fill="currentColor" />
+        <pattern id={id} width="260" height="320" patternUnits="userSpaceOnUse" patternTransform="translate(-34 -10)">
+          <Confetti bits={BACK_BITS} />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill={`url(#balao-liner-${u})`} />
-      {/* a aba é um triângulo (0,0) (100%,0) (50%,58%): margem de papel e filete acompanhando as duas bordas */}
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" fill="none">
-        <path className="balao-liner-rule" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-        <path className="balao-liner-edge" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-      </svg>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   );
 }
 
-function Art({ slot }: ArtProps) {
-  if (slot === "top") return <Flourish />;
-  if (slot === "divider") return <Rule />;
-  if (slot === "bottom") return <FlourishSmall />;
+// ───── Forro do envelope ─────
+// Vale o triângulo de baixo do desenho (com a aba aberta a base fica em y = 250 e o bico em 175, 105): bolinhas claras no
+// fundo da cor do forro e três balões subindo no meio.
+const LINER_BUNCH: BalloonDef[] = [
+  { x: 150, y: 170, s: 0.36, tilt: -16, tone: "s" },
+  { x: 201, y: 168, s: 0.38, tilt: 15, tone: "ta" },
+  { x: 175, y: 150, s: 0.46, tilt: -2, tone: "a" },
+];
+const LINER_BITS: Bit[] = [
+  ["spark", 118, 196, 6, "a", 10],
+  ["bar", 84, 226, 7, "s", -30],
+  ["tri", 128, 232, 4.6, "ts", 18],
+  ["spark", 234, 198, 6, "s", -10],
+  ["bar", 268, 226, 7, "a", 34],
+  ["tri", 224, 232, 4.6, "ta", -18],
+  ["dot", 40, 242, 3.4, "a"],
+  ["dot", 310, 242, 3.4, "s"],
+];
+
+function Liner() {
+  const id = `balao-forro-${useUid()}`;
+  const tie: [number, number] = [176, 252];
+  return (
+    <svg viewBox="0 0 350 250" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <pattern id={id} width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <circle cx="7" cy="7" r="3" fill="#fff" fillOpacity={0.5} />
+          <circle cx="21" cy="21" r="3" fill="#fff" fillOpacity={0.5} />
+        </pattern>
+      </defs>
+      <rect width="350" height="250" fill={`url(#${id})`} />
+      <Confetti bits={LINER_BITS} />
+      <g fill="none" style={STRING} strokeWidth={1.2} strokeLinecap="round">
+        <Thread b={LINER_BUNCH[0]} to={tie} bend={-6} />
+        <Thread b={LINER_BUNCH[1]} to={tie} bend={6} />
+        <Thread b={LINER_BUNCH[2]} to={tie} bend={2} />
+      </g>
+      {LINER_BUNCH.map((b, i) => (
+        <Balloon key={i} b={b} />
+      ))}
+    </svg>
+  );
+}
+
+function Art({ slot, eventType }: ArtProps): ReactNode {
+  if (slot === "top") return <Top eventType={eventType} />;
+  if (slot === "divider") return <Divider />;
+  if (slot === "bottom") return <Clouds />;
+  if (slot === "backdrop") return <Backdrop />;
   if (slot === "liner") return <Liner />;
   return null;
 }
 
 export const def: TemplateDef = {
   id: "balao",
-  name: "Balao",
-  description: "Papel marfim, moldura dupla e nomes em caligrafia",
+  name: "Balão",
+  description: "Balões, bandeirolas e confete: festa infantil alegre e limpa",
   premium: false,
-  suits: ["casamento", "outro"],
+  suits: ["aniversario", "cha", "outro"],
   palettes: [
-    { id: "marfim", name: "Marfim e ouro", vars: { bg: "#E9E1D2", paper: "#FBF7EE", ink: "#2B2622", soft: "#665B4E", accent: "#A6864B", line: "#CDBE9F", btnInk: "#FFFFFF", seal: "#7A1F2B", sealInk: "#F1D9B5", liner: "#E8DCC4" } },
-    { id: "marinho", name: "Marinho", vars: { bg: "#DCE1E9", paper: "#FAFAF6", ink: "#1B2A41", soft: "#53607A", accent: "#9A8250", line: "#BFC8D6", btnInk: "#FFFFFF", seal: "#1B2A41", sealInk: "#E9D9B0", liner: "#C9D2E0" } },
-    { id: "verde", name: "Verde garrafa", vars: { bg: "#E0E5DA", paper: "#FAF8F0", ink: "#2A3A30", soft: "#59685C", accent: "#A6864B", line: "#C4CDBC", btnInk: "#FFFFFF", seal: "#2A3A30", sealInk: "#EADBB4", liner: "#CFD8C6" } },
-    { id: "preto", name: "Preto e branco", vars: { bg: "#E6E3DE", paper: "#FCFBF8", ink: "#1C1C1C", soft: "#5C5853", accent: "#77715F", line: "#CFCAC0", btnInk: "#FFFFFF", seal: "#1C1C1C", sealInk: "#EDE6D6", liner: "#D8D4CC" } },
+    { id: "arco-iris", name: "Arco-íris suave", vars: { bg: "#FBEFDD", paper: "#FFFDF7", ink: "#2A3157", soft: "#585F82", accent: "#F2705F", line: "#D9EAF6", btnInk: "#FFFFFF", seal: "#3577BD", sealInk: "#FFFFFF", liner: "#FFD15C" } },
+    { id: "ceu", name: "Azul e amarelo", vars: { bg: "#DFECF9", paper: "#FDFEFF", ink: "#1D375C", soft: "#4C6384", accent: "#4F9FEA", line: "#D5E6F7", btnInk: "#FFFFFF", seal: "#2C6DBD", sealInk: "#FFFFFF", liner: "#FFD04D" } },
+    { id: "algodao", name: "Rosa e lilás", vars: { bg: "#F8E6F0", paper: "#FFFBFD", ink: "#482C59", soft: "#775A86", accent: "#F27CA8", line: "#EADDF6", btnInk: "#FFFFFF", seal: "#8A5CC4", sealInk: "#FFFFFF", liner: "#FFDC8C" } },
+    { id: "pomar", name: "Verde e laranja", vars: { bg: "#EAF3DD", paper: "#FFFEF7", ink: "#22432E", soft: "#506D58", accent: "#FF8B3D", line: "#DCEBCB", btnInk: "#FFFFFF", seal: "#2E8251", sealInk: "#FFFFFF", liner: "#FFD768" } },
+    { id: "selva", name: "Selva", vars: { bg: "#ECE4CE", paper: "#FFFBEF", ink: "#2E3C24", soft: "#5C684A", accent: "#5F9C56", line: "#E1E4C4", btnInk: "#FFFFFF", seal: "#A0621F", sealInk: "#FFFFFF", liner: "#EBC467" } },
   ],
   Art,
 };

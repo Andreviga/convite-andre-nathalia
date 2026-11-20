@@ -1,100 +1,232 @@
 import type { ArtProps, TemplateDef } from "../types";
 import { useUid } from "../uid";
 
-// Retro: papelaria formal gravada. Eixo central, moldura dupla, nomes em caligrafia copperplate, uma só cor de tinta.
+// Retrô, anos 70: arco-íris terroso em faixas que nasce de um canto, margaridas chapadas, selo recortado e fitas onduladas.
+// Tudo em formas preenchidas (nada de traço): as cores saem da paleta pelas variáveis --rt-* do style.css.
 
-// Floreios desenhados como traço de pena: forma preenchida que engrossa na curva e afina nas pontas, voluta com terminal em gota.
-// (Contornos gerados a partir de uma espiral e duas curvas de Bézier com largura variável; metade direita, a esquerda é espelhada.)
-const SCROLL_TOP = "M131 10.05L130.3 10.06L129.56 10.2L128.85 10.48L128.19 10.92L127.62 11.5L127.16 12.21L126.85 13.02L126.71 13.91L126.75 14.84L127 15.76L127.45 16.64L128.09 17.43L128.91 18.08L129.88 18.57L130.96 18.85L132.1 18.9L133.27 18.7L134.4 18.25L135.43 17.55L136.32 16.62L137.02 15.5L137.48 14.22L137.66 12.84L137.55 11.42L137.13 10.01L136.4 8.69L135.39 7.52L134.13 6.57L132.66 5.89L131.04 5.52L129.34 5.5L127.64 5.84L126.01 6.55L124.53 7.61L123.27 8.99L122.31 10.63L121.71 12.48L121.5 14.45L121.71 16.47L122.36 18.44L123.42 20.27L124.87 21.86L126.66 23.14L128.71 24.04L130.96 24.5L133 24.61L134.99 24.48L136.96 24.19L138.92 23.74L140.86 23.18L142.8 22.51L144.72 21.77L146.63 20.96L148.54 20.11L150.46 19.24L152.38 18.37L154.32 17.51L156.27 16.69L158.25 15.92L160.26 15.21L162.3 14.58L164.39 14.06L166.53 13.65L168.73 13.38L171.01 13.25L173.02 13.27L175.05 13.41L177.08 13.65L179.14 13.98L181.22 14.39L183.33 14.87L185.47 15.4L187.66 15.97L189.89 16.57L192.18 17.18L194.52 17.79L196.92 18.38L199.38 18.95L201.92 19.48L204.54 19.95L207.24 20.35L210.03 20.68L212.92 20.91L215.9 21.04L219 21.06L219 20.94L215.91 20.83L212.94 20.58L210.09 20.23L207.33 19.77L204.68 19.24L202.11 18.63L199.62 17.98L197.21 17.28L194.86 16.56L192.57 15.82L190.33 15.09L188.13 14.37L185.96 13.67L183.82 13.02L181.69 12.42L179.57 11.89L177.44 11.44L175.31 11.09L173.17 10.86L170.99 10.75L168.54 10.8L166.16 11.02L163.84 11.4L161.59 11.91L159.4 12.54L157.27 13.27L155.2 14.07L153.19 14.93L151.22 15.83L149.29 16.76L147.4 17.68L145.55 18.59L143.71 19.47L141.9 20.3L140.1 21.07L138.31 21.76L136.52 22.36L134.71 22.85L132.88 23.22L131.04 23.5L129 23.1L127.13 22.3L125.5 21.15L124.17 19.71L123.19 18.06L122.59 16.28L122.38 14.45L122.56 12.66L123.09 10.98L123.95 9.48L125.08 8.22L126.41 7.25L127.88 6.6L129.42 6.28L130.96 6.28L132.42 6.6L133.75 7.21L134.9 8.06L135.82 9.1L136.48 10.29L136.87 11.55L136.98 12.83L136.82 14.07L136.42 15.22L135.81 16.23L135.02 17.06L134.1 17.69L133.09 18.1L132.06 18.28L131.04 18.25L130.09 18.01L129.23 17.59L128.5 17.01L127.93 16.32L127.53 15.55L127.3 14.75L127.25 13.94L127.37 13.16L127.64 12.45L128.03 11.83L128.53 11.32L129.1 10.94L129.71 10.69L130.35 10.56L131 10.55Z";
-const SCROLL_BOTTOM = "M87.99 12.15L88.53 12.17L89.1 12.1L89.69 11.91L90.25 11.6L90.75 11.16L91.17 10.59L91.48 9.93L91.65 9.18L91.65 8.38L91.49 7.56L91.13 6.76L90.6 6.03L89.89 5.4L89.04 4.92L88.06 4.62L87.01 4.53L85.92 4.67L84.84 5.05L83.84 5.67L82.96 6.52L82.26 7.57L81.78 8.78L81.56 10.11L81.63 11.5L82 12.89L82.67 14.21L83.64 15.39L84.87 16.37L86.32 17.09L87.95 17.5L89.39 17.58L90.77 17.5L92.14 17.29L93.48 16.97L94.81 16.57L96.12 16.09L97.41 15.56L98.7 14.99L99.98 14.39L101.26 13.77L102.54 13.15L103.83 12.55L105.12 11.97L106.44 11.42L107.78 10.92L109.14 10.48L110.54 10.11L111.97 9.83L113.46 9.63L115 9.54L116.57 9.55L118.11 9.64L119.64 9.81L121.15 10.04L122.65 10.33L124.16 10.66L125.67 11.04L127.2 11.45L128.75 11.87L130.33 12.31L131.94 12.74L133.59 13.17L135.29 13.58L137.04 13.95L138.85 14.29L140.72 14.58L142.66 14.8L144.69 14.97L146.8 15.05L149 15.06L149 14.94L146.81 14.85L144.71 14.67L142.71 14.41L140.8 14.07L138.97 13.68L137.2 13.24L135.5 12.76L133.85 12.25L132.24 11.73L130.67 11.19L129.13 10.66L127.6 10.13L126.08 9.62L124.56 9.14L123.04 8.7L121.49 8.31L119.93 7.98L118.33 7.72L116.69 7.55L115 7.46L113.3 7.49L111.65 7.65L110.06 7.92L108.52 8.28L107.04 8.73L105.6 9.25L104.2 9.82L102.85 10.44L101.53 11.08L100.24 11.73L98.98 12.39L97.75 13.03L96.53 13.65L95.33 14.24L94.13 14.78L92.93 15.26L91.73 15.68L90.52 16.03L89.28 16.29L88.05 16.5L86.65 16.17L85.37 15.56L84.28 14.73L83.42 13.71L82.81 12.57L82.47 11.36L82.39 10.15L82.56 8.99L82.96 7.93L83.56 7.01L84.31 6.26L85.17 5.71L86.09 5.36L87.03 5.23L87.94 5.29L88.78 5.53L89.52 5.94L90.13 6.46L90.6 7.08L90.91 7.75L91.06 8.44L91.07 9.12L90.94 9.75L90.69 10.31L90.35 10.79L89.93 11.16L89.47 11.43L88.99 11.6L88.5 11.66L88.01 11.65Z";
+const r2 = (n: number) => Math.round(n * 100) / 100;
 
-function Flourish() {
-  const u = useUid();
+const C = {
+  ink: "var(--ink)",
+  paper: "var(--paper)",
+  b1: "var(--rt-1)",
+  b2: "var(--rt-2)",
+  b3: "var(--rt-3)",
+  b4: "var(--rt-4)",
+  petal: "var(--rt-petal)",
+  deep: "var(--rt-deep)",
+};
+
+/** Pétala em gota, da origem para cima: comprimento l, meia largura w. */
+function petal(l: number, w: number): string {
+  return `M0 0C${r2(-w * 0.7)} ${r2(-l * 0.22)} ${r2(-w * 1.25)} ${r2(-l * 0.86)} 0 ${r2(-l)}C${r2(w * 1.25)} ${r2(-l * 0.86)} ${r2(w * 0.7)} ${r2(-l * 0.22)} 0 0Z`;
+}
+
+/**
+ * Margarida chapada em três camadas: pétalas de trás (mais escuras, defasadas), pétalas da frente e miolo com anel e sementes.
+ * `tone="clara"` (pétalas quase brancas) vai sobre as faixas coloridas; `tone="cor"` (pétalas na cor do lacre) vai sobre o papel.
+ */
+function Daisy({ x, y, r, n = 12, tone = "clara", turn = 0 }: { x: number; y: number; r: number; n?: number; tone?: "clara" | "cor"; turn?: number }) {
+  const step = 360 / n;
+  const front = petal(r, r * 0.21);
+  const back = petal(r * 0.94, r * 0.24);
+  const fillFront = tone === "clara" ? C.petal : C.b2;
+  const fillBack = tone === "clara" ? C.b4 : C.deep;
+  const core = tone === "clara" ? C.b2 : C.b1;
+  const seeds = 7;
   return (
-    <svg viewBox="0 0 220 28" width="204" height="26" fill="currentColor">
-      <g id={`retro-scroll-top-${u}`}>
-        <path d={SCROLL_TOP} />
-        <circle cx="131" cy="10.3" r="1.25" />
-      </g>
-      <use href={`#retro-scroll-top-${u}`} transform="translate(220 0) scale(-1 1)" />
-      <path d="M110 7.5l4.6 6.5-4.6 6.5-4.6-6.5z" />
+    <g transform={`translate(${x} ${y}) rotate(${turn})`}>
+      {Array.from({ length: n }, (_, i) => (
+        <path key={`b${i}`} d={back} transform={`rotate(${r2(i * step + step / 2)})`} style={{ fill: fillBack }} />
+      ))}
+      {Array.from({ length: n }, (_, i) => (
+        <path key={`f${i}`} d={front} transform={`rotate(${r2(i * step)})`} style={{ fill: fillFront }} />
+      ))}
+      <circle r={r2(r * 0.34)} style={{ fill: tone === "clara" ? C.deep : C.ink }} />
+      <circle r={r2(r * 0.27)} style={{ fill: core }} />
+      {Array.from({ length: seeds }, (_, i) => {
+        const a = (i / seeds) * Math.PI * 2;
+        return <circle key={`s${i}`} cx={r2(Math.cos(a) * r * 0.15)} cy={r2(Math.sin(a) * r * 0.15)} r={r2(r * 0.035)} style={{ fill: tone === "clara" ? C.deep : C.b2 }} />;
+      })}
+      <circle r={r2(r * 0.05)} style={{ fill: tone === "clara" ? C.deep : C.b2 }} />
+    </g>
+  );
+}
+
+/** Quarto de arco-íris com centro em (cx, cy): faixas de larguras diferentes, da de fora para a de dentro. */
+function Bands({ cx, cy, r, half = false }: { cx: number; cy: number; r: number; half?: boolean }) {
+  // raio relativo e cor de cada disco; o de cima cobre o de baixo
+  const rings: [number, string][] = [
+    [1, C.ink],
+    [0.972, C.b1],
+    [0.79, C.b2],
+    [0.635, C.b3],
+    [0.505, C.b4],
+    [0.4, C.paper],
+    [0.365, C.b1],
+    [0.2, C.b2],
+  ];
+  return (
+    <g>
+      {rings.map(([k, fill]) => (
+        <circle key={k} cx={cx} cy={cy} r={r2(r * k)} style={{ fill }} />
+      ))}
+      {half ? null : <circle cx={cx} cy={cy} r={r2(r * 0.09)} style={{ fill: C.b3 }} />}
+    </g>
+  );
+}
+
+/** Borda recortada (selo de adesivo): n gomos em volta de um raio R. */
+function scallop(R: number, n: number): string {
+  const pts = Array.from({ length: n }, (_, i) => {
+    const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+    return [r2(Math.cos(a) * R), r2(Math.sin(a) * R)];
+  });
+  const rl = r2(R * Math.sin(Math.PI / n) * 1.04);
+  return `M${pts[0][0]} ${pts[0][1]}` + pts.slice(1).concat([pts[0]]).map(([x, y]) => `A${rl} ${rl} 0 0 1 ${x} ${y}`).join("") + "Z";
+}
+
+const SHOUT: Record<string, string> = {
+  casamento: "Sim!",
+  aniversario: "Oba!",
+  "quinze-anos": "15!",
+  cha: "Chá!",
+  formatura: "Viva!",
+};
+
+/** Selo recortado, torto de propósito, com uma palavra de festa que muda com o tipo de evento. */
+function Sticker({ x, y, eventType }: { x: number; y: number; eventType?: string }) {
+  const word = (eventType && SHOUT[eventType]) || "Vem!";
+  // corpo por número de letras: a palavra cabe com folga dentro do anel (raio 29,5), sem o "!" encostar nele
+  const size = word.length >= 5 ? 18.5 : word.length === 4 ? 21.5 : 25;
+  return (
+    <g transform={`translate(${x} ${y}) rotate(-11)`}>
+      <path d={scallop(37, 16)} transform="translate(2.6 3.6)" style={{ fill: "var(--rt-shadow)" }} />
+      <path d={scallop(37, 16)} style={{ fill: C.b1 }} />
+      <circle r="32" style={{ fill: C.paper }} />
+      <circle r="29.6" style={{ fill: C.b1 }} />
+      {/* texto na cor do papel: contrasta com a faixa de fora em qualquer paleta; 1,2 à esquerda compensa a inclinação */}
+      <text className="retro-shout" x="-1.2" y={r2(size * 0.33)} textAnchor="middle" fontSize={size} style={{ fill: C.paper }}>
+        {word}
+      </text>
+    </g>
+  );
+}
+
+/** Topo do cartão: o arco-íris nasce do canto direito, as margaridas pousam na borda dele e o selo ocupa o canto esquerdo. */
+function Top({ eventType }: { eventType?: string }) {
+  return (
+    <svg className="retro-top" viewBox="0 0 360 140" aria-hidden="true">
+      <Bands cx={360} cy={0} r={135} />
+      <Daisy x={237} y={93} r={26} n={13} tone="cor" turn={8} />
+      <Daisy x={281} y={115} r={12.5} n={10} tone="cor" turn={-14} />
+      <Daisy x={300} y={52} r={16} n={11} tone="clara" turn={20} />
+      <Sticker x={70} y={66} eventType={eventType} />
     </svg>
   );
 }
 
-// Rodapé: variante menor, de uma volta só, virada para cima e com um ponto no centro (não é o espelho do topo).
-function FlourishSmall() {
-  const u = useUid();
-  return (
-    <svg viewBox="0 0 160 20" width="148" height="18.5" fill="currentColor">
-      <g transform="translate(0 20) scale(1 -1)">
-        <g id={`retro-scroll-bottom-${u}`}>
-          <path d={SCROLL_BOTTOM} />
-          <circle cx="88" cy="11.9" r="1" />
-        </g>
-        <use href={`#retro-scroll-bottom-${u}`} transform="translate(160 0) scale(-1 1)" />
-        <circle cx="80" cy="12" r="1.6" />
-      </g>
-    </svg>
-  );
+/** Borda de cima ondulada na altura y, em meios períodos de `hp`; a amplitude alterna para a fita não parecer régua. */
+function waveTop(y: number, amp: number, hp: number, w: number, lead = 0): string {
+  let d = `M${-hp + lead} ${y}`;
+  let up = true;
+  for (let x = -hp + lead; x < w + hp; x += hp) {
+    d += `q${r2(hp / 2)} ${r2((up ? -2 : 2) * amp)} ${hp} 0`;
+    up = !up;
+  }
+  return d;
 }
 
-// Divisor: dois fios que afinam para fora, losango cheio e dois pontos.
-function Rule() {
-  return (
-    <svg viewBox="0 0 132 10" width="118" height="9" fill="currentColor">
-      <path d="M2 5L50 4.3v1.4zM130 5L82 4.3v1.4z" />
-      <circle cx="56" cy="5" r="0.9" />
-      <circle cx="76" cy="5" r="0.9" />
-      <path d="M66 0.8l3 4.2-3 4.2-3-4.2z" />
-    </svg>
-  );
-}
-
-// Forro do envelope: treliça de losangos com florão de quatro pétalas, e uma margem de papel com filete junto às bordas da aba.
-function Liner() {
+/** Pé do cartão: quatro fitas onduladas de larguras diferentes, sangrando pelas bordas, com uma margarida pousada. */
+function Bottom() {
   const u = useUid();
+  const w = 360;
+  const h = 66;
+  const stripes: [number, number, string, number][] = [
+    [13, 6, C.b4, 0],
+    [24, 6, C.b3, 10],
+    [36, 6.5, C.b2, 22],
+    [50, 7, C.b1, 36],
+  ];
   return (
-    <svg width="100%" height="100%">
+    <svg className="retro-bottom" viewBox={`0 0 ${w} ${h}`} aria-hidden="true">
       <defs>
-        <pattern id={`retro-liner-${u}`} width="26" height="26" patternUnits="userSpaceOnUse">
-          <path d="M0 13L13 0l13 13-13 13z" fill="none" stroke="currentColor" strokeWidth="0.8" />
-          <path d="M13 7.4c2.3 1.8 2.3 3.8 0 5.6-2.3-1.8-2.3-3.8 0-5.6zM13 18.6c-2.3-1.8-2.3-3.8 0-5.6 2.3 1.8 2.3 3.8 0 5.6zM7.4 13c1.8-2.3 3.8-2.3 5.6 0-1.8 2.3-3.8 2.3-5.6 0zM18.6 13c-1.8 2.3-3.8 2.3-5.6 0 1.8-2.3 3.8-2.3 5.6 0z" fill="currentColor" />
-          <circle cx="0" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="0" cy="26" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="26" r="1.2" fill="currentColor" />
-        </pattern>
+        <clipPath id={`retro-foot-${u}`}>
+          <rect width={w} height={h} />
+        </clipPath>
       </defs>
-      <rect width="100%" height="100%" fill={`url(#retro-liner-${u})`} />
-      {/* a aba é um triângulo (0,0) (100%,0) (50%,58%): margem de papel e filete acompanhando as duas bordas */}
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" fill="none">
-        <path className="retro-liner-rule" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-        <path className="retro-liner-edge" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-      </svg>
+      <g clipPath={`url(#retro-foot-${u})`}>
+        <path d={`${waveTop(9.6, 6, 45, w)}V${h + 4}H${-60}Z`} style={{ fill: C.ink }} />
+        {stripes.map(([y, amp, fill, lead]) => (
+          <path key={y} d={`${waveTop(y, amp, 45, w, lead)}V${h + 4}H${-60}Z`} style={{ fill }} />
+        ))}
+        <Daisy x={294} y={37} r={20} n={12} tone="clara" turn={-9} />
+        <Daisy x={50} y={52} r={11} n={10} tone="clara" turn={12} />
+      </g>
     </svg>
   );
 }
 
-function Art({ slot }: ArtProps) {
-  if (slot === "top") return <Flourish />;
-  if (slot === "divider") return <Rule />;
-  if (slot === "bottom") return <FlourishSmall />;
+/** Divisor (e ornamento da assinatura): fita ondulada em duas cores com uma margarida no meio. */
+function Divider() {
+  return (
+    <svg className="retro-divider" viewBox="0 0 148 30" width="148" height="30" aria-hidden="true">
+      <path d="M2 15q9-11 18 0t18 0 18 0v5q-9-11-18 0t-18 0-18 0z" style={{ fill: C.b1 }} />
+      <path d="M92 15q9-11 18 0t18 0 18 0v5q-9-11-18 0t-18 0-18 0z" style={{ fill: C.b1 }} />
+      <path d="M2 20q9-11 18 0t18 0 18 0v3.4q-9-11-18 0t-18 0-18 0z" style={{ fill: C.b2 }} />
+      <path d="M92 20q9-11 18 0t18 0 18 0v3.4q-9-11-18 0t-18 0-18 0z" style={{ fill: C.b2 }} />
+      <Daisy x={74} y={15} r={14} n={11} tone="cor" turn={6} />
+    </svg>
+  );
+}
+
+/** Fundo da página: o mesmo arco, enorme e tom sobre tom, num canto de cima e no canto oposto de baixo. */
+function Backdrop() {
+  const rings = [1, 0.84, 0.7, 0.58, 0.44, 0.33, 0.2];
+  return (
+    <>
+      {(["a", "b"] as const).map((pos) => (
+        <svg key={pos} className={`retro-bg retro-bg-${pos}`} viewBox="0 0 100 100" aria-hidden="true">
+          {rings.map((k, i) => (
+            <circle key={k} cx="0" cy="0" r={r2(100 * k)} className={i % 2 ? "retro-bg-off" : "retro-bg-on"} />
+          ))}
+        </svg>
+      ))}
+    </>
+  );
+}
+
+/** Forro do envelope: sol nascente em faixas, centrado na ponta da aba (o desenho é girado de pé no CSS). */
+function Liner() {
+  return (
+    <svg className="retro-liner" viewBox="0 0 140 100" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="140" height="100" style={{ fill: C.b4 }} />
+      <Bands cx={70} cy={100} r={60} half />
+    </svg>
+  );
+}
+
+function Art({ slot, eventType }: ArtProps) {
+  if (slot === "top") return <Top eventType={eventType} />;
+  if (slot === "divider") return <Divider />;
+  if (slot === "bottom") return <Bottom />;
+  if (slot === "backdrop") return <Backdrop />;
   if (slot === "liner") return <Liner />;
   return null;
 }
 
 export const def: TemplateDef = {
   id: "retro",
-  name: "Retro",
-  description: "Papel marfim, moldura dupla e nomes em caligrafia",
-  premium: false,
-  suits: ["casamento", "outro"],
+  name: "Retrô",
+  description: "Anos 70: arco-íris terroso, margaridas e letras gordas",
+  premium: true,
+  suits: ["aniversario", "casamento", "quinze-anos", "cha", "formatura", "outro"],
   palettes: [
-    { id: "marfim", name: "Marfim e ouro", vars: { bg: "#E9E1D2", paper: "#FBF7EE", ink: "#2B2622", soft: "#665B4E", accent: "#A6864B", line: "#CDBE9F", btnInk: "#FFFFFF", seal: "#7A1F2B", sealInk: "#F1D9B5", liner: "#E8DCC4" } },
-    { id: "marinho", name: "Marinho", vars: { bg: "#DCE1E9", paper: "#FAFAF6", ink: "#1B2A41", soft: "#53607A", accent: "#9A8250", line: "#BFC8D6", btnInk: "#FFFFFF", seal: "#1B2A41", sealInk: "#E9D9B0", liner: "#C9D2E0" } },
-    { id: "verde", name: "Verde garrafa", vars: { bg: "#E0E5DA", paper: "#FAF8F0", ink: "#2A3A30", soft: "#59685C", accent: "#A6864B", line: "#C4CDBC", btnInk: "#FFFFFF", seal: "#2A3A30", sealInk: "#EADBB4", liner: "#CFD8C6" } },
-    { id: "preto", name: "Preto e branco", vars: { bg: "#E6E3DE", paper: "#FCFBF8", ink: "#1C1C1C", soft: "#5C5853", accent: "#77715F", line: "#CFCAC0", btnInk: "#FFFFFF", seal: "#1C1C1C", sealInk: "#EDE6D6", liner: "#D8D4CC" } },
+    { id: "mostarda", name: "Mostarda e ferrugem", vars: { bg: "#E8B74C", paper: "#FBF2DE", ink: "#3B2314", soft: "#6B4A35", accent: "#B5471F", line: "#E6D2A8", btnInk: "#FBF2DE", seal: "#E3A02B", sealInk: "#3B2314", liner: "#F4D58A" } },
+    { id: "rosa", name: "Rosa e laranja", vars: { bg: "#F3B4A6", paper: "#FFF4E6", ink: "#4A2416", soft: "#7A4A3A", accent: "#BE3D62", line: "#F0D3C0", btnInk: "#FFF4E6", seal: "#EE8A2E", sealInk: "#4A2416", liner: "#F8C4BB" } },
+    { id: "abacate", name: "Verde-abacate", vars: { bg: "#B4BE6A", paper: "#FAF4DE", ink: "#3A2A14", soft: "#655235", accent: "#5F7226", line: "#E2DDB4", btnInk: "#FAF4DE", seal: "#DDA02E", sealInk: "#3A2A14", liner: "#D9DC97" } },
+    { id: "petroleo", name: "Azul-petróleo e pêssego", vars: { bg: "#F2BF9C", paper: "#FFF5E6", ink: "#153F49", soft: "#3F636B", accent: "#1F6C7A", line: "#EED6BE", btnInk: "#FFF5E6", seal: "#EC9163", sealInk: "#153F49", liner: "#F9D6B6" } },
+    { id: "cafe", name: "Café e mostarda", vars: { bg: "#2A170C", paper: "#3F2415", ink: "#FBEBD0", soft: "#DCC3A2", accent: "#F0A63A", line: "#6A4630", btnInk: "#3F2415", seal: "#B5471A", sealInk: "#FFF0D6", liner: "#F3D9A8" } },
   ],
   Art,
 };

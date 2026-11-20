@@ -1,100 +1,356 @@
 import type { ArtProps, TemplateDef } from "../types";
 import { useUid } from "../uid";
 
-// Neon: papelaria formal gravada. Eixo central, moldura dupla, nomes em caligrafia copperplate, uma só cor de tinta.
+// Neon: letreiro aceso numa parede de tijolos pintada de escuro. Motivo-herói: o letreiro do alto (coração, estrela,
+// taças, capelo ou raio, conforme o tipo de evento), que interrompe a moldura de tubo. Cada tubo é desenhado em camadas:
+// sombra na parede, halo desfocado, vidro colorido, miolo claro e eletrodos nas pontas. Duas cores por paleta:
+// "a" (--accent, a dos nomes) e "b" (--seal, a da moldura e do numeral da data).
 
-// Floreios desenhados como traço de pena: forma preenchida que engrossa na curva e afina nas pontas, voluta com terminal em gota.
-// (Contornos gerados a partir de uma espiral e duas curvas de Bézier com largura variável; metade direita, a esquerda é espelhada.)
-const SCROLL_TOP = "M131 10.05L130.3 10.06L129.56 10.2L128.85 10.48L128.19 10.92L127.62 11.5L127.16 12.21L126.85 13.02L126.71 13.91L126.75 14.84L127 15.76L127.45 16.64L128.09 17.43L128.91 18.08L129.88 18.57L130.96 18.85L132.1 18.9L133.27 18.7L134.4 18.25L135.43 17.55L136.32 16.62L137.02 15.5L137.48 14.22L137.66 12.84L137.55 11.42L137.13 10.01L136.4 8.69L135.39 7.52L134.13 6.57L132.66 5.89L131.04 5.52L129.34 5.5L127.64 5.84L126.01 6.55L124.53 7.61L123.27 8.99L122.31 10.63L121.71 12.48L121.5 14.45L121.71 16.47L122.36 18.44L123.42 20.27L124.87 21.86L126.66 23.14L128.71 24.04L130.96 24.5L133 24.61L134.99 24.48L136.96 24.19L138.92 23.74L140.86 23.18L142.8 22.51L144.72 21.77L146.63 20.96L148.54 20.11L150.46 19.24L152.38 18.37L154.32 17.51L156.27 16.69L158.25 15.92L160.26 15.21L162.3 14.58L164.39 14.06L166.53 13.65L168.73 13.38L171.01 13.25L173.02 13.27L175.05 13.41L177.08 13.65L179.14 13.98L181.22 14.39L183.33 14.87L185.47 15.4L187.66 15.97L189.89 16.57L192.18 17.18L194.52 17.79L196.92 18.38L199.38 18.95L201.92 19.48L204.54 19.95L207.24 20.35L210.03 20.68L212.92 20.91L215.9 21.04L219 21.06L219 20.94L215.91 20.83L212.94 20.58L210.09 20.23L207.33 19.77L204.68 19.24L202.11 18.63L199.62 17.98L197.21 17.28L194.86 16.56L192.57 15.82L190.33 15.09L188.13 14.37L185.96 13.67L183.82 13.02L181.69 12.42L179.57 11.89L177.44 11.44L175.31 11.09L173.17 10.86L170.99 10.75L168.54 10.8L166.16 11.02L163.84 11.4L161.59 11.91L159.4 12.54L157.27 13.27L155.2 14.07L153.19 14.93L151.22 15.83L149.29 16.76L147.4 17.68L145.55 18.59L143.71 19.47L141.9 20.3L140.1 21.07L138.31 21.76L136.52 22.36L134.71 22.85L132.88 23.22L131.04 23.5L129 23.1L127.13 22.3L125.5 21.15L124.17 19.71L123.19 18.06L122.59 16.28L122.38 14.45L122.56 12.66L123.09 10.98L123.95 9.48L125.08 8.22L126.41 7.25L127.88 6.6L129.42 6.28L130.96 6.28L132.42 6.6L133.75 7.21L134.9 8.06L135.82 9.1L136.48 10.29L136.87 11.55L136.98 12.83L136.82 14.07L136.42 15.22L135.81 16.23L135.02 17.06L134.1 17.69L133.09 18.1L132.06 18.28L131.04 18.25L130.09 18.01L129.23 17.59L128.5 17.01L127.93 16.32L127.53 15.55L127.3 14.75L127.25 13.94L127.37 13.16L127.64 12.45L128.03 11.83L128.53 11.32L129.1 10.94L129.71 10.69L130.35 10.56L131 10.55Z";
-const SCROLL_BOTTOM = "M87.99 12.15L88.53 12.17L89.1 12.1L89.69 11.91L90.25 11.6L90.75 11.16L91.17 10.59L91.48 9.93L91.65 9.18L91.65 8.38L91.49 7.56L91.13 6.76L90.6 6.03L89.89 5.4L89.04 4.92L88.06 4.62L87.01 4.53L85.92 4.67L84.84 5.05L83.84 5.67L82.96 6.52L82.26 7.57L81.78 8.78L81.56 10.11L81.63 11.5L82 12.89L82.67 14.21L83.64 15.39L84.87 16.37L86.32 17.09L87.95 17.5L89.39 17.58L90.77 17.5L92.14 17.29L93.48 16.97L94.81 16.57L96.12 16.09L97.41 15.56L98.7 14.99L99.98 14.39L101.26 13.77L102.54 13.15L103.83 12.55L105.12 11.97L106.44 11.42L107.78 10.92L109.14 10.48L110.54 10.11L111.97 9.83L113.46 9.63L115 9.54L116.57 9.55L118.11 9.64L119.64 9.81L121.15 10.04L122.65 10.33L124.16 10.66L125.67 11.04L127.2 11.45L128.75 11.87L130.33 12.31L131.94 12.74L133.59 13.17L135.29 13.58L137.04 13.95L138.85 14.29L140.72 14.58L142.66 14.8L144.69 14.97L146.8 15.05L149 15.06L149 14.94L146.81 14.85L144.71 14.67L142.71 14.41L140.8 14.07L138.97 13.68L137.2 13.24L135.5 12.76L133.85 12.25L132.24 11.73L130.67 11.19L129.13 10.66L127.6 10.13L126.08 9.62L124.56 9.14L123.04 8.7L121.49 8.31L119.93 7.98L118.33 7.72L116.69 7.55L115 7.46L113.3 7.49L111.65 7.65L110.06 7.92L108.52 8.28L107.04 8.73L105.6 9.25L104.2 9.82L102.85 10.44L101.53 11.08L100.24 11.73L98.98 12.39L97.75 13.03L96.53 13.65L95.33 14.24L94.13 14.78L92.93 15.26L91.73 15.68L90.52 16.03L89.28 16.29L88.05 16.5L86.65 16.17L85.37 15.56L84.28 14.73L83.42 13.71L82.81 12.57L82.47 11.36L82.39 10.15L82.56 8.99L82.96 7.93L83.56 7.01L84.31 6.26L85.17 5.71L86.09 5.36L87.03 5.23L87.94 5.29L88.78 5.53L89.52 5.94L90.13 6.46L90.6 7.08L90.91 7.75L91.06 8.44L91.07 9.12L90.94 9.75L90.69 10.31L90.35 10.79L89.93 11.16L89.47 11.43L88.99 11.6L88.5 11.66L88.01 11.65Z";
+const r2 = (n: number) => Math.round(n * 100) / 100;
 
-function Flourish() {
-  const u = useUid();
-  return (
-    <svg viewBox="0 0 220 28" width="204" height="26" fill="currentColor">
-      <g id={`neon-scroll-top-${u}`}>
-        <path d={SCROLL_TOP} />
-        <circle cx="131" cy="10.3" r="1.25" />
-      </g>
-      <use href={`#neon-scroll-top-${u}`} transform="translate(220 0) scale(-1 1)" />
-      <path d="M110 7.5l4.6 6.5-4.6 6.5-4.6-6.5z" />
-    </svg>
-  );
+type Tone = "a" | "b";
+/** Um tubo: caminho, cor, espessura do vidro, transformação opcional e "luz" (preenchimento tênue de luz dentro da forma). */
+type Tube = { d: string; tone: Tone; w?: number; t?: string; spill?: boolean };
+/** Faísca: estrela de quatro pontas preenchida. */
+type Spark = { x: number; y: number; s: number; tone: Tone };
+/** Eletrodo (ponta de tubo): posição e ângulo. */
+type Cap = { x: number; y: number; a: number };
+
+const spark = (x: number, y: number, s: number): string => {
+  const k = r2(s * 0.15);
+  return `M${x} ${r2(y - s)}Q${r2(x + k)} ${r2(y - k)} ${r2(x + s)} ${y}Q${r2(x + k)} ${r2(y + k)} ${x} ${r2(y + s)}Q${r2(x - k)} ${r2(y + k)} ${r2(x - s)} ${y}Q${r2(x - k)} ${r2(y - k)} ${x} ${r2(y - s)}Z`;
+};
+
+/** Estrela de cinco pontas com centro em (cx, cy), raio externo R e interno r. */
+function star(cx: number, cy: number, R: number, r: number): string {
+  const pts: string[] = [];
+  for (let i = 0; i < 10; i++) {
+    const rad = ((-90 + i * 36) * Math.PI) / 180;
+    const q = i % 2 === 0 ? R : r;
+    pts.push(`${r2(cx + Math.cos(rad) * q)} ${r2(cy + Math.sin(rad) * q)}`);
+  }
+  return `M${pts.join("L")}Z`;
 }
 
-// Rodapé: variante menor, de uma volta só, virada para cima e com um ponto no centro (não é o espelho do topo).
-function FlourishSmall() {
+/** Um letreiro: todos os tubos e faíscas de um desenho, camada por camada. */
+function Sign({ className, w, h, tubes, sparks = [], caps = [], blur = 3.4 }: { className: string; w: number; h: number; tubes: Tube[]; sparks?: Spark[]; caps?: Cap[]; blur?: number }) {
   const u = useUid();
+  const glow = `neon-glow-${u}`;
   return (
-    <svg viewBox="0 0 160 20" width="148" height="18.5" fill="currentColor">
-      <g transform="translate(0 20) scale(1 -1)">
-        <g id={`neon-scroll-bottom-${u}`}>
-          <path d={SCROLL_BOTTOM} />
-          <circle cx="88" cy="11.9" r="1" />
+    <svg className={`neon-sign ${className}`} viewBox={`0 0 ${w} ${h}`} width={w} height={h} fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <defs>
+        <filter id={glow} filterUnits="userSpaceOnUse" x={-28} y={-28} width={w + 56} height={h + 56}>
+          <feGaussianBlur stdDeviation={blur} />
+        </filter>
+      </defs>
+      {/* sombra dos tubos na parede: o letreiro fica afastado dos tijolos */}
+      <g className="neon-shadow" transform="translate(1.8 3.4)">
+        {tubes.map((t, i) => (
+          <path key={i} d={t.d} transform={t.t} strokeWidth={(t.w ?? 3) + 1.2} />
+        ))}
+      </g>
+      {/* halo: a luz que o tubo joga em volta (e, nas formas fechadas, dentro) */}
+      <g filter={`url(#${glow})`}>
+        {tubes.map((t, i) => (
+          <path key={i} className={`neon-halo neon-${t.tone}`} d={t.d} transform={t.t} strokeWidth={(t.w ?? 3) * 3} data-spill={t.spill || undefined} />
+        ))}
+        {sparks.map((s, i) => (
+          <path key={i} className={`neon-halo-fill neon-${s.tone}`} d={spark(s.x, s.y, s.s * 1.25)} />
+        ))}
+      </g>
+      {/* vidro colorido e miolo claro */}
+      {tubes.map((t, i) => (
+        <g key={i} className={`neon-${t.tone}`} transform={t.t}>
+          <path className="neon-glass" d={t.d} strokeWidth={t.w ?? 3} />
+          <path className="neon-core" d={t.d} strokeWidth={r2((t.w ?? 3) * 0.42)} />
         </g>
-        <use href={`#neon-scroll-bottom-${u}`} transform="translate(160 0) scale(-1 1)" />
-        <circle cx="80" cy="12" r="1.6" />
-      </g>
+      ))}
+      {sparks.map((s, i) => (
+        <g key={i} className={`neon-${s.tone}`}>
+          <path className="neon-spark" d={spark(s.x, s.y, s.s)} />
+          <path className="neon-spark-core" d={spark(s.x, s.y, r2(s.s * 0.62))} />
+        </g>
+      ))}
+      {/* eletrodos: as pontas escuras de onde sai o fio */}
+      {caps.map((c, i) => (
+        <g key={i} className="neon-cap" transform={`translate(${c.x} ${c.y}) rotate(${c.a})`}>
+          <rect x="-2.4" y="-2.3" width="4.8" height="4.6" rx="1.2" />
+          <path className="neon-cap-hi" d="M-1.3-1.1h2.6" />
+        </g>
+      ))}
     </svg>
   );
 }
 
-// Divisor: dois fios que afinam para fora, losango cheio e dois pontos.
+// Coração de um tubo só, aberto embaixo (as duas pontas terminam em eletrodos). Centro em (60, 47).
+const HEART = "M56.5 80.5C36 66 21 51 21 34.5C21 22.5 30 14 41.5 14C50 14 57 19 60 27.5C63 19 70 14 78.5 14C90 14 99 22.5 99 34.5C99 51 84 66 63.5 80.5";
+const about = (x: number, y: number, s: number, rot = 0) => `translate(${x} ${y}) rotate(${rot}) scale(${s}) translate(-60 -47)`;
+// Taça de coquetel: a borda fica na origem.
+const GLASS = "M-17 0H17L0 21ZM0 21V41M-10 41H10";
+
+/** Letreiro do alto da capa, conforme o tipo de evento. Sem tipo (ou tipo desconhecido): o raio. */
+function Marquee({ type }: { type?: string }) {
+  if (type === "casamento")
+    return (
+      <Sign
+        className="neon-marquee"
+        w={120}
+        h={96}
+        tubes={[
+          { d: HEART, tone: "a", w: 3.9, t: about(47, 47, 0.8, -12), spill: true },
+          { d: HEART, tone: "b", w: 3.6, t: about(79, 53, 0.62, 13), spill: true },
+        ]}
+        sparks={[
+          { x: 103, y: 15, s: 6.5, tone: "a" },
+          { x: 12, y: 80, s: 4.5, tone: "b" },
+          { x: 110, y: 84, s: 3.2, tone: "a" },
+        ]}
+      />
+    );
+  if (type === "quinze-anos")
+    return (
+      <Sign
+        className="neon-marquee"
+        w={120}
+        h={96}
+        tubes={[
+          { d: "M42 27L37.5 9L50 18L60 4L70 18L82.5 9L78 27Z", tone: "b", w: 2.6 },
+          { d: HEART, tone: "a", w: 4.1, t: about(60, 63, 0.74), spill: true },
+        ]}
+        sparks={[
+          { x: 60, y: 61, s: 6, tone: "b" },
+          { x: 16, y: 34, s: 5.5, tone: "a" },
+          { x: 104, y: 30, s: 4.5, tone: "b" },
+          { x: 100, y: 78, s: 3.4, tone: "a" },
+        ]}
+        caps={[
+          { x: 57.4, y: 87.8, a: 35 },
+          { x: 62.6, y: 87.8, a: -35 },
+        ]}
+      />
+    );
+  if (type === "cha")
+    return (
+      <Sign
+        className="neon-marquee"
+        w={120}
+        h={96}
+        tubes={[
+          { d: HEART, tone: "a", w: 3.2, spill: true },
+          { d: HEART, tone: "b", w: 4.6, t: about(60, 45, 0.5) },
+        ]}
+        sparks={[
+          { x: 108, y: 18, s: 5.5, tone: "b" },
+          { x: 10, y: 70, s: 4, tone: "b" },
+        ]}
+        caps={[
+          { x: 56.5, y: 80.5, a: 35 },
+          { x: 63.5, y: 80.5, a: -35 },
+        ]}
+      />
+    );
+  if (type === "aniversario")
+    return (
+      <Sign
+        className="neon-marquee"
+        w={120}
+        h={96}
+        tubes={[
+          { d: star(60, 51, 39, 17.5), tone: "a", w: 3.2, spill: true },
+          { d: star(60, 51, 16, 7.2), tone: "b", w: 2.4 },
+        ]}
+        sparks={[
+          { x: 106, y: 20, s: 6, tone: "b" },
+          { x: 13, y: 26, s: 4.5, tone: "b" },
+          { x: 104, y: 84, s: 3.4, tone: "a" },
+        ]}
+      />
+    );
+  if (type === "formatura")
+    return (
+      <Sign
+        className="neon-marquee"
+        w={120}
+        h={96}
+        tubes={[
+          { d: "M36.5 48.5V65C36.5 75.5 83.5 75.5 83.5 65V48.5", tone: "b", w: 2.7 },
+          { d: "M60 21L101 38L60 55L19 38Z", tone: "a", w: 3.2, spill: true },
+          { d: "M101 38V63", tone: "b", w: 2.2 },
+        ]}
+        sparks={[
+          { x: 101, y: 72, s: 6.5, tone: "b" },
+          { x: 24, y: 14, s: 5.5, tone: "a" },
+          { x: 84, y: 9, s: 3.6, tone: "b" },
+          { x: 14, y: 70, s: 3.4, tone: "b" },
+        ]}
+      />
+    );
+  if (type === "outro")
+    return (
+      <Sign
+        className="neon-marquee"
+        w={120}
+        h={96}
+        tubes={[
+          { d: GLASS, tone: "a", w: 3, t: "translate(42 36) rotate(14)", spill: true },
+          { d: GLASS, tone: "b", w: 3, t: "translate(78 36) rotate(-14)", spill: true },
+          { d: "M-7.6 6.5a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0", tone: "b", w: 1.8, t: "translate(42 36) rotate(14)" },
+          { d: "M2.4 6.5a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0", tone: "a", w: 1.8, t: "translate(78 36) rotate(-14)" },
+        ]}
+        sparks={[
+          { x: 60, y: 17, s: 7.5, tone: "a" },
+          { x: 45, y: 9, s: 3.6, tone: "b" },
+          { x: 76, y: 7, s: 4.4, tone: "b" },
+        ]}
+      />
+    );
+  return (
+    <Sign
+      className="neon-marquee"
+      w={120}
+      h={96}
+      tubes={[
+        { d: "M27.1 67A38 38 0 0 1 28.9 26.2", tone: "b", w: 2.5 },
+        { d: "M92.9 29A38 38 0 0 1 91.1 69.8", tone: "b", w: 2.5 },
+        { d: "M70 8L36 52H57L47 88L86 40H64L70 8Z", tone: "a", w: 3.2, spill: true },
+      ]}
+      sparks={[
+        { x: 104, y: 14, s: 5.5, tone: "b" },
+        { x: 14, y: 84, s: 4.2, tone: "a" },
+      ]}
+      caps={[
+        { x: 27.1, y: 67, a: 60 },
+        { x: 28.9, y: 26.2, a: -55 },
+        { x: 92.9, y: 29, a: 60 },
+        { x: 91.1, y: 69.8, a: -55 },
+      ]}
+    />
+  );
+}
+
+/** Divisor: dois tubos retos e uma faísca no meio. */
 function Rule() {
   return (
-    <svg viewBox="0 0 132 10" width="118" height="9" fill="currentColor">
-      <path d="M2 5L50 4.3v1.4zM130 5L82 4.3v1.4z" />
-      <circle cx="56" cy="5" r="0.9" />
-      <circle cx="76" cy="5" r="0.9" />
-      <path d="M66 0.8l3 4.2-3 4.2-3-4.2z" />
-    </svg>
+    <Sign
+      className="neon-rule"
+      w={140}
+      h={18}
+      blur={2.6}
+      tubes={[
+        { d: "M8 9H50", tone: "b", w: 2.4 },
+        { d: "M90 9H132", tone: "b", w: 2.4 },
+      ]}
+      sparks={[
+        { x: 70, y: 9, s: 7.5, tone: "a" },
+        { x: 58.5, y: 9, s: 2.6, tone: "b" },
+        { x: 81.5, y: 9, s: 2.6, tone: "b" },
+      ]}
+      caps={[
+        { x: 5.5, y: 9, a: 0 },
+        { x: 134.5, y: 9, a: 0 },
+      ]}
+    />
   );
 }
 
-// Forro do envelope: treliça de losangos com florão de quatro pétalas, e uma margem de papel com filete junto às bordas da aba.
-function Liner() {
-  const u = useUid();
+/** Parede de tijolos pintados: quatro fiadas que se repetem, cada tijolo com um tom (a tinta nunca cobre igual). */
+function Wall({ id }: { id: string }) {
+  const bw = 58;
+  const bh = 24;
+  const m = 2.6; // junta
+  const tones = [0.62, 0.92, 0.74, 1, 0.84, 0.56, 0.96, 0.7, 1, 0.66, 0.88, 0.76, 0.7, 0.98, 0.6, 0.86];
+  const bricks: { x: number; y: number; o: number }[] = [];
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      const o = tones[row * 4 + col];
+      const x = col * bw + (row % 2 ? bw / 2 : 0);
+      bricks.push({ x, y: row * bh, o });
+      if (x + bw > 4 * bw) bricks.push({ x: x - 4 * bw, y: row * bh, o });
+    }
+  }
   return (
-    <svg width="100%" height="100%">
+    <svg className="neon-wall" width="100%" height="100%" aria-hidden="true">
       <defs>
-        <pattern id={`neon-liner-${u}`} width="26" height="26" patternUnits="userSpaceOnUse">
-          <path d="M0 13L13 0l13 13-13 13z" fill="none" stroke="currentColor" strokeWidth="0.8" />
-          <path d="M13 7.4c2.3 1.8 2.3 3.8 0 5.6-2.3-1.8-2.3-3.8 0-5.6zM13 18.6c-2.3-1.8-2.3-3.8 0-5.6 2.3 1.8 2.3 3.8 0 5.6zM7.4 13c1.8-2.3 3.8-2.3 5.6 0-1.8 2.3-3.8 2.3-5.6 0zM18.6 13c-1.8 2.3-3.8 2.3-5.6 0 1.8-2.3 3.8-2.3 5.6 0z" fill="currentColor" />
-          <circle cx="0" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="0" r="1.2" fill="currentColor" />
-          <circle cx="0" cy="26" r="1.2" fill="currentColor" />
-          <circle cx="26" cy="26" r="1.2" fill="currentColor" />
+        <pattern id={id} width={4 * bw} height={4 * bh} patternUnits="userSpaceOnUse">
+          {bricks.map((b, i) => (
+            <g key={i} opacity={b.o}>
+              <rect x={r2(b.x + m / 2)} y={r2(b.y + m / 2)} width={bw - m} height={bh - m} rx="1.4" fill="currentColor" />
+              {/* aresta de cima pega um fio de luz; a de baixo fica na sombra */}
+              <path className="neon-brick-hi" d={`M${r2(b.x + m / 2 + 1.5)} ${r2(b.y + m / 2 + 0.6)}h${bw - m - 3}`} />
+              <path className="neon-brick-lo" d={`M${r2(b.x + m / 2 + 1.5)} ${r2(b.y + bh - m / 2 - 0.6)}h${bw - m - 3}`} />
+            </g>
+          ))}
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill={`url(#neon-liner-${u})`} />
-      {/* a aba é um triângulo (0,0) (100%,0) (50%,58%): margem de papel e filete acompanhando as duas bordas */}
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" fill="none">
-        <path className="neon-liner-rule" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-        <path className="neon-liner-edge" d="M0 0L50 58L100 0" vectorEffect="non-scaling-stroke" />
-      </svg>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   );
 }
 
-function Art({ slot }: ArtProps) {
-  if (slot === "top") return <Flourish />;
+// Miniaturas do forro (caixa de ~20px, centro na origem).
+const MINI_BOLT = "M2.5-10.5L-6.5 1.5H-.5L-2.5 10.5L6.5-1.5H.5Z";
+const MINI_HEART = "M0 8.5C-6.4 3.8-9.5.2-9.5-3.6C-9.5-6.8-7.2-9-4.4-9C-2.4-9-.8-7.8 0-5.9C.8-7.8 2.4-9 4.4-9C7.2-9 9.5-6.8 9.5-3.6C9.5.2 6.4 3.8 0 8.5Z";
+
+/** Forro do envelope: chuva de letreirinhos (raio, estrela, coração, faísca) nas duas cores, sobre o tom escuro do forro. */
+function Liner({ id }: { id: string }) {
+  const items: { d: string; tone: Tone; t: string; fill?: boolean }[] = [
+    { d: MINI_BOLT, tone: "a", t: "translate(17 19) rotate(14)" },
+    { d: star(0, 0, 10, 4.4), tone: "b", t: "translate(53 15) rotate(-10)" },
+    { d: MINI_HEART, tone: "b", t: "translate(19 55) rotate(-14)" },
+    { d: star(0, 0, 10, 4.4), tone: "a", t: "translate(55 53) rotate(16)" },
+    { d: spark(36, 36, 5), tone: "a", t: "", fill: true },
+    { d: spark(0, 0, 3.6), tone: "b", t: "", fill: true },
+    { d: spark(72, 0, 3.6), tone: "b", t: "", fill: true },
+    { d: spark(0, 72, 3.6), tone: "b", t: "", fill: true },
+    { d: spark(72, 72, 3.6), tone: "b", t: "", fill: true },
+  ];
+  return (
+    <svg className="neon-liner" width="100%" height="100%" aria-hidden="true">
+      <defs>
+        <pattern id={id} width="72" height="72" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
+          {items.map((it, i) =>
+            it.fill ? (
+              <g key={i} className={`neon-${it.tone}`}>
+                <path className="neon-mini-halo-fill" d={it.d} />
+                <path className="neon-spark-core" d={it.d} />
+              </g>
+            ) : (
+              <g key={i} className={`neon-${it.tone}`} transform={it.t} fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path className="neon-mini-halo" d={it.d} strokeWidth="6.5" />
+                <path className="neon-mini-halo" d={it.d} strokeWidth="3.6" />
+                <path className="neon-glass" d={it.d} strokeWidth="1.9" />
+                <path className="neon-core" d={it.d} strokeWidth="0.8" />
+              </g>
+            ),
+          )}
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
+function Art({ slot, eventType }: ArtProps) {
+  const u = useUid();
+  if (slot === "top") return <Marquee type={eventType} />;
   if (slot === "divider") return <Rule />;
-  if (slot === "bottom") return <FlourishSmall />;
-  if (slot === "liner") return <Liner />;
+  if (slot === "backdrop") return <Wall id={`neon-wall-${u}`} />;
+  if (slot === "liner") return <Liner id={`neon-liner-${u}`} />;
   return null;
 }
 
 export const def: TemplateDef = {
   id: "neon",
   name: "Neon",
-  description: "Papel marfim, moldura dupla e nomes em caligrafia",
-  premium: false,
-  suits: ["casamento", "outro"],
+  description: "Letreiro de neon aceso sobre parede de tijolos",
+  premium: true,
+  suits: ["aniversario", "quinze-anos", "formatura", "outro"],
   palettes: [
-    { id: "marfim", name: "Marfim e ouro", vars: { bg: "#E9E1D2", paper: "#FBF7EE", ink: "#2B2622", soft: "#665B4E", accent: "#A6864B", line: "#CDBE9F", btnInk: "#FFFFFF", seal: "#7A1F2B", sealInk: "#F1D9B5", liner: "#E8DCC4" } },
-    { id: "marinho", name: "Marinho", vars: { bg: "#DCE1E9", paper: "#FAFAF6", ink: "#1B2A41", soft: "#53607A", accent: "#9A8250", line: "#BFC8D6", btnInk: "#FFFFFF", seal: "#1B2A41", sealInk: "#E9D9B0", liner: "#C9D2E0" } },
-    { id: "verde", name: "Verde garrafa", vars: { bg: "#E0E5DA", paper: "#FAF8F0", ink: "#2A3A30", soft: "#59685C", accent: "#A6864B", line: "#C4CDBC", btnInk: "#FFFFFF", seal: "#2A3A30", sealInk: "#EADBB4", liner: "#CFD8C6" } },
-    { id: "preto", name: "Preto e branco", vars: { bg: "#E6E3DE", paper: "#FCFBF8", ink: "#1C1C1C", soft: "#5C5853", accent: "#77715F", line: "#CFCAC0", btnInk: "#FFFFFF", seal: "#1C1C1C", sealInk: "#EDE6D6", liner: "#D8D4CC" } },
+    { id: "rosa", name: "Rosa-choque e ciano", vars: { bg: "#0B090F", paper: "#17131D", ink: "#F7F3FA", soft: "#BDB5C9", accent: "#FF4FA3", line: "#3B3347", btnInk: "#1F0713", seal: "#2FE3F0", sealInk: "#052A30", liner: "#0E2630" } },
+    { id: "roxo", name: "Roxo e amarelo", vars: { bg: "#0B0913", paper: "#181327", ink: "#F6F2FC", soft: "#BBB3CE", accent: "#B57BFF", line: "#3A3152", btnInk: "#170A2E", seal: "#FFD93D", sealInk: "#2E2400", liner: "#241843" } },
+    { id: "limao", name: "Verde-limão e magenta", vars: { bg: "#080B09", paper: "#131A15", ink: "#F3F8F1", soft: "#B4C2B6", accent: "#B8FF3A", line: "#2F3D33", btnInk: "#111C02", seal: "#FF45C8", sealInk: "#300524", liner: "#30102B" } },
+    { id: "laranja", name: "Laranja e azul", vars: { bg: "#090A11", paper: "#141724", ink: "#F5F4F8", soft: "#B7BACB", accent: "#FF8B3D", line: "#333850", btnInk: "#220E00", seal: "#49A6FF", sealInk: "#041B36", liner: "#10203E" } },
+    { id: "branco", name: "Branco quente", vars: { bg: "#0C0A08", paper: "#1A1714", ink: "#FAF4EA", soft: "#C4B9A9", accent: "#FFE2B0", line: "#40392F", btnInk: "#241A0B", seal: "#FFA23A", sealInk: "#2B1600", liner: "#3A2A16" } },
   ],
   Art,
 };
